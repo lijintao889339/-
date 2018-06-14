@@ -1,0 +1,20 @@
+spring:
+  application:
+    name: teamsking-server
+  datasource:
+    url: jdbc:mysql://${MYSQL_ADDR:localhost}:${MYSQL_PORT:3306}/${MYSQL_DB:teamsking}?useUnicode=yes&characterEncoding=utf-8
+    username: ${MYSQL_USER:root}
+    password: ${MYSQL_PWD:123456}
+
+server:
+  port: 8080
+
+logging:
+  level:
+    root: INFO
+
+pagehelper:
+    helperDialect: mysql
+    reasonable: true
+    supportMethodsArguments: true
+    params: count=countSql
