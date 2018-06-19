@@ -1,6 +1,6 @@
 package com.teamsking.domain.entity;
 
-import javax.persistence.*;
+import javax.persistence.Table;
 
 @Table(name = "`sys_role_menu`")
 public class SysRoleMenu {

@@ -2,8 +2,8 @@ spring:
   application:
     name: teamsking-server
   datasource:
-    url: jdbc:mysql://${MYSQL_ADDR:localhost}:${MYSQL_PORT:3306}/${MYSQL_DB:teamsking}?useUnicode=yes&characterEncoding=utf-8
-    username: ${MYSQL_USER:root}
+    url: jdbc:mysql://${MYSQL_ADDR:docker.windnet.cn}:${MYSQL_PORT:3306}/${MYSQL_DB:teamsking}?useUnicode=yes&characterEncoding=utf-8
+    username: ${MYSQL_USER:teamsking}
     password: ${MYSQL_PWD:123456}
 
 server:

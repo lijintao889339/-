@@ -7,7 +7,7 @@ import tk.mybatis.spring.annotation.MapperScan;
 /**
  * @author ynfeng
  */
-@MapperScan(basePackages = "com.teamsking.domain.entity")
+@MapperScan(basePackages = "com.teamsking.domain.repository")
 @SpringBootApplication
 public class Application {
     public static void main(String[] args) {
