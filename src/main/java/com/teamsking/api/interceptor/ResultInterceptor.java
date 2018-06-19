@@ -26,9 +26,9 @@ public class ResultInterceptor {
     @ExceptionHandler(Exception.class)
     @ResponseBody
     public Result errorHandle(HttpServletRequest req, Exception e) {
-        if (log.isErrorEnabled()) {
-            log.error(logStr(req), e);
-        }
+//        if (log.isErrorEnabled()) {
+////            log.error(logStr(req), e);
+//        }
         return Result.exception(e.getMessage());
     }
 
