@@ -1,14 +1,13 @@
 package com.teamsking.api.dto;
 
-import java.io.Serializable;
 import lombok.Data;
 
 /**
  * @author ynfeng
  */
 @Data
-public class SysMenuDto implements Serializable {
-    private static final long serialVersionUID = 1L;
+public class SysMenuDto extends Dto{
+
     private String menuTitle;
 
     private String menuCode;
