@@ -46,7 +46,7 @@ public class SysMenuController extends BaseController {
     @ApiImplicitParams( {
         @ApiImplicitParam(name = "sysMenu", value = "系统菜单", required = true, dataType = "SysMenuDto")
     })
-    @PostMapping("/sys_menus")
+    @PostMapping("/sys_menu")
     public Result addSysMenu(@RequestBody SysMenuDto sysMenu) {
         SysMenu sysMenuEntity = SysMenuDtoMapper.INSTANCE.dtoToEntity(sysMenu);
         sysMenuService.save(sysMenuEntity);
