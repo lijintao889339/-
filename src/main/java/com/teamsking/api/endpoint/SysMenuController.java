@@ -42,13 +42,14 @@ public class SysMenuController extends BaseController {
         return Result.success().addData("pager", warpPage(sysMenuDtoList));
     }
 
-    @ApiOperation(value = "添加系统菜单", produces = "application/json")
+    @ApiOperation(value = "添加系统菜单", consumes= "application/json")
     @ApiImplicitParams( {
         @ApiImplicitParam(name = "sysMenu", value = "系统菜单", required = true, dataType = "SysMenuDto")
     })
     @PostMapping("/sys_menus")
     public Result addSysMenu(@RequestBody SysMenuDto sysMenu) {
-        sysMenuService.save(SysMenuDtoMapper.INSTANCE.dtoToEntity(sysMenu));
+        SysMenu sysMenuEntity = SysMenuDtoMapper.INSTANCE.dtoToEntity(sysMenu);
+        sysMenuService.save(sysMenuEntity);
         return Result.success();
     }
 }
