@@ -29,7 +29,7 @@ public class SysMenuController extends BaseController {
     @Autowired
     SysMenuService sysMenuService;
 
-    @ApiOperation(value = " 列表", notes = "可分页", produces = "application/json")
+    @ApiOperation(value = "菜单列表", notes = "可分页", produces = "application/json")
     @ApiImplicitParams( {
         @ApiImplicitParam(name = "pageNo", value = "页码", required = true, example = "1"),
         @ApiImplicitParam(name = "pageSize", value = "页大小", required = true, example = "10")
@@ -50,6 +50,26 @@ public class SysMenuController extends BaseController {
     public Result addSysMenu(@RequestBody SysMenuDto sysMenu) {
         SysMenu sysMenuEntity = SysMenuDtoMapper.INSTANCE.dtoToEntity(sysMenu);
         sysMenuService.save(sysMenuEntity);
+        return Result.success();
+    }
+
+    @ApiOperation(value = "删除系统菜单",produces = "application/json")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "sysMenu",value = "系统菜单",required = true,dataType = "SysMenuDto")
+    })
+    @PostMapping("/sys_menus_deletes")
+    public Result removeSysMenu(@RequestBody SysMenuDto sysMenu){
+        sysMenuService.remove(SysMenuDtoMapper.INSTANCE.dtoToEntity(sysMenu));
+        return Result.success();
+    }
+
+    @ApiOperation(value = "修改系统菜单",produces = "application/json")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "sysMenu",value = "系统菜单",required = true,dataType = "SysMenuDto")
+    })
+    @PostMapping("/sys_menus/{id}")
+    public Result dmodifySysMenu(@RequestBody SysMenuDto sysMenu){
+        sysMenuService.modify(SysMenuDtoMapper.INSTANCE.dtoToEntity(sysMenu));
         return Result.success();
     }
 }
