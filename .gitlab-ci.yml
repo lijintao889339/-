@@ -39,8 +39,9 @@ deploy_dev:
       - docker:dind
   stage: deploy
   script: echo done
+  when: manual
   environment:
-      name: staging
+      name: dev
   only:
     - dev
 
