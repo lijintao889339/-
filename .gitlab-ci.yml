@@ -22,7 +22,7 @@ docker-build:
   - docker login -u gitlab-ci-token -p $CI_BUILD_TOKEN registry.gitlab.com
   - docker push registry.gitlab.com/windnet.cn/teamsking_backend:$CI_COMMIT_REF_NAME
 
-deploy_staging:
+deploy-staging:
   image: docker:latest
   services:
       - docker:dind
@@ -33,7 +33,7 @@ deploy_staging:
   only:
     - staging
 
-deploy_dev:
+deploy-dev:
   image: docker:latest
   services:
       - docker:dind
