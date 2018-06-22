@@ -19,7 +19,7 @@ docker-build:
   script:
   - cp docker/Dockerfile .
   - docker build -t registry.gitlab.com/windnet.cn/teamsking_backend:$CI_COMMIT_REF_NAME .
-  - docker login -u $USER -p $PWD registry.gitlab.com
+  - docker login -u gitlab-ci-token -p $CI_BUILD_TOKEN registry.gitlab.com
   - docker push registry.gitlab.com/windnet.cn/teamsking_backend:$CI_COMMIT_REF_NAME
 
 deploy-staging:
@@ -35,7 +35,7 @@ deploy-staging:
     - echo "$TLSCACERT" > ~/.docker/ca.pem
     - echo "$TLSCERT" > ~/.docker/cert.pem
     - echo "$TLSKEY" > ~/.docker/key.pem
-    - docker login -u $USER -p $PWD registry.gitlab.com
+    - docker login -u gitlab-ci-token -p $CI_BUILD_TOKEN registry.gitlab.com
     - docker ps
   when: manual
   environment:
