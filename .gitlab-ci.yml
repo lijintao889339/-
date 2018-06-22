@@ -27,7 +27,16 @@ deploy-staging:
   services:
       - docker:dind
   stage: deploy
-  script: echo done
+  variables:
+      DOCKER_HOST: tcp://docker.windnet.cn:2376
+      DOCKER_TLS_VERIFY: 1
+  script:
+    - mkdir -p ~/.docker
+    - echo "$TLSCACERT" > ~/.docker/ca.pem
+    - echo "$TLSCERT" > ~/.docker/cert.pem
+    - echo "$TLSKEY" > ~/.docker/key.pem
+    - docker login -u gitlab-ci-token -p "$CI_BUILD_TOKEN" "$CI_REGISTRY"
+    - docker ps
   when: manual
   environment:
     name: staging
