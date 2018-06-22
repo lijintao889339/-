@@ -12,10 +12,7 @@ import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -70,7 +67,7 @@ public class SysUserController extends BaseController {
     @ApiImplicitParams({
             @ApiImplicitParam(name = "sysUser", value = "系统用户", required = true, dataType = "SysUserDto")
     })
-    @PostMapping("/sys_users_deletes")
+    @DeleteMapping("/sys_users/{id}")
     public Result deleteSysUser(@RequestBody SysUserDto sysUser){
 
         sysUserService.remove(SysUserDtoMapper.INSTANCE.dtoToEntity(sysUser));
@@ -86,8 +83,8 @@ public class SysUserController extends BaseController {
     @ApiImplicitParams( {
             @ApiImplicitParam(name = "sysUser", value = "系统用户", required = true, dataType = "SysUserDto")
     })
-    @PostMapping("/sys_users/{id}")
-    public Result modifySysMenu(@RequestBody SysUserDto sysUser) {
+    @PutMapping("/sys_users/{id}")
+    public Result modifySysUser(@RequestBody SysUserDto sysUser) {
         sysUserService.modify(SysUserDtoMapper.INSTANCE.dtoToEntity(sysUser));
         return Result.success();
     }

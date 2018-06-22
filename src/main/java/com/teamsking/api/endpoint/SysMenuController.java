@@ -13,10 +13,7 @@ import io.swagger.annotations.ApiOperation;
 import java.util.List;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 /**
  * @author ynfeng
@@ -57,7 +54,7 @@ public class SysMenuController extends BaseController {
     @ApiImplicitParams({
             @ApiImplicitParam(name = "sysMenu",value = "系统菜单",required = true,dataType = "SysMenuDto")
     })
-    @PostMapping("/sys_menus_deletes")
+    @DeleteMapping("/sys_menu/{id}")
     public Result removeSysMenu(@RequestBody SysMenuDto sysMenu){
         sysMenuService.remove(SysMenuDtoMapper.INSTANCE.dtoToEntity(sysMenu));
         return Result.success();
@@ -67,8 +64,8 @@ public class SysMenuController extends BaseController {
     @ApiImplicitParams({
             @ApiImplicitParam(name = "sysMenu",value = "系统菜单",required = true,dataType = "SysMenuDto")
     })
-    @PostMapping("/sys_menus/{id}")
-    public Result dmodifySysMenu(@RequestBody SysMenuDto sysMenu){
+    @PutMapping("/sys_menu/{id}")
+    public Result modifySysMenu(@RequestBody SysMenuDto sysMenu){
         sysMenuService.modify(SysMenuDtoMapper.INSTANCE.dtoToEntity(sysMenu));
         return Result.success();
     }

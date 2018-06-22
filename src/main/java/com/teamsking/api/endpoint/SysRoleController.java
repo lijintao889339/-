@@ -12,10 +12,7 @@ import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -32,7 +29,7 @@ public class SysRoleController extends BaseController {
             @ApiImplicitParam(name = "pageNo", value = "页码", required = true, example = "1"),
             @ApiImplicitParam(name = "pageSize", value = "页大小", required = true, example = "10")
     })
-    @GetMapping("/sys_role")
+    @GetMapping("/sys_roles")
     public Result sysRoleList(int pageNo, int pageSize) {
         PageHelper.startPage(fixPage(pageNo), fixPage(pageSize));
         List<SysRole> sysRoleList = sysRoleService.list();
@@ -45,7 +42,7 @@ public class SysRoleController extends BaseController {
     @ApiImplicitParams( {
             @ApiImplicitParam(name = "sysRole", value = "角色", required = true, dataType = "SysRoleDto")
     })
-    @PostMapping("/sys_roles")
+    @PostMapping("/sys_role")
     public Result addSysRole(@RequestBody SysRoleDto sysRole) {
         sysRoleService.save(SysRoleDtoMapper.INSTANCE.dtoToEntity(sysRole));
         return Result.success();
@@ -56,7 +53,7 @@ public class SysRoleController extends BaseController {
     @ApiImplicitParams({
             @ApiImplicitParam(name = "sysRole",value = "角色",required = true,dataType = "SysRoleDto")
     })
-    @PostMapping("/sys_role_deletes")
+    @DeleteMapping("/sys_role/{id}")
     public Result removeSysRole(@RequestBody SysRoleDto sysRole){
         sysRoleService.remove(SysRoleDtoMapper.INSTANCE.dtoToEntity(sysRole));
         return Result.success();
@@ -66,7 +63,7 @@ public class SysRoleController extends BaseController {
     @ApiImplicitParams({
             @ApiImplicitParam(name = "sysRole",value = "角色",required = true,dataType = "SysRoleDto")
     })
-    @PostMapping("/sys_role/{id}")
+    @PutMapping("/sys_role/{id}")
     public Result modifySysRole(@RequestBody SysRoleDto sysRole){
         sysRoleService.modify(SysRoleDtoMapper.INSTANCE.dtoToEntity(sysRole));
         return Result.success();
