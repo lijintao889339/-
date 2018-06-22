@@ -32,9 +32,9 @@ deploy-staging:
       DOCKER_TLS_VERIFY: 1
   script:
     - mkdir -p ~/.docker
-    - echo "$TLSCACERT" > ~/.docker/ca.pem
-    - echo "$TLSCERT" > ~/.docker/cert.pem
-    - echo "$TLSKEY" > ~/.docker/key.pem
+    - echo $TLSCACERT > ~/.docker/ca.pem
+    - echo $TLSCERT > ~/.docker/cert.pem
+    - echo $TLSKEY > ~/.docker/key.pem
     - docker login -u gitlab-ci-token -p $CI_BUILD_TOKEN registry.gitlab.com
     - docker ps
   when: manual
