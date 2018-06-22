@@ -26,6 +26,26 @@ public class SysMenuService {
     }
 
     public int save(SysMenu sysMenu){
+
         return sysMenuMapper.insert(sysMenu);
+    }
+
+    /**
+     *删除系统菜单
+     * @param sysMenu
+     * @return
+     */
+    public int remove(SysMenu sysMenu){
+        return sysMenuMapper.delete(sysMenu);
+    }
+
+    /**
+     * 修改系统菜单
+     * @param sysMenu
+     * @return
+     */
+    public int modify(SysMenu sysMenu){
+
+        return sysMenuMapper.updateByPrimaryKey(sysMenu);
     }
 }

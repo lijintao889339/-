@@ -52,4 +52,24 @@ public class SysMenuController extends BaseController {
         sysMenuService.save(sysMenuEntity);
         return Result.success();
     }
+
+    @ApiOperation(value = "删除系统菜单",produces = "application/json")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "sysMenu",value = "系统菜单",required = true,dataType = "SysMenuDto")
+    })
+    @PostMapping("/sys_menus_deletes")
+    public Result removeSysMenu(@RequestBody SysMenuDto sysMenu){
+        sysMenuService.remove(SysMenuDtoMapper.INSTANCE.dtoToEntity(sysMenu));
+        return Result.success();
+    }
+
+    @ApiOperation(value = "修改系统菜单",produces = "application/json")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "sysMenu",value = "系统菜单",required = true,dataType = "SysMenuDto")
+    })
+    @PostMapping("/sys_menus/{id}")
+    public Result dmodifySysMenu(@RequestBody SysMenuDto sysMenu){
+        sysMenuService.modify(SysMenuDtoMapper.INSTANCE.dtoToEntity(sysMenu));
+        return Result.success();
+    }
 }
