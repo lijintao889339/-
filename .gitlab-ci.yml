@@ -24,8 +24,12 @@ docker-build:
 
 deploy_staging:
   image: docker:latest
+  services:
+      - docker:dind
   stage: deploy
-  script: ./mvnw clean install
+  script: echo done
   environment:
       name: staging
+  only:
+    - staging
 
