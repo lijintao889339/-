@@ -3,13 +3,39 @@ stages:
   - package
   - deploy
 
-build:
+build-qa:
   image: java:8
   stage: build
   script: ./mvnw clean install
+  only:
+    - qa
   artifacts:
-      paths:
-        - target/teamsking-server.jar
+    name: teamsking-server-qa
+    paths:
+      target/teamsking-server.jar
+
+
+build-dev:
+  image: java:8
+  stage: build
+  script: ./mvnw clean install
+  only:
+    - dev
+  artifacts:
+    name: teamsking-server-dev
+    paths:
+      target/teamsking-server.jar
+
+build-staging:
+  image: java:8
+  stage: build
+  script: ./mvnw clean install
+  only:
+    - staging
+  artifacts:
+    name: teamsking-server-staging
+    paths:
+      target/teamsking-server.jar
 
 docker-build:
   image: docker:latest
@@ -28,6 +54,7 @@ deploy-staging:
       - docker:dind
   stage: deploy
   script: echo done
+  when: manual
   environment:
       name: staging
   only:
@@ -44,4 +71,16 @@ deploy-dev:
       name: dev
   only:
     - dev
+
+deploy-qa:
+  image: docker:latest
+  services:
+      - docker:dind
+  stage: deploy
+  script: echo done
+  when: manual
+  environment:
+      name: qa
+  only:
+    - qa
 
