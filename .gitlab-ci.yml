@@ -12,7 +12,7 @@ build-qa:
   artifacts:
     name: teamsking-server-qa
     paths:
-      target/teamsking-server.jar
+      - target/teamsking-server.jar
 
 
 build-dev:
@@ -24,7 +24,7 @@ build-dev:
   artifacts:
     name: teamsking-server-dev
     paths:
-      target/teamsking-server.jar
+      - target/teamsking-server.jar
 
 build-staging:
   image: java:8
@@ -35,7 +35,7 @@ build-staging:
   artifacts:
     name: teamsking-server-staging
     paths:
-      target/teamsking-server.jar
+      - target/teamsking-server.jar
 
 docker-build:
   image: docker:latest
