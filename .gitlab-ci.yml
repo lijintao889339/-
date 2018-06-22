@@ -33,3 +33,14 @@ deploy_staging:
   only:
     - staging
 
+deploy_dev:
+  image: docker:latest
+  services:
+      - docker:dind
+  stage: deploy
+  script: echo done
+  environment:
+      name: staging
+  only:
+    - dev
+
