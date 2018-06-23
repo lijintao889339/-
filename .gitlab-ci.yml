@@ -31,10 +31,10 @@ deploy-staging:
     - echo $TLSCACERT > ca.pem
     - echo $TLSCERT > cert.pem
     - echo $TLSKEY > key.pem
+    - cat ca.pem
+    - cat key.pem
     - docker --tlsverify --tlscacert=ca.pem --tlscert=cert.pem --tlskey=key.pem \
         -H=$SWARM_MANAGER:2376 version
-    - docker --tlsverify --tlscacert=ca.pem --tlscert=cert.pem --tlskey=key.pem \
-              -H=$SWARM_MANAGER:2376 login -u $CI_USER -p $CI_USER_PWD registry.gitlab.com
 #  when: manual
   environment:
     name: staging
