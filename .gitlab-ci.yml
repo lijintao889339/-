@@ -37,7 +37,7 @@ deploy-staging:
     - echo $TLSKEY > ~/.docker/key.pem
     - echo abc > ~/.docker/t
     - cat ~/.docker/t
-    - echo $$TLSCACERT
+    - echo $TLSCACERT
     - docker login -u gitlab-ci-token -p $CI_BUILD_TOKEN registry.gitlab.com
     - docker ps
 #  when: manual
