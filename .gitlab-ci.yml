@@ -31,12 +31,12 @@ deploy-staging:
       DOCKER_HOST: tcp://docker.windnet.cn:2376
       DOCKER_TLS_VERIFY: 1
   script:
+    - docker login -u $CI_USER -p $CI_USER_PWD registry.gitlab.com
     - mkdir -p ~/.docker
     - echo $TLSCACERT > ~/.docker/ca.pem
     - echo $TLSCERT > ~/.docker/cert.pem
     - echo $TLSKEY > ~/.docker/key.pem
     - cat ~/.docker/ca.pem
-    - docker login -u $CI_USER -p $CI_USER_PWD registry.gitlab.com
     - docker ps
 #  when: manual
   environment:
