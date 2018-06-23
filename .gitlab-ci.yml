@@ -27,16 +27,14 @@ deploy-staging:
   services:
       - docker:dind
   stage: deploy
-  variables:
-      DOCKER_HOST: tcp://docker.windnet.cn:2376
-      DOCKER_TLS_VERIFY: 1
   script:
-    - docker login -u $CI_USER -p $CI_USER_PWD registry.gitlab.com
-    - mkdir -p ~/.docker
-    - echo $TLSCACERT > ~/.docker/ca.pem
-    - echo $TLSCERT > ~/.docker/cert.pem
-    - echo $TLSKEY > ~/.docker/key.pem
+    - echo $TLSCACERT > ca.pem
+    - echo $TLSCERT > cert.pem
+    - echo $TLSKEY > key.pem
     - cat ~/.docker/ca.pem
+    - docker --tlsverify --tlscacert=ca.pem --tlscert=cert.pem --tlskey=key.pem \
+        -H=$SWARM_MANAGER:2376 version
+    - docker login -u $CI_USER -p $CI_USER_PWD registry.gitlab.com
     - docker ps
 #  when: manual
   environment:
