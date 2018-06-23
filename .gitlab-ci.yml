@@ -28,9 +28,9 @@ deploy-staging:
       - docker:dind
   stage: deploy
   script:
-    - echo $TLSCACERT > ca.pem
-    - echo $TLSCERT > cert.pem
-    - echo $TLSKEY > key.pem
+    - echo "$TLSCACERT" > ca.pem
+    - echo "$TLSCERT" > cert.pem
+    - echo "$TLSKEY" > key.pem
     - cat ca.pem
     - cat key.pem
     - docker --tlsverify --tlscacert=ca.pem --tlscert=cert.pem --tlskey=key.pem \
