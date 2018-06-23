@@ -3,13 +3,19 @@ stages:
   - package
   - deploy
 
+before_script:
+    - mkdir -p ~/.docker
+    - echo "$TLSCACERT" > ~/.docker/ca.pem
+    - echo "$TLSCERT" > ~/.docker/cert.pem
+    - echo "$TLSKEY" > ~/.docker/key.pem
+
 build:
   image: java:8
   stage: build
   script: ./mvnw clean install
   artifacts:
-      paths:
-        - target/teamsking-server.jar
+    paths:
+      - target/teamsking-server.jar
 
 docker-build:
   image: docker:latest
@@ -19,17 +25,22 @@ docker-build:
   script:
   - cp docker/Dockerfile .
   - docker build -t registry.gitlab.com/windnet.cn/teamsking_backend:$CI_COMMIT_REF_NAME .
-  - docker login -u gitlab-ci-token -p $CI_BUILD_TOKEN registry.gitlab.com
+  - docker login -u $CI_USER -p $CI_USER_PWD registry.gitlab.com
   - docker push registry.gitlab.com/windnet.cn/teamsking_backend:$CI_COMMIT_REF_NAME
 
 deploy-staging:
   image: docker:latest
   services:
       - docker:dind
+  variables:
+    DOCKER_HOST: tcp://docker.windnet.cn:2376
+    DOCKER_TLS_VERIFY: 1
   stage: deploy
-  script: echo done
+  script:
+    - docker ps
+#  when: manual
   environment:
-      name: staging
+    name: staging
   only:
     - staging
 
@@ -41,7 +52,19 @@ deploy-dev:
   script: echo done
   when: manual
   environment:
-      name: dev
+    name: dev
   only:
     - dev
+
+deploy-qa:
+  image: docker:latest
+  services:
+      - docker:dind
+  stage: deploy
+  script: echo done
+  when: manual
+  environment:
+    name: qa
+  only:
+    - qa
 
