@@ -31,7 +31,6 @@ deploy-staging:
     - echo $TLSCACERT > ca.pem
     - echo $TLSCERT > cert.pem
     - echo $TLSKEY > key.pem
-    - cat ~/.docker/ca.pem
     - docker --tlsverify --tlscacert=ca.pem --tlscert=cert.pem --tlskey=key.pem \
         -H=$SWARM_MANAGER:2376 version
     - docker --tlsverify --tlscacert=ca.pem --tlscert=cert.pem --tlskey=key.pem \
