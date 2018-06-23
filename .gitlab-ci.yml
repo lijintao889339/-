@@ -3,6 +3,12 @@ stages:
   - package
   - deploy
 
+before_script:
+    - mkdir -p ~/.docker
+    - echo "$TLSCACERT" > ~/.docker/ca.pem
+    - echo "$TLSCERT" > ~/.docker/cert.pem
+    - echo "$TLSKEY" > ~/.docker/key.pem
+
 build:
   image: java:8
   stage: build
@@ -26,15 +32,12 @@ deploy-staging:
   image: docker:latest
   services:
       - docker:dind
+  variables:
+    DOCKER_HOST: tcp://docker.windnet.cn:2376
+    DOCKER_TLS_VERIFY: 1
   stage: deploy
   script:
-    - echo "$TLSCACERT" > ca.pem
-    - echo "$TLSCERT" > cert.pem
-    - echo "$TLSKEY" > key.pem
-    - cat ca.pem
-    - cat key.pem
-    - docker --tlsverify --tlscacert=ca.pem --tlscert=cert.pem --tlskey=key.pem \
-        -H=$SWARM_MANAGER:2376 version
+    - docker ps
 #  when: manual
   environment:
     name: staging
