@@ -55,8 +55,8 @@ public class SysMenuController extends BaseController {
             @ApiImplicitParam(name = "sysMenu",value = "系统菜单",required = true,dataType = "SysMenuDto")
     })
     @DeleteMapping("/sys_menu/{id}")
-    public Result removeSysMenu(@RequestBody SysMenuDto sysMenu){
-        sysMenuService.remove(SysMenuDtoMapper.INSTANCE.dtoToEntity(sysMenu));
+    public Result removeSysMenu(@PathVariable("id") int id){
+        sysMenuService.remove(id);
         return Result.success();
     }
 
@@ -65,8 +65,12 @@ public class SysMenuController extends BaseController {
             @ApiImplicitParam(name = "sysMenu",value = "系统菜单",required = true,dataType = "SysMenuDto")
     })
     @PutMapping("/sys_menu/{id}")
-    public Result modifySysMenu(@RequestBody SysMenuDto sysMenu){
-        sysMenuService.modify(SysMenuDtoMapper.INSTANCE.dtoToEntity(sysMenu));
+    public Result modifySysMenu(@RequestBody SysMenuDto sysMenu,
+                                @PathVariable int id){
+        SysMenu sysMenuEntity = SysMenuDtoMapper.INSTANCE.dtoToEntity(sysMenu);
+        sysMenuEntity.setId(id);
+        sysMenuService.modify(sysMenuEntity);
+
         return Result.success();
     }
 }

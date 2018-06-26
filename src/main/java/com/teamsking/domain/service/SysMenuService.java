@@ -32,11 +32,11 @@ public class SysMenuService {
 
     /**
      *删除系统菜单
-     * @param sysMenu
+     * @param id
      * @return
      */
-    public int remove(SysMenu sysMenu){
-        return sysMenuMapper.delete(sysMenu);
+    public int remove(Integer id){
+        return sysMenuMapper.deleteByPrimaryKey(id);
     }
 
     /**
@@ -46,6 +46,6 @@ public class SysMenuService {
      */
     public int modify(SysMenu sysMenu){
 
-        return sysMenuMapper.updateByPrimaryKey(sysMenu);
+        return sysMenuMapper.updateByPrimaryKeySelective(sysMenu);
     }
 }

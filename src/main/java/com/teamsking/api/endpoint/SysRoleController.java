@@ -54,8 +54,8 @@ public class SysRoleController extends BaseController {
             @ApiImplicitParam(name = "sysRole",value = "角色",required = true,dataType = "SysRoleDto")
     })
     @DeleteMapping("/sys_role/{id}")
-    public Result removeSysRole(@RequestBody SysRoleDto sysRole){
-        sysRoleService.remove(SysRoleDtoMapper.INSTANCE.dtoToEntity(sysRole));
+    public Result removeSysRole(@PathVariable("id") int id){
+        sysRoleService.remove(id);
         return Result.success();
     }
 
@@ -64,8 +64,11 @@ public class SysRoleController extends BaseController {
             @ApiImplicitParam(name = "sysRole",value = "角色",required = true,dataType = "SysRoleDto")
     })
     @PutMapping("/sys_role/{id}")
-    public Result modifySysRole(@RequestBody SysRoleDto sysRole){
-        sysRoleService.modify(SysRoleDtoMapper.INSTANCE.dtoToEntity(sysRole));
+    public Result modifySysRole(@RequestBody SysRoleDto sysRole,
+                                @PathVariable int id){
+        SysRole sysRoleEntity = SysRoleDtoMapper.INSTANCE.dtoToEntity(sysRole);
+        sysRoleEntity.setId(id);
+        sysRoleService.modify(sysRoleEntity);
         return Result.success();
     }
 

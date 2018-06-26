@@ -36,11 +36,11 @@ public class SysRoleService {
 
     /**
      * 删除角色
-     * @param sysRole
+     * @param id
      * @return
      */
-    public int remove(SysRole sysRole){
-        return sysRoleMapper.delete(sysRole);
+    public int remove(Integer id){
+        return sysRoleMapper.deleteByPrimaryKey(id);
     }
 
     /**
@@ -49,6 +49,6 @@ public class SysRoleService {
      * @return
      */
     public int modify(SysRole sysRole){
-        return sysRoleMapper.updateByPrimaryKey(sysRole);
+        return sysRoleMapper.updateByPrimaryKeySelective(sysRole);
     }
 }
