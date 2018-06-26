@@ -35,13 +35,13 @@ public class SysUserService {
 
     /**
      * 删除用户
-     * @param sysUser
+     * @param id
      * @return
      *
      */
-    public int remove(SysUser sysUser){
+    public int remove(Integer id){
 
-        return sysUserMapper.delete(sysUser);
+        return sysUserMapper.deleteByPrimaryKey(id);
     }
 
     /**
@@ -50,8 +50,7 @@ public class SysUserService {
      * @return
      */
     public int modify(SysUser sysUser){
-
-        return sysUserMapper.updateByPrimaryKey(sysUser);
+       return sysUserMapper.updateByPrimaryKeySelective(sysUser);
     }
 
 
