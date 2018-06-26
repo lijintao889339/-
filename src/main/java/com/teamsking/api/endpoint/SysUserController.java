@@ -3,7 +3,10 @@ package com.teamsking.api.endpoint;
 import com.github.pagehelper.PageHelper;
 import com.teamsking.api.dto.SysUserDto;
 import com.teamsking.api.dto.SysUserDtoMapper;
+import com.teamsking.api.dto.SysUserRoleDtoMapper;
 import com.teamsking.domain.entity.SysUser;
+import com.teamsking.domain.entity.SysUserRole;
+import com.teamsking.domain.repository.SysUserMapper;
 import com.teamsking.domain.service.SysUserService;
 import com.teamsking.util.Result;
 import io.swagger.annotations.Api;
@@ -17,7 +20,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@Api(tags="用户操作接口")
+@Api(tags = "用户操作接口")
 @Slf4j
 public class SysUserController extends BaseController {
 
@@ -26,17 +29,19 @@ public class SysUserController extends BaseController {
 
     /**
      * 查询用户列表
+     *
      * @param pageNo
      * @param pageSize
      * @return
      */
     @ApiOperation(value = "用户列表", notes = "可分页", produces = "application/json")
-    @ApiImplicitParams( {
+    @ApiImplicitParams({
             @ApiImplicitParam(name = "pageNo", value = "页码", required = true, example = "1"),
             @ApiImplicitParam(name = "pageSize", value = "页大小", required = true, example = "10")
     })
     @GetMapping("/sys_users_list")
     public Result sysUserList(int pageNo, int pageSize) {
+
         PageHelper.startPage(fixPage(pageNo), fixPage(pageSize));
         List<SysUser> sysUserList = sysUserService.list();
         List<SysUserDto> sysUserDtoList = SysUserDtoMapper.INSTANCE.entityListToDtoList(sysUserList);
@@ -45,47 +50,55 @@ public class SysUserController extends BaseController {
 
     /**
      * 用户添加操作
+     *
      * @param sysUser
      * @return
      */
     @ApiOperation(value = "添加系统用户", produces = "application/json")
-    @ApiImplicitParams( {
+    @ApiImplicitParams({
             @ApiImplicitParam(name = "sysUser", value = "系统用户", required = true, dataType = "SysUserDto")
     })
-    @PostMapping("/sys_users")
-    public Result addSysMenu(@RequestBody SysUserDto sysUser) {
-        sysUserService.save(SysUserDtoMapper.INSTANCE.dtoToEntity(sysUser));
+    @PostMapping("/sys_user")
+    public Result addSysUser(@RequestBody SysUserDto sysUser) {
+
+        SysUser entity = SysUserDtoMapper.INSTANCE.dtoToEntity(sysUser);
+        sysUserService.save(entity);
         return Result.success();
     }
 
     /**
      * 用户删除操作
-     * @param sysUser
+     *
+     * @param id
      * @return
      */
     @ApiOperation(value = "删除系统用户", produces = "application/json")
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "sysUser", value = "系统用户", required = true, dataType = "SysUserDto")
+            @ApiImplicitParam(name = "id", value = "用户主键", required = true, dataType = "Integer")
     })
-    @DeleteMapping("/sys_users/{id}")
-    public Result deleteSysUser(@RequestBody SysUserDto sysUser){
+    @DeleteMapping("/sys_user/{id}")
+    public Result deleteSysUser(@PathVariable("id") int id) {
 
-        sysUserService.remove(SysUserDtoMapper.INSTANCE.dtoToEntity(sysUser));
+        sysUserService.remove(id);
         return Result.success();
     }
 
     /**
      * 用户修改
+     *
      * @param sysUser
      * @return
      */
     @ApiOperation(value = "修改系统用户", produces = "application/json")
-    @ApiImplicitParams( {
+    @ApiImplicitParams({
             @ApiImplicitParam(name = "sysUser", value = "系统用户", required = true, dataType = "SysUserDto")
     })
-    @PutMapping("/sys_users/{id}")
-    public Result modifySysUser(@RequestBody SysUserDto sysUser) {
-        sysUserService.modify(SysUserDtoMapper.INSTANCE.dtoToEntity(sysUser));
+    @PutMapping("/sys_user/{id}")
+    public Result modifySysUser(@PathVariable int id, @RequestBody SysUserDto sysUser) {
+
+        SysUser entity = SysUserDtoMapper.INSTANCE.dtoToEntity(sysUser);
+        entity.setId(id);
+        sysUserService.modify(entity);
         return Result.success();
     }
 
