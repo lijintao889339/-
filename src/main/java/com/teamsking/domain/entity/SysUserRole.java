@@ -1,5 +1,6 @@
 package com.teamsking.domain.entity;
 
+import javax.persistence.Id;
 import javax.persistence.Table;
 
 @Table(name = "`sys_user_role`")
@@ -11,6 +12,7 @@ public class SysUserRole {
      *
      * @mbg.generated Tue Jun 19 14:08:57 CST 2018
      */
+    @Id
     private Integer id;
 
     /**
@@ -20,6 +22,7 @@ public class SysUserRole {
      *
      * @mbg.generated Tue Jun 19 14:08:57 CST 2018
      */
+
     private Integer userId;
 
     /**
