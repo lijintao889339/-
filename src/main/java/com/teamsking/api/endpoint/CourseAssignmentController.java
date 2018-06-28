@@ -29,7 +29,7 @@ public class CourseAssignmentController extends BaseController{
             @ApiImplicitParam(name = "pageNo", value = "页码", required = true, example = "1"),
             @ApiImplicitParam(name = "pageSize", value = "页大小", required = true, example = "10")
     })
-    @GetMapping("/course_assignments/course/{courseId}/assignment/{schoolId}")
+    @GetMapping("/course_assignments/course/{courseId}/school/{schoolId}")
     public Result courseAssignmentList(@PathVariable int courseId,
                                        @PathVariable int schoolId,
                                        int pageNo,int pageSize){
@@ -48,7 +48,7 @@ public class CourseAssignmentController extends BaseController{
     @ApiImplicitParams( {
             @ApiImplicitParam(name = "courseAssignment", value = "课程作业", required = true, dataType = "CourseAssignmentDto")
     })
-    @PostMapping("/course_assignment/course/{courseId}/assignment/{schoolId}")
+    @PostMapping("/course_assignment/course/{courseId}/school/{schoolId}")
     public Result addCourseAssignment(@PathVariable int courseId,
                                       @PathVariable int schoolId,
                                       @RequestBody CourseAssignmentDto courseAssignment){
@@ -64,7 +64,7 @@ public class CourseAssignmentController extends BaseController{
     @ApiImplicitParams( {
             @ApiImplicitParam(name = "courseAssignment", value = "课程作业", required = true, dataType = "CourseAssignmentDto")
     })
-    @DeleteMapping("/course_assignment/{id}/course/{courseId}/assignment/{schoolId}")
+    @DeleteMapping("/course_assignment/{id}/course/{courseId}/school/{schoolId}")
     public Result removeCourseAssignment(@PathVariable int id,
                                          @PathVariable int courseId,
                                          @PathVariable int schoolId,
@@ -82,7 +82,7 @@ public class CourseAssignmentController extends BaseController{
     @ApiImplicitParams( {
             @ApiImplicitParam(name = "courseAssignment", value = "课程作业", required = true, dataType = "CourseAssignmentDto")
     })
-    @PutMapping("/course_assignment/{id}/course/{courseId}/assignment/{schoolId}")
+    @PutMapping("/course_assignment/{id}/course/{courseId}/school/{schoolId}")
     public Result modifyCourseAssignment(@PathVariable int id,
                                          @PathVariable int courseId,
                                          @PathVariable int schoolId,

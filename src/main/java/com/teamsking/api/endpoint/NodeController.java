@@ -31,15 +31,17 @@ public class NodeController extends BaseController{
             @ApiImplicitParam(name = "pageNo", value = "页码", required = true, example = "1"),
             @ApiImplicitParam(name = "pageSize", value = "页大小", required = true, example = "10")
     })
-    @GetMapping("/nodes/course/{courseId}/open/{openId}/node_folder/{folderId}")
+    @GetMapping("/course/{courseId}/open/{openId}/school/{schoolId}/node_folder/{folderId}/nodes")
     public Result nodeList(@PathVariable int courseId,
                            @PathVariable int openId,
                            @PathVariable int folderId,
+                           @PathVariable int schoolId,
                            int pageNo,int pageSize){
         PageHelper.startPage(fixPage(pageNo), fixPage(pageSize));
         NodeDto node = new NodeDto();
         node.setCourseId(courseId);
         node.setOpenId(openId);
+        node.setSchoolId(schoolId);
         node.setFolderId(folderId);
         Node nodeEntity = NodeDtoMapper.INSTANCE.dtoToEntity(node);
         List<Node> nodeList = nodeService.list(nodeEntity);
@@ -53,14 +55,16 @@ public class NodeController extends BaseController{
     @ApiImplicitParams( {
             @ApiImplicitParam(name = "node", value = "课程资源", required = true, dataType = "NodeDto")
     })
-    @PostMapping("/node/course/{courseId}/open/{openId}/node_folder/{folderId}")
+    @PostMapping("/course/{courseId}/open/{openId}/school/{schoolId}/node_folder/{folderId}/node")
     public Result addNode(@PathVariable int courseId,
                           @PathVariable int openId,
                           @PathVariable int folderId,
+                          @PathVariable int schoolId,
                           @RequestBody NodeDto node){
         Node nodeEntity = NodeDtoMapper.INSTANCE.dtoToEntity(node);
         nodeEntity.setCourseId(courseId);
         nodeEntity.setOpenId(openId);
+        nodeEntity.setSchoolId(schoolId);
         nodeEntity.setFolderId(folderId);
         nodeService.save(nodeEntity);
         return Result.success();
@@ -71,10 +75,11 @@ public class NodeController extends BaseController{
     @ApiImplicitParams( {
             @ApiImplicitParam(name = "node", value = "课程资源", required = true, dataType = "NodeDto")
     })
-    @DeleteMapping("/node/{id}/course/{courseId}/open/{openId}/node_folder/{folderId}")
+    @DeleteMapping("/course/{courseId}/open/{openId}/school/{schoolId}/node_folder/{folderId}/node/{id}")
     public Result removeNode(@PathVariable int courseId,
                              @PathVariable int id,
                              @PathVariable int openId,
+                             @PathVariable int schoolId,
                              @PathVariable int folderId,
                              @RequestBody NodeDto node){
 
@@ -82,6 +87,7 @@ public class NodeController extends BaseController{
         nodeEntity.setCourseId(courseId);
         nodeEntity.setId(id);
         nodeEntity.setOpenId(openId);
+        nodeEntity.setSchoolId(schoolId);
         nodeEntity.setFolderId(folderId);
         nodeService.remove(nodeEntity);
         return Result.success();
@@ -92,16 +98,18 @@ public class NodeController extends BaseController{
     @ApiImplicitParams( {
             @ApiImplicitParam(name = "node", value = "课程资源", required = true, dataType = "NodeDto")
     })
-    @PutMapping("/node/{id}/course/{courseId}/open/{openId}/node_folder/{folderId}")
+    @PutMapping("/course/{courseId}/open/{openId}/school/{schoolId}/node_folder/{folderId}/node/{id}")
     public Result modifyNode(@PathVariable int id,
                              @PathVariable int courseId,
                              @PathVariable int openId,
+                             @PathVariable int schoolId,
                              @PathVariable int folderId,
                              @RequestBody NodeDto node){
 
         Node nodeEntity = NodeDtoMapper.INSTANCE.dtoToEntity(node);
         nodeEntity.setCourseId(courseId);
         nodeEntity.setId(id);
+        nodeEntity.setSchoolId(schoolId);
         nodeEntity.setOpenId(openId);
         nodeEntity.setFolderId(folderId);
         nodeService.modify(nodeEntity);
