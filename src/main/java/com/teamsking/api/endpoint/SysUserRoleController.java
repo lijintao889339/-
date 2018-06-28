@@ -35,15 +35,16 @@ public class SysUserRoleController extends BaseController{
             @ApiImplicitParam(name = "pageNo", value = "页码", required = true, example = "1"),
             @ApiImplicitParam(name = "pageSize", value = "页大小", required = true, example = "10")
     })
-    @GetMapping("/sys_users/{userId}/sys_role")
+    @GetMapping("/sys_user/{userId}/sys_user_roles")
     public Result sysUsersRoleList(@PathVariable("userId") int userId,
                                    int pageNo, int pageSize) {
 
         PageHelper.startPage(fixPage(pageNo), fixPage(pageSize));
-        SysUserRole entity = new SysUserRole();
-        entity.setUserId(userId);
+        SysUserRoleDto sysUserRole = new SysUserRoleDto();
+        sysUserRole.setUserId(userId);
+        SysUserRole sysUserRoleEntity = SysUserRoleDtoMapper.INSTANCE.dtoToEntity(sysUserRole);
+        List<SysUserRole> sysUserRoleList = sysUserRoleService.list(sysUserRoleEntity);
 
-        List<SysUserRole> sysUserRoleList = sysUserRoleService.list(entity);
         List<SysUserRoleDto> sysUserRoleDtoList = SysUserRoleDtoMapper.INSTANCE.entityListToDtoList(sysUserRoleList);
         return Result.success().addData("pager", warpPage(sysUserRoleDtoList));
     }
@@ -57,14 +58,14 @@ public class SysUserRoleController extends BaseController{
     @ApiImplicitParams( {
             @ApiImplicitParam(name = "sysRoleUser", value = "系统用户", required = true, dataType = "SysUserRoleDto")
     })
-    @PostMapping("/sys_user/{userId}/sys_role")
+    @PostMapping("/sys_user/{userId}/sys_user_role")
     public Result addSysUserRole(@PathVariable("userId") int userId,
                                  @RequestBody SysUserRoleDto sysUserRole
                                   ) {
 
-        SysUserRole entity = SysUserRoleDtoMapper.INSTANCE.dtoToEntity(sysUserRole);
-        entity.setUserId(userId);
-        sysUserRoleService.save(entity);
+        SysUserRole sysUserRoleEntity = SysUserRoleDtoMapper.INSTANCE.dtoToEntity(sysUserRole);
+        sysUserRoleEntity.setUserId(userId);
+        sysUserRoleService.save(sysUserRoleEntity);
         return Result.success();
     }
 
@@ -77,15 +78,15 @@ public class SysUserRoleController extends BaseController{
     @ApiImplicitParams({
             @ApiImplicitParam(name = "id", value = "用户主键", required = true, dataType = "Integer")
     })
-    @DeleteMapping("/sys_user/{id}/sys_role/{userId}")
-    public Result deleteSysUserRole(@PathVariable("id") int id,
+    @DeleteMapping("/sys_user/{userId}/sys_user_role/{id}")
+    public Result removeSysUserRole(@PathVariable("id") int id,
                                     @PathVariable("userId") int userId,
                                     @RequestBody SysUserRoleDto sysUserRole){
 
-        SysUserRole entity = SysUserRoleDtoMapper.INSTANCE.dtoToEntity(sysUserRole);
-        entity.setId(id);
-        entity.setUserId(userId);
-        sysUserRoleService.remove(entity);
+        SysUserRole sysUserRoleEntity = SysUserRoleDtoMapper.INSTANCE.dtoToEntity(sysUserRole);
+        sysUserRoleEntity.setId(id);
+        sysUserRoleEntity.setUserId(userId);
+        sysUserRoleService.remove(sysUserRoleEntity);
         return Result.success();
     }
 
@@ -98,15 +99,15 @@ public class SysUserRoleController extends BaseController{
     @ApiImplicitParams( {
             @ApiImplicitParam(name = "sysUserRole", value = "系统用户", required = true, dataType = "SysUserRoleDto")
     })
-    @PutMapping("/sys_user/{id}/sys_role/{userId}")
+    @PutMapping("/sys_user/{userId}/sys_user_role/{id}")
     public Result modifySysUserRole(@PathVariable("id") int id,
                                     @PathVariable("userId") int userId,
                                     @RequestBody SysUserRoleDto sysUserRole) {
 
-        SysUserRole entity = SysUserRoleDtoMapper.INSTANCE.dtoToEntity(sysUserRole);
-        entity.setId(id);
-        entity.setUserId(userId);
-        sysUserRoleService.modify(entity);
+        SysUserRole sysUserRoleEntity = SysUserRoleDtoMapper.INSTANCE.dtoToEntity(sysUserRole);
+        sysUserRoleEntity.setId(id);
+        sysUserRoleEntity.setUserId(userId);
+        sysUserRoleService.modify(sysUserRoleEntity);
         return Result.success();
     }
 

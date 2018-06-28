@@ -39,7 +39,7 @@ public class SysUserController extends BaseController {
             @ApiImplicitParam(name = "pageNo", value = "页码", required = true, example = "1"),
             @ApiImplicitParam(name = "pageSize", value = "页大小", required = true, example = "10")
     })
-    @GetMapping("/sys_users_list")
+    @GetMapping("/sys_users")
     public Result sysUserList(int pageNo, int pageSize) {
 
         PageHelper.startPage(fixPage(pageNo), fixPage(pageSize));
@@ -61,8 +61,8 @@ public class SysUserController extends BaseController {
     @PostMapping("/sys_user")
     public Result addSysUser(@RequestBody SysUserDto sysUser) {
 
-        SysUser entity = SysUserDtoMapper.INSTANCE.dtoToEntity(sysUser);
-        sysUserService.save(entity);
+        SysUser sysUserEntity = SysUserDtoMapper.INSTANCE.dtoToEntity(sysUser);
+        sysUserService.save(sysUserEntity);
         return Result.success();
     }
 
@@ -84,7 +84,7 @@ public class SysUserController extends BaseController {
     }
 
     /**
-     * 用户修改
+     * 用户修改操作
      *
      * @param sysUser
      * @return
@@ -94,11 +94,12 @@ public class SysUserController extends BaseController {
             @ApiImplicitParam(name = "sysUser", value = "系统用户", required = true, dataType = "SysUserDto")
     })
     @PutMapping("/sys_user/{id}")
-    public Result modifySysUser(@PathVariable int id, @RequestBody SysUserDto sysUser) {
+    public Result modifySysUser(@PathVariable int id,
+                                @RequestBody SysUserDto sysUser) {
 
-        SysUser entity = SysUserDtoMapper.INSTANCE.dtoToEntity(sysUser);
-        entity.setId(id);
-        sysUserService.modify(entity);
+        SysUser sysUserEntity = SysUserDtoMapper.INSTANCE.dtoToEntity(sysUser);
+        sysUserEntity.setId(id);
+        sysUserService.modify(sysUserEntity);
         return Result.success();
     }
 
