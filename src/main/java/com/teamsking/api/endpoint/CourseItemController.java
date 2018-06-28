@@ -42,7 +42,7 @@ public class CourseItemController extends BaseController{
             @ApiImplicitParam(name = "pageNo", value = "页码", required = true, example = "1"),
             @ApiImplicitParam(name = "pageSize", value = "页大小", required = true, example = "10")
     })
-    @GetMapping("/course_items/course/{courseId}/chapter/{chapterId}/section/{sectionId}")
+    @GetMapping("/course/{courseId}/chapter/{chapterId}/section/{sectionId}/course_items")
     public Result courseItemList(@PathVariable("courseId") int courseId,
                                  @PathVariable("chapterId") int chapterId,
                                  @PathVariable("sectionId") int sectionId,
@@ -72,7 +72,7 @@ public class CourseItemController extends BaseController{
     @ApiImplicitParams({
             @ApiImplicitParam(name = "courseItem", value = "课程的章节项", required = true, dataType = "CourseItemDto")
     })
-    @PostMapping("/course_item/course/{courseId}/chapter/{chapterId}/section/{sectionId}")
+    @PostMapping("/course/{courseId}/chapter/{chapterId}/section/{sectionId}/course_item")
     public Result addCourseItem(@PathVariable("courseId") int courseId,
                                    @PathVariable("chapterId") int chapterId,
                                    @PathVariable("sectionId") int sectionId,
@@ -99,12 +99,12 @@ public class CourseItemController extends BaseController{
     @ApiImplicitParams({
             @ApiImplicitParam(name = "courseItem", value = "课程的章节项", required = true, dataType = "CourseItemDto")
     })
-    @DeleteMapping("/course_item/{id}/course/{courseId}/chapter/{chapterId}/section/{sectionId}")
+    @DeleteMapping("/course/{courseId}/chapter/{chapterId}/section/{sectionId}/course_item/{id}")
     public Result removeCourseItem(@PathVariable("id") int id,
-                                      @PathVariable("courseId") int courseId,
-                                      @PathVariable("chapterId") int chapterId,
-                                      @PathVariable("sectionId") int sectionId,
-                                      @RequestBody CourseItemDto courseItemDto){
+                                   @PathVariable("courseId") int courseId,
+                                   @PathVariable("chapterId") int chapterId,
+                                   @PathVariable("sectionId") int sectionId,
+                                   @RequestBody CourseItemDto courseItemDto){
 
         CourseItem courseItemEntity = CourseItemDtoMapper.INSTANCE.dtoToEntity(courseItemDto);
         courseItemEntity.setId(id);
@@ -128,7 +128,7 @@ public class CourseItemController extends BaseController{
     @ApiImplicitParams({
             @ApiImplicitParam(name = "courseItem", value = "课程的章节项", required = true, dataType = "CourseItemDto")
     })
-    @PutMapping("/course_item/{id}/course/{courseId}/chapter/{chapterId}/section/{sectionId}")
+    @PutMapping("/course/{courseId}/chapter/{chapterId}/section/{sectionId}/course_item/{id}")
     public Result modifyCourseItem(@PathVariable("id") int id,
                                    @PathVariable("courseId") int courseId,
                                    @PathVariable("chapterId") int chapterId,

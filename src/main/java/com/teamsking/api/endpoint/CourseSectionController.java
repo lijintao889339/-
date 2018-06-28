@@ -40,7 +40,7 @@ public class CourseSectionController extends BaseController{
             @ApiImplicitParam(name = "pageNo", value = "页码", required = true, example = "1"),
             @ApiImplicitParam(name = "pageSize", value = "页大小", required = true, example = "10")
     })
-    @GetMapping("/course_sections/course/{courseId}/chapter/{chapterId}")
+    @GetMapping("/course/{courseId}/chapter/{chapterId}/course_sections")
     public Result courseSectionList(@PathVariable("courseId") int courseId,
                                     @PathVariable("chapterId") int chapterId,
                                     int pageNo, int pageSize){
@@ -67,7 +67,7 @@ public class CourseSectionController extends BaseController{
     @ApiImplicitParams({
             @ApiImplicitParam(name = "courseSection", value = "课程的节", required = true, dataType = "CourseSectionDto")
     })
-    @PostMapping("/course_section/course/{courseId}/chapter/{chapterId}")
+    @PostMapping("/course/{courseId}/chapter/{chapterId}/course_section")
     public Result addCourseSection(@PathVariable("courseId") int courseId,
                                    @PathVariable("chapterId") int chapterId,
                                    @RequestBody CourseSectionDto courseSectionDto){
@@ -91,7 +91,7 @@ public class CourseSectionController extends BaseController{
     @ApiImplicitParams({
             @ApiImplicitParam(name = "courseSection", value = "课程中的节", required = true, dataType = "CourseSectionDto")
     })
-    @DeleteMapping("/course_section/{id}/course/{courseId}/chapter/{chapterId}")
+    @DeleteMapping("/course/{courseId}/chapter/{chapterId}/course_section/{id}")
     public Result removeCourseSection(@PathVariable("id") int id,
                                       @PathVariable("courseId") int courseId,
                                       @PathVariable("chapterId") int chapterId,
@@ -117,7 +117,7 @@ public class CourseSectionController extends BaseController{
     @ApiImplicitParams({
             @ApiImplicitParam(name = "courseSection", value = "课程中的节", required = true, dataType = "CourseSectionDto")
     })
-    @PutMapping("/course_section/{id}/course/{courseId}/chapter/{chapterId}")
+    @PutMapping("/course/{courseId}/chapter/{chapterId}/course_section/{id}")
     public Result modify(@PathVariable("id") int id,
                          @PathVariable("courseId") int courseId,
                          @PathVariable("chapterId") int chapterId,
