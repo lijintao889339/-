@@ -16,7 +16,7 @@ public class NodeService {
     NodeMapper nodeMapper;
 
     /**
-     * 获取课程资源列表
+     * 获取资源管理列表
      * @param node
      * @return
      */
@@ -25,7 +25,7 @@ public class NodeService {
     }
 
     /**
-     * 添加课程资源
+     * 添加资源管理
      * @param node
      * @return
      */
@@ -34,7 +34,7 @@ public class NodeService {
     }
 
     /**
-     * 删除课程资源
+     * 删除资源管理
      * @param node
      * @return
      */
@@ -43,7 +43,7 @@ public class NodeService {
     }
 
     /**
-     * 修改课程资源
+     * 修改资源管理
      * @param node
      * @return
      */

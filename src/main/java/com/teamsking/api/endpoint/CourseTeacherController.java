@@ -33,7 +33,7 @@ public class CourseTeacherController extends BaseController{
             @ApiImplicitParam(name = "pageNo", value = "页码", required = true, example = "1"),
             @ApiImplicitParam(name = "pageSize", value = "页大小", required = true, example = "10")
     })
-    @GetMapping("/course/{courseId}/course_teacher/sys_user/{userId}")
+    @GetMapping("/sys_user/{userId}/course_teachers/course/{courseId}")
     public Result courseTeacherList(@PathVariable int courseId,
                                     @PathVariable int userId,
                                     int pageNo,int pageSize){
@@ -52,7 +52,7 @@ public class CourseTeacherController extends BaseController{
     @ApiImplicitParams( {
             @ApiImplicitParam(name = "courseTeacher", value = "课程教师", required = true, dataType = "CourseTeacherDto")
     })
-    @PostMapping("/course/{courseId}/course_teacher/sys_user/{userId}")
+    @PostMapping("/sys_user/{userId}/course_teacher/course/{courseId}")
     public Result addCourseTeacher(@PathVariable int courseId,
                                    @PathVariable int userId,
                                    @RequestBody CourseTeacherDto courseTeacher){
@@ -68,7 +68,7 @@ public class CourseTeacherController extends BaseController{
     @ApiImplicitParams( {
             @ApiImplicitParam(name = "courseTeacher", value = "课程教师", required = true, dataType = "CourseTeacherDto")
     })
-    @DeleteMapping("/course/{courseId}/course_teacher/{id}/sys_user/{userId}")
+    @DeleteMapping("/sys_user/{userId}/course_teacher/{id}/course/{courseId}")
     public Result removeCourseTeacher(@PathVariable int id,
                                       @PathVariable int courseId,
                                       @PathVariable int userId,
@@ -86,7 +86,7 @@ public class CourseTeacherController extends BaseController{
     @ApiImplicitParams( {
             @ApiImplicitParam(name = "courseTeacher", value = "课程教师", required = true, dataType = "CourseTeacherDto")
     })
-    @PutMapping("/course/{courseId}/course_teacher/{id}/sys_user/{userId}")
+    @PutMapping("/sys_user/{userId}/course_teacher/{id}/course/{courseId}")
     public Result modfiyCourseTeacher(@PathVariable int id,
                                       @PathVariable int courseId,
                                       @PathVariable int userId,

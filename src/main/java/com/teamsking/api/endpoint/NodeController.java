@@ -19,19 +19,19 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@Api(tags = "课程资源操作接口")
+@Api(tags = "资源管理操作接口")
 @Slf4j
 public class NodeController extends BaseController{
 
     @Autowired
     NodeService nodeService;
 
-    @ApiOperation(value = "课程资源列表", notes = "可分页", produces = "application/json")
+    @ApiOperation(value = "资源管理列表", notes = "可分页", produces = "application/json")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "pageNo", value = "页码", required = true, example = "1"),
             @ApiImplicitParam(name = "pageSize", value = "页大小", required = true, example = "10")
     })
-    @GetMapping("/course/{courseId}/open/{openId}/school/{schoolId}/node_folder/{folderId}/nodes")
+    @GetMapping("/nodes/node_folder/{folderId}/school/{schoolId}/open/{openId}/course/{courseId}")
     public Result nodeList(@PathVariable int courseId,
                            @PathVariable int openId,
                            @PathVariable int folderId,
@@ -51,11 +51,11 @@ public class NodeController extends BaseController{
 
     }
 
-    @ApiOperation(value = "添加课程资源", consumes= "application/json")
+    @ApiOperation(value = "添加资源管理", consumes= "application/json")
     @ApiImplicitParams( {
-            @ApiImplicitParam(name = "node", value = "课程资源", required = true, dataType = "NodeDto")
+            @ApiImplicitParam(name = "node", value = "资源管理", required = true, dataType = "NodeDto")
     })
-    @PostMapping("/course/{courseId}/open/{openId}/school/{schoolId}/node_folder/{folderId}/node")
+    @PostMapping("/node/node_folder/{folderId}/school/{schoolId}/open/{openId}/course/{courseId}")
     public Result addNode(@PathVariable int courseId,
                           @PathVariable int openId,
                           @PathVariable int folderId,
@@ -71,11 +71,11 @@ public class NodeController extends BaseController{
 
     }
 
-    @ApiOperation(value = "删除课程资源", consumes= "application/json")
+    @ApiOperation(value = "删除资源管理", consumes= "application/json")
     @ApiImplicitParams( {
-            @ApiImplicitParam(name = "node", value = "课程资源", required = true, dataType = "NodeDto")
+            @ApiImplicitParam(name = "node", value = "资源管理", required = true, dataType = "NodeDto")
     })
-    @DeleteMapping("/course/{courseId}/open/{openId}/school/{schoolId}/node_folder/{folderId}/node/{id}")
+    @DeleteMapping("/node/{id}/node_folder/{folderId}/school/{schoolId}/open/{openId}/course/{courseId}")
     public Result removeNode(@PathVariable int courseId,
                              @PathVariable int id,
                              @PathVariable int openId,
@@ -94,11 +94,11 @@ public class NodeController extends BaseController{
     }
 
 
-    @ApiOperation(value = "修改课程资源", consumes= "application/json")
+    @ApiOperation(value = "修改资源管理", consumes= "application/json")
     @ApiImplicitParams( {
-            @ApiImplicitParam(name = "node", value = "课程资源", required = true, dataType = "NodeDto")
+            @ApiImplicitParam(name = "node", value = "资源管理", required = true, dataType = "NodeDto")
     })
-    @PutMapping("/course/{courseId}/open/{openId}/school/{schoolId}/node_folder/{folderId}/node/{id}")
+    @PutMapping("/node/{id}/node_folder/{folderId}/school/{schoolId}/open/{openId}/course/{courseId}")
     public Result modifyNode(@PathVariable int id,
                              @PathVariable int courseId,
                              @PathVariable int openId,

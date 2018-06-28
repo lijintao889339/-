@@ -40,7 +40,7 @@ public class SysRoleMenuController extends BaseController{
             @ApiImplicitParam(name = "pageNo", value = "页码", required = true, example = "1"),
             @ApiImplicitParam(name = "pageSize", value = "页大小", required = true, example = "10")
     })
-    @GetMapping("/sys_roles/{roleId}/sys_menu")
+    @GetMapping("/sys_role_menus/sys_role/{roleId}")
     public Result sysRoleMenuList(@PathVariable int roleId,int pageNo, int pageSize) {
         PageHelper.startPage(fixPage(pageNo), fixPage(pageSize));
         SysRoleMenuDto sysRoleMenu = new SysRoleMenuDto();
@@ -56,7 +56,7 @@ public class SysRoleMenuController extends BaseController{
     @ApiImplicitParams( {
             @ApiImplicitParam(name = "sysRoleMenu", value = "角色权限", required = true, dataType = "SysRoleMenuDto")
     })
-    @PostMapping("/sys_role/{roleId}/sys_menu")
+    @PostMapping("/sys_role_menu/sys_role/{roleId}")
     public Result addSysRoleMenu(@PathVariable int roleId,@RequestBody SysRoleMenuDto sysRoleMenu) {
         SysRoleMenu sysRoleMenuEntity = SysRoleMenuDtoMapper.INSTANCE.dtoToEntity(sysRoleMenu);
         sysRoleMenuEntity.setRoleId(roleId);
@@ -68,7 +68,7 @@ public class SysRoleMenuController extends BaseController{
     @ApiImplicitParams( {
             @ApiImplicitParam(name = "id", value = "角色权限", required = true, dataType = "Integer")
     })
-    @DeleteMapping("/sys_role/{id}/sys_menu/{roleId}")
+    @DeleteMapping("/sys_role_menu/{id}/sys_role/{roleId}")
     public Result removeSysRoleMenu(@PathVariable("id") Integer id,
                                     @PathVariable("roleId") Integer roleId,
                                     @RequestBody SysRoleMenuDto sysRoleMenu){
@@ -84,7 +84,7 @@ public class SysRoleMenuController extends BaseController{
     @ApiImplicitParams( {
             @ApiImplicitParam(name = "sysRoleMenu", value = "角色权限", required = true, dataType = "SysRoleMenuDto")
     })
-    @PutMapping("/sys_role/{id}/sys_menu/{roleId}")
+    @PutMapping("/sys_role_menu/{id}/sys_role/{roleId}")
     public Result modifySysRoleMenu(@PathVariable int id,
                                     @PathVariable int roleId,
                                     @RequestBody SysRoleMenuDto sysRoleMenu){
