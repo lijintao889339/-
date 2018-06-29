@@ -52,7 +52,7 @@ public class SysUserController extends BaseController {
      * @param sysUser
      * @return
      */
-    @ApiOperation(value = "添加系统用户", produces = "application/json")
+    @ApiOperation(value = "添加系统用户", consumes = "application/json")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "sysUser", value = "系统用户", required = true, dataType = "SysUserDto")
     })
@@ -70,7 +70,7 @@ public class SysUserController extends BaseController {
      * @param id
      * @return
      */
-    @ApiOperation(value = "删除系统用户", produces = "application/json")
+    @ApiOperation(value = "删除系统用户", consumes = "application/json")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "id", value = "用户主键", required = true, dataType = "Integer")
     })
@@ -87,7 +87,7 @@ public class SysUserController extends BaseController {
      * @param sysUser
      * @return
      */
-    @ApiOperation(value = "修改系统用户", produces = "application/json")
+    @ApiOperation(value = "修改系统用户", consumes = "application/json")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "sysUser", value = "系统用户", required = true, dataType = "SysUserDto")
     })
