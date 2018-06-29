@@ -1,4 +1,4 @@
-package com.teamsking.domain.entity.Category;
+package com.teamsking.domain.entity.category;
 
 import java.util.Date;
 import javax.persistence.*;
