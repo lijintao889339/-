@@ -45,7 +45,26 @@ deploy-staging:
         --label traefik.port=8080 --label traefik.domain=windnet.cn
         --network windnet
         registry.gitlab.com/windnet.cn/teamsking_backend:$CI_COMMIT_REF_NAME
-#  when: manual
+  when: manual
+  environment:
+    name: staging
+    url: api-staging-$CI_COMMIT_REF_NAME.windnet.cn
+  only:
+    - staging
+
+rolling-update-staging:
+  image: docker:latest
+  services:
+      - docker:dind
+  variables:
+    DOCKER_HOST: tcp://docker.windnet.cn:2376
+    DOCKER_TLS_VERIFY: 1
+  stage: deploy
+  script:
+    - docker login -u $CI_USER -p $CI_USER_PWD registry.gitlab.com
+    - docker images
+    - docker service update --image registry.gitlab.com/windnet.cn/teamsking_backend:$CI_COMMIT_REF_NAME
+  when: manual
   environment:
     name: staging
     url: api-staging-$CI_COMMIT_REF_NAME.windnet.cn
