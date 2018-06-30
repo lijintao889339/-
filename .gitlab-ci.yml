@@ -47,8 +47,8 @@ deploy-service:
         registry.gitlab.com/windnet.cn/teamsking_backend:$CI_COMMIT_REF_NAME
   when: manual
   environment:
-    name: staging
-    url: api-staging-$CI_COMMIT_REF_NAME.windnet.cn
+    name: $CI_COMMIT_REF_NAME
+    url: api-teamsking-$CI_COMMIT_REF_NAME.windnet.cn
 
 rolling-update:
   image: docker:latest
@@ -66,5 +66,5 @@ rolling-update:
         api-teamsking-$CI_COMMIT_REF_NAME
   when: manual
   environment:
-    name: staging
-    url: api-staging-$CI_COMMIT_REF_NAME.windnet.cn
+    name: $CI_COMMIT_REF_NAME
+    url: api-teamsking-$CI_COMMIT_REF_NAME.windnet.cn
