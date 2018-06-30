@@ -28,7 +28,7 @@ docker-build:
   - docker login -u $CI_USER -p $CI_USER_PWD registry.gitlab.com
   - docker push registry.gitlab.com/windnet.cn/teamsking_backend:$CI_COMMIT_REF_NAME
 
-deploy-staging:
+deploy-service:
   image: docker:latest
   services:
       - docker:dind
@@ -49,10 +49,8 @@ deploy-staging:
   environment:
     name: staging
     url: api-staging-$CI_COMMIT_REF_NAME.windnet.cn
-  only:
-    - staging
 
-rolling-update-staging:
+rolling-update:
   image: docker:latest
   services:
       - docker:dind
@@ -70,5 +68,3 @@ rolling-update-staging:
   environment:
     name: staging
     url: api-staging-$CI_COMMIT_REF_NAME.windnet.cn
-  only:
-    - staging
