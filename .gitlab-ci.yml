@@ -28,7 +28,7 @@ docker-build:
   - docker login -u $CI_USER -p $CI_USER_PWD registry.gitlab.com
   - docker push registry.gitlab.com/windnet.cn/teamsking_backend:$CI_COMMIT_REF_NAME
 
-create-service:
+deploy-service:
   image: docker:latest
   services:
       - docker:dind
