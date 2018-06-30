@@ -39,10 +39,10 @@ create-service:
   script:
     - cd docker
     - docker login -u $CI_USER -p $CI_USER_PWD registry.gitlab.com
-    docker service create \
-        --name api-staging-$CI_COMMIT_REF_NAME  \
-        --label traefik.port=8080 --label traefik.domain=windnet.cn \
-        --network windnet \
+    docker service create
+        --name api-staging-$CI_COMMIT_REF_NAME
+        --label traefik.port=8080 --label traefik.domain=windnet.cn
+        --network windnet
         registry.gitlab.com/windnet.cn/teamsking_backend:$CI_COMMIT_REF_NAMEemilevauge/whoami
 #  when: manual
   environment:
