@@ -44,7 +44,7 @@ create-service:
         --label traefik.port=8080 --label traefik.domain=windnet.cn
         --network windnet
         registry.gitlab.com/windnet.cn/teamsking_backend:$CI_COMMIT_REF_NAME
-#  when: manual
+  when: manual
   environment:
     name: staging
   only:
