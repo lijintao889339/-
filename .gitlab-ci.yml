@@ -39,7 +39,6 @@ deploy-staging:
   script:
     - docker login -u $CI_USER -p $CI_USER_PWD registry.gitlab.com
     - docker images
-    - docker pull registry.gitlab.com/windnet.cn/teamsking_backend:$CI_COMMIT_REF_NAME
     - docker service create
         --with-registry-auth
         --name api-staging-$CI_COMMIT_REF_NAME
