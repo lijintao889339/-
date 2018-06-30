@@ -38,8 +38,8 @@ create-service:
   stage: deploy
   script:
     - docker login -u $CI_USER -p $CI_USER_PWD registry.gitlab.com
-    - docker pull registry.gitlab.com/windnet.cn/teamsking_backend:$CI_COMMIT_REF_NAME
     - docker images
+    - docker pull registry.gitlab.com/windnet.cn/teamsking_backend:$CI_COMMIT_REF_NAM
     - docker service create --name api-staging-$CI_COMMIT_REF_NAME
         --label traefik.port=8080 --label traefik.domain=windnet.cn
         --network windnet
@@ -47,5 +47,6 @@ create-service:
   when: manual
   environment:
     name: staging
+    url: api-staging-$CI_COMMIT_REF_NAME.windnet.cn
   only:
     - staging
