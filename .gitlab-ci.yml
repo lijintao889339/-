@@ -28,7 +28,7 @@ docker-build:
   - docker login -u $CI_USER -p $CI_USER_PWD registry.gitlab.com
   - docker push registry.gitlab.com/windnet.cn/teamsking_backend:$CI_COMMIT_REF_NAME
 
-create-service-staging:
+create-service:
   image: docker:latest
   services:
       - docker:dind
@@ -39,7 +39,11 @@ create-service-staging:
   script:
     - cd docker
     - docker login -u $CI_USER -p $CI_USER_PWD registry.gitlab.com
-    - docker stack deploy --compose-file=docker-compose-staging.yml api-staging-teamsking
+    docker service create \
+        --name api-staging-$CI_COMMIT_REF_NAME  \
+        --label traefik.port=8080 --label traefik.domain=windnet.cn \
+        --network windnet \
+        registry.gitlab.com/windnet.cn/teamsking_backend:$CI_COMMIT_REF_NAMEemilevauge/whoami
 #  when: manual
   environment:
     name: staging

@@ -8,12 +8,11 @@ services:
         constraints:
           - node.role == manager
       labels:
-        - traefik.port: 8080
-        - traefik.domain: windnet.cn
+        - "traefik.port=8080"
+        - "traefik.domain=windnet.cn"
   networks:
     - windnet
-
-
-
-
-
+networks:
+  windnet:
+    driver: overlay
+    attachable: true
