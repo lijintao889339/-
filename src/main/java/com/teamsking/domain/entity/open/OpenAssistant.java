@@ -12,6 +12,7 @@ public class OpenAssistant {
      *
      * @mbg.generated Tue Jun 26 17:08:40 CST 2018
      */
+    @Id
     private Integer id;
 
     /**
@@ -138,6 +139,7 @@ public class OpenAssistant {
      *
      * @mbg.generated Tue Jun 26 17:08:40 CST 2018
      */
+    @Column(name = "`column`")
     private Integer column;
 
     /**
@@ -183,6 +185,7 @@ public class OpenAssistant {
      *
      * @mbg.generated Tue Jun 26 17:08:40 CST 2018
      */
+    @Column(name = "`group`")
     private Integer group;
 
     /**

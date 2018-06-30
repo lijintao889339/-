@@ -34,7 +34,7 @@ public class NodeFolderController extends BaseController {
             @ApiImplicitParam(name = "pageNo", value = "页码", required = true, example = "1"),
             @ApiImplicitParam(name = "pageSize", value = "页大小", required = true, example = "10")
     })
-    @GetMapping("/parent/{parentId}/node_folders/open/{openId}/course/{courseId}")
+    @GetMapping("/open/{openId}/course/{courseId}/node_folders/parent/{parentId}")
     public Result nodeFolderList(@PathVariable int courseId,
                                  @PathVariable int openId,
                                  @PathVariable int parentId,
@@ -56,7 +56,7 @@ public class NodeFolderController extends BaseController {
     @ApiImplicitParams( {
             @ApiImplicitParam(name = "nodeFolder", value = "资源目录管理", required = true, dataType = "NodeFolderDto")
     })
-    @PostMapping("/parent/{parentId}/node_folder/open/{openId}/course/{courseId}")
+    @PostMapping("/open/{openId}/course/{courseId}/node_folder/parent/{parentId}")
     public Result addNodeFolder(@PathVariable int courseId,
                                 @PathVariable int openId,
                                 @PathVariable int parentId,
@@ -74,7 +74,7 @@ public class NodeFolderController extends BaseController {
     @ApiImplicitParams( {
             @ApiImplicitParam(name = "nodeFolder", value = "资源目录管理", required = true, dataType = "NodeFolderDto")
     })
-    @DeleteMapping("/parent/{parentId}/node_folder/{id}/open/{openId}/course/{courseId}")
+    @DeleteMapping("/open/{openId}/course/{courseId}/node_folder/{id}/parent/{parentId}")
     public Result removeNodeFolder(@PathVariable int courseId,
                                    @PathVariable int id,
                                    @PathVariable int openId,
@@ -96,7 +96,7 @@ public class NodeFolderController extends BaseController {
     @ApiImplicitParams( {
             @ApiImplicitParam(name = "nodeFolder", value = "资源目录管理", required = true, dataType = "NodeFolderDto")
     })
-    @PutMapping("/parent/{parentId}/node_folder/{id}/open/{openId}/course/{courseId}")
+    @PutMapping("/open/{openId}/course/{courseId}/node_folder/{id}/parent/{parentId}")
     public Result modifyNodeFolder(@PathVariable int courseId,
                                    @PathVariable int openId,
                                    @PathVariable int id,
