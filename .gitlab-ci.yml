@@ -63,7 +63,9 @@ rolling-update-staging:
   script:
     - docker login -u $CI_USER -p $CI_USER_PWD registry.gitlab.com
     - docker images
-    - docker service update --with-registry-auth --image registry.gitlab.com/windnet.cn/teamsking_backend:$CI_COMMIT_REF_NAME
+    - docker service update --with-registry-auth
+        --image registry.gitlab.com/windnet.cn/teamsking_backend:$CI_COMMIT_REF_NAME
+        api-teamsking-$CI_COMMIT_REF_NAME
   when: manual
   environment:
     name: staging
