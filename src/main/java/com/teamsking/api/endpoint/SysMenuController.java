@@ -34,7 +34,7 @@ public class SysMenuController extends BaseController {
         @ApiImplicitParam(name = "pageNo", value = "页码", required = true, example = "1"),
         @ApiImplicitParam(name = "pageSize", value = "页大小", required = true, example = "10")
     })
-    @GetMapping("/sys_mesysMenuListnus")
+    @GetMapping("/sys_menus")
     public Result sysMenuList(int pageNo, int pageSize) {
         PageHelper.startPage(fixPage(pageNo), fixPage(pageSize));
         List<SysMenu> sysMenuList = sysMenuService.list();
