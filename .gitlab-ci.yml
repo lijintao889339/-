@@ -28,7 +28,7 @@ docker-build:
   - docker login -u $CI_USER -p $CI_USER_PWD registry.gitlab.com
   - docker push registry.gitlab.com/windnet.cn/teamsking_backend:$CI_COMMIT_REF_NAME
 
-deploy-staging:
+create-service-staging:
   image: docker:latest
   services:
       - docker:dind
@@ -37,34 +37,11 @@ deploy-staging:
     DOCKER_TLS_VERIFY: 1
   stage: deploy
   script:
-    - docker ps
+    - cd docker
+    - docker login -u $CI_USER -p $CI_USER_PWD registry.gitlab.com
+    - docker stack deploy --compose-file=docker-compose-staging.yml
 #  when: manual
   environment:
     name: staging
   only:
     - staging
-
-deploy-dev:
-  image: docker:latest
-  services:
-      - docker:dind
-  stage: deploy
-  script: echo done
-  when: manual
-  environment:
-    name: dev
-  only:
-    - dev
-
-deploy-qa:
-  image: docker:latest
-  services:
-      - docker:dind
-  stage: deploy
-  script: echo done
-  when: manual
-  environment:
-    name: qa
-  only:
-    - qa
-

@@ -1,0 +1,19 @@
+version: '3'
+services:
+  api-staging-teamsking:
+    image: registry.gitlab.com/windnet.cn/teamsking_backend:staging
+    deploy:
+      mode: replicated
+      placement:
+        constraints:
+          - node.role == manager
+      labels:
+        - traefik.port: 8080
+        - traefik.domain: windnet.cn
+  networks:
+    - windnet
+
+
+
+
+

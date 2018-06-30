@@ -1,0 +1,19 @@
+version: '3'
+services:
+  api-dev-teamsking:
+    image: registry.gitlab.com/windnet.cn/teamsking_backend:dev
+    deploy:
+      mode: replicated
+      placement:
+        constraints:
+          - node.role == manager
+      labels:
+        - traefik.port: 8080
+        - traefik.domain: windnet.cn
+  networks:
+    - windnet
+
+
+
+
+
