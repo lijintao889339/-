@@ -39,7 +39,7 @@ create-service-staging:
   script:
     - cd docker
     - docker login -u $CI_USER -p $CI_USER_PWD registry.gitlab.com
-    - docker stack deploy --compose-file=docker-compose-staging.yml
+    - docker stack deploy --compose-file=docker-compose-staging.yml api-staging-teamsking
 #  when: manual
   environment:
     name: staging
