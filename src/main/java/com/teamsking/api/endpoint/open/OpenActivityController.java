@@ -33,15 +33,12 @@ public class OpenActivityController extends BaseController {
             @ApiImplicitParam(name = "pageNo", value = "页码", required = true, example = "1"),
             @ApiImplicitParam(name = "pageSize", value = "页大小", required = true, example = "10")
     })
-    @GetMapping("/open/{openId}/open_activities")
-    public Result openActivityList(@PathVariable int openId,
-                                   int pageNo,int pageSize){
+    @GetMapping("/open_activities")
+    public Result openActivityList(int pageNo,int pageSize){
         PageHelper.startPage(fixPage(pageNo),fixPage(pageSize));
-        OpenActivityDto openActivity = new OpenActivityDto();
-        openActivity.setOpenId(openId);
 
-        OpenActivity openActivityEntity = OpenActivityDtoMapper.INSTANCE.dtoToEntity(openActivity);
-        List<OpenActivity> openActivityList = openActivityService.list(openActivityEntity);
+
+        List<OpenActivity> openActivityList = openActivityService.list();
         List<OpenActivityDto> openActivityDtoList = OpenActivityDtoMapper.INSTANCE.entityListToDtoList(openActivityList);
 
         return Result.success().addData("pager",warpPage(openActivityDtoList));
@@ -53,12 +50,10 @@ public class OpenActivityController extends BaseController {
     @ApiImplicitParams( {
             @ApiImplicitParam(name = "openActivity", value = "班次活动管理", required = true, dataType = "OpenActivityDto")
     })
-    @PostMapping("/open/{openId}/open_activity")
-    public Result addOpenActivity(@PathVariable int openId,
-                                  @RequestBody OpenActivityDto openActivity){
+    @PostMapping("/open_activity")
+    public Result addOpenActivity(@RequestBody OpenActivityDto openActivity){
 
         OpenActivity openActivityEntity = OpenActivityDtoMapper.INSTANCE.dtoToEntity(openActivity);
-        openActivityEntity.setOpenId(openId);
         openActivityService.save(openActivityEntity);
 
         return Result.success();
@@ -69,17 +64,12 @@ public class OpenActivityController extends BaseController {
 
     @ApiOperation(value = "删除班次-活动管理",consumes = "application/json")
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "openActivity",value = "班次活动管理",required = true,dataType = "OpenActivityDto")
+            @ApiImplicitParam(name = "id",value = "班次活动管理",required = true,dataType = "Integer")
     })
-    @DeleteMapping("/open/{openId}/open_activity/{id}")
-    public Result removeOpenActivity(@PathVariable int openId,
-                                     @PathVariable int id,
-                                     @RequestBody OpenActivityDto openActivity){
+    @DeleteMapping("/open_activity/{id}")
+    public Result removeOpenActivity(@PathVariable int id){
 
-        OpenActivity openActivityEntity = OpenActivityDtoMapper.INSTANCE.dtoToEntity(openActivity);
-        openActivityEntity.setOpenId(openId);
-        openActivityEntity.setId(id);
-        openActivityService.remove(openActivityEntity);
+        openActivityService.remove(id);
 
         return Result.success();
 
@@ -90,13 +80,11 @@ public class OpenActivityController extends BaseController {
     @ApiImplicitParams({
             @ApiImplicitParam(name = "openActivity",value = "班次活动管理",required = true,dataType = "OpenActivityDto")
     })
-    @PutMapping("/open/{openId}/open_activity/{id}")
-    public Result modifyOpenActivity(@PathVariable int openId,
-                                     @PathVariable int id,
+    @PutMapping("/open_activity/{id}")
+    public Result modifyOpenActivity(@PathVariable int id,
                                      @RequestBody OpenActivityDto openActivity){
 
         OpenActivity openActivityEntity = OpenActivityDtoMapper.INSTANCE.dtoToEntity(openActivity);
-        openActivityEntity.setOpenId(openId);
         openActivityEntity.setId(id);
         openActivityService.modify(openActivityEntity);
 

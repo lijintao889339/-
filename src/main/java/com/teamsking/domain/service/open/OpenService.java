@@ -18,12 +18,11 @@ public class OpenService {
 
     /**
      * 获取班次管理列表
-     * @param open
      * @return
      */
-    public List<Open> list(Open open){
+    public List<Open> list(){
 
-        return openMapper.select(open);
+        return openMapper.selectAll();
 
     }
 
@@ -38,11 +37,11 @@ public class OpenService {
 
     /**
      * 删除班次管理
-     * @param open
+     * @param id
      * @return
      */
-    public int remove(Open open){
-        return openMapper.delete(open);
+    public int remove(Integer id){
+        return openMapper.deleteByPrimaryKey(id);
     }
 
     /**

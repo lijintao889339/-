@@ -32,16 +32,11 @@ public class OpenController extends BaseController {
             @ApiImplicitParam(name = "pageNo", value = "页码", required = true, example = "1"),
             @ApiImplicitParam(name = "pageSize", value = "页大小", required = true, example = "10")
     })
-    @GetMapping("/school/{schoolId}/opens/course/{courseId}")
-    public Result openList(@PathVariable int schoolId,
-                           @PathVariable int courseId,
-                           int pageNo,int pageSize){
+    @GetMapping("/opens")
+    public Result openList(int pageNo,int pageSize){
         PageHelper.startPage(fixPage(pageNo),fixPage(pageSize));
-        OpenDto open = new OpenDto();
-        open.setCourseId(courseId);
-        open.setSchoolId(schoolId);
-        Open openEntity = OpenDtoMapper.INSTANCE.dtoToEntity(open);
-        List<Open> openList = openService.list(openEntity);
+
+        List<Open> openList = openService.list();
         List<OpenDto> openDtoList = OpenDtoMapper.INSTANCE.entityListToDtoList(openList);
         return Result.success().addData("pager", warpPage(openDtoList));
 
@@ -52,13 +47,9 @@ public class OpenController extends BaseController {
     @ApiImplicitParams( {
             @ApiImplicitParam(name = "open", value = "班次管理", required = true, dataType = "OpenDto")
     })
-    @PostMapping("/school/{schoolId}/open/course/{courseId}")
-    public Result addOpen(@PathVariable int schoolId,
-                          @PathVariable int courseId,
-                          @RequestBody OpenDto open){
+    @PostMapping("/open")
+    public Result addOpen(@RequestBody OpenDto open){
         Open openEntity = OpenDtoMapper.INSTANCE.dtoToEntity(open);
-        openEntity.setSchoolId(schoolId);
-        openEntity.setCourseId(courseId);
         openService.save(openEntity);
         return Result.success();
 
@@ -67,19 +58,12 @@ public class OpenController extends BaseController {
 
     @ApiOperation(value = "删除班次管理", consumes= "application/json")
     @ApiImplicitParams( {
-            @ApiImplicitParam(name = "open", value = "班次管理", required = true, dataType = "OpenDto")
+            @ApiImplicitParam(name = "id", value = "班次管理", required = true, dataType = "Integer")
     })
-    @DeleteMapping("/school/{schoolId}/open/{id}/course/{courseId}")
-    public Result removeOpen(@PathVariable int id,
-                             @PathVariable int schoolId,
-                             @PathVariable int courseId,
-                             @RequestBody OpenDto open){
+    @DeleteMapping("/open/{id}")
+    public Result removeOpen(@PathVariable int id){
 
-        Open openEntity = OpenDtoMapper.INSTANCE.dtoToEntity(open);
-        openEntity.setSchoolId(schoolId);
-        openEntity.setCourseId(courseId);
-        openEntity.setId(id);
-        openService.remove(openEntity);
+        openService.remove(id);
         return Result.success();
 
     }
@@ -88,15 +72,11 @@ public class OpenController extends BaseController {
     @ApiImplicitParams( {
             @ApiImplicitParam(name = "open", value = "班次管理", required = true, dataType = "OpenDto")
     })
-    @PutMapping("/school/{schoolId}/open/{id}/course/{courseId}")
+    @PutMapping("/open/{id}")
     public Result modifyOpen(@PathVariable int id,
-                             @PathVariable int schoolId,
-                             @PathVariable int courseId,
                              @RequestBody OpenDto open){
 
         Open openEntity = OpenDtoMapper.INSTANCE.dtoToEntity(open);
-        openEntity.setSchoolId(schoolId);
-        openEntity.setCourseId(courseId);
         openEntity.setId(id);
         openService.modify(openEntity);
         return Result.success();

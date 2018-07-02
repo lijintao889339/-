@@ -19,11 +19,11 @@ public class OpenActivityService {
 
     /**
      * 获取班次-活动列表
-     * @param openActivity
+     *
      * @return
      */
-    public List<OpenActivity> list(OpenActivity openActivity){
-        return openActivityMapper.select(openActivity);
+    public List<OpenActivity> list(){
+        return openActivityMapper.selectAll();
     }
 
     /**
@@ -39,12 +39,12 @@ public class OpenActivityService {
 
     /**
      * 删除班次-活动
-     * @param openActivity
+     * @param id
      * @return
      */
-    public int remove(OpenActivity openActivity){
+    public int remove(Integer id){
 
-        return openActivityMapper.delete(openActivity);
+        return openActivityMapper.deleteByPrimaryKey(id);
 
     }
 
