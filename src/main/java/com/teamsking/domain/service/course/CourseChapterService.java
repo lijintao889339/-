@@ -20,12 +20,11 @@ public class CourseChapterService {
 
     /**
      * 获取课程中章的列表
-     * @param courseChapter
      * @return 章列表
      */
-    public List<CourseChapter> list(CourseChapter courseChapter){
+    public List<CourseChapter> list(){
 
-        return courseChapterMapper.select(courseChapter);
+        return courseChapterMapper.selectAll();
     }
 
     /**
@@ -40,16 +39,16 @@ public class CourseChapterService {
 
     /**
      * 删除课程中的章
-     * @param courseChapter
+     * @param id
      * @return
      */
-    public int remove(CourseChapter courseChapter){
+    public int remove(int id){
 
-        return courseChapterMapper.delete(courseChapter);
+        return courseChapterMapper.deleteByPrimaryKey(id);
     }
 
     /**
-     * 根据主键选择性修改课程中的章
+     * 修改课程中的章
      * @param courseChapter
      * @return
      */

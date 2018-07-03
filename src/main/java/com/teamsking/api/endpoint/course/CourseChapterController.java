@@ -29,34 +29,27 @@ public class CourseChapterController extends BaseController {
     CourseChapterService courseChapterService;
 
     /**
-     * 获取某一课程下面的章列表
-     * @param courseId
+     * 获取课程-章列表管理
      * @param pageNo
      * @param pageSize
      * @return
      */
-    @ApiOperation(value = "课程章的列表", notes = "可分页", produces = "application/json")
+    @ApiOperation(value = "课程-章的列表", notes = "可分页", produces = "application/json")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "pageNo", value ="页码", required = true, example = "1") ,
             @ApiImplicitParam(name = "pageSize", value = "页大小", required = true, example = "10")
     })
-    @GetMapping("/course/{courseId}/course_chapters")
-    public Result CourseChapterList(@PathVariable("courseId") int courseId,
-                                    int pageNo, int pageSize){
+    @GetMapping("/course_chapters")
+    public Result CourseChapterList(int pageNo, int pageSize){
 
         PageHelper.startPage(fixPage(pageNo), fixPage(pageSize));
-        CourseChapterDto courseChapter = new CourseChapterDto();
-        courseChapter.setCourseId(courseId);
-        CourseChapter courseChapterEntity = CourseChapterDtoMapper.INSTANCE.dtoToEntity(courseChapter);
-        List<CourseChapter> courseChapterList = courseChapterService.list(courseChapterEntity);
-
+        List<CourseChapter> courseChapterList = courseChapterService.list();
         List<CourseChapterDto> courseChapterDtoList = CourseChapterDtoMapper.INSTANCE.entityListToDtoList(courseChapterList);
         return Result.success().addData("pager",warpPage(courseChapterDtoList));
     }
 
     /**
-     * 添加某一课程下面的章
-     * @param courseId
+     * 添加课程-章管理
      * @param courseChapter
      * @return
      */
@@ -64,43 +57,33 @@ public class CourseChapterController extends BaseController {
     @ApiImplicitParams({
             @ApiImplicitParam (name = "courseChapter", value = "课程的章", required = true, dataType = "CourseChapterDto")
     })
-    @PostMapping("/course/{courseId}/course_chapter")
-    public Result addCourseChapter(@PathVariable("courseId") int courseId,
-                                   @RequestBody CourseChapterDto courseChapter){
+    @PostMapping("/course_chapter")
+    public Result addCourseChapter(@RequestBody CourseChapterDto courseChapter){
 
         CourseChapter courseChapterEntity = CourseChapterDtoMapper.INSTANCE.dtoToEntity(courseChapter);
-        courseChapterEntity.setCourseId(courseId);
         courseChapterService.save(courseChapterEntity);
         return Result.success();
     }
 
     /**
-     * 删除某一课程下面的指定章
+     * 删除课程-章管理
      * @param id
-     * @param courseId
-     * @param courseChapter
      * @return
      */
     @ApiOperation(value = "删除课程中的章", consumes = "application/json")
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "courseChapter", value = "课程的章", required = true, dataType = "CourseChapterDto")
+            @ApiImplicitParam(name = "", value = "课程-章的主键", required = true, dataType = "int")
     })
-    @DeleteMapping("/course/{courseId}/course_chapter/{id}")
-    public Result removeCourseChapter(@PathVariable("id") int id,
-                                      @PathVariable("courseId") int courseId,
-                                      @RequestBody CourseChapterDto courseChapter){
+    @DeleteMapping("/course_chapter/{id}")
+    public Result removeCourseChapter(@PathVariable("id") int id){
 
-        CourseChapter courseChapterEntity = CourseChapterDtoMapper.INSTANCE.dtoToEntity(courseChapter);
-        courseChapterEntity.setId(id);
-        courseChapterEntity.setCourseId(courseId);
-        courseChapterService.remove(courseChapterEntity);
+        courseChapterService.remove(id);
         return Result.success();
     }
 
     /**
-     * 修改某一课程的指定章
+     * 修改课程-章管理
      * @param id
-     * @param courseId
      * @param courseChapter
      * @return
      */
@@ -108,14 +91,12 @@ public class CourseChapterController extends BaseController {
     @ApiImplicitParams({
             @ApiImplicitParam(name = "courseChapter", value = "课程的章", required = true, dataType = "CourseChapterDto")
     })
-    @PutMapping("/course/{courseId}/course_chapter/{id}")
+    @PutMapping("/course_chapter/{id}")
     public Result modify(@PathVariable("id") int id,
-                         @PathVariable("courseId") int courseId,
                          @RequestBody CourseChapterDto courseChapter){
 
         CourseChapter courseChapterEntity = CourseChapterDtoMapper.INSTANCE.dtoToEntity(courseChapter);
         courseChapterEntity.setId(id);
-        courseChapterEntity.setCourseId(courseId);
         courseChapterService.modify(courseChapterEntity);
         return Result.success();
     }
