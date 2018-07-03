@@ -18,12 +18,12 @@ public class OpenAssistantService {
 
     /**
      * 获取班次-助教权限管理列表
-     * @param openAssistant
+     *
      * @return
      */
-    public List<OpenAssistant> list(OpenAssistant openAssistant){
+    public List<OpenAssistant> list(){
 
-        return openAssistantMapper.select(openAssistant);
+        return openAssistantMapper.selectAll();
 
     }
 
@@ -40,12 +40,12 @@ public class OpenAssistantService {
 
     /**
      * 删除班次-助教权限管理
-     * @param openAssistant
+     * @param id
      * @return
      */
-    public int remove(OpenAssistant openAssistant){
+    public int remove(Integer id){
 
-        return openAssistantMapper.delete(openAssistant);
+        return openAssistantMapper.deleteByPrimaryKey(id);
 
     }
 

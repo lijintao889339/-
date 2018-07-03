@@ -52,7 +52,7 @@ public class SysRoleController extends BaseController {
 
     @ApiOperation(value = "删除角色",produces = "application/json")
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "sysRole",value = "角色",required = true,dataType = "SysRoleDto")
+            @ApiImplicitParam(name = "id",value = "角色",required = true,dataType = "Integer")
     })
     @DeleteMapping("/sys_role/{id}")
     public Result removeSysRole(@PathVariable("id") int id){

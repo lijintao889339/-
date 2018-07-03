@@ -17,11 +17,11 @@ public class NodeService {
 
     /**
      * 获取资源管理列表
-     * @param node
+     *
      * @return
      */
-    public List<Node> list(Node node){
-        return nodeMapper.select(node);
+    public List<Node> list(){
+        return nodeMapper.selectAll();
     }
 
     /**
@@ -35,11 +35,11 @@ public class NodeService {
 
     /**
      * 删除资源管理
-     * @param node
+     * @param id
      * @return
      */
-    public int remove(Node node){
-        return nodeMapper.delete(node);
+    public int remove(Integer id){
+        return nodeMapper.deleteByPrimaryKey(id);
     }
 
     /**

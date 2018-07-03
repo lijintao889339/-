@@ -18,12 +18,12 @@ public class CourseWareService {
 
     /**
      * 获取课程-课件管理列表
-     * @param courseWare
+     *
      * @return
      */
-    public List<CourseWare> list(CourseWare courseWare){
+    public List<CourseWare> list(){
 
-        return courseWareMapper.select(courseWare);
+        return courseWareMapper.selectAll();
 
     }
 
@@ -40,11 +40,11 @@ public class CourseWareService {
 
     /**
      * 删除课程-课件管理
-     * @param courseWare
+     * @param id
      * @return
      */
-    public int remove(CourseWare courseWare){
-        return courseWareMapper.delete(courseWare);
+    public int remove(Integer id){
+        return courseWareMapper.deleteByPrimaryKey(id);
     }
 
 

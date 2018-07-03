@@ -32,16 +32,11 @@ public class OpenAssistantController extends BaseController {
             @ApiImplicitParam(name = "pageNo", value = "页码", required = true, example = "1"),
             @ApiImplicitParam(name = "pageSize", value = "页大小", required = true, example = "10")
     })
-    @GetMapping("/open/{openId}/open_assistants")
-    public Result openAssistantList(@PathVariable int openId,
-                                    int pageNo,int pageSize){
+    @GetMapping("/open_assistants")
+    public Result openAssistantList(int pageNo,int pageSize){
 
         PageHelper.startPage(fixPage(pageNo),fixPage(pageSize));
-        OpenAssistantDto openAssistant = new OpenAssistantDto();
-        openAssistant.setOpenId(openId);
-
-        OpenAssistant openAssistantEntity = OpenAssistantDtoMapper.INSTANCE.dtoToEntity(openAssistant);
-        List<OpenAssistant> openAssistantList = openAssistantService.list(openAssistantEntity);
+        List<OpenAssistant> openAssistantList = openAssistantService.list();
         List<OpenAssistantDto> openAssistantDtoList = OpenAssistantDtoMapper.INSTANCE.entityListToDtoList(openAssistantList);
         return Result.success().addData("pager",warpPage(openAssistantDtoList));
 
@@ -53,12 +48,10 @@ public class OpenAssistantController extends BaseController {
     @ApiImplicitParams( {
             @ApiImplicitParam(name = "openAssistant", value = "班次助教权限管理", required = true, dataType = "OpenAssistantDto")
     })
-    @PostMapping("/open/{openId}/open_assistant")
-    public Result addOpenAssistant(@PathVariable int openId,
-                                   @RequestBody OpenAssistantDto openAssistant){
+    @PostMapping("/open_assistant")
+    public Result addOpenAssistant(@RequestBody OpenAssistantDto openAssistant){
 
         OpenAssistant openAssistantEntity = OpenAssistantDtoMapper.INSTANCE.dtoToEntity(openAssistant);
-        openAssistantEntity.setOpenId(openId);
         openAssistantService.save(openAssistantEntity);
 
         return Result.success();
@@ -68,17 +61,12 @@ public class OpenAssistantController extends BaseController {
 
     @ApiOperation(value = "删除班次-助教权限管理", consumes= "application/json")
     @ApiImplicitParams( {
-            @ApiImplicitParam(name = "openAssistant", value = "班次助教权限管理", required = true, dataType = "OpenAssistantDto")
+            @ApiImplicitParam(name = "id", value = "班次助教权限管理", required = true, dataType = "Integer")
     })
-    @DeleteMapping("/open/{openId}/open_assistant/{id}")
-    public Result removeOpenAssistant(@PathVariable int openId,
-                                      @PathVariable int id,
-                                      @RequestBody OpenAssistantDto openAssistant){
+    @DeleteMapping("/open_assistant/{id}")
+    public Result removeOpenAssistant(@PathVariable int id){
 
-        OpenAssistant openAssistantEntity = OpenAssistantDtoMapper.INSTANCE.dtoToEntity(openAssistant);
-        openAssistantEntity.setOpenId(openId);
-        openAssistantEntity.setId(id);
-        openAssistantService.remove(openAssistantEntity);
+        openAssistantService.remove(id);
 
         return Result.success();
 
@@ -91,12 +79,10 @@ public class OpenAssistantController extends BaseController {
     @ApiImplicitParams( {
             @ApiImplicitParam(name = "openAssistant", value = "班次助教权限管理", required = true, dataType = "OpenAssistantDto")
     })
-    @PutMapping("/open/{openId}/open_assistant/{id}")
-    public Result modifyOpenAssistant(@PathVariable int openId,
-                                      @PathVariable int id,
+    @PutMapping("/open_assistant/{id}")
+    public Result modifyOpenAssistant(@PathVariable int id,
                                       @RequestBody OpenAssistantDto openAssistant){
         OpenAssistant openAssistantEntity = OpenAssistantDtoMapper.INSTANCE.dtoToEntity(openAssistant);
-        openAssistantEntity.setOpenId(openId);
         openAssistantEntity.setId(id);
         openAssistantService.modify(openAssistantEntity);
         return Result.success();

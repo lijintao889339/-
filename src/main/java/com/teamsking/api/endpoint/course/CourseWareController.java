@@ -33,14 +33,10 @@ public class CourseWareController extends BaseController {
             @ApiImplicitParam(name = "pageNo", value = "页码", required = true, example = "1"),
             @ApiImplicitParam(name = "pageSize", value = "页大小", required = true, example = "10")
     })
-    @GetMapping("/course/{courseId}/course_wares")
-    public Result courseWareList(@PathVariable int courseId,
-                                 int pageNo,int pageSize){
+    @GetMapping("/course_wares")
+    public Result courseWareList(int pageNo,int pageSize){
         PageHelper.startPage(fixPage(pageNo),fixPage(pageSize));
-        CourseWareDto courseWare = new CourseWareDto();
-        courseWare.setCourseId(courseId);
-        CourseWare courseWareEntity = CourseWareDtoMapper.INSTANCE.dtoToEntity(courseWare);
-        List<CourseWare> courseWareList = courseWareService.list(courseWareEntity);
+        List<CourseWare> courseWareList = courseWareService.list();
         List<CourseWareDto> courseWareDtoList = CourseWareDtoMapper.INSTANCE.entityListToDtoList(courseWareList);
         return Result.success().addData("pager",warpPage(courseWareDtoList));
 
@@ -51,12 +47,10 @@ public class CourseWareController extends BaseController {
     @ApiImplicitParams( {
             @ApiImplicitParam(name = "courseWare", value = "课程课件", required = true, dataType = "CourseWareDto")
     })
-    @PostMapping("/course/{courseId}/course_ware")
-    public Result addCourseWare(@PathVariable int courseId,
-                                @RequestBody CourseWareDto courseWare){
+    @PostMapping("/course_ware")
+    public Result addCourseWare(@RequestBody CourseWareDto courseWare){
 
         CourseWare courseWareEntity = CourseWareDtoMapper.INSTANCE.dtoToEntity(courseWare);
-        courseWareEntity.setCourseId(courseId);
         courseWareService.save(courseWareEntity);
         return Result.success();
 
@@ -65,16 +59,12 @@ public class CourseWareController extends BaseController {
 
     @ApiOperation(value = "删除课程-课件", consumes= "application/json")
     @ApiImplicitParams( {
-            @ApiImplicitParam(name = "courseWare", value = "课程课件", required = true, dataType = "CourseWareDto")
+            @ApiImplicitParam(name = "id", value = "课程课件", required = true, dataType = "Integer")
     })
-    @DeleteMapping("/course/{courseId}/course_ware/{id}")
-    public Result removeCourseWare(@PathVariable int courseId,
-                                   @PathVariable int id,
-                                   @RequestBody CourseWareDto courseWare){
-        CourseWare courseWareEntity = CourseWareDtoMapper.INSTANCE.dtoToEntity(courseWare);
-        courseWareEntity.setCourseId(courseId);
-        courseWareEntity.setId(id);
-        courseWareService.remove(courseWareEntity);
+    @DeleteMapping("/course_ware/{id}")
+    public Result removeCourseWare(@PathVariable int id){
+
+        courseWareService.remove(id);
         return Result.success();
 
     }
@@ -84,14 +74,12 @@ public class CourseWareController extends BaseController {
     @ApiImplicitParams( {
             @ApiImplicitParam(name = "courseWare", value = "课程课件", required = true, dataType = "CourseWareDto")
     })
-    @PutMapping("/course/{courseId}/course_ware/{id}")
-    public Result modifyCourseWare(@PathVariable int courseId,
-                                   @PathVariable int id,
+    @PutMapping("/course_ware/{id}")
+    public Result modifyCourseWare(@PathVariable int id,
                                    @RequestBody CourseWareDto courseWare){
 
         CourseWare courseWareEntity = CourseWareDtoMapper.INSTANCE.dtoToEntity(courseWare);
         courseWareEntity.setId(id);
-        courseWareEntity.setCourseId(courseId);
         courseWareService.modify(courseWareEntity);
 
         return Result.success();

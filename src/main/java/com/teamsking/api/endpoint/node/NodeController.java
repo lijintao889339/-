@@ -32,20 +32,10 @@ public class NodeController extends BaseController {
             @ApiImplicitParam(name = "pageNo", value = "页码", required = true, example = "1"),
             @ApiImplicitParam(name = "pageSize", value = "页大小", required = true, example = "10")
     })
-    @GetMapping("/school/{schoolId}/open/{openId}/course/{courseId}/nodes/node_folder/{folderId}")
-    public Result nodeList(@PathVariable int courseId,
-                           @PathVariable int openId,
-                           @PathVariable int folderId,
-                           @PathVariable int schoolId,
-                           int pageNo,int pageSize){
+    @GetMapping("/nodes")
+    public Result nodeList(int pageNo,int pageSize){
         PageHelper.startPage(fixPage(pageNo), fixPage(pageSize));
-        NodeDto node = new NodeDto();
-        node.setCourseId(courseId);
-        node.setOpenId(openId);
-        node.setSchoolId(schoolId);
-        node.setFolderId(folderId);
-        Node nodeEntity = NodeDtoMapper.INSTANCE.dtoToEntity(node);
-        List<Node> nodeList = nodeService.list(nodeEntity);
+        List<Node> nodeList = nodeService.list();
         List<NodeDto> nodeDtoList = NodeDtoMapper.INSTANCE.entityListToDtoList(nodeList);
         return Result.success().addData("pager", warpPage(nodeDtoList));
 
@@ -56,17 +46,9 @@ public class NodeController extends BaseController {
     @ApiImplicitParams( {
             @ApiImplicitParam(name = "node", value = "资源管理", required = true, dataType = "NodeDto")
     })
-    @PostMapping("/school/{schoolId}/open/{openId}/course/{courseId}/node/node_folder/{folderId}")
-    public Result addNode(@PathVariable int courseId,
-                          @PathVariable int openId,
-                          @PathVariable int folderId,
-                          @PathVariable int schoolId,
-                          @RequestBody NodeDto node){
+    @PostMapping("/node")
+    public Result addNode(@RequestBody NodeDto node){
         Node nodeEntity = NodeDtoMapper.INSTANCE.dtoToEntity(node);
-        nodeEntity.setCourseId(courseId);
-        nodeEntity.setOpenId(openId);
-        nodeEntity.setSchoolId(schoolId);
-        nodeEntity.setFolderId(folderId);
         nodeService.save(nodeEntity);
         return Result.success();
 
@@ -74,23 +56,11 @@ public class NodeController extends BaseController {
 
     @ApiOperation(value = "删除资源管理", consumes= "application/json")
     @ApiImplicitParams( {
-            @ApiImplicitParam(name = "node", value = "资源管理", required = true, dataType = "NodeDto")
+            @ApiImplicitParam(name = "id", value = "资源管理", required = true, dataType = "Integer")
     })
-    @DeleteMapping("/school/{schoolId}/open/{openId}/course/{courseId}/node/{id}/node_folder/{folderId}")
-    public Result removeNode(@PathVariable int courseId,
-                             @PathVariable int id,
-                             @PathVariable int openId,
-                             @PathVariable int schoolId,
-                             @PathVariable int folderId,
-                             @RequestBody NodeDto node){
-
-        Node nodeEntity = NodeDtoMapper.INSTANCE.dtoToEntity(node);
-        nodeEntity.setCourseId(courseId);
-        nodeEntity.setId(id);
-        nodeEntity.setOpenId(openId);
-        nodeEntity.setSchoolId(schoolId);
-        nodeEntity.setFolderId(folderId);
-        nodeService.remove(nodeEntity);
+    @DeleteMapping("/node/{id}")
+    public Result removeNode(@PathVariable int id){
+        nodeService.remove(id);
         return Result.success();
     }
 
@@ -99,20 +69,12 @@ public class NodeController extends BaseController {
     @ApiImplicitParams( {
             @ApiImplicitParam(name = "node", value = "资源管理", required = true, dataType = "NodeDto")
     })
-    @PutMapping("/school/{schoolId}/open/{openId}/course/{courseId}/node/{id}/node_folder/{folderId}")
+    @PutMapping("/node/{id}")
     public Result modifyNode(@PathVariable int id,
-                             @PathVariable int courseId,
-                             @PathVariable int openId,
-                             @PathVariable int schoolId,
-                             @PathVariable int folderId,
                              @RequestBody NodeDto node){
 
         Node nodeEntity = NodeDtoMapper.INSTANCE.dtoToEntity(node);
-        nodeEntity.setCourseId(courseId);
         nodeEntity.setId(id);
-        nodeEntity.setSchoolId(schoolId);
-        nodeEntity.setOpenId(openId);
-        nodeEntity.setFolderId(folderId);
         nodeService.modify(nodeEntity);
         return Result.success();
 

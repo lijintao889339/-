@@ -34,18 +34,11 @@ public class NodeFolderController extends BaseController {
             @ApiImplicitParam(name = "pageNo", value = "页码", required = true, example = "1"),
             @ApiImplicitParam(name = "pageSize", value = "页大小", required = true, example = "10")
     })
-    @GetMapping("/open/{openId}/course/{courseId}/node_folders/parent/{parentId}")
-    public Result nodeFolderList(@PathVariable int courseId,
-                                 @PathVariable int openId,
-                                 @PathVariable int parentId,
-                                 int pageNo,int pageSize){
+    @GetMapping("/node_folders")
+    public Result nodeFolderList(int pageNo,int pageSize){
         PageHelper.startPage(fixPage(pageNo), fixPage(pageSize));
-        NodeFolderDto nodeFolder = new NodeFolderDto();
-        nodeFolder.setCourseId(courseId);
-        nodeFolder.setOpenId(openId);
-        nodeFolder.setParentId(parentId);
-        NodeFolder nodeFolderEntity = NodeFolderDtoMapper.INSTANCE.dtoToEntity(nodeFolder);
-        List<NodeFolder> nodeFolderList = nodeFolderService.list(nodeFolderEntity);
+
+        List<NodeFolder> nodeFolderList = nodeFolderService.list();
         List<NodeFolderDto> nodeFolderDtoList = NodeFolderDtoMapper.INSTANCE.entityListToDtoList(nodeFolderList);
         return Result.success().addData("pager", warpPage(nodeFolderDtoList));
 
@@ -56,15 +49,10 @@ public class NodeFolderController extends BaseController {
     @ApiImplicitParams( {
             @ApiImplicitParam(name = "nodeFolder", value = "资源目录管理", required = true, dataType = "NodeFolderDto")
     })
-    @PostMapping("/open/{openId}/course/{courseId}/node_folder/parent/{parentId}")
-    public Result addNodeFolder(@PathVariable int courseId,
-                                @PathVariable int openId,
-                                @PathVariable int parentId,
-                                @RequestBody NodeFolderDto nodeFolder){
+    @PostMapping("/node_folder")
+    public Result addNodeFolder(@RequestBody NodeFolderDto nodeFolder){
+
         NodeFolder nodeFolderEntity = NodeFolderDtoMapper.INSTANCE.dtoToEntity(nodeFolder);
-        nodeFolderEntity.setCourseId(courseId);
-        nodeFolderEntity.setParentId(parentId);
-        nodeFolderEntity.setOpenId(openId);
         nodeFolderService.save(nodeFolderEntity);
         return Result.success();
 
@@ -72,21 +60,12 @@ public class NodeFolderController extends BaseController {
 
     @ApiOperation(value = "修改资源目录管理", consumes= "application/json")
     @ApiImplicitParams( {
-            @ApiImplicitParam(name = "nodeFolder", value = "资源目录管理", required = true, dataType = "NodeFolderDto")
+            @ApiImplicitParam(name = "id", value = "资源目录管理", required = true, dataType = "Integer")
     })
-    @DeleteMapping("/open/{openId}/course/{courseId}/node_folder/{id}/parent/{parentId}")
-    public Result removeNodeFolder(@PathVariable int courseId,
-                                   @PathVariable int id,
-                                   @PathVariable int openId,
-                                   @PathVariable int parentId,
-                                   @RequestBody NodeFolderDto nodeFolder){
+    @DeleteMapping("/node_folder/{id}")
+    public Result removeNodeFolder(@PathVariable int id){
 
-        NodeFolder nodeFolderEntity = NodeFolderDtoMapper.INSTANCE.dtoToEntity(nodeFolder);
-        nodeFolderEntity.setCourseId(courseId);
-        nodeFolderEntity.setParentId(parentId);
-        nodeFolderEntity.setId(id);
-        nodeFolderEntity.setOpenId(openId);
-        nodeFolderService.remove(nodeFolderEntity);
+        nodeFolderService.remove(id);
         return Result.success();
 
     }
@@ -96,17 +75,11 @@ public class NodeFolderController extends BaseController {
     @ApiImplicitParams( {
             @ApiImplicitParam(name = "nodeFolder", value = "资源目录管理", required = true, dataType = "NodeFolderDto")
     })
-    @PutMapping("/open/{openId}/course/{courseId}/node_folder/{id}/parent/{parentId}")
-    public Result modifyNodeFolder(@PathVariable int courseId,
-                                   @PathVariable int openId,
-                                   @PathVariable int id,
-                                   @PathVariable int parentId,
+    @PutMapping("/node_folder/{id}")
+    public Result modifyNodeFolder(@PathVariable int id,
                                    @RequestBody NodeFolderDto nodeFolder){
         NodeFolder nodeFolderEntity = NodeFolderDtoMapper.INSTANCE.dtoToEntity(nodeFolder);
-        nodeFolderEntity.setCourseId(courseId);
-        nodeFolderEntity.setParentId(parentId);
         nodeFolderEntity.setId(id);
-        nodeFolderEntity.setOpenId(openId);
         nodeFolderService.modify(nodeFolderEntity);
         return Result.success();
 

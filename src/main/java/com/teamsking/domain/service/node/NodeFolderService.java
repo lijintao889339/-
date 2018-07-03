@@ -17,11 +17,11 @@ public class NodeFolderService {
 
     /**
      * 获取资源目录管理列表
-     * @param nodeFolder
+     *
      * @return
      */
-    public List<NodeFolder> list(NodeFolder nodeFolder){
-        return nodeFolderMapper.select(nodeFolder);
+    public List<NodeFolder> list(){
+        return nodeFolderMapper.selectAll();
     }
 
     /**
@@ -35,11 +35,11 @@ public class NodeFolderService {
 
     /**
      * 删除资源目录管理
-     * @param nodeFolder
+     * @param id
      * @return
      */
-    public int remove(NodeFolder nodeFolder){
-        return nodeFolderMapper.delete(nodeFolder);
+    public int remove(Integer id){
+        return nodeFolderMapper.deleteByPrimaryKey(id);
 
     }
 

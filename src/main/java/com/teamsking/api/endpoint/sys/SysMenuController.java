@@ -53,7 +53,7 @@ public class SysMenuController extends BaseController {
 
     @ApiOperation(value = "删除系统菜单",produces = "application/json")
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "sysMenu",value = "系统菜单",required = true,dataType = "SysMenuDto")
+            @ApiImplicitParam(name = "id",value = "系统菜单",required = true,dataType = "Integer")
     })
     @DeleteMapping("/sys_menu/{id}")
     public Result removeSysMenu(@PathVariable("id") int id){
