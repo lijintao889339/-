@@ -30,7 +30,6 @@ public class OpenAssignmentController extends BaseController {
 
     /**
      * 获取班次作业管理列表
-     * @param openId
      * @param pageNo
      * @param pageSize
      * @return
@@ -40,23 +39,17 @@ public class OpenAssignmentController extends BaseController {
             @ApiImplicitParam(name = "pageNo", value = "页码", required = true, example = "1"),
             @ApiImplicitParam(name = "pageSize", value = "页大小", required = true, example = "10")
     })
-    @GetMapping("/open/{openId}/open_assignments")
-    public Result OpenAssignmentList(@PathVariable("openId") int openId,
-                                     int pageNo, int pageSize){
+    @GetMapping("/open_assignments")
+    public Result OpenAssignmentList(int pageNo, int pageSize){
 
         PageHelper.startPage(fixPage(pageNo),fixPage(pageSize));
-        OpenAssignmentDto openAssignment = new OpenAssignmentDto();
-        openAssignment.setOpenId(openId);
-        OpenAssignment openAssignmentEntity = OpenAssignmentDtoMapper.INSTANCE.dtoToEntity(openAssignment);
-        List<OpenAssignment> openAssignmentList = openAssignmentService.list(openAssignmentEntity);
-
+        List<OpenAssignment> openAssignmentList = openAssignmentService.list();
         List<OpenAssignmentDto> openAssignmentDtoList = OpenAssignmentDtoMapper.INSTANCE.entityListToDtoList(openAssignmentList);
         return Result.success().addData("pager",warpPage(openAssignmentDtoList));
     }
 
     /**
      * 添加班次作业管理
-     * @param openId
      * @param openAssignment
      * @return
      */
@@ -64,42 +57,32 @@ public class OpenAssignmentController extends BaseController {
     @ApiImplicitParams({
             @ApiImplicitParam(name = "openAssignment", value = "班次作业", required = true, dataType = "OpenAssignmentDto")
     })
-    @PostMapping("/open/{openId}/open_assignment")
-    public Result addOpenAssignment(@PathVariable("openId") int openId,
-                                    @RequestBody OpenAssignmentDto openAssignment){
+    @PostMapping("/open_assignment")
+    public Result addOpenAssignment(@RequestBody OpenAssignmentDto openAssignment){
 
         OpenAssignment openAssignmentEntity = OpenAssignmentDtoMapper.INSTANCE.dtoToEntity(openAssignment);
-        openAssignmentEntity.setOpenId(openId);
         openAssignmentService.save(openAssignmentEntity);
         return Result.success();
     }
 
     /**
      * 删除班次作业管理
-     * @param openId
      * @param id
-     * @param openAssignment
      * @return
      */
-    @ApiOperation(value = "删除班次管理", notes = "可分页", produces = "application/json")
+    @ApiOperation(value = "删除班次管理", consumes = "application/json")
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "openAssignment", value = "班次作业", required = true, dataType = "OpenAssignmentDto")
+            @ApiImplicitParam(name = "id", value = "班次作业的主键", required = true, dataType = "int")
     })
-    @DeleteMapping("/open/{openId}/open_assignment/{id}")
-    public Result removeOpenAssignment(@PathVariable("openId") int openId,
-                                       @PathVariable("id") int id,
-                                       @RequestBody OpenAssignmentDto openAssignment) {
+    @DeleteMapping("/open_assignment/{id}")
+    public Result removeOpenAssignment(@PathVariable("id") int id) {
 
-        OpenAssignment openAssignmentEntity = OpenAssignmentDtoMapper.INSTANCE.dtoToEntity(openAssignment);
-        openAssignmentEntity.setOpenId(openId);
-        openAssignmentEntity.setId(id);
-        openAssignmentService.remove(openAssignmentEntity);
+        openAssignmentService.remove(id);
         return Result.success();
     }
 
     /**
      * 修改班次作业管理
-     * @param openId
      * @param id
      * @param openAssignment
      * @return
@@ -108,13 +91,11 @@ public class OpenAssignmentController extends BaseController {
     @ApiImplicitParams({
             @ApiImplicitParam(name = "openAssignment", value = "班次作业", required = true, dataType = "OpenAssignmentDto")
     })
-    @PutMapping("/open/{openId}/open_assignment/{id}")
-    public Result modify(@PathVariable("openId") int openId,
-                         @PathVariable("id") int id,
+    @PutMapping("/open_assignment/{id}")
+    public Result modify(@PathVariable("id") int id,
                          @RequestBody OpenAssignmentDto openAssignment){
 
         OpenAssignment openAssignmentEntity = OpenAssignmentDtoMapper.INSTANCE.dtoToEntity(openAssignment);
-        openAssignmentEntity.setOpenId(openId);
         openAssignmentEntity.setId(id);
         openAssignmentService.modify(openAssignmentEntity);
         return Result.success();

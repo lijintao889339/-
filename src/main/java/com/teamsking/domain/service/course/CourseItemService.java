@@ -20,12 +20,11 @@ public class CourseItemService {
 
     /**
      * 获取课程中章节项的列表
-     * @param courseItem
      * @return
      */
-    public List<CourseItem> list(CourseItem courseItem){
+    public List<CourseItem> list( ){
 
-        return courseItemMapper.select(courseItem);
+        return courseItemMapper.selectAll();
     }
 
     /**
@@ -40,12 +39,12 @@ public class CourseItemService {
 
     /**
      * 删除课程中的章节项
-     * @param courseItem
+     * @param id
      * @return
      */
-    public int remove(CourseItem courseItem){
+    public int remove(int id){
 
-        return courseItemMapper.delete(courseItem);
+        return courseItemMapper.deleteByPrimaryKey(id);
     }
 
     /**

@@ -20,12 +20,11 @@ public class OpenAssignmentService {
 
     /**
      * 获取班次作业管理列表
-     * @param openAssignment
      * @return
      */
-    public List<OpenAssignment> list(OpenAssignment openAssignment){
+    public List<OpenAssignment> list( ){
 
-        return openAssignmentMapper.select(openAssignment);
+        return openAssignmentMapper.selectAll();
     }
 
     /**
@@ -40,12 +39,12 @@ public class OpenAssignmentService {
 
     /**
      *删除班管理次作业
-     * @param openAssignment
+     * @param id
      * @return
      */
-    public int remove(OpenAssignment openAssignment){
+    public int remove(int id){
 
-        return openAssignmentMapper.delete(openAssignment);
+        return openAssignmentMapper.deleteByPrimaryKey(id);
     }
 
     /**
