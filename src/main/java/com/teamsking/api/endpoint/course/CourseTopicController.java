@@ -31,8 +31,6 @@ public class CourseTopicController extends BaseController {
 
     /**
      * 获取课程-活动列表
-     * @param courseId
-     * @param forumId
      * @param pageNo
      * @param pageSize
      * @return
@@ -42,26 +40,17 @@ public class CourseTopicController extends BaseController {
             @ApiImplicitParam(name = "pageNo",value = "页码", required = true, example = "1"),
             @ApiImplicitParam(name = "pageSize", value = "页大小", required = true, example = "10")
     })
-    @GetMapping("/course/{courseId}/forum/{forumId}/course_topics")
-    public Result courseTopicList(@PathVariable("courseId") int courseId,
-                                  @PathVariable("forumId") int forumId,
-                                  int pageNo, int pageSize){
+    @GetMapping("/course_topics")
+    public Result courseTopicList(int pageNo, int pageSize){
 
         PageHelper.startPage(fixPage(pageNo),fixPage(pageSize));
-        CourseTopicDto courseTopic = new CourseTopicDto();
-        courseTopic.setCourseId(courseId);
-        courseTopic.setForumId(forumId);
-        CourseTopic courseTopicEntity = CourseTopicDtoMapper.INSTANCE.dtoToEntity(courseTopic);
-        List<CourseTopic> courseTopicList = courseTopicService.list(courseTopicEntity);
-
+        List<CourseTopic> courseTopicList = courseTopicService.list();
         List<CourseTopicDto> courseTopicDtoList = CourseTopicDtoMapper.INSTANCE.entityListToDtoList(courseTopicList);
         return Result.success().addData("pager",warpPage(courseTopicDtoList));
     }
 
     /**
      * 添加课程-活动
-     * @param courseId
-     * @param forumId
      * @param courseTopic
      * @return
      */
@@ -69,48 +58,32 @@ public class CourseTopicController extends BaseController {
     @ApiImplicitParams({
             @ApiImplicitParam(name = "courseTopic", value = "课程-活动", required = true, dataType = "CourseTopicDto")
     })
-    @PostMapping("/course/{courseId}/forum/{forumId}/course_topic")
-    public Result addCourseTopic(@PathVariable("courseId") int courseId,
-                                 @PathVariable("forumId") int forumId,
-                                 @RequestBody CourseTopicDto courseTopic){
+    @PostMapping("/course_topic")
+    public Result addCourseTopic(@RequestBody CourseTopicDto courseTopic){
 
         CourseTopic courseTopicEntity = CourseTopicDtoMapper.INSTANCE.dtoToEntity(courseTopic);
-        courseTopicEntity.setCourseId(courseId);
-        courseTopicEntity.setForumId(forumId);
         courseTopicService.save(courseTopicEntity);
         return Result.success();
     }
 
     /**
      * 删除课程-活动
-     * @param courseId
-     * @param forumId
      * @param id
-     * @param courseTopic
      * @return
      */
     @ApiOperation(value = "删除课程-活动", consumes = "application/json")
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "courseTopic", value = "课程-活动", required = true, dataType = "CourseTopicDto")
+            @ApiImplicitParam(name = "id", value = "课程-活动的主键", required = true, dataType = "int")
     })
-    @DeleteMapping("/course/{courseId}/forum/{forumId}/course_topic/{id}")
-    public Result removeCourseTopic(@PathVariable("courseId") int courseId,
-                                    @PathVariable("forumId") int forumId,
-                                    @PathVariable("id") int id,
-                                    @RequestBody CourseTopicDto courseTopic){
+    @DeleteMapping("/course_topic/{id}")
+    public Result removeCourseTopic(@PathVariable("id") int id){
 
-        CourseTopic courseTopicEntity = CourseTopicDtoMapper.INSTANCE.dtoToEntity(courseTopic);
-        courseTopicEntity.setCourseId(courseId);
-        courseTopicEntity.setForumId(forumId);
-        courseTopicEntity.setId(id);
-        courseTopicService.remove(courseTopicEntity);
+        courseTopicService.remove(id);
         return Result.success();
     }
 
     /**
      * 修改课程-活动
-     * @param courseId
-     * @param forumId
      * @param id
      * @param courseTopic
      * @return
@@ -119,15 +92,11 @@ public class CourseTopicController extends BaseController {
     @ApiImplicitParams({
             @ApiImplicitParam(name = "courseTopic", value = "课程-活动", required = true, dataType = "CourseTopicDto")
     })
-    @PutMapping("/course/{courseId}/forum/{forumId}/course_topic/{id}")
-    public Result modifyCourseTopic(@PathVariable("courseId") int courseId,
-                                    @PathVariable("forumId") int forumId,
-                                    @PathVariable("id") int id,
+    @PutMapping("/course_topic/{id}")
+    public Result modifyCourseTopic(@PathVariable("id") int id,
                                     @RequestBody CourseTopicDto courseTopic){
 
         CourseTopic courseTopicEntity = CourseTopicDtoMapper.INSTANCE.dtoToEntity(courseTopic);
-        courseTopicEntity.setCourseId(courseId);
-        courseTopicEntity.setForumId(forumId);
         courseTopicEntity.setId(id);
         courseTopicService.modify(courseTopicEntity);
         return Result.success();

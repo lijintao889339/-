@@ -20,12 +20,11 @@ public class CourseTestQuizService {
 
     /**
      *获取课程-测验与试题的关系的列表
-     * @param courseTestQuiz
      * @return
      */
-    public List<CourseTestQuiz> list(CourseTestQuiz courseTestQuiz){
+    public List<CourseTestQuiz> list(){
 
-        return courseTestQuizMapper.select(courseTestQuiz);
+        return courseTestQuizMapper.selectAll();
     }
 
     /**
@@ -40,12 +39,12 @@ public class CourseTestQuizService {
 
     /**
      *删除课程-测验与试题关系
-     * @param courseTestQuiz
+     * @param id
      * @return
      */
-    public int remove(CourseTestQuiz courseTestQuiz){
+    public int remove(int id){
 
-        return courseTestQuizMapper.delete(courseTestQuiz);
+        return courseTestQuizMapper.deleteByPrimaryKey(id);
     }
 
     /**

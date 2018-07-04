@@ -30,8 +30,6 @@ public class QuizController extends BaseController {
 
     /**
      * 获取试题的列表
-     * @param openId
-     * @param courseId
      * @param pageNo
      * @param pageSize
      * @return
@@ -41,26 +39,17 @@ public class QuizController extends BaseController {
             @ApiImplicitParam(name = "pageNo", value = "页面", required = true, example = "1"),
             @ApiImplicitParam(name = "pageSize", value = "页大小", required = true, example = "10")
     })
-    @GetMapping("open/{openId}/course/{courseId}/quizs")
-    public Result quizList(@PathVariable("openId") int openId,
-                           @PathVariable("courseId") int courseId,
-                           int pageNo, int pageSize){
+    @GetMapping("/quizs")
+    public Result quizList(int pageNo, int pageSize){
 
         PageHelper.startPage(fixPage(pageNo),fixPage(pageSize));
-        QuizDto quiz = new QuizDto();
-        quiz.setOpenId(openId);
-        quiz.setCourseId(courseId);
-        Quiz quizEntity = QuizDtoMapper.INSTANCE.dtoToEntity(quiz);
-        List<Quiz> quizList = quizService.list(quizEntity);
-
+        List<Quiz> quizList = quizService.list();
         List<QuizDto> quizDtoList = QuizDtoMapper.INSTANCE.entityListToDtoList(quizList);
         return Result.success().addData("pager",warpPage(quizDtoList));
     }
 
     /**
      * 添加试题操作
-     * @param openId
-     * @param courseId
      * @param quiz
      * @return
      */
@@ -68,48 +57,32 @@ public class QuizController extends BaseController {
     @ApiImplicitParams({
             @ApiImplicitParam(name = "quiz", value = "试题", required = true, dataType = "QuizDto")
     })
-    @PostMapping("open/{openId}/course/{courseId}/quiz")
-    public Result addQuiz(@PathVariable("openId") int openId,
-                          @PathVariable("courseId") int courseId,
-                          @RequestBody QuizDto quiz){
+    @PostMapping("/quiz")
+    public Result addQuiz(@RequestBody QuizDto quiz){
 
         Quiz quizEntity = QuizDtoMapper.INSTANCE.dtoToEntity(quiz);
-        quizEntity.setOpenId(openId);
-        quizEntity.setCourseId(courseId);
         quizService.save(quizEntity);
         return Result.success();
     }
 
     /**
      * 删除试题操作
-     * @param openId
-     * @param courseId
      * @param id
-     * @param quiz
      * @return
      */
     @ApiOperation(value = "删除试题", consumes = "application/json")
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "quiz", value = "试题", required = true, dataType = "QuizDto")
+            @ApiImplicitParam(name = "id", value = "试题的主键", required = true, dataType = "int")
     })
-    @DeleteMapping("open/{openId}/course/{courseId}/quiz/{id}")
-    public Result removeQuiz(@PathVariable("openId") int openId,
-                             @PathVariable("courseId") int courseId,
-                             @PathVariable("id") int id,
-                             @RequestBody QuizDto quiz){
+    @DeleteMapping("/quiz/{id}")
+    public Result removeQuiz(@PathVariable("id") int id){
 
-        Quiz quizEntity = QuizDtoMapper.INSTANCE.dtoToEntity(quiz);
-        quizEntity.setOpenId(openId);
-        quizEntity.setCourseId(courseId);
-        quizEntity.setId(id);
-        quizService.remove(quizEntity);
+        quizService.remove(id);
         return Result.success();
     }
 
     /**
      * 修改试题操作
-     * @param openId
-     * @param courseId
      * @param id
      * @param quiz
      * @return
@@ -118,15 +91,11 @@ public class QuizController extends BaseController {
     @ApiImplicitParams({
             @ApiImplicitParam(name = "quiz", value = "试题", required = true, dataType = "QuizDto")
     })
-    @PutMapping("open/{openId}/course/{courseId}/quiz/{id}")
-    public Result modifyQuiz(@PathVariable("openId") int openId,
-                             @PathVariable("courseId") int courseId,
-                             @PathVariable("id") int id,
+    @PutMapping("/quiz/{id}")
+    public Result modifyQuiz(@PathVariable("id") int id,
                              @RequestBody QuizDto quiz){
 
         Quiz quizEntity = QuizDtoMapper.INSTANCE.dtoToEntity(quiz);
-        quizEntity.setOpenId(openId);
-        quizEntity.setCourseId(courseId);
         quizEntity.setId(id);
         quizService.modify(quizEntity);
         return Result.success();

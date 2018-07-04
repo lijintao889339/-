@@ -30,11 +30,6 @@ public class CourseTestQuizController extends BaseController {
 
     /**
      * 获取课程-测验与试题关系的列表
-     * @param schoolId
-     * @param courseId
-     * @param sectionId
-     * @param testId
-     * @param quizId
      * @param pageNo
      * @param pageSize
      * @return
@@ -44,23 +39,11 @@ public class CourseTestQuizController extends BaseController {
             @ApiImplicitParam(name = "pageNo", value = "页码", required = true, example = "1"),
             @ApiImplicitParam(name = "pageSize", value = "页大小", required = true, example = "10")
     })
-    @GetMapping("school/{schoolId}/course/{courseId}/section/{sectionId}/test/{testId}/quiz/{quizId}/course_test_quizs")
-    public Result courseTestQuizList(@PathVariable("schoolId") int schoolId,
-                                     @PathVariable("courseId") int courseId,
-                                     @PathVariable("sectionId") int sectionId,
-                                     @PathVariable("testId") int testId,
-                                     @PathVariable("quizId") int quizId,
-                                     int pageNo, int pageSize){
+    @GetMapping("/course_test_quizs")
+    public Result courseTestQuizList(int pageNo, int pageSize){
 
         PageHelper.startPage(fixPage(pageNo),fixPage(pageSize));
-        CourseTestQuizDto courseTestQuiz = new CourseTestQuizDto();
-        courseTestQuiz.setSchoolId(schoolId);
-        courseTestQuiz.setCourseId(courseId);
-        courseTestQuiz.setSectionId(sectionId);
-        courseTestQuiz.setTestId(testId);
-        courseTestQuiz.setQuizId(quizId);
-        CourseTestQuiz courseTestQuizEntity = CourseTestQuizDtoMapper.INSTANCE.dtoToEntity(courseTestQuiz);
-        List<CourseTestQuiz> courseTestQuizList = courseTestQuizService.list(courseTestQuizEntity);
+        List<CourseTestQuiz> courseTestQuizList = courseTestQuizService.list();
 
         List<CourseTestQuizDto> courseTestQuizDtoList = CourseTestQuizDtoMapper.INSTANCE.entityListToDtoList(courseTestQuizList);
         return Result.success().addData("pager",warpPage(courseTestQuizDtoList));
@@ -68,11 +51,6 @@ public class CourseTestQuizController extends BaseController {
 
     /**
      * 添加课程-测验试题关系
-     * @param schoolId
-     * @param courseId
-     * @param sectionId
-     * @param testId
-     * @param quizId
      * @param courseTestQuiz
      * @return
      */
@@ -80,66 +58,32 @@ public class CourseTestQuizController extends BaseController {
     @ApiImplicitParams({
             @ApiImplicitParam(name = "courseTestQuiz", value = "课程-测验与试题关系", required = true, dataType = "CourseTestQuizDto")
     })
-    @PostMapping("school/{schoolId}/course/{courseId}/section/{sectionId}/test/{testId}/quiz/{quizId}/course_test_quiz")
-    public Result addCourseTestQuiz(@PathVariable("schoolId") int schoolId,
-                                    @PathVariable("courseId") int courseId,
-                                    @PathVariable("sectionId") int sectionId,
-                                    @PathVariable("testId") int testId,
-                                    @PathVariable("quizId") int quizId,
-                                    @RequestBody CourseTestQuizDto courseTestQuiz){
+    @PostMapping("/course_test_quiz")
+    public Result addCourseTestQuiz(@RequestBody CourseTestQuizDto courseTestQuiz){
 
         CourseTestQuiz courseTestQuizEntity = CourseTestQuizDtoMapper.INSTANCE.dtoToEntity(courseTestQuiz);
-        courseTestQuizEntity.setSchoolId(schoolId);
-        courseTestQuizEntity.setCourseId(courseId);
-        courseTestQuizEntity.setSectionId(sectionId);
-        courseTestQuizEntity.setTestId(testId);
-        courseTestQuizEntity.setQuizId(quizId);
         courseTestQuizService.save(courseTestQuizEntity);
         return Result.success();
     }
 
     /**
      * 删除课程-测验试题关系
-     * @param schoolId
-     * @param courseId
-     * @param sectionId
-     * @param testId
-     * @param quizId
      * @param id
-     * @param courseTestQuiz
      * @return
      */
     @ApiOperation(value = "删除课程-测验与试题关系", consumes = "application/json")
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "courseTestQuiz", value = "课程-测验与试题关系", required = true, dataType = "CourseTestQuizDto")
+            @ApiImplicitParam(name = "id", value = "课程-测验与试题关系的主键", required = true, dataType = "int")
     })
-    @DeleteMapping("school/{schoolId}/course/{courseId}/section/{sectionId}/test/{testId}/quiz/{quizId}/course_test_quiz/{id}")
-    public Result removeCourseTestQuiz(@PathVariable("schoolId") int schoolId,
-                                       @PathVariable("courseId") int courseId,
-                                       @PathVariable("sectionId") int sectionId,
-                                       @PathVariable("testId") int testId,
-                                       @PathVariable("quizId") int quizId,
-                                       @PathVariable("id") int id,
-                                       @RequestBody CourseTestQuizDto courseTestQuiz){
+    @DeleteMapping("/course_test_quiz/{id}")
+    public Result removeCourseTestQuiz(@PathVariable("id") int id){
 
-        CourseTestQuiz courseTestQuizEntity = CourseTestQuizDtoMapper.INSTANCE.dtoToEntity(courseTestQuiz);
-        courseTestQuizEntity.setSchoolId(schoolId);
-        courseTestQuizEntity.setCourseId(courseId);
-        courseTestQuizEntity.setSectionId(sectionId);
-        courseTestQuizEntity.setTestId(testId);
-        courseTestQuizEntity.setQuizId(quizId);
-        courseTestQuizEntity.setId(id);
-        courseTestQuizService.remove(courseTestQuizEntity);
+        courseTestQuizService.remove(id);
         return Result.success();
     }
 
     /**
      * 修改课程-测验试题关系
-     * @param schoolId
-     * @param courseId
-     * @param sectionId
-     * @param testId
-     * @param quizId
      * @param id
      * @param courseTestQuiz
      * @return
@@ -148,21 +92,11 @@ public class CourseTestQuizController extends BaseController {
     @ApiImplicitParams({
             @ApiImplicitParam(name = "courseTestQuiz", value = "课程-测验与试题关系", required = true, dataType = "CourseTestQuizDto")
     })
-    @PutMapping("school/{schoolId}/course/{courseId}/section/{sectionId}/test/{testId}/quiz/{quizId}/course_test_quiz/{id}")
-    public Result modifCourseTestQuiz(@PathVariable("schoolId") int schoolId,
-                                       @PathVariable("courseId") int courseId,
-                                       @PathVariable("sectionId") int sectionId,
-                                       @PathVariable("testId") int testId,
-                                       @PathVariable("quizId") int quizId,
-                                       @PathVariable("id") int id,
+    @PutMapping("/course_test_quiz/{id}")
+    public Result modifCourseTestQuiz(@PathVariable("id") int id,
                                        @RequestBody CourseTestQuizDto courseTestQuiz){
 
         CourseTestQuiz courseTestQuizEntity = CourseTestQuizDtoMapper.INSTANCE.dtoToEntity(courseTestQuiz);
-        courseTestQuizEntity.setSchoolId(schoolId);
-        courseTestQuizEntity.setCourseId(courseId);
-        courseTestQuizEntity.setSectionId(sectionId);
-        courseTestQuizEntity.setTestId(testId);
-        courseTestQuizEntity.setQuizId(quizId);
         courseTestQuizEntity.setId(id);
         courseTestQuizService.modify(courseTestQuizEntity);
         return Result.success();

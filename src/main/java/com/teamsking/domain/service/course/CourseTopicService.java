@@ -20,12 +20,11 @@ public class CourseTopicService {
 
     /**
      * 获取课程讨论管理列表
-     * @param courseTopic
      * @return
      */
-    public List<CourseTopic> list(CourseTopic courseTopic){
+    public List<CourseTopic> list(){
 
-        return courseTopicMapper.select(courseTopic);
+        return courseTopicMapper.selectAll();
     }
 
     /**
@@ -40,12 +39,12 @@ public class CourseTopicService {
 
     /**
      *删除课程讨论
-     * @param courseTopic
+     * @param id
      * @return
      */
-    public int remove(CourseTopic courseTopic){
+    public int remove(int id){
 
-        return courseTopicMapper.delete(courseTopic);
+        return courseTopicMapper.deleteByPrimaryKey(id);
     }
 
     /**

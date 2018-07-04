@@ -20,12 +20,11 @@ public class QuizOptionService {
 
     /**
      * 试题选项列表
-     * @param quizOption
      * @return
      */
-    public List<QuizOption> list(QuizOption quizOption){
+    public List<QuizOption> list(){
 
-        return quizOptionMapper.select(quizOption);
+        return quizOptionMapper.selectAll();
     }
 
     /**
@@ -40,12 +39,12 @@ public class QuizOptionService {
 
     /**
      * 删除试题选项
-     * @param quizOption
+     * @param id
      * @return
      */
-    public int remove(QuizOption quizOption){
+    public int remove(int id){
 
-        return quizOptionMapper.delete(quizOption);
+        return quizOptionMapper.deleteByPrimaryKey(id);
     }
 
     /**

@@ -30,9 +30,6 @@ public class QuizOptionController extends BaseController {
 
     /**
      * 获取试题选项
-     * @param openId
-     * @param courseId
-     * @param quizId
      * @param pageNo
      * @param pageSize
      * @return
@@ -42,21 +39,11 @@ public class QuizOptionController extends BaseController {
             @ApiImplicitParam(name = "pageNo", value = "页码", required = true, example = "1"),
             @ApiImplicitParam(name = "pageSize", value = "页大小", required = true, example = "10")
     })
-    @GetMapping("open/{openId}/course/{courseId}/quiz/{quizId}/quiz_options")
-    public Result quizOptionList(@PathVariable("openId") int openId,
-                                 @PathVariable("courseId") int courseId,
-                                 @PathVariable("quizId") int quizId,
-                                 int pageNo, int pageSize){
+    @GetMapping("/quiz_options")
+    public Result quizOptionList(int pageNo, int pageSize){
 
         PageHelper.startPage(fixPage(pageNo), fixPage(pageSize));
-
-        QuizOptionDto quizOption = new QuizOptionDto();
-        quizOption.setOpenId(openId);
-        quizOption.setCourseId(courseId);
-        quizOption.setQuizId(quizId);
-        QuizOption quizOptionEntity = QuizOptionDtoMapper.INSTANCE.dtoToEntity(quizOption);
-        List<QuizOption> quizOptionList = quizOptionService.list(quizOptionEntity);
-
+        List<QuizOption> quizOptionList = quizOptionService.list();
         List<QuizOptionDto> quizOptionDtoList = QuizOptionDtoMapper.INSTANCE.entityListToDtoList(quizOptionList);
         return Result.success().addData("pager",warpPage(quizOptionDtoList));
 
@@ -64,9 +51,6 @@ public class QuizOptionController extends BaseController {
 
     /**
      * 添加试题选项
-     * @param openId
-     * @param courseId
-     * @param quizId
      * @param quizOption
      * @return
      */
@@ -74,64 +58,45 @@ public class QuizOptionController extends BaseController {
     @ApiImplicitParams({
             @ApiImplicitParam(name = "quizOption", value = "试题选项", required = true, dataType = "QuizOptionDto")
     })
-    @PostMapping("open/{openId}/course/{courseId}/quiz/{quizId}/quiz_option")
-    public Result addQuizOption(@PathVariable("openId") int openId,
-                                @PathVariable("courseId") int courseId,
-                                @PathVariable("quizId") int quizId,
-                                @RequestBody QuizOptionDto quizOption){
+    @PostMapping("/quiz_option")
+    public Result addQuizOption(@RequestBody QuizOptionDto quizOption){
 
         QuizOption quizOptionEntity = QuizOptionDtoMapper.INSTANCE.dtoToEntity(quizOption);
-        quizOptionEntity.setOpenId(openId);
-        quizOptionEntity.setCourseId(courseId);
-        quizOptionEntity.setQuizId(quizId);
         quizOptionService.save(quizOptionEntity);
         return Result.success();
     }
 
     /**
      * 删除试题选项
-     * @param openId
-     * @param courseId
-     * @param quizId
      * @param id
-     * @param quizOption
      * @return
      */
     @ApiOperation(value = "删除试题选项", consumes = "application/json")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "quizOption", value = "试题选项", required = true, dataType = "QuizOptionDto")
     })
-    @DeleteMapping("open/{openId}/course/{courseId}/quiz/{quizId}/quiz_option/{id}")
-    public Result removeQuizOption(@PathVariable("openId") int openId,
-                                   @PathVariable("courseId") int courseId,
-                                   @PathVariable("quizId") int quizId,
-                                   @PathVariable("id") int id,
-                                   @RequestBody QuizOptionDto quizOption){
+    @DeleteMapping("/quiz_option/{id}")
+    public Result removeQuizOption(@PathVariable("id") int id){
 
-        QuizOption quizOptionEntity = QuizOptionDtoMapper.INSTANCE.dtoToEntity(quizOption);
-        quizOptionEntity.setOpenId(openId);
-        quizOptionEntity.setCourseId(courseId);
-        quizOptionEntity.setQuizId(quizId);
-        quizOptionEntity.setId(id);
-        quizOptionService.remove(quizOptionEntity);
+        quizOptionService.remove(id);
         return Result.success();
     }
 
+    /**
+     * 修改试题选项
+     * @param id
+     * @param quizOption
+     * @return
+     */
     @ApiOperation(value = "修改试题选项", consumes = "application/json")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "quizOption", value = "试题选项", required = true, dataType = "QuizOptionDto")
     })
-    @PutMapping("open/{openId}/course/{courseId}/quiz/{quizId}/quiz_option/{id}")
-    public Result modifyQuizOption(@PathVariable("openId") int openId,
-                                   @PathVariable("courseId") int courseId,
-                                   @PathVariable("quizId") int quizId,
-                                   @PathVariable("id") int id,
+    @PutMapping("/quiz_option/{id}")
+    public Result modifyQuizOption(@PathVariable("id") int id,
                                    @RequestBody QuizOptionDto quizOption){
 
         QuizOption quizOptionEntity = QuizOptionDtoMapper.INSTANCE.dtoToEntity(quizOption);
-        quizOptionEntity.setOpenId(openId);
-        quizOptionEntity.setCourseId(courseId);
-        quizOptionEntity.setQuizId(quizId);
         quizOptionEntity.setId(id);
         quizOptionService.modify(quizOptionEntity);
         return Result.success();

@@ -72,7 +72,7 @@ public class CourseChapterController extends BaseController {
      */
     @ApiOperation(value = "删除课程中的章", consumes = "application/json")
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "", value = "课程-章的主键", required = true, dataType = "int")
+            @ApiImplicitParam(name = "id", value = "课程-章的主键", required = true, dataType = "int")
     })
     @DeleteMapping("/course_chapter/{id}")
     public Result removeCourseChapter(@PathVariable("id") int id){

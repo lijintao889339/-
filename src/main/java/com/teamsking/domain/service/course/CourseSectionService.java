@@ -20,12 +20,11 @@ public class CourseSectionService {
 
     /**
      * 获取课程中节的列表
-     * @param courseSection
      * @return
      */
-    public List<CourseSection> list(CourseSection courseSection){
+    public List<CourseSection> list(){
 
-        return courseSectionMapper.select(courseSection);
+        return courseSectionMapper.selectAll();
     }
 
     /**
@@ -40,12 +39,12 @@ public class CourseSectionService {
 
     /**
      * 删除课程中的节
-     * @param courseSection
+     * @param id
      * @return
      */
-    public int remove(CourseSection courseSection){
+    public int remove(int id){
 
-        return courseSectionMapper.delete(courseSection);
+        return courseSectionMapper.deleteByPrimaryKey(id);
     }
 
     /**

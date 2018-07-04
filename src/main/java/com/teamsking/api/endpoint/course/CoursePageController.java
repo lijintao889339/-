@@ -29,8 +29,7 @@ public class CoursePageController extends BaseController {
     CoursePageService coursePageService;
 
     /**
-     * 获取某一课程的所有章节页面管理的列表
-     * @param courseId
+     * 获取课程-章节页面管理的列表
      * @param pageNo
      * @param pageSize
      * @return
@@ -40,23 +39,17 @@ public class CoursePageController extends BaseController {
             @ApiImplicitParam(name = "pageNo", value = "页码", required = true, example = "1"),
             @ApiImplicitParam(name = "pageSize", value = "页大小", required = true, example = "10")
     })
-    @GetMapping("courses/{courseId}/course_pages")
-    public Result coursePageList(@PathVariable("courseId") int courseId,
-                                 int pageNo, int pageSize){
+    @GetMapping("/course_pages")
+    public Result coursePageList(int pageNo, int pageSize){
 
         PageHelper.startPage(fixPage(pageNo),fixPage(pageSize));
-        CoursePageDto coursePage = new CoursePageDto();
-        coursePage.setCourseId(courseId);
-        CoursePage coursePageEntity = CoursePageDtoMapper.INSTANCE.dtoToEntity(coursePage);
-        List<CoursePage> coursePageList = coursePageService.list(coursePageEntity);
-
+        List<CoursePage> coursePageList = coursePageService.list();
         List<CoursePageDto> coursePageDtoList = CoursePageDtoMapper.INSTANCE.entityListToDtoList(coursePageList);
         return Result.success().addData("pager",warpPage(coursePageDtoList));
     }
 
     /**
-     * 添加某一课程中的章节页面
-     * @param courseId
+     * 添加课程-章节页面
      * @param coursePage
      * @return
      */
@@ -64,43 +57,33 @@ public class CoursePageController extends BaseController {
     @ApiImplicitParams({
             @ApiImplicitParam(name = "coursePage", value = "课程-章节页面", required = true, dataType = "CoursePageDto")
     })
-    @PostMapping("course/{courseId}/course_page")
-    public Result addCoursePage(@PathVariable("courseId") int courseId,
-                                @RequestBody CoursePageDto coursePage){
+    @PostMapping("/course_page")
+    public Result addCoursePage(@RequestBody CoursePageDto coursePage){
 
         CoursePage  coursePageEntity = CoursePageDtoMapper.INSTANCE.dtoToEntity(coursePage);
-        coursePageEntity.setCourseId(courseId);
         coursePageService.save(coursePageEntity);
         return Result.success();
     }
 
     /**
-     * 删除某一课程中的指定章节页面
+     * 删除课程-章节页面
      * @param id
-     * @param courseId
-     * @param coursePage
      * @return
      */
     @ApiOperation(value = "删除课程-章节页面", consumes = "application/json")
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "coursePage", value = "课程-章节页面", required = true, dataType = "CoursePageDto")
+            @ApiImplicitParam(name = "id", value = "课程-章节页面的主键", required = true, dataType = "int")
     })
-    @DeleteMapping("/course/{courseId}/course_page/{id}")
-    public Result removeCoursePage(@PathVariable("id") int id,
-                                   @PathVariable("courseId") int courseId,
-                                   @RequestBody CoursePageDto coursePage){
+    @DeleteMapping("/course_page/{id}")
+    public Result removeCoursePage(@PathVariable("id") int id){
 
-        CoursePage  coursePageEntity = CoursePageDtoMapper.INSTANCE.dtoToEntity(coursePage);
-        coursePageEntity.setId(id);
-        coursePageEntity.setCourseId(courseId);
-        coursePageService.remove(coursePageEntity);
+        coursePageService.remove(id);
         return Result.success();
     }
 
     /**
-     * 修改某一课程中的指定章节页面
+     * 修改课程-章节页面
      * @param id
-     * @param courseId
      * @param coursePage
      * @return
      */
@@ -108,14 +91,12 @@ public class CoursePageController extends BaseController {
     @ApiImplicitParams({
             @ApiImplicitParam(name = "coursePage", value = "课程-章节页面", required = true, dataType = "CoursePageDto")
     })
-    @PutMapping("course/{courseId}/course_page/{id}")
+    @PutMapping("/course_page/{id}")
     public Result modifyCoursePage(@PathVariable("id") int id,
-                                   @PathVariable("courseId") int courseId,
                                    @RequestBody CoursePageDto coursePage){
 
         CoursePage  coursePageEntity = CoursePageDtoMapper.INSTANCE.dtoToEntity(coursePage);
         coursePageEntity.setId(id);
-        coursePageEntity.setCourseId(courseId);
         coursePageService.modify(coursePageEntity);
         return Result.success();
     }

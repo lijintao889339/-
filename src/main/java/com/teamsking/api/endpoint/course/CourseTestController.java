@@ -29,11 +29,7 @@ public class CourseTestController extends BaseController {
     CourseTestService courseTestService;
 
     /**
-     * 获取某一课程下面的测验
-     * @param courseId
-     * @param sectionId
-     * @param chapterId
-     * @param schoolId
+     * 获取课程-测验
      * @param pageNo
      * @param pageSize
      * @return
@@ -43,33 +39,17 @@ public class CourseTestController extends BaseController {
             @ApiImplicitParam(name = "pageNo", value = "页码", required = true, example = "1"),
             @ApiImplicitParam(name = "pageSize", value = "页大小", required = true, example = "10")
     })
-    @GetMapping("school/{schoolId}/course/{courseId}/chapter/{chapterId}/section/{sectionId}/course_tests")
-    public Result courseTestList(@PathVariable("schoolId") int schoolId,
-                                 @PathVariable("courseId") int courseId,
-                                 @PathVariable("chapterId") int chapterId,
-                                 @PathVariable("sectionId") int sectionId,
-
-                                 int pageNo, int pageSize){
+    @GetMapping("/course_tests")
+    public Result courseTestList(int pageNo, int pageSize){
 
         PageHelper.startPage(fixPage(pageNo),fixPage(pageSize));
-        CourseTestDto courseTest = new CourseTestDto();
-        courseTest.setCourseId(courseId);
-        courseTest.setSectionId(sectionId);
-        courseTest.setChapterId(chapterId);
-        courseTest.setSchoolId(schoolId);
-        CourseTest courseTestEntity = CourseTestDtoMapper.INSTANCE.dtoToEntity(courseTest);
-        List<CourseTest> courseTestList = courseTestService.list(courseTestEntity);
-
+        List<CourseTest> courseTestList = courseTestService.list();
         List<CourseTestDto> courseTestDtoList = CourseTestDtoMapper.INSTANCE.entityListToDtoList(courseTestList);
         return Result.success().addData("pager",warpPage(courseTestDtoList));
     }
 
     /**
-     * 给某一课程添加测验
-     * @param courseId
-     * @param sectionId
-     * @param chapterId
-     * @param schoolId
+     * 添加课程-测验
      * @param courseTest
      * @return
      */
@@ -77,61 +57,33 @@ public class CourseTestController extends BaseController {
     @ApiImplicitParams({
             @ApiImplicitParam(name = "courseTest", value = "课程-测验", required = true, dataType = "CourseTestDto")
     })
-    @PostMapping("school/{schoolId}/course/{courseId}/chapter/{chapterId}/section/{sectionId}/course_test")
-    public Result addCourseTest(@PathVariable("schoolId") int schoolId,
-                                @PathVariable("courseId") int courseId,
-                                @PathVariable("chapterId") int chapterId,
-                                @PathVariable("sectionId") int sectionId,
-                                @RequestBody CourseTestDto courseTest){
+    @PostMapping("/course_test")
+    public Result addCourseTest(@RequestBody CourseTestDto courseTest){
 
         CourseTest courseTestEntity = CourseTestDtoMapper.INSTANCE.dtoToEntity(courseTest);
-        courseTestEntity.setCourseId(courseId);
-        courseTestEntity.setSectionId(sectionId);
-        courseTestEntity.setChapterId(chapterId);
-        courseTestEntity.setSchoolId(schoolId);
         courseTestService.save(courseTestEntity);
         return Result.success();
     }
 
     /**
-     * 删除某一课程的指定测验
+     * 删除课程-测验
      * @param id
-     * @param courseId
-     * @param sectionId
-     * @param chapterId
-     * @param schoolId
-     * @param courseTest
      * @return
      */
     @ApiOperation(value = "删除课程-测试", consumes = "application/json")
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "courseTest", value = "课程-测验", required = true, dataType = "CourseTestDto")
+            @ApiImplicitParam(name = "id", value = "课程-测验的主键", required = true, dataType = "int")
     })
-    @DeleteMapping("school/{schoolId}/course/{courseId}/chapter/{chapterId}/section/{sectionId}/course_test/{id}")
-    public Result removeCourseTest(@PathVariable("schoolId") int schoolId,
-                                   @PathVariable("courseId") int courseId,
-                                   @PathVariable("chapterId") int chapterId,
-                                   @PathVariable("sectionId") int sectionId,
-                                   @PathVariable("id") int id,
-                                   @RequestBody CourseTestDto courseTest){
+    @DeleteMapping("/course_test/{id}")
+    public Result removeCourseTest(@PathVariable("id") int id){
 
-        CourseTest courseTestEntity = CourseTestDtoMapper.INSTANCE.dtoToEntity(courseTest);
-        courseTestEntity.setId(id);
-        courseTestEntity.setCourseId(courseId);
-        courseTestEntity.setSectionId(sectionId);
-        courseTestEntity.setChapterId(chapterId);
-        courseTestEntity.setSchoolId(schoolId);
-        courseTestService.remove(courseTestEntity);
+        courseTestService.remove(id);
         return Result.success();
     }
 
     /**
-     * 修改某一课程的指定测验
+     * 修改课程-测验
      * @param id
-     * @param courseId
-     * @param sectionId
-     * @param chapterId
-     * @param schoolId
      * @param courseTest
      * @return
      */
@@ -139,20 +91,12 @@ public class CourseTestController extends BaseController {
     @ApiImplicitParams({
             @ApiImplicitParam(name = "courseTest", value = "课程-测验", required = true, dataType = "CourseTestDto")
     })
-    @PutMapping("school/{schoolId}/course/{courseId}/chapter/{chapterId}/section/{sectionId}/course_test/{id}")
-    public Result modifyCourseTest(@PathVariable("schoolId") int schoolId,
-                                   @PathVariable("courseId") int courseId,
-                                   @PathVariable("chapterId") int chapterId,
-                                   @PathVariable("sectionId") int sectionId,
-                                   @PathVariable("id") int id,
+    @PutMapping("/course_test/{id}")
+    public Result modifyCourseTest(@PathVariable("id") int id,
                                    @RequestBody CourseTestDto courseTest){
 
         CourseTest courseTestEntity = CourseTestDtoMapper.INSTANCE.dtoToEntity(courseTest);
         courseTestEntity.setId(id);
-        courseTestEntity.setCourseId(courseId);
-        courseTestEntity.setSectionId(sectionId);
-        courseTestEntity.setChapterId(chapterId);
-        courseTestEntity.setSchoolId(schoolId);
         courseTestService.modify(courseTestEntity);
         return Result.success();
     }

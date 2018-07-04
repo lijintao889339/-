@@ -20,12 +20,11 @@ public class CoursePageService {
 
     /**
      * 获取课程-章节页面
-     * @param coursePage
      * @return
      */
-    public List<CoursePage> list(CoursePage coursePage){
+    public List<CoursePage> list(){
 
-        return coursePageMapper.select(coursePage);
+        return coursePageMapper.selectAll();
     }
 
     /**
@@ -40,12 +39,12 @@ public class CoursePageService {
 
     /**
      * 删除课程-章节页面
-     * @param coursePage
+     * @param id
      * @return
      */
-    public int remove(CoursePage coursePage){
+    public int remove(int id){
 
-        return coursePageMapper.delete(coursePage);
+        return coursePageMapper.deleteByPrimaryKey(id);
     }
 
     /**

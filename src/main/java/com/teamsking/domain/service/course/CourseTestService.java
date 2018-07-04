@@ -20,12 +20,11 @@ public class CourseTestService {
 
     /**
      * 获取课程-测验列表
-     * @param courseTest
      * @return
      */
-    public List<CourseTest> list(CourseTest courseTest){
+    public List<CourseTest> list(){
 
-        return courseTestMapper.select(courseTest);
+        return courseTestMapper.selectAll();
     }
 
     /**
@@ -40,12 +39,12 @@ public class CourseTestService {
 
     /**
      *删除课程-测验
-     * @param courseTest
+     * @param id
      * @return
      */
-    public int remove(CourseTest courseTest){
+    public int remove(int id){
 
-        return courseTestMapper.delete(courseTest);
+        return courseTestMapper.deleteByPrimaryKey(id);
     }
 
     /**
