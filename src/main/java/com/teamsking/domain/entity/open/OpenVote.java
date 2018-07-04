@@ -12,6 +12,7 @@ public class OpenVote {
      *
      * @mbg.generated Tue Jun 26 17:08:40 CST 2018
      */
+    @Id
     private Integer id;
 
     /**
