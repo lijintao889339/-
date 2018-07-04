@@ -21,11 +21,11 @@ public class SysRoleMenuService {
 
     /**
      * 查询角色权限列表
-     * @param
+     *
      * @return
      */
-    public List<SysRoleMenu> list(SysRoleMenu sysRoleMenu) {
-        return sysRoleMenuMapper.select(sysRoleMenu);
+    public List<SysRoleMenu> list() {
+        return sysRoleMenuMapper.selectAll();
 
     }
 
@@ -42,11 +42,11 @@ public class SysRoleMenuService {
 
     /**
      * 角色权限删除操作
-     * @param sysRoleMenu
+     * @param id
      * @return
      */
-    public int remove(SysRoleMenu sysRoleMenu){
-        return sysRoleMenuMapper.delete(sysRoleMenu);
+    public int remove(Integer id){
+        return sysRoleMenuMapper.deleteByPrimaryKey(id);
     }
 
     /**

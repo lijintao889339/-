@@ -38,13 +38,11 @@ public class SysRoleMenuController extends BaseController {
             @ApiImplicitParam(name = "pageNo", value = "页码", required = true, example = "1"),
             @ApiImplicitParam(name = "pageSize", value = "页大小", required = true, example = "10")
     })
-    @GetMapping("/sys_role_menus/sys_role/{roleId}")
-    public Result sysRoleMenuList(@PathVariable int roleId,int pageNo, int pageSize) {
+    @GetMapping("/sys_role_menus")
+    public Result sysRoleMenuList(int pageNo, int pageSize) {
         PageHelper.startPage(fixPage(pageNo), fixPage(pageSize));
-        SysRoleMenuDto sysRoleMenu = new SysRoleMenuDto();
-        SysRoleMenu sysRoleMenuEntity = SysRoleMenuDtoMapper.INSTANCE.dtoToEntity(sysRoleMenu);
-        sysRoleMenuEntity.setRoleId(roleId);
-        List<SysRoleMenu> sysRoleMenuList = sysRoleMenuService.list(sysRoleMenuEntity);
+
+        List<SysRoleMenu> sysRoleMenuList = sysRoleMenuService.list();
         List<SysRoleMenuDto> sysRoleMenuDtoList = SysRoleMenuDtoMapper.INSTANCE.entityListToDtoList(sysRoleMenuList);
         return Result.success().addData("pager", warpPage(sysRoleMenuDtoList));
     }
@@ -54,10 +52,10 @@ public class SysRoleMenuController extends BaseController {
     @ApiImplicitParams( {
             @ApiImplicitParam(name = "sysRoleMenu", value = "角色权限", required = true, dataType = "SysRoleMenuDto")
     })
-    @PostMapping("/sys_role_menu/sys_role/{roleId}")
-    public Result addSysRoleMenu(@PathVariable int roleId,@RequestBody SysRoleMenuDto sysRoleMenu) {
+    @PostMapping("/sys_role_menu")
+    public Result addSysRoleMenu(@RequestBody SysRoleMenuDto sysRoleMenu) {
         SysRoleMenu sysRoleMenuEntity = SysRoleMenuDtoMapper.INSTANCE.dtoToEntity(sysRoleMenu);
-        sysRoleMenuEntity.setRoleId(roleId);
+
         sysRoleMenuService.save(sysRoleMenuEntity);
         return Result.success();
     }
@@ -66,14 +64,10 @@ public class SysRoleMenuController extends BaseController {
     @ApiImplicitParams( {
             @ApiImplicitParam(name = "id", value = "角色权限", required = true, dataType = "Integer")
     })
-    @DeleteMapping("/sys_role_menu/{id}/sys_role/{roleId}")
-    public Result removeSysRoleMenu(@PathVariable("id") Integer id,
-                                    @PathVariable("roleId") Integer roleId,
-                                    @RequestBody SysRoleMenuDto sysRoleMenu){
-        SysRoleMenu sysRoleMenuEntity = SysRoleMenuDtoMapper.INSTANCE.dtoToEntity(sysRoleMenu);
-        sysRoleMenuEntity.setId(id);
-        sysRoleMenuEntity.setRoleId(roleId);
-        sysRoleMenuService.remove(sysRoleMenuEntity);
+    @DeleteMapping("/sys_role_menu/{id}")
+    public Result removeSysRoleMenu(@PathVariable("id") Integer id){
+
+        sysRoleMenuService.remove(id);
         return Result.success();
     }
 
@@ -82,13 +76,12 @@ public class SysRoleMenuController extends BaseController {
     @ApiImplicitParams( {
             @ApiImplicitParam(name = "sysRoleMenu", value = "角色权限", required = true, dataType = "SysRoleMenuDto")
     })
-    @PutMapping("/sys_role_menu/{id}/sys_role/{roleId}")
+    @PutMapping("/sys_role_menu/{id}")
     public Result modifySysRoleMenu(@PathVariable int id,
-                                    @PathVariable int roleId,
                                     @RequestBody SysRoleMenuDto sysRoleMenu){
         SysRoleMenu sysRoleMenuEntity = SysRoleMenuDtoMapper.INSTANCE.dtoToEntity(sysRoleMenu);
         sysRoleMenuEntity.setId(id);
-        sysRoleMenuEntity.setRoleId(roleId);
+
         sysRoleMenuService.modify(sysRoleMenuEntity);
         return Result.success();
     }

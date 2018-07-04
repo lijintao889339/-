@@ -5,7 +5,6 @@ import com.teamsking.api.dto.course.CourseWareDto;
 import com.teamsking.api.dto.course.CourseWareDtoMapper;
 import com.teamsking.api.endpoint.BaseController;
 import com.teamsking.domain.entity.course.CourseWare;
-import com.teamsking.domain.repository.CourseWareMapper;
 import com.teamsking.domain.service.course.CourseWareService;
 import com.teamsking.util.Result;
 import io.swagger.annotations.Api;
