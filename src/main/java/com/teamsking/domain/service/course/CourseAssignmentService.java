@@ -17,12 +17,12 @@ public class CourseAssignmentService {
 
     /**
      * 获取课程-作业列表
-     * @param courseAssignment
+     *
      * @return
      */
-    public List<CourseAssignment> list(CourseAssignment courseAssignment){
+    public List<CourseAssignment> list(){
 
-        return courseAssignmentMapper.select(courseAssignment);
+        return courseAssignmentMapper.selectAll();
     }
 
     /**
@@ -36,11 +36,11 @@ public class CourseAssignmentService {
 
     /**
      * 删除课程-作业
-     * @param courseAssignment
+     * @param id
      * @return
      */
-    public int remove(CourseAssignment courseAssignment){
-        return courseAssignmentMapper.delete(courseAssignment);
+    public int remove(Integer id){
+        return courseAssignmentMapper.deleteByPrimaryKey(id);
 
     }
 

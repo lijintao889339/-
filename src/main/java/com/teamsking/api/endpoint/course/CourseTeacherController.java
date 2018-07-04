@@ -34,16 +34,11 @@ public class CourseTeacherController extends BaseController {
             @ApiImplicitParam(name = "pageNo", value = "页码", required = true, example = "1"),
             @ApiImplicitParam(name = "pageSize", value = "页大小", required = true, example = "10")
     })
-    @GetMapping("/sys_user/{userId}/course_teachers/course/{courseId}")
-    public Result courseTeacherList(@PathVariable int courseId,
-                                    @PathVariable int userId,
-                                    int pageNo,int pageSize){
+    @GetMapping("/course_teachers")
+    public Result courseTeacherList(int pageNo,int pageSize){
         PageHelper.startPage(fixPage(pageNo), fixPage(pageSize));
-        CourseTeacherDto courseTeacher = new CourseTeacherDto();
-        courseTeacher.setCourseId(courseId);
-        courseTeacher.setUserId(userId);
-        CourseTeacher courseTeacherEntity = CourseTeacherDtoMapper.INSTANCE.dtoToEntity(courseTeacher);
-        List<CourseTeacher> courseTeacherList = courseTeacherService.list(courseTeacherEntity);
+
+        List<CourseTeacher> courseTeacherList = courseTeacherService.list();
         List<CourseTeacherDto> courseTeacherDtoList = CourseTeacherDtoMapper.INSTANCE.entityListToDtoList(courseTeacherList);
         return Result.success().addData("pager", warpPage(courseTeacherDtoList));
 
@@ -53,13 +48,9 @@ public class CourseTeacherController extends BaseController {
     @ApiImplicitParams( {
             @ApiImplicitParam(name = "courseTeacher", value = "课程教师", required = true, dataType = "CourseTeacherDto")
     })
-    @PostMapping("/sys_user/{userId}/course_teacher/course/{courseId}")
-    public Result addCourseTeacher(@PathVariable int courseId,
-                                   @PathVariable int userId,
-                                   @RequestBody CourseTeacherDto courseTeacher){
+    @PostMapping("/course_teacher")
+    public Result addCourseTeacher(@RequestBody CourseTeacherDto courseTeacher){
         CourseTeacher courseTeacherEntity = CourseTeacherDtoMapper.INSTANCE.dtoToEntity(courseTeacher);
-        courseTeacherEntity.setCourseId(courseId);
-        courseTeacherEntity.setUserId(userId);
         courseTeacherService.save(courseTeacherEntity);
         return Result.success();
     }
@@ -67,35 +58,26 @@ public class CourseTeacherController extends BaseController {
 
     @ApiOperation(value = "删除课程-教师", consumes= "application/json")
     @ApiImplicitParams( {
-            @ApiImplicitParam(name = "courseTeacher", value = "课程教师", required = true, dataType = "CourseTeacherDto")
+            @ApiImplicitParam(name = "id", value = "课程教师", required = true, dataType = "Integer")
     })
-    @DeleteMapping("/sys_user/{userId}/course_teacher/{id}/course/{courseId}")
-    public Result removeCourseTeacher(@PathVariable int id,
-                                      @PathVariable int courseId,
-                                      @PathVariable int userId,
-                                      @RequestBody CourseTeacherDto courseTeacher){
-        CourseTeacher courseTeacherEntity = CourseTeacherDtoMapper.INSTANCE.dtoToEntity(courseTeacher);
-        courseTeacherEntity.setId(id);
-        courseTeacherEntity.setCourseId(courseId);
-        courseTeacherEntity.setUserId(userId);
-        courseTeacherService.remove(courseTeacherEntity);
+    @DeleteMapping("/course_teacher/{id}")
+    public Result removeCourseTeacher(@PathVariable int id){
+        courseTeacherService.remove(id);
         return Result.success();
 
     }
+
+
 
     @ApiOperation(value = "修改课程-教师", consumes= "application/json")
     @ApiImplicitParams( {
             @ApiImplicitParam(name = "courseTeacher", value = "课程教师", required = true, dataType = "CourseTeacherDto")
     })
-    @PutMapping("/sys_user/{userId}/course_teacher/{id}/course/{courseId}")
+    @PutMapping("/course_teacher/{id}")
     public Result modfiyCourseTeacher(@PathVariable int id,
-                                      @PathVariable int courseId,
-                                      @PathVariable int userId,
                                       @RequestBody CourseTeacherDto courseTeacher){
         CourseTeacher courseTeacherEntity = CourseTeacherDtoMapper.INSTANCE.dtoToEntity(courseTeacher);
         courseTeacherEntity.setId(id);
-        courseTeacherEntity.setCourseId(courseId);
-        courseTeacherEntity.setUserId(userId);
         courseTeacherService.modify(courseTeacherEntity);
         return Result.success();
 

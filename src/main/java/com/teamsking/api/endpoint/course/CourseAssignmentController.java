@@ -30,16 +30,11 @@ public class CourseAssignmentController extends BaseController {
             @ApiImplicitParam(name = "pageNo", value = "页码", required = true, example = "1"),
             @ApiImplicitParam(name = "pageSize", value = "页大小", required = true, example = "10")
     })
-    @GetMapping("/school/{schoolId}/course/{courseId}/course_assignments")
-    public Result courseAssignmentList(@PathVariable int courseId,
-                                       @PathVariable int schoolId,
-                                       int pageNo,int pageSize){
+    @GetMapping("/course_assignments")
+    public Result courseAssignmentList(int pageNo,int pageSize){
         PageHelper.startPage(fixPage(pageNo), fixPage(pageSize));
-        CourseAssignmentDto courseAssignment = new CourseAssignmentDto();
-        courseAssignment.setCourseId(courseId);
-        courseAssignment.setSchoolId(schoolId);
-        CourseAssignment courseAssignmentEntity = CourseAssignmentDtoMapper.INSTANCE.dtoToEntity(courseAssignment);
-        List<CourseAssignment> courseAssignmentList = courseAssignmentService.list(courseAssignmentEntity);
+
+        List<CourseAssignment> courseAssignmentList = courseAssignmentService.list();
         List<CourseAssignmentDto> courseAssignmentDtoList = CourseAssignmentDtoMapper.INSTANCE.entityListToDtoList(courseAssignmentList);
         return Result.success().addData("pager", warpPage(courseAssignmentDtoList));
 
@@ -49,32 +44,23 @@ public class CourseAssignmentController extends BaseController {
     @ApiImplicitParams( {
             @ApiImplicitParam(name = "courseAssignment", value = "课程作业", required = true, dataType = "CourseAssignmentDto")
     })
-    @PostMapping("/school/{schoolId}/course/{courseId}/course_assignment")
-    public Result addCourseAssignment(@PathVariable int courseId,
-                                      @PathVariable int schoolId,
-                                      @RequestBody CourseAssignmentDto courseAssignment){
+    @PostMapping("/course_assignment")
+    public Result addCourseAssignment(@RequestBody CourseAssignmentDto courseAssignment){
 
         CourseAssignment courseAssignmentEntity = CourseAssignmentDtoMapper.INSTANCE.dtoToEntity(courseAssignment);
-        courseAssignmentEntity.setCourseId(courseId);
-        courseAssignmentEntity.setSchoolId(schoolId);
+
         courseAssignmentService.save(courseAssignmentEntity);
         return Result.success();
     }
 
     @ApiOperation(value = "删除课程-作业", consumes= "application/json")
     @ApiImplicitParams( {
-            @ApiImplicitParam(name = "courseAssignment", value = "课程作业", required = true, dataType = "CourseAssignmentDto")
+            @ApiImplicitParam(name = "id", value = "课程作业", required = true, dataType = "Integer")
     })
-    @DeleteMapping("/school/{schoolId}/course/{courseId}/course_assignment/{id}")
-    public Result removeCourseAssignment(@PathVariable int id,
-                                         @PathVariable int courseId,
-                                         @PathVariable int schoolId,
-                                         @RequestBody CourseAssignmentDto courseAssignment){
-        CourseAssignment courseAssignmentEntity = CourseAssignmentDtoMapper.INSTANCE.dtoToEntity(courseAssignment);
-        courseAssignmentEntity.setId(id);
-        courseAssignmentEntity.setCourseId(courseId);
-        courseAssignmentEntity.setSchoolId(schoolId);
-        courseAssignmentService.remove(courseAssignmentEntity);
+    @DeleteMapping("/course_assignment/{id}")
+    public Result removeCourseAssignment(@PathVariable int id){
+
+        courseAssignmentService.remove(id);
         return Result.success();
 
     }
@@ -83,16 +69,12 @@ public class CourseAssignmentController extends BaseController {
     @ApiImplicitParams( {
             @ApiImplicitParam(name = "courseAssignment", value = "课程作业", required = true, dataType = "CourseAssignmentDto")
     })
-    @PutMapping("/school/{schoolId}/course/{courseId}/course_assignment/{id}")
+    @PutMapping("/course_assignment/{id}")
     public Result modifyCourseAssignment(@PathVariable int id,
-                                         @PathVariable int courseId,
-                                         @PathVariable int schoolId,
                                          @RequestBody CourseAssignmentDto courseAssignment){
 
         CourseAssignment courseAssignmentEntity = CourseAssignmentDtoMapper.INSTANCE.dtoToEntity(courseAssignment);
         courseAssignmentEntity.setId(id);
-        courseAssignmentEntity.setCourseId(courseId);
-        courseAssignmentEntity.setSchoolId(schoolId);
         courseAssignmentService.modify(courseAssignmentEntity);
         return Result.success();
     }

@@ -17,11 +17,11 @@ public class CourseTeacherService {
 
     /**
      * 获取课程-教师列表
-     * @param courseTeacher
+     *
      * @return
      */
-    public List<CourseTeacher> list(CourseTeacher courseTeacher){
-        return courseTeacherMapper.select(courseTeacher);
+    public List<CourseTeacher> list(){
+        return courseTeacherMapper.selectAll();
     }
 
     /**
@@ -35,11 +35,11 @@ public class CourseTeacherService {
 
     /**
      * 删除课程-教师
-     * @param courseTeacher
+     * @param id
      * @return
      */
-    public int remove(CourseTeacher courseTeacher){
-        return courseTeacherMapper.delete(courseTeacher);
+    public int remove(Integer id){
+        return courseTeacherMapper.deleteByPrimaryKey(id);
 
     }
 
