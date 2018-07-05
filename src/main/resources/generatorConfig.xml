@@ -32,179 +32,79 @@
                              targetProject="src/main/java"
                              type="XMLMAPPER"/>
 
-        <table tableName="announce">
+        <table tableName="recommend_cooperation">
             <generatedKey column="id" sqlStatement="JDBC"/>
         </table>
 
-        <table tableName="announce_user">
+        <table tableName="recommend_open">
             <generatedKey column="id" sqlStatement="JDBC"/>
         </table>
 
-        <table tableName="category">
+        <table tableName="recommend_teacher">
             <generatedKey column="id" sqlStatement="JDBC"/>
         </table>
 
-        <table tableName="course">
+        <table tableName="school">
             <generatedKey column="id" sqlStatement="JDBC"/>
         </table>
 
-        <table tableName="course_assignment">
+        <table tableName="school_about">
             <generatedKey column="id" sqlStatement="JDBC"/>
         </table>
 
-        <table tableName="course_chapter">
+        <table tableName="school_carousel">
             <generatedKey column="id" sqlStatement="JDBC"/>
         </table>
 
-        <table tableName="course_item">
+        <table tableName="school_friendship">
             <generatedKey column="id" sqlStatement="JDBC"/>
         </table>
 
-        <table tableName="course_page">
+        <table tableName="school_manager">
             <generatedKey column="id" sqlStatement="JDBC"/>
         </table>
 
-        <table tableName="course_section">
+        <table tableName="school_news">
             <generatedKey column="id" sqlStatement="JDBC"/>
         </table>
 
-        <table tableName="course_teacher">
+        <table tableName="study_note">
             <generatedKey column="id" sqlStatement="JDBC"/>
         </table>
 
-        <table tableName="course_test">
+        <table tableName="study_questionnaire">
             <generatedKey column="id" sqlStatement="JDBC"/>
         </table>
 
-        <table tableName="course_test_quiz">
+        <table tableName="study_score">
             <generatedKey column="id" sqlStatement="JDBC"/>
         </table>
 
-        <table tableName="course_topic">
+        <table tableName="study_visit">
             <generatedKey column="id" sqlStatement="JDBC"/>
         </table>
 
-        <table tableName="course_ware">
+        <table tableName="study_vote">
             <generatedKey column="id" sqlStatement="JDBC"/>
         </table>
 
-       <table tableName="node">
+        <table tableName="study_wrong_question">
             <generatedKey column="id" sqlStatement="JDBC"/>
         </table>
 
-        <table tableName="node_folder">
+        <table tableName="sys_config">
             <generatedKey column="id" sqlStatement="JDBC"/>
         </table>
 
-        <table tableName="open">
+        <table tableName="tag">
             <generatedKey column="id" sqlStatement="JDBC"/>
         </table>
 
-        <table tableName="open_activity">
+        <table tableName="user_category">
             <generatedKey column="id" sqlStatement="JDBC"/>
         </table>
 
-        <table tableName="open_assignment">
-            <generatedKey column="id" sqlStatement="JDBC"/>
-        </table>
-
-        <table tableName="open_assistant">
-            <generatedKey column="id" sqlStatement="JDBC"/>
-        </table>
-
-        <table tableName="open_category">
-            <generatedKey column="id" sqlStatement="JDBC"/>
-        </table>
-
-        <table tableName="open_chapter">
-            <generatedKey column="id" sqlStatement="JDBC"/>
-        </table>
-
-        <table tableName="open_cover">
-            <generatedKey column="id" sqlStatement="JDBC"/>
-        </table>
-
-        <table tableName="open_explain">
-            <generatedKey column="id" sqlStatement="JDBC"/>
-        </table>
-
-        <table tableName="open_forum">
-            <generatedKey column="id" sqlStatement="JDBC"/>
-        </table>
-
-        <table tableName="open_group">
-            <generatedKey column="id" sqlStatement="JDBC"/>
-        </table>
-
-        <table tableName="open_item">
-            <generatedKey column="id" sqlStatement="JDBC"/>
-        </table>
-
-        <table tableName="open_page">
-            <generatedKey column="id" sqlStatement="JDBC"/>
-        </table>
-
-        <table tableName="open_question_option">
-            <generatedKey column="id" sqlStatement="JDBC"/>
-        </table>
-
-        <table tableName="open_question">
-            <generatedKey column="id" sqlStatement="JDBC"/>
-        </table>
-
-        <table tableName="open_question_subject">
-            <generatedKey column="id" sqlStatement="JDBC"/>
-        </table>
-
-        <table tableName="open_section">
-            <generatedKey column="id" sqlStatement="JDBC"/>
-        </table>
-
-        <table tableName="open_set">
-            <generatedKey column="id" sqlStatement="JDBC"/>
-        </table>
-
-        <table tableName="open_teacher">
-            <generatedKey column="id" sqlStatement="JDBC"/>
-        </table>
-
-        <table tableName="open_test">
-            <generatedKey column="id" sqlStatement="JDBC"/>
-        </table>
-
-        <table tableName="open_test_quiz">
-            <generatedKey column="id" sqlStatement="JDBC"/>
-        </table>
-
-        <table tableName="open_topic">
-            <generatedKey column="id" sqlStatement="JDBC"/>
-        </table>
-
-        <table tableName="open_user">
-            <generatedKey column="id" sqlStatement="JDBC"/>
-        </table>
-
-        <table tableName="open_video_quiz">
-            <generatedKey column="id" sqlStatement="JDBC"/>
-        </table>
-
-        <table tableName="open_vote">
-            <generatedKey column="id" sqlStatement="JDBC"/>
-        </table>
-
-        <table tableName="open_vote_option">
-            <generatedKey column="id" sqlStatement="JDBC"/>
-        </table>
-
-        <table tableName="open_ware">
-            <generatedKey column="id" sqlStatement="JDBC"/>
-        </table>
-
-        <table tableName="quiz">
-            <generatedKey column="id" sqlStatement="JDBC"/>
-        </table>
-
-        <table tableName="quiz_option">
+        <table tableName="user_tag">
             <generatedKey column="id" sqlStatement="JDBC"/>
         </table>
     </context>
