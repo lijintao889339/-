@@ -51,7 +51,7 @@ public class SysMenuController extends BaseController {
         return Result.success();
     }
 
-    @ApiOperation(value = "删除系统菜单",produces = "application/json")
+    @ApiOperation(value = "删除系统菜单",consumes = "application/json")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "id",value = "系统菜单",required = true,dataType = "Integer")
     })
@@ -61,7 +61,7 @@ public class SysMenuController extends BaseController {
         return Result.success();
     }
 
-    @ApiOperation(value = "修改系统菜单",produces = "application/json")
+    @ApiOperation(value = "修改系统菜单",consumes = "application/json")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "sysMenu",value = "系统菜单",required = true,dataType = "SysMenuDto")
     })
