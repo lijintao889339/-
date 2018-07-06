@@ -12,6 +12,7 @@ public class SchoolCarousel {
      *
      * @mbg.generated Thu Jul 05 21:18:43 CST 2018
      */
+    @Id
     private Integer id;
 
     /**
