@@ -1,4 +1,4 @@
-package com.teamsking.domain.entity;
+package com.teamsking.domain.entity.study;
 
 import java.math.BigDecimal;
 import javax.persistence.*;
