@@ -1,9 +1,8 @@
 package com.teamsking.api.dto.tag;
 
 import com.teamsking.api.dto.Dto;
-import lombok.Data;
-
 import java.util.Date;
+import lombok.Data;
 
 @Data
 public class UserTagDto extends Dto {

@@ -2,10 +2,9 @@ package com.teamsking.api.dto.open;
 
 
 import com.teamsking.domain.entity.open.OpenItem;
+import java.util.List;
 import org.mapstruct.Mapper;
 import org.mapstruct.factory.Mappers;
-
-import java.util.List;
 
 @Mapper
 public interface OpenItemDtoMapper {

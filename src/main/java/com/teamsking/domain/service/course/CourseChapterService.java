@@ -2,11 +2,10 @@ package com.teamsking.domain.service.course;
 
 import com.teamsking.domain.entity.course.CourseChapter;
 import com.teamsking.domain.repository.CourseChapterMapper;
+import java.util.List;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
 
 /**
 *@author linhao

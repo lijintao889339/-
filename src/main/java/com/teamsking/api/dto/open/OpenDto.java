@@ -1,10 +1,9 @@
 package com.teamsking.api.dto.open;
 
 import com.teamsking.api.dto.Dto;
-import lombok.Data;
-
 import java.math.BigDecimal;
 import java.util.Date;
+import lombok.Data;
 
 @Data
 public class OpenDto extends Dto {

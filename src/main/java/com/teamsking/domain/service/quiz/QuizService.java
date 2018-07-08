@@ -2,11 +2,10 @@ package com.teamsking.domain.service.quiz;
 
 import com.teamsking.domain.entity.quiz.Quiz;
 import com.teamsking.domain.repository.QuizMapper;
+import java.util.List;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
 
 /**
 *@author linhao

@@ -1,6 +1,7 @@
 package com.teamsking.domain.entity.open;
 
-import javax.persistence.*;
+import javax.persistence.Id;
+import javax.persistence.Table;
 
 @Table(name = "`open_forum`")
 public class OpenForum {

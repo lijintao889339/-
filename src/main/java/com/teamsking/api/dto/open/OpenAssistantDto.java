@@ -2,9 +2,8 @@ package com.teamsking.api.dto.open;
 
 
 import com.teamsking.api.dto.Dto;
-import lombok.Data;
-
 import java.util.Date;
+import lombok.Data;
 
 @Data
 public class OpenAssistantDto extends Dto {

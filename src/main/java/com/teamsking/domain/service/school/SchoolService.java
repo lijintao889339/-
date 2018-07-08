@@ -2,11 +2,10 @@ package com.teamsking.domain.service.school;
 
 import com.teamsking.domain.entity.school.School;
 import com.teamsking.domain.repository.SchoolMapper;
+import java.util.List;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
 
 /**
 *@author linhao

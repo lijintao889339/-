@@ -1,6 +1,7 @@
 package com.teamsking.domain.entity.sys;
 
-import javax.persistence.*;
+import javax.persistence.Id;
+import javax.persistence.Table;
 
 @Table(name = "`sys_config`")
 public class SysConfig {

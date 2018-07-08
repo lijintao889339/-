@@ -2,10 +2,9 @@ package com.teamsking.api.dto.category;
 
 
 import com.teamsking.domain.entity.category.UserCategory;
+import java.util.List;
 import org.mapstruct.Mapper;
 import org.mapstruct.factory.Mappers;
-
-import java.util.List;
 
 @Mapper
 public interface UserCategoryDtoMapper {

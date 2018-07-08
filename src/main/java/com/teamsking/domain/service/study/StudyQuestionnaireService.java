@@ -2,11 +2,10 @@ package com.teamsking.domain.service.study;
 
 import com.teamsking.domain.entity.study.StudyQuestionnaire;
 import com.teamsking.domain.repository.StudyQuestionnaireMapper;
+import java.util.List;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
 
 @Slf4j
 @Service

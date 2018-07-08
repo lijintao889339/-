@@ -1,7 +1,8 @@
 package com.teamsking.domain.entity.tag;
 
 import java.util.Date;
-import javax.persistence.*;
+import javax.persistence.Id;
+import javax.persistence.Table;
 
 @Table(name = "`tag`")
 public class Tag {

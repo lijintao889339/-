@@ -1,10 +1,8 @@
 package com.teamsking.api.dto.quiz;
 
 import com.teamsking.api.dto.Dto;
-import lombok.Data;
-import org.springframework.beans.factory.annotation.Autowired;
-
 import java.util.Date;
+import lombok.Data;
 
 /**
 *@author linhao

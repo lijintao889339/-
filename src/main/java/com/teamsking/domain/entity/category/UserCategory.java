@@ -1,6 +1,7 @@
 package com.teamsking.domain.entity.category;
 
-import javax.persistence.*;
+import javax.persistence.Id;
+import javax.persistence.Table;
 
 @Table(name = "`user_category`")
 public class UserCategory {

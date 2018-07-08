@@ -1,6 +1,7 @@
 package com.teamsking.domain.entity.course;
 
-import javax.persistence.*;
+import javax.persistence.Id;
+import javax.persistence.Table;
 
 @Table(name = "`course_test`")
 public class CourseTest {

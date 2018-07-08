@@ -1,10 +1,9 @@
 package com.teamsking.api.dto.quiz;
 
 import com.teamsking.domain.entity.quiz.QuizOption;
+import java.util.List;
 import org.mapstruct.Mapper;
 import org.mapstruct.factory.Mappers;
-
-import java.util.List;
 
 /**
 *@author linhao

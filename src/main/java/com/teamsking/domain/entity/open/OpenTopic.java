@@ -1,7 +1,7 @@
 package com.teamsking.domain.entity.open;
 
 import java.util.Date;
-import javax.persistence.*;
+import javax.persistence.Table;
 
 @Table(name = "`open_topic`")
 public class OpenTopic {

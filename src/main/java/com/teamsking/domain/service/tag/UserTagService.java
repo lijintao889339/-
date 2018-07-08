@@ -2,11 +2,10 @@ package com.teamsking.domain.service.tag;
 
 import com.teamsking.domain.entity.tag.UserTag;
 import com.teamsking.domain.repository.UserTagMapper;
+import java.util.List;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
 
 @Slf4j
 @Service

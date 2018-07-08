@@ -1,8 +1,7 @@
 package com.teamsking.api.dto.course;
 
-import lombok.Data;
-
 import java.util.Date;
+import lombok.Data;
 
 /**
 *@author linhao

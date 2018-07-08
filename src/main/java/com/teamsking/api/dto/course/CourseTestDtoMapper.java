@@ -1,10 +1,9 @@
 package com.teamsking.api.dto.course;
 
 import com.teamsking.domain.entity.course.CourseTest;
+import java.util.List;
 import org.mapstruct.Mapper;
 import org.mapstruct.factory.Mappers;
-
-import java.util.List;
 
 /**
 *@author linhao

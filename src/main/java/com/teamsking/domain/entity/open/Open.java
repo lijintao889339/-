@@ -2,7 +2,8 @@ package com.teamsking.domain.entity.open;
 
 import java.math.BigDecimal;
 import java.util.Date;
-import javax.persistence.*;
+import javax.persistence.Id;
+import javax.persistence.Table;
 
 @Table(name = "`open`")
 public class Open {

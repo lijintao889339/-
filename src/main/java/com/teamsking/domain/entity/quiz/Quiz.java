@@ -1,7 +1,8 @@
 package com.teamsking.domain.entity.quiz;
 
 import java.util.Date;
-import javax.persistence.*;
+import javax.persistence.Id;
+import javax.persistence.Table;
 
 @Table(name = "`quiz`")
 public class Quiz {

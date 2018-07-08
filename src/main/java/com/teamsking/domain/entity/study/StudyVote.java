@@ -1,7 +1,8 @@
 package com.teamsking.domain.entity.study;
 
 import java.util.Date;
-import javax.persistence.*;
+import javax.persistence.Id;
+import javax.persistence.Table;
 
 @Table(name = "`study_vote`")
 public class StudyVote {

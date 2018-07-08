@@ -1,12 +1,9 @@
 package com.teamsking.api.dto.course;
 
 import com.teamsking.domain.entity.course.CourseTopic;
-import lombok.extern.slf4j.Slf4j;
+import java.util.List;
 import org.mapstruct.Mapper;
 import org.mapstruct.factory.Mappers;
-import org.springframework.stereotype.Service;
-
-import java.util.List;
 
 /**
 *@author linhao

@@ -3,8 +3,6 @@ package com.teamsking.api.dto.course;
 import com.teamsking.api.dto.Dto;
 import lombok.Data;
 
-import javax.persistence.Id;
-
 /**
 *@author linhao
 */
