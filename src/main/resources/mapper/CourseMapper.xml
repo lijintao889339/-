@@ -23,5 +23,7 @@
     <result column="update_id" jdbcType="INTEGER" property="updateId" />
     <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
     <result column="delete_status" jdbcType="INTEGER" property="deleteStatus" />
+    <result column="course_free" javaType="INTEGER" property="courseFree"/>
   </resultMap>
+
 </mapper>

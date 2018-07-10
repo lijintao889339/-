@@ -39,4 +39,6 @@ public class CourseDto extends Dto {
 
     private Integer deleteStatus;
 
+    private Integer courseFree;
+
 }
