@@ -18,3 +18,5 @@ pagehelper:
     reasonable: true
     supportMethodsArguments: true
     params: count=countSql
+mybatis:
+  mapperLocations: classpath:mapper/*.xml
