@@ -159,6 +159,17 @@ public class Course {
      *
      * @mbg.generated Tue Jun 26 17:08:40 CST 2018
      */
+
+    private Integer courseFree;
+
+    public Integer getCourseFree() {
+        return courseFree;
+    }
+
+    public void setCourseFree(Integer courseFree) {
+        this.courseFree = courseFree;
+    }
+
     public Integer getId() {
         return id;
     }
