@@ -58,6 +58,7 @@ public class CourseService {
                 int courseId = (Integer) openNum.get("courseId");
                 if (courseId == course.getId()) {
                     courseListViewDto.setOpenNum(((Long) openNum.get("count")).intValue());
+                    break;
                 }
             }
             resultList.add(courseListViewDto);
