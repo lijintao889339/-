@@ -22,6 +22,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
+
 @RestController
 @Api(tags = "课程操作接口")
 @Slf4j
@@ -58,10 +60,9 @@ public class CourseController extends BaseController {
     })
     @DeleteMapping("/course/{id}")
     public Result removeCourse(@PathVariable("id") int id) {
-        courseService.remove(id);
+        courseService.remove1(id);
         return Result.success();
     }
-
 
     @ApiOperation(value = "修改课程", produces = "application/json")
     @ApiImplicitParams( {

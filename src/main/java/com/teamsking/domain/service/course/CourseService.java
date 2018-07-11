@@ -6,6 +6,7 @@ import com.teamsking.api.dto.course.CourseDtoMapper;
 import com.teamsking.api.dto.course.CourseListViewDto;
 import com.teamsking.domain.entity.course.Course;
 import com.teamsking.domain.entity.course.CourseTeacher;
+import com.teamsking.domain.entity.open.Open;
 import com.teamsking.domain.repository.CourseMapper;
 import com.teamsking.domain.repository.OpenMapper;
 import java.util.List;
@@ -94,6 +95,20 @@ public class CourseService {
      */
     public int modify(Course course) {
         return courseMapper.updateByPrimaryKeySelective(course);
+    }
+
+    /**
+     * 根据课程ID删除课程及其下面的班次
+     * @param id
+     */
+    public int remove1(int id) {
+
+        Open open = new Open();
+        open.setCourseId(id);
+        int deleteOpenCount = openMapper.delete(open);
+
+        int count = courseMapper.deleteByPrimaryKey(id);
+        return count;
     }
 
 }
