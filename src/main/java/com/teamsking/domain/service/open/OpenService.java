@@ -1,6 +1,7 @@
 package com.teamsking.domain.service.open;
 
 
+import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.google.common.collect.Lists;
 import com.teamsking.api.dto.open.OPenListViewDto;
@@ -13,6 +14,7 @@ import com.teamsking.domain.entity.school.School;
 import com.teamsking.domain.repository.CourseMapper;
 import com.teamsking.domain.repository.OpenMapper;
 
+import com.teamsking.domain.service.BaseService;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -25,7 +27,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 @Slf4j
-public class OpenService {
+public class OpenService extends BaseService {
 
     @Autowired
     OpenMapper openMapper;
@@ -41,9 +43,10 @@ public class OpenService {
 
     /**
      * 获取班次管理列表
+     *
      * @return
      */
-    public List<Open> list(){
+    public List<Open> list() {
 
         return openMapper.selectAll();
 
@@ -51,39 +54,43 @@ public class OpenService {
 
     /**
      * 添加班次管理
+     *
      * @param open
      * @return
      */
-    public int save(Open open){
+    public int save(Open open) {
         return openMapper.insert(open);
     }
 
     /**
      * 删除班次管理
+     *
      * @param id
      * @return
      */
-    public int remove(Integer id){
+    public int remove(Integer id) {
         return openMapper.deleteByPrimaryKey(id);
     }
 
     /**
-     *  修改班次管理
+     * 修改班次管理
+     *
      * @param open
      * @return
      */
-    public int modify(Open open){
+    public int modify(Open open) {
         return openMapper.updateByPrimaryKeySelective(open);
     }
 
     /**
      * 查询课程下面的班次列表
+     *
      * @param pageNo
      * @param pageSize
      * @param courseId
      * @return
      */
-    public List<OPenListViewDto> listByCourseId(int pageNo, int pageSize, int courseId){
+    public List<OPenListViewDto> listByCourseId(int pageNo, int pageSize, int courseId) {
 
         List<Integer> shcoolIds = Lists.newArrayList();
         List<OPenListViewDto> resultList = Lists.newArrayList();
@@ -97,7 +104,7 @@ public class OpenService {
         List<Open> openList = openMapper.select(Open);
 
         //遍历班次
-        for (Open open: openList) {
+        for (Open open : openList) {
             shcoolIds.add(open.getSchoolId());
             openIds.add(open.getId());
         }
@@ -116,25 +123,25 @@ public class OpenService {
         course.setId(courseId);
         Course courseOne = courseMapper.selectOne(course);
 
-        for (Open open: openList) {
+        for (Open open : openList) {
             OPenListViewDto oPenListViewDto = OpenDtoMapper.INSTANCE.entityToListViewDto(open);
 
-            for (School school : schoolList){
-                if (school.getId().intValue() == open.getSchoolId().intValue()){
+            for (School school : schoolList) {
+                if (school.getId().intValue() == open.getSchoolId().intValue()) {
                     oPenListViewDto.setSchoolName(school.getSchoolName());
                     break;
                 }
             }
 
             for (OpenGroup openGroup : openGroupList) {
-                if (openGroup.getOpenId().intValue() == open.getId().intValue()){
+                if (openGroup.getOpenId().intValue() == open.getId().intValue()) {
                     oPenListViewDto.setUserCount(openGroup.getUserCount());
                     break;
                 }
             }
 
-            for (Node node : nodeList){
-                if (node.getOpenId().intValue() == open.getId().intValue()){
+            for (Node node : nodeList) {
+                if (node.getOpenId().intValue() == open.getId().intValue()) {
                     oPenListViewDto.setCoverPath(node.getCoverPath());
                     break;
                 }
@@ -144,7 +151,7 @@ public class OpenService {
             resultList.add(oPenListViewDto);
         }
 
-        return resultList;
+        return convertPage((Page) openList, resultList);
 
     }
 

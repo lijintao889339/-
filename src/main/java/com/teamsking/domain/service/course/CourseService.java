@@ -1,5 +1,6 @@
 package com.teamsking.domain.service.course;
 
+import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.google.common.collect.Lists;
 import com.teamsking.api.dto.course.CourseDtoMapper;
@@ -9,6 +10,7 @@ import com.teamsking.domain.entity.course.CourseTeacher;
 import com.teamsking.domain.entity.open.Open;
 import com.teamsking.domain.repository.CourseMapper;
 import com.teamsking.domain.repository.OpenMapper;
+import com.teamsking.domain.service.BaseService;
 import java.util.List;
 import java.util.Map;
 import lombok.extern.slf4j.Slf4j;
@@ -17,7 +19,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 @Slf4j
-public class CourseService {
+public class CourseService extends BaseService {
 
     @Autowired
     CourseMapper courseMapper;
@@ -33,7 +35,7 @@ public class CourseService {
      *
      * @return
      */
-    public List<CourseListViewDto> list(int pageNo, int pageSize) {
+    public Page list(int pageNo, int pageSize) {
         List<Integer> courseIds = Lists.newArrayList();
         List<CourseListViewDto> resultList = Lists.newArrayList();
 
@@ -64,7 +66,7 @@ public class CourseService {
             }
             resultList.add(courseListViewDto);
         }
-        return resultList;
+        return convertPage((Page)courseList,resultList);
     }
 
     /**
