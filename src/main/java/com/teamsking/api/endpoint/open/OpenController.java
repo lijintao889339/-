@@ -15,13 +15,7 @@ import io.swagger.annotations.ApiOperation;
 import java.util.List;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @Slf4j
@@ -89,6 +83,15 @@ public class OpenController extends BaseController {
     }
 
 
-
+    @ApiOperation(value = "班次列表", notes = "可分页", produces = "application/json")
+    @ApiImplicitParams( {
+            @ApiImplicitParam(name = "pageNo", paramType = "query", value = "页码", required = true, example = "1"),
+            @ApiImplicitParam(name = "pageSize", paramType = "query", value = "页大小", required = true, example = "10"),
+            @ApiImplicitParam(name = "courseId", paramType = "query", value = "课程ID", required = true, dataType = "int")
+    })
+    @GetMapping("/courseId/opens")
+    public Result courseList(@RequestParam int pageNo, @RequestParam int pageSize, @RequestParam int courseId) {
+        return Result.success().addData("pager", warpPage(openService.listByCourseId(fixPage(pageNo), fixPage(pageSize),courseId)));
+    }
 
 }

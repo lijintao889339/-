@@ -7,6 +7,7 @@ import java.util.List;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import tk.mybatis.mapper.entity.Example;
 
 @Slf4j
 @Service
@@ -59,4 +60,15 @@ public class OpenGroupService {
 
     }
 
+    /**
+     * 根据班次Ids获取学生分组信息
+     * @param openIds
+     * @return
+     */
+    public List<OpenGroup> getOpenGroupByOpenIdList(List<Integer> openIds) {
+
+        Example openGroupExample = new Example(OpenGroup.class);
+        return openGroupMapper.selectByExample(openGroupExample);
+
+    }
 }

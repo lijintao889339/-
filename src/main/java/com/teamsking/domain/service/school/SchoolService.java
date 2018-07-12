@@ -6,6 +6,7 @@ import java.util.List;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import tk.mybatis.mapper.entity.Example;
 
 /**
 *@author linhao
@@ -56,4 +57,15 @@ public class SchoolService {
         return schoolMapper.updateByPrimaryKeySelective(school);
     }
 
+    /**
+     * 根据学校Ids获取学校信息
+     * @param shcoolIds
+     * @return
+     */
+    public List<School> getSchoolByShcoolIdList(List<Integer> shcoolIds) {
+
+        Example schoolExample = new Example(School.class);
+        return schoolMapper.selectByExample(schoolExample);
+
+    }
 }

@@ -6,6 +6,7 @@ import java.util.List;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import tk.mybatis.mapper.entity.Example;
 
 @Service
 @Slf4j
@@ -50,4 +51,15 @@ public class NodeService {
         return nodeMapper.updateByPrimaryKeySelective(node);
     }
 
+    /**
+     * 根据班次Ids获取资源信息
+     * @param openIds
+     * @return
+     */
+    public List<Node> getNodeByOpenIdList(List<Integer> openIds) {
+
+        Example nodeExample = new Example(Node.class);
+        return nodeMapper.selectByExample(nodeExample);
+
+    }
 }
