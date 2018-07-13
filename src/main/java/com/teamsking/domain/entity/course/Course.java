@@ -145,6 +145,46 @@ public class Course {
 
     private boolean courseFree;
 
+    private String courseKeyword;
+
+    private Integer categoryId;
+
+    private boolean visibleRange;
+
+    private String courseSell;
+
+    public String getCourseSell() {
+        return courseSell;
+    }
+
+    public void setCourseSell(String courseSell) {
+        this.courseSell = courseSell;
+    }
+
+    public Integer getCategoryId() {
+        return categoryId;
+    }
+
+    public void setCategoryId(Integer categoryId) {
+        this.categoryId = categoryId;
+    }
+
+    public boolean isVisibleRange() {
+        return visibleRange;
+    }
+
+    public void setVisibleRange(boolean permissionSetting) {
+        this.visibleRange = visibleRange;
+    }
+
+    public String getCourseKeyword() {
+        return courseKeyword;
+    }
+
+    public void setCourseKeyword(String courseKeyword) {
+        this.courseKeyword = courseKeyword;
+    }
+
     public boolean isCourseFree() {
         return courseFree;
     }
