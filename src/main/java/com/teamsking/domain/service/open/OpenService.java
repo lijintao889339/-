@@ -96,6 +96,7 @@ public class OpenService extends BaseService {
             for (Course course : courseList){
                 if (course.getId().intValue() == open.getCourseId().intValue()){
                     oPenListViewDto.setCourseName(course.getCourseName());
+                    oPenListViewDto.setCourseSell(course.getCourseSell());
                     break;
                 }
             }
@@ -210,6 +211,7 @@ public class OpenService extends BaseService {
             }
 
             oPenListViewDto.setCourseName(courseOne.getCourseName());
+            oPenListViewDto.setCourseSell(course.getCourseSell());
             resultList.add(oPenListViewDto);
         }
 

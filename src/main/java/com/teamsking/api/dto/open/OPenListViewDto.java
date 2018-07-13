@@ -31,6 +31,9 @@ public class OPenListViewDto extends Dto {
     //所属课程（course实体类）
     private String courseName;
 
+    //课程售卖（course实体类）
+    private String courseSell;
+
     //学生数量（openGroup实体类）
     private Integer userCount;
 
