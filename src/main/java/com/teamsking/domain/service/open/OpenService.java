@@ -19,6 +19,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.teamsking.domain.repository.SchoolMapper;
+import com.teamsking.domain.service.course.CourseService;
 import com.teamsking.domain.service.node.NodeService;
 import com.teamsking.domain.service.school.SchoolService;
 import lombok.extern.slf4j.Slf4j;
@@ -40,16 +41,77 @@ public class OpenService extends BaseService {
     OpenGroupService openGroupService;
     @Autowired
     NodeService nodeService;
+    @Autowired
+    CourseService courseService;
 
     /**
      * 获取班次管理列表
-     *
      * @return
      */
-    public List<Open> list() {
+    public List<OPenListViewDto> list(int pageNo, int pageSize){
 
-        return openMapper.selectAll();
+        List<Integer> openIds = Lists.newArrayList();
+        List<Integer> courseIds = Lists.newArrayList();
+        List<Integer> shcoolIds = Lists.newArrayList();
+        List<OPenListViewDto> resultList = Lists.newArrayList();
 
+        PageHelper.startPage(pageNo, pageSize);
+
+        List<Open> openList = openMapper.selectAll();
+        for (Open open: openList) {
+            courseIds.add(open.getCourseId());
+            shcoolIds.add(open.getSchoolId());
+            openIds.add(open.getId());
+        }
+
+        //根据班次Id查询学生数量
+        List<OpenGroup> openGroupList = openGroupService.getOpenGroupByOpenIdList(openIds);
+
+        //根据班次Id查询班次封面地址
+        List<Node> nodeList = nodeService.getNodeByOpenIdList(openIds);
+
+        //根据课程Id查询课程名称
+        List<Course> courseList =  courseService.getCourseByCourseIdList(courseIds);
+
+        //根据学校Id查询学校名称
+        List<School> schoolList = schoolService.getSchoolByShcoolIdList(shcoolIds);
+
+        for (Open open: openList) {
+            OPenListViewDto oPenListViewDto = OpenDtoMapper.INSTANCE.entityToListViewDto(open);
+
+            for (OpenGroup openGroup : openGroupList) {
+                if (openGroup.getOpenId().intValue() == open.getId().intValue()){
+                    oPenListViewDto.setUserCount(openGroup.getUserCount());
+                    break;
+                }
+            }
+
+            for (Node node : nodeList){
+                if (node.getOpenId().intValue() == open.getId().intValue()){
+                    oPenListViewDto.setCoverPath(node.getCoverPath());
+                    break;
+                }
+            }
+
+            for (Course course : courseList){
+                if (course.getId().intValue() == open.getCourseId().intValue()){
+                    oPenListViewDto.setCourseName(course.getCourseName());
+                    break;
+                }
+            }
+
+            for (School school : schoolList){
+                if (school.getId().intValue() == open.getSchoolId().intValue()){
+                    oPenListViewDto.setSchoolName(school.getSchoolName());
+                    break;
+                }
+            }
+
+            resultList.add(oPenListViewDto);
+        }
+
+
+        return convertPage((Page)openList,resultList);
     }
 
     /**

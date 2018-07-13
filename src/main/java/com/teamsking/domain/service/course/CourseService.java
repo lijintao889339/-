@@ -16,6 +16,7 @@ import java.util.Map;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import tk.mybatis.mapper.entity.Example;
 
 @Service
 @Slf4j
@@ -111,6 +112,13 @@ public class CourseService extends BaseService {
 
         int count = courseMapper.deleteByPrimaryKey(id);
         return count;
+    }
+
+    public List<Course> getCourseByCourseIdList(List<Integer> courseIds) {
+
+        Example courseExample = new Example(Course.class);
+        return courseMapper.selectByExample(courseExample);
+
     }
 
 }
