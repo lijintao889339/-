@@ -26,7 +26,7 @@ public class CategoryService {
 
 
     /**
-     * 添加类别管理
+     * 创建课程分类
      * @param category
      * @return
      */

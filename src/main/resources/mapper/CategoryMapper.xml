@@ -22,5 +22,7 @@
     <result column="image_name" jdbcType="VARCHAR" property="imageName" />
     <result column="image_url" jdbcType="VARCHAR" property="imageUrl" />
     <result column="ad_desc" jdbcType="VARCHAR" property="adDesc" />
+    <result column="is_show" jdbcType="INTEGER" property="isShow" />
+    <result column="key_word" jdbcType="VARCHAR" property="keyWord"/>
   </resultMap>
 </mapper>
