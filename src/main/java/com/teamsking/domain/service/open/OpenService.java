@@ -4,7 +4,7 @@ package com.teamsking.domain.service.open;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.google.common.collect.Lists;
-import com.teamsking.api.dto.open.OPenListViewDto;
+import com.teamsking.api.dto.open.OpenListViewDto;
 import com.teamsking.api.dto.open.OpenDtoMapper;
 import com.teamsking.domain.entity.course.Course;
 import com.teamsking.domain.entity.node.Node;
@@ -15,10 +15,9 @@ import com.teamsking.domain.repository.CourseMapper;
 import com.teamsking.domain.repository.OpenMapper;
 
 import com.teamsking.domain.service.BaseService;
-import java.util.ArrayList;
+
 import java.util.List;
 
-import com.teamsking.domain.repository.SchoolMapper;
 import com.teamsking.domain.service.course.CourseService;
 import com.teamsking.domain.service.node.NodeService;
 import com.teamsking.domain.service.school.SchoolService;
@@ -53,7 +52,7 @@ public class OpenService extends BaseService {
         List<Integer> openIds = Lists.newArrayList();
         List<Integer> courseIds = Lists.newArrayList();
         List<Integer> shcoolIds = Lists.newArrayList();
-        List<OPenListViewDto> resultList = Lists.newArrayList();
+        List<OpenListViewDto> resultList = Lists.newArrayList();
 
         PageHelper.startPage(pageNo, pageSize);
 
@@ -77,7 +76,7 @@ public class OpenService extends BaseService {
         List<School> schoolList = schoolService.getSchoolByShcoolIdList(shcoolIds);
 
         for (Open open: openList) {
-            OPenListViewDto oPenListViewDto = OpenDtoMapper.INSTANCE.entityToListViewDto(open);
+            OpenListViewDto oPenListViewDto = OpenDtoMapper.INSTANCE.entityToListViewDto(open);
 
             for (OpenGroup openGroup : openGroupList) {
                 if (openGroup.getOpenId().intValue() == open.getId().intValue()){
@@ -156,7 +155,7 @@ public class OpenService extends BaseService {
     public Page listByCourseId(int pageNo, int pageSize, int courseId) {
 
         List<Integer> shcoolIds = Lists.newArrayList();
-        List<OPenListViewDto> resultList = Lists.newArrayList();
+        List<OpenListViewDto> resultList = Lists.newArrayList();
         List<Integer> openIds = Lists.newArrayList();
 
         PageHelper.startPage(pageNo, pageSize);
@@ -187,7 +186,7 @@ public class OpenService extends BaseService {
         Course courseOne = courseMapper.selectOne(course);
 
         for (Open open : openList) {
-            OPenListViewDto oPenListViewDto = OpenDtoMapper.INSTANCE.entityToListViewDto(open);
+            OpenListViewDto oPenListViewDto = OpenDtoMapper.INSTANCE.entityToListViewDto(open);
 
             for (School school : schoolList) {
                 if (school.getId().intValue() == open.getSchoolId().intValue()) {

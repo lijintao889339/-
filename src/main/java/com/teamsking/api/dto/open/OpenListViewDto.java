@@ -10,7 +10,7 @@ import java.util.Date;
 *@author linhao
 */
 @Data
-public class OPenListViewDto extends Dto {
+public class OpenListViewDto extends Dto {
 
     private Integer id;
 
