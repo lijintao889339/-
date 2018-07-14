@@ -84,9 +84,10 @@ public class OpenController extends BaseController {
             @ApiImplicitParam(name = "pageSize", paramType = "query", value = "页大小", required = true, example = "10"),
             @ApiImplicitParam(name = "courseId", paramType = "query", value = "课程ID", required = true, dataType = "int")
     })
-    @GetMapping("/course/opens")
-    public Result courseList(@RequestParam int pageNo, @RequestParam int pageSize, @RequestParam int courseId) {
+    @GetMapping("/course/{courseId}/opens")
+    public Result courseList(@RequestParam int pageNo, @RequestParam int pageSize, @PathVariable int courseId) {
         return Result.success().addData("pager", warpPage(openService.listByCourseId(fixPage(pageNo), fixPage(pageSize),courseId)));
     }
+
 
 }
