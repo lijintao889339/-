@@ -48,7 +48,7 @@ public class OpenService extends BaseService {
      * 获取班次管理列表
      * @return
      */
-    public List<OPenListViewDto> list(int pageNo, int pageSize){
+    public Page list(int pageNo, int pageSize){
 
         List<Integer> openIds = Lists.newArrayList();
         List<Integer> courseIds = Lists.newArrayList();
@@ -153,7 +153,7 @@ public class OpenService extends BaseService {
      * @param courseId
      * @return
      */
-    public List<OPenListViewDto> listByCourseId(int pageNo, int pageSize, int courseId) {
+    public Page listByCourseId(int pageNo, int pageSize, int courseId) {
 
         List<Integer> shcoolIds = Lists.newArrayList();
         List<OPenListViewDto> resultList = Lists.newArrayList();
