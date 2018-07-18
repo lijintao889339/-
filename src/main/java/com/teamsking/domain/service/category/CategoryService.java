@@ -1,8 +1,11 @@
 package com.teamsking.domain.service.category;
 
 import com.teamsking.domain.entity.category.Category;
+import com.teamsking.domain.entity.open.Open;
 import com.teamsking.domain.repository.CategoryMapper;
 import java.util.List;
+
+import com.teamsking.domain.repository.OpenMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

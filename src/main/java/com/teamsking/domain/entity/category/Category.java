@@ -104,6 +104,8 @@ public class Category {
      *
      * @mbg.generated Tue Jun 26 17:08:40 CST 2018
      */
+
+    private Integer updateId;
     private Date updatedTime;
 
     /**
@@ -521,5 +523,13 @@ public class Category {
 
     public void setIsShow(Integer isShow) {
         this.isShow = isShow;
+    }
+
+    public Integer getUpdateId() {
+        return updateId;
+    }
+
+    public void setUpdateId(Integer updateId) {
+        this.updateId = updateId;
     }
 }

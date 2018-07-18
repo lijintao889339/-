@@ -4,9 +4,13 @@ import com.github.pagehelper.PageHelper;
 import com.teamsking.api.dto.category.AddCourseCategoryDto;
 import com.teamsking.api.dto.category.CategoryDto;
 import com.teamsking.api.dto.category.CategoryDtoMapper;
+import com.teamsking.api.dto.category.EditCourseCategoryDto;
+import com.teamsking.api.dto.open.OpenDto;
 import com.teamsking.api.endpoint.BaseController;
 import com.teamsking.domain.entity.category.Category;
+import com.teamsking.domain.entity.open.Open;
 import com.teamsking.domain.service.category.CategoryService;
+import com.teamsking.domain.service.open.OpenService;
 import com.teamsking.util.Result;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
@@ -30,6 +34,8 @@ public class CategoryController extends BaseController {
 
     @Autowired
     CategoryService categoryService;
+    @Autowired
+    OpenService openService;
 
 
     @ApiOperation(value = "类别管理列表", notes = "可分页", produces = "application/json")

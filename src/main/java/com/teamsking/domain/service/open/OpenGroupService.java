@@ -50,7 +50,7 @@ public class OpenGroupService {
     }
 
     /**
-     * 添加班次-学生组
+     * 修改班次-学生组
      * @param openGroup
      * @return
      */
