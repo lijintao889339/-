@@ -13,6 +13,8 @@ import com.teamsking.domain.repository.OpenMapper;
 import com.teamsking.domain.service.BaseService;
 import java.util.List;
 import java.util.Map;
+
+import com.teamsking.domain.service.open.OpenService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -33,6 +35,9 @@ public class CourseService extends BaseService {
 
     @Autowired
     CourseTeacherService courseTeacherService;
+
+    @Autowired
+    OpenService openService;
 
     /**
      * 获取课程列表
@@ -150,7 +155,31 @@ public class CourseService extends BaseService {
         }
 
         Course course = new Course();
-        course.setCourseStatus("40");
+        course.setCourseStatus("50");
+
+        Example courseExample = new Example(Course.class);
+        Example.Criteria cri = courseExample.createCriteria();
+        cri.andIn("id", idList);
+        return courseMapper.updateByExampleSelective(course,courseExample);
+
+    }
+
+    /**
+     * 根据主键批量删除课程(及其下面的班次)
+     * @param ids
+     * @return
+     */
+    public int romoveCourseByIds(Integer[] ids) {
+
+        openService.removeOpenByCouseIds(ids);
+
+        List<Integer> idList = Lists.newArrayList();
+        for (Integer id: ids) {
+            idList.add(id);
+        }
+
+        Course course = new Course();
+        course.setDeleteStatus(1);
 
         Example courseExample = new Example(Course.class);
         Example.Criteria cri = courseExample.createCriteria();

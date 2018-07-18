@@ -4,10 +4,8 @@ package com.teamsking.api.endpoint.course;
 import com.teamsking.api.dto.course.CourseDto;
 import com.teamsking.api.dto.course.CourseDtoMapper;
 import com.teamsking.api.dto.course.CourseInsertDto;
-import com.teamsking.api.dto.course.CourseTeacherDtoMapper;
 import com.teamsking.api.endpoint.BaseController;
 import com.teamsking.domain.entity.course.Course;
-import com.teamsking.domain.entity.course.CourseTeacher;
 import com.teamsking.domain.service.course.CourseService;
 import com.teamsking.domain.service.course.CourseTeacherService;
 import com.teamsking.util.Result;
@@ -91,8 +89,18 @@ public class CourseController extends BaseController {
     @PutMapping("/courses/multi_update_status")
     public Result modifyCourseSatus(@RequestParam Integer[] ids){
 
-
         courseService.modifyCourseSatusByIds(ids);
+        return Result.success();
+    }
+
+    @ApiOperation(value = "批量删除课程",produces = "application/json")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "ids",value = "课程的主键", required = true)
+    })
+    @PutMapping("/courses/multi_delete")
+    public Result removeMultiCourse(@RequestParam Integer[] ids){
+
+        courseService.romoveCourseByIds(ids);
         return Result.success();
     }
 

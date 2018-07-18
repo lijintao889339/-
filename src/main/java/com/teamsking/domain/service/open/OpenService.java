@@ -24,6 +24,7 @@ import com.teamsking.domain.service.school.SchoolService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import tk.mybatis.mapper.entity.Example;
 
 @Service
 @Slf4j
@@ -218,4 +219,23 @@ public class OpenService extends BaseService {
 
     }
 
+    /**
+     * 根据课程主键删除其下面的班次
+     * @param ids
+     */
+    public int removeOpenByCouseIds(Integer[] ids) {
+
+        List<Integer> courseIdList = Lists.newArrayList();
+        for (Integer courseId: ids) {
+            courseIdList.add(courseId);
+        }
+
+        Open open = new Open();
+        open.setDeleteStatus(1);
+
+        Example openExample = new Example(Open.class);
+        Example.Criteria cri = openExample.createCriteria();
+        cri.andIn("courseId",courseIdList);
+        return openMapper.updateByExampleSelective(open,openExample);
+    }
 }
