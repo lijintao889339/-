@@ -138,7 +138,7 @@ public class CourseService extends BaseService {
     }
 
     /**
-     * 根据主键修改课程状态
+     * 根据主键批量修改课程状态
      * @param ids
      * @return
      */

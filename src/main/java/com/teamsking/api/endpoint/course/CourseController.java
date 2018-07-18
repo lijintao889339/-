@@ -86,7 +86,7 @@ public class CourseController extends BaseController {
 
     @ApiOperation(value = "修改课程状态", produces = "application/json")
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "ids", value = "课程的主键", required = true, paramType = "Integer[]")
+            @ApiImplicitParam(name = "ids", value = "课程的主键", required = true)
     })
     @PutMapping("/courses/multi_update_status")
     public Result modifyCourseSatus(@RequestParam Integer[] ids){
