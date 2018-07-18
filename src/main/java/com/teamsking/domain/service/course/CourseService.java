@@ -137,4 +137,25 @@ public class CourseService extends BaseService {
 
     }
 
+    /**
+     * 根据主键修改课程状态
+     * @param ids
+     * @return
+     */
+    public int modifyCourseSatusByIds(Integer[] ids) {
+
+        List<Integer> idList = Lists.newArrayList();
+        for (Integer id: ids) {
+            idList.add(id);
+        }
+
+        Course course = new Course();
+        course.setCourseStatus("40");
+
+        Example courseExample = new Example(Course.class);
+        Example.Criteria cri = courseExample.createCriteria();
+        cri.andIn("id", idList);
+        return courseMapper.updateByExampleSelective(course,courseExample);
+
+    }
 }
