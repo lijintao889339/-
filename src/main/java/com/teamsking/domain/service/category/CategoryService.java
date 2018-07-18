@@ -1,5 +1,8 @@
 package com.teamsking.domain.service.category;
 
+import com.google.common.collect.Lists;
+import com.teamsking.api.dto.category.AddCategoryNameDto;
+import com.teamsking.api.dto.category.CategoryDtoMapper;
 import com.teamsking.domain.entity.category.Category;
 import com.teamsking.domain.entity.open.Open;
 import com.teamsking.domain.repository.CategoryMapper;
@@ -40,6 +43,7 @@ public class CategoryService {
     }
 
 
+
     /**
      * 删除类别管理
      * @param id
@@ -58,7 +62,7 @@ public class CategoryService {
      * @return
      */
     public int modify(Category category){
-
+        category.getCategoryName();
         return categoryMapper.updateByPrimaryKeySelective(category);
 
     }

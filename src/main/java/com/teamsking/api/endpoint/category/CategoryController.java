@@ -1,10 +1,7 @@
 package com.teamsking.api.endpoint.category;
 
 import com.github.pagehelper.PageHelper;
-import com.teamsking.api.dto.category.AddCourseCategoryDto;
-import com.teamsking.api.dto.category.CategoryDto;
-import com.teamsking.api.dto.category.CategoryDtoMapper;
-import com.teamsking.api.dto.category.EditCourseCategoryDto;
+import com.teamsking.api.dto.category.*;
 import com.teamsking.api.dto.open.OpenDto;
 import com.teamsking.api.endpoint.BaseController;
 import com.teamsking.domain.entity.category.Category;
@@ -54,7 +51,7 @@ public class CategoryController extends BaseController {
     }
 
 
-    @ApiOperation(value = "创建课程分类", consumes= "application/json")
+    @ApiOperation(value = "创建课程分类接口", consumes= "application/json")
     @ApiImplicitParams( {
             @ApiImplicitParam(name = "addCourseCategory", value = "创建课程分类", required = true, dataType = "AddCourseCategoryDto")
     })
@@ -66,6 +63,44 @@ public class CategoryController extends BaseController {
         return Result.success();
 
     }
+
+
+
+    @ApiOperation(value = "添加二级分类", produces= "application/json")
+    @ApiImplicitParams( {
+            @ApiImplicitParam(name = "id", value = "一级分类的主键", required = true, paramType = "Integer"),
+            @ApiImplicitParam(name = "addCategoryNameDto", value = "添加二级分类", required = true, dataType = "AddCategoryNameDto")
+    })
+    @PostMapping("/add_category_name/{id}")
+    public Result addCategoryName(@RequestBody AddCategoryNameDto addCategoryNameDto,
+                                  @PathVariable("id") int id){
+
+        Category categoryEntity = CategoryDtoMapper.INSTANCE.dtoToEntity2(addCategoryNameDto);
+        categoryEntity.setParentId(id);
+        categoryService.save(categoryEntity);
+        return Result.success();
+
+    }
+
+
+
+
+    @ApiOperation(value = "课程分类更新接口", consumes= "application/json")
+    @ApiImplicitParams( {
+            @ApiImplicitParam(name = "editCourseCategory", value = "课程分类更新接口", required = true, dataType = "EditCourseCategoryDto")
+    })
+    @PutMapping("/edit_course_category/{id}")
+    public Result modifyEditCourseCategory(@PathVariable int id,
+                                           @RequestBody EditCourseCategoryDto editCourseCategory){
+
+        Category categoryEntity = CategoryDtoMapper.INSTANCE.dtoToEntity3(editCourseCategory);
+
+        categoryEntity.setId(id);
+        categoryService.modify(categoryEntity);
+        return Result.success();
+
+    }
+
 
 
     @ApiOperation(value = "删除类别管理", consumes= "application/json")
