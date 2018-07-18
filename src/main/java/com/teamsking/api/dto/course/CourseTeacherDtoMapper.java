@@ -1,5 +1,6 @@
 package com.teamsking.api.dto.course;
 
+import com.teamsking.domain.entity.course.Course;
 import com.teamsking.domain.entity.course.CourseTeacher;
 import java.util.List;
 import org.mapstruct.Mapper;
@@ -16,4 +17,5 @@ public interface CourseTeacherDtoMapper {
 
     CourseTeacher dtoToEntity(CourseTeacherDto courseTeacherDto);
 
+    CourseTeacher insertDtoToEntity(CourseInsertDto CourseInsertDto);
 }

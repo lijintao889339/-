@@ -62,4 +62,14 @@ public class CourseTeacherService {
         return courseTeacherMapper.selectByExample(teacherExample);
     }
 
+    /**
+     * 根据课程ID插入授课老师
+     * @param courseTeacher
+     * @return
+     */
+    public int saveTeacherByCourseId(CourseTeacher courseTeacher) {
+
+        return courseTeacherMapper.insert(courseTeacher);
+
+    }
 }

@@ -3,12 +3,12 @@ package com.teamsking.domain.service.course;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.google.common.collect.Lists;
-import com.teamsking.api.dto.course.CourseDtoMapper;
-import com.teamsking.api.dto.course.CourseListViewDto;
+import com.teamsking.api.dto.course.*;
 import com.teamsking.domain.entity.course.Course;
 import com.teamsking.domain.entity.course.CourseTeacher;
 import com.teamsking.domain.entity.open.Open;
 import com.teamsking.domain.repository.CourseMapper;
+import com.teamsking.domain.repository.CourseTeacherMapper;
 import com.teamsking.domain.repository.OpenMapper;
 import com.teamsking.domain.service.BaseService;
 import java.util.List;
@@ -27,6 +27,9 @@ public class CourseService extends BaseService {
 
     @Autowired
     OpenMapper openMapper;
+
+    @Autowired
+    CourseTeacherMapper courseTeacherMapper;
 
     @Autowired
     CourseTeacherService courseTeacherService;
@@ -73,11 +76,24 @@ public class CourseService extends BaseService {
     /**
      * 添加课程
      *
-     * @param course
+     * @param courseInsertDto
      * @return
      */
-    public int save(Course course) {
-        return courseMapper.insert(course);
+    public int save(CourseInsertDto courseInsertDto) {
+
+        Course courseEntity = CourseDtoMapper.INSTANCE.insertDtoToEntity(courseInsertDto);
+        courseEntity.setCourseStatus("10");
+        courseEntity.setDeleteStatus(2);
+        int count = courseMapper.insert(courseEntity);
+
+
+        if (count > 0){
+            CourseTeacher courseTeacher = CourseTeacherDtoMapper.INSTANCE.insertDtoToEntity(courseInsertDto);
+            courseTeacher.setCourseId(courseEntity.getId());
+            courseTeacherMapper.insertSelective(courseTeacher);
+        }
+
+        return count;
     }
 
     /**

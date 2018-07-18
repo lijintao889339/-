@@ -1,6 +1,7 @@
 package com.teamsking.api.dto.course;
 
 import com.teamsking.api.dto.Dto;
+import io.swagger.models.auth.In;
 import lombok.Data;
 
 /**
@@ -16,7 +17,7 @@ public class CourseListViewDto extends Dto {
 
     private String courseCover;
 
-    private boolean courseFree;
+    private Integer courseFree;
 
     private String courseStatus;
 

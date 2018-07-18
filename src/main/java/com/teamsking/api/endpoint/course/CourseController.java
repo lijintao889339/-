@@ -3,9 +3,13 @@ package com.teamsking.api.endpoint.course;
 
 import com.teamsking.api.dto.course.CourseDto;
 import com.teamsking.api.dto.course.CourseDtoMapper;
+import com.teamsking.api.dto.course.CourseInsertDto;
+import com.teamsking.api.dto.course.CourseTeacherDtoMapper;
 import com.teamsking.api.endpoint.BaseController;
 import com.teamsking.domain.entity.course.Course;
+import com.teamsking.domain.entity.course.CourseTeacher;
 import com.teamsking.domain.service.course.CourseService;
+import com.teamsking.domain.service.course.CourseTeacherService;
 import com.teamsking.util.Result;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
@@ -31,6 +35,8 @@ public class CourseController extends BaseController {
 
     @Autowired
     CourseService courseService;
+    @Autowired
+    CourseTeacherService courseTeacherService;
 
     @ApiOperation(value = "课程列表", notes = "可分页", produces = "application/json")
     @ApiImplicitParams( {
@@ -43,18 +49,18 @@ public class CourseController extends BaseController {
     }
 
 
-    @ApiOperation(value = "添加课程", produces = "application/json")
+    @ApiOperation(value = "添加课程", consumes = "application/json")
     @ApiImplicitParams( {
-        @ApiImplicitParam(name = "course", value = "课程", required = true, dataType = "CourseDto")
+        @ApiImplicitParam(name = "courseInsertDto", value = "课程", required = true, dataType = "CourseInsertDto")
     })
     @PostMapping("/course")
-    public Result addCourse(@RequestBody CourseDto course) {
-        Course courseEntity = CourseDtoMapper.INSTANCE.dtoToEntity(course);
-        courseService.save(courseEntity);
+    public Result addCourse(@RequestBody CourseInsertDto courseInsertDto) {
+
+        courseService.save(courseInsertDto);
         return Result.success();
     }
 
-    @ApiOperation(value = "删除课程", produces = "application/json")
+    @ApiOperation(value = "删除课程", consumes = "application/json")
     @ApiImplicitParams( {
         @ApiImplicitParam(name = "id", value = "课程", required = true, dataType = "Integer")
     })
@@ -64,7 +70,7 @@ public class CourseController extends BaseController {
         return Result.success();
     }
 
-    @ApiOperation(value = "修改课程", produces = "application/json")
+    @ApiOperation(value = "修改课程", consumes = "application/json")
     @ApiImplicitParams( {
         @ApiImplicitParam(name = "course", value = "课程", required = true, dataType = "CourseDto")
     })

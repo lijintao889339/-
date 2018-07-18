@@ -1,6 +1,7 @@
 package com.teamsking.domain.entity.course;
 
 import java.util.Date;
+import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
@@ -13,6 +14,7 @@ public class Course {
      * @mbg.generated Tue Jun 26 17:08:40 CST 2018
      */
     @Id
+    @GeneratedValue(generator = "JDBC")
     private Integer id;
 
     /**
@@ -143,13 +145,13 @@ public class Course {
      * @mbg.generated Tue Jun 26 17:08:40 CST 2018
      */
 
-    private boolean courseFree;
+    private Integer courseFree;
 
     private String courseKeyword;
 
     private Integer categoryId;
 
-    private boolean visibleRange;
+    private Integer visibleRange;
 
     private String courseSell;
 
@@ -169,11 +171,11 @@ public class Course {
         this.categoryId = categoryId;
     }
 
-    public boolean isVisibleRange() {
+    public Integer getVisibleRange() {
         return visibleRange;
     }
 
-    public void setVisibleRange(boolean permissionSetting) {
+    public void setVisibleRange(Integer visibleRange) {
         this.visibleRange = visibleRange;
     }
 
@@ -185,11 +187,11 @@ public class Course {
         this.courseKeyword = courseKeyword;
     }
 
-    public boolean isCourseFree() {
+    public Integer getCourseFree() {
         return courseFree;
     }
 
-    public void setCourseFree(boolean courseFree) {
+    public void setCourseFree(Integer courseFree) {
         this.courseFree = courseFree;
     }
 

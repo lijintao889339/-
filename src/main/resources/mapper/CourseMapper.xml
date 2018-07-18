@@ -23,10 +23,10 @@
     <result column="update_id" jdbcType="INTEGER" property="updateId" />
     <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
     <result column="delete_status" jdbcType="INTEGER" property="deleteStatus" />
-    <result column="course_free" jdbcType="BOOLEAN" property="courseFree"/>
+    <result column="course_free" jdbcType="INTEGER" property="courseFree"/>
     <result column="course_keyword" jdbcType="VARCHAR" property="courseKeyword"/>
     <result column="category_id" jdbcType="INTEGER" property="categoryId"/>
-    <result column="visible_range" jdbcType="BOOLEAN" property="visibleRange"/>
+    <result column="visible_range" jdbcType="INTEGER" property="visibleRange"/>
     <result column="course_sell" jdbcType="VARCHAR" property="courseSell"/>
   </resultMap>
 

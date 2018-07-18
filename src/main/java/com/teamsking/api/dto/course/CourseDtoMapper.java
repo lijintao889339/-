@@ -17,4 +17,6 @@ public interface CourseDtoMapper {
     Course dtoToEntity(CourseDto courseDto);
 
     CourseListViewDto entityToListViewDto(Course course);
+
+    Course insertDtoToEntity(CourseInsertDto courseInsertDto);
 }
