@@ -84,12 +84,12 @@ public class CourseController extends BaseController {
 
     @ApiOperation(value = "修改课程状态", produces = "application/json")
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "ids", value = "课程的主键", required = true)
+            @ApiImplicitParam(name = "id", value = "课程的主键", required = true)
     })
-    @PutMapping("/courses/multi_update_status")
-    public Result modifyCourseSatus(@RequestParam Integer[] ids){
+    @PutMapping("/course/{id}/status")
+    public Result modifyCourseSatus(@PathVariable("id") int id){
 
-        courseService.modifyCourseSatusByIds(ids);
+        courseService.modifyCourseSatusById(id);
         return Result.success();
     }
 
@@ -100,8 +100,14 @@ public class CourseController extends BaseController {
     @DeleteMapping("/courses/multi_delete")
     public Result removeMultiCourse(@RequestParam Integer[] ids){
 
-        courseService.romoveCourseByIds(ids);
-        return Result.success();
+        int count = courseService.romoveCourseByIds(ids);
+
+        if (count > 0){
+            return Result.success();
+
+        } else {
+            return Result.exception("批量删除课程失败");
+        }
     }
 
 }

@@ -15,6 +15,8 @@ import java.util.List;
 import java.util.Map;
 
 import com.teamsking.domain.service.open.OpenService;
+import com.teamsking.util.OperationState;
+import com.teamsking.util.Result;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -143,24 +145,27 @@ public class CourseService extends BaseService {
     }
 
     /**
-     * 根据主键批量修改课程状态
-     * @param ids
+     * 根据主键修改课程状态
+     * @param id
      * @return
      */
-    public int modifyCourseSatusByIds(Integer[] ids) {
+    public int modifyCourseSatusById(int id) {
 
-        List<Integer> idList = Lists.newArrayList();
-        for (Integer id: ids) {
-            idList.add(id);
+        //根据Id查询改课程的状态
+        Course course = courseMapper.selectByPrimaryKey(id);
+        String courseStatus = course.getCourseStatus();
+
+        if ("30".equals(courseStatus)){
+            courseStatus = "10";
+
+        }else {
+            courseStatus = "30";
         }
 
-        Course course = new Course();
-        course.setCourseStatus("50");
+        Course courseEntity = new Course();
+        course.setCourseStatus(courseStatus);
 
-        Example courseExample = new Example(Course.class);
-        Example.Criteria cri = courseExample.createCriteria();
-        cri.andIn("id", idList);
-        return courseMapper.updateByExampleSelective(course,courseExample);
+        return courseMapper.updateByPrimaryKey(course);
 
     }
 
