@@ -132,7 +132,12 @@ public class OpenService extends BaseService {
      * @return
      */
     public int remove(Integer id) {
-        return openMapper.deleteByPrimaryKey(id);
+
+        Open open = new Open();
+        open.setId(id);
+        open.setDeleteStatus(1);
+
+        return openMapper.updateByPrimaryKeySelective(open);
     }
 
     /**
@@ -237,5 +242,20 @@ public class OpenService extends BaseService {
         Example.Criteria cri = openExample.createCriteria();
         cri.andIn("courseId",courseIdList);
         return openMapper.updateByExampleSelective(open,openExample);
+    }
+
+    /**
+     * 根据课程主键修改课程状态
+     * @param id
+     * @return
+     */
+    public int modifyPublishFlagById(int id) {
+
+        Open open = new Open();
+        open.setId(id);
+        open.setPublishFlag(1);
+
+        return openMapper.updateByPrimaryKeySelective(open);
+
     }
 }

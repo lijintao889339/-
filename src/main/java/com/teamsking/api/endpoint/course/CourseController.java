@@ -97,7 +97,7 @@ public class CourseController extends BaseController {
     @ApiImplicitParams({
             @ApiImplicitParam(name = "ids",value = "课程的主键", required = true)
     })
-    @PutMapping("/courses/multi_delete")
+    @DeleteMapping("/courses/multi_delete")
     public Result removeMultiCourse(@RequestParam Integer[] ids){
 
         courseService.romoveCourseByIds(ids);

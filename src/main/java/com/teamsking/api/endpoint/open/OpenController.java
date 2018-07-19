@@ -52,7 +52,7 @@ public class OpenController extends BaseController {
 
     @ApiOperation(value = "删除班次管理", consumes= "application/json")
     @ApiImplicitParams( {
-            @ApiImplicitParam(name = "id", value = "班次管理", required = true, dataType = "Integer")
+            @ApiImplicitParam(name = "id", value = "班次管理", paramType = "query", required = true, dataType = "Integer")
     })
     @DeleteMapping("/open/{id}")
     public Result removeOpen(@PathVariable int id){
@@ -87,6 +87,17 @@ public class OpenController extends BaseController {
     @GetMapping("/course/{courseId}/opens")
     public Result courseList(@RequestParam int pageNo, @RequestParam int pageSize, @PathVariable int courseId) {
         return Result.success().addData("pager", warpPage(openService.listByCourseId(fixPage(pageNo), fixPage(pageSize),courseId)));
+    }
+
+    @ApiOperation(value = "修改班次状态", consumes = "application/json")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "id", value = "班次的主键", paramType = "query", required = true, dataType = "int")
+    })
+    @PutMapping("/open/{id}/status")
+    public Result modifyOpenPublishFlag(@PathVariable("id") int id){
+
+        openService.modifyPublishFlagById(id);
+        return Result.success();
     }
 
 
