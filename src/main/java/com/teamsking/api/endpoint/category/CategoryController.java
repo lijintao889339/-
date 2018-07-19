@@ -16,13 +16,7 @@ import io.swagger.annotations.ApiOperation;
 import java.util.List;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @Slf4j
@@ -111,6 +105,33 @@ public class CategoryController extends BaseController {
     public Result removeCategory(@PathVariable int id){
 
         categoryService.remove(id);
+        return Result.success();
+
+    }
+
+
+
+    @ApiOperation(value = "删除一级分类",produces = "application/json")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "id",value = "一级分类的主键", required = true, paramType = "query", dataType = "int")
+    })
+    @DeleteMapping("/first/category/{id}")
+    public Result removeFirstCategory(@PathVariable int id){
+
+        categoryService.removeFirstCategoryById(id);
+        return Result.success();
+    }
+
+
+
+    @ApiOperation(value = "删除二级分类",produces = "application/json")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "id",value = "二级分类的主键", required = true, dataType = "int")
+    })
+    @DeleteMapping("/two/category/{id}")
+    public Result removeTwoCategory(@PathVariable int id){
+
+        categoryService.removeCategoryById(id);
         return Result.success();
 
     }
