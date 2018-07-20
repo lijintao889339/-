@@ -24,4 +24,6 @@ public class CourseListViewDto extends Dto {
     private String teacherName;
 
     private int openNum;
+
+    private String qcCode;
 }

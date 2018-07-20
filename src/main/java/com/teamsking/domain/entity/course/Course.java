@@ -1,6 +1,7 @@
 package com.teamsking.domain.entity.course;
 
 import java.util.Date;
+import javax.persistence.Column;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
@@ -154,6 +155,16 @@ public class Course {
     private Integer visibleRange;
 
     private String courseSell;
+
+    private String qcCode;
+
+    public String getqcCode() {
+        return qcCode;
+    }
+
+    public void setqcCode(String qcCode) {
+        this.qcCode = qcCode;
+    }
 
     public String getCourseSell() {
         return courseSell;
