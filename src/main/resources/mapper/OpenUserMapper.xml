@@ -21,4 +21,19 @@
     <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
     <result column="delete_status" jdbcType="INTEGER" property="deleteStatus" />
   </resultMap>
+
+  <select id="countByOpenIdsGroupByOpenId" resultType="java.util.Map">
+    select open_id as `openId`, count(*) as `count` from `open_user`
+    <where>
+      <if test="openIds != null and openIds.size() > 0">
+        open_id in
+        <foreach item="item" collection="openIds"
+                 open="(" separator="," close=")">
+          #{item}
+        </foreach>
+      </if>
+    </where>
+    group by open_id
+  </select>
+
 </mapper>

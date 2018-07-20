@@ -9,14 +9,15 @@ import com.teamsking.api.dto.open.OpenDtoMapper;
 import com.teamsking.domain.entity.course.Course;
 import com.teamsking.domain.entity.node.Node;
 import com.teamsking.domain.entity.open.Open;
-import com.teamsking.domain.entity.open.OpenGroup;
 import com.teamsking.domain.entity.school.School;
 import com.teamsking.domain.repository.CourseMapper;
 import com.teamsking.domain.repository.OpenMapper;
 
+import com.teamsking.domain.repository.OpenUserMapper;
 import com.teamsking.domain.service.BaseService;
 
 import java.util.List;
+import java.util.Map;
 
 import com.teamsking.domain.service.course.CourseService;
 import com.teamsking.domain.service.node.NodeService;
@@ -34,6 +35,8 @@ public class OpenService extends BaseService {
     OpenMapper openMapper;
     @Autowired
     CourseMapper courseMapper;
+    @Autowired
+    OpenUserMapper openUserMapper;
 
     @Autowired
     SchoolService schoolService;
@@ -65,7 +68,7 @@ public class OpenService extends BaseService {
         }
 
         //根据班次Id查询学生数量
-        List<OpenGroup> openGroupList = openGroupService.getOpenGroupByOpenIdList(openIds);
+        List<Map<String, Object>> studentNumList = openUserMapper.countByOpenIdsGroupByOpenId(openIds);
 
         //根据班次Id查询班次封面地址
         List<Node> nodeList = nodeService.getNodeByOpenIdList(openIds);
@@ -77,40 +80,32 @@ public class OpenService extends BaseService {
         List<School> schoolList = schoolService.getSchoolByShcoolIdList(shcoolIds);
 
         for (Open open: openList) {
-            OpenListViewDto oPenListViewDto = OpenDtoMapper.INSTANCE.entityToListViewDto(open);
+            OpenListViewDto openListViewDto = OpenDtoMapper.INSTANCE.entityToListViewDto(open);
 
-            for (OpenGroup openGroup : openGroupList) {
-                if (openGroup.getOpenId().intValue() == open.getId().intValue()){
-                    oPenListViewDto.setUserCount(openGroup.getUserCount());
+            for (Map<String,Object> studentNum : studentNumList) {
+                int openId = (Integer) studentNum.get("openId");
+                if (openId == open.getId()) {
+                    openListViewDto.setStudentNum(((Long) studentNum.get("count")).intValue());
                     break;
                 }
             }
 
             for (Node node : nodeList){
                 if (node.getOpenId().intValue() == open.getId().intValue()){
-                    oPenListViewDto.setCoverPath(node.getCoverPath());
-                    break;
-                }
-            }
-
-            for (Course course : courseList){
-                if (course.getId().intValue() == open.getCourseId().intValue()){
-                    oPenListViewDto.setCourseName(course.getCourseName());
-                    oPenListViewDto.setCourseSell(course.getCourseSell());
+                    openListViewDto.setCoverPath(node.getCoverPath());
                     break;
                 }
             }
 
             for (School school : schoolList){
                 if (school.getId().intValue() == open.getSchoolId().intValue()){
-                    oPenListViewDto.setSchoolName(school.getSchoolName());
+                    openListViewDto.setSchoolName(school.getSchoolName());
                     break;
                 }
             }
 
-            resultList.add(oPenListViewDto);
+            resultList.add(openListViewDto);
         }
-
 
         return convertPage((Page)openList,resultList);
     }
@@ -160,64 +155,59 @@ public class OpenService extends BaseService {
      */
     public Page listByCourseId(int pageNo, int pageSize, int courseId) {
 
-        List<Integer> shcoolIds = Lists.newArrayList();
+        List<Integer> schoolIds = Lists.newArrayList();
         List<OpenListViewDto> resultList = Lists.newArrayList();
         List<Integer> openIds = Lists.newArrayList();
 
         PageHelper.startPage(pageNo, pageSize);
 
         //根据课程ID查出其下所有班次
-        Open Open = new Open();
-        Open.setCourseId(courseId);
-        List<Open> openList = openMapper.select(Open);
+        Open openEntity = new Open();
+        openEntity.setCourseId(courseId);
+        openEntity.setDeleteStatus(2);
+        List<Open> openList = openMapper.select(openEntity);
 
         //遍历班次
         for (Open open : openList) {
-            shcoolIds.add(open.getSchoolId());
+            schoolIds.add(open.getSchoolId());
             openIds.add(open.getId());
         }
 
         //根据学校Id查询学校名称
-        List<School> schoolList = schoolService.getSchoolByShcoolIdList(shcoolIds);
+        List<School> schoolList = schoolService.getSchoolByShcoolIdList(schoolIds);
 
         //根据班次Id查询学生数量
-        List<OpenGroup> openGroupList = openGroupService.getOpenGroupByOpenIdList(openIds);
+        List<Map<String, Object>> studentNumList = openUserMapper.countByOpenIdsGroupByOpenId(openIds);
 
         //根据班次Id查询班次封面地址
         List<Node> nodeList = nodeService.getNodeByOpenIdList(openIds);
 
-        //根据课程ID查询课程名称
-        Course course = new Course();
-        course.setId(courseId);
-        Course courseOne = courseMapper.selectOne(course);
-
         for (Open open : openList) {
-            OpenListViewDto oPenListViewDto = OpenDtoMapper.INSTANCE.entityToListViewDto(open);
+            OpenListViewDto openListViewDto = OpenDtoMapper.INSTANCE.entityToListViewDto(open);
 
             for (School school : schoolList) {
                 if (school.getId().intValue() == open.getSchoolId().intValue()) {
-                    oPenListViewDto.setSchoolName(school.getSchoolName());
+                    openListViewDto.setSchoolName(school.getSchoolName());
                     break;
                 }
             }
 
-            for (OpenGroup openGroup : openGroupList) {
-                if (openGroup.getOpenId().intValue() == open.getId().intValue()) {
-                    oPenListViewDto.setUserCount(openGroup.getUserCount());
+            for (Map<String,Object> studentNum : studentNumList) {
+                int openId = (Integer) studentNum.get("openId");
+                if (openId == open.getId()) {
+                    openListViewDto.setStudentNum(((Long) studentNum.get("count")).intValue());
                     break;
                 }
             }
 
             for (Node node : nodeList) {
                 if (node.getOpenId().intValue() == open.getId().intValue()) {
-                    oPenListViewDto.setCoverPath(node.getCoverPath());
+                    openListViewDto.setCoverPath(node.getCoverPath());
                     break;
                 }
             }
 
-            oPenListViewDto.setCourseName(courseOne.getCourseName());
-            oPenListViewDto.setCourseSell(course.getCourseSell());
-            resultList.add(oPenListViewDto);
+            resultList.add(openListViewDto);
         }
 
         return convertPage((Page) openList, resultList);

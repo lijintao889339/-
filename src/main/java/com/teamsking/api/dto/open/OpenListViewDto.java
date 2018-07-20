@@ -28,13 +28,12 @@ public class OpenListViewDto extends Dto {
     //所属学校（school实体类）
     private String schoolName;
 
-    //所属课程（course实体类）
-    private String courseName;
+    private String openName;
 
-    //课程售卖（course实体类）
-    private String courseSell;
+    //班次售卖
+    private String openSell;
 
-    //学生数量（openGroup实体类）
-    private Integer userCount;
+    //学生数量
+    private Integer studentNum;
 
 }

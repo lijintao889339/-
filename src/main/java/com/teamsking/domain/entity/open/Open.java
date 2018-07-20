@@ -241,6 +241,17 @@ public class Open {
      *
      * @mbg.generated Tue Jun 26 17:08:40 CST 2018
      */
+
+    private String openSell;
+
+    public String getOpenSell() {
+        return openSell;
+    }
+
+    public void setOpenSell(String openSell) {
+        this.openSell = openSell;
+    }
+
     public Integer getId() {
         return id;
     }
