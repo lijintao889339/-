@@ -1,4 +1,4 @@
-package com.teamsking.domain.entity;
+package com.teamsking.domain.entity.course;
 
 import java.util.Date;
 import javax.persistence.*;
@@ -12,6 +12,7 @@ public class CourseEvaluate {
      *
      * @mbg.generated Fri Jul 20 11:13:21 CST 2018
      */
+    @Id
     private Integer id;
 
     /**
