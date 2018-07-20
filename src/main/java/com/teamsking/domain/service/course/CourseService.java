@@ -6,6 +6,7 @@ import com.google.common.collect.Lists;
 import com.teamsking.api.dto.course.*;
 import com.teamsking.domain.entity.course.Course;
 import com.teamsking.domain.entity.course.CourseTeacher;
+import com.teamsking.domain.entity.course.CourseTeacherConnection;
 import com.teamsking.domain.entity.open.Open;
 import com.teamsking.domain.repository.CourseMapper;
 import com.teamsking.domain.repository.CourseTeacherMapper;
@@ -41,6 +42,9 @@ public class CourseService extends BaseService {
     @Autowired
     OpenService openService;
 
+    @Autowired
+    CourseTeacherConnectionService courseTeacherConnectionService;
+
     /**
      * 获取课程列表
      *
@@ -49,25 +53,40 @@ public class CourseService extends BaseService {
     public Page list(int pageNo, int pageSize) {
         List<Integer> courseIds = Lists.newArrayList();
         List<CourseListViewDto> resultList = Lists.newArrayList();
+        List<Integer> teacherIds = Lists.newArrayList();
 
         PageHelper.startPage(pageNo, pageSize);
-        List<Course> courseList = courseMapper.selectAll();
+
+        Course courseEntity = new Course();
+        courseEntity.setDeleteStatus(2);
+        List<Course> courseList = courseMapper.select(courseEntity);
 
         for (Course course : courseList) {
             courseIds.add(course.getId());
         }
 
-        List<CourseTeacher> courseTeacherList = courseTeacherService.getTeacherByCourseIdList(courseIds);
+        List<CourseTeacherConnection> courseTeacherConnectionList = courseTeacherConnectionService.getTeacherByCourseIdList(courseIds);
+        for (CourseTeacherConnection courseTeacherConnection: courseTeacherConnectionList) {
+            teacherIds.add(courseTeacherConnection.getTeacherId());
+        }
+
+        List<CourseTeacher> courseTeacherList = courseTeacherService.getTeacherByTeacherIdList(teacherIds);
         List<Map<String, Object>> openNumList = openMapper.countByCourseIdsGroupByCourseId(courseIds);
 
         for (Course course : courseList) {
             CourseListViewDto courseListViewDto = CourseDtoMapper.INSTANCE.entityToListViewDto(course);
-            for (CourseTeacher courseTeacher : courseTeacherList) {
-                if (courseTeacher.getCourseId().intValue() == course.getId().intValue()) {
-                    courseListViewDto.setTeacherName(courseTeacher.getTeacherName());
-                    break;
+
+            for (CourseTeacherConnection courseTeacherConnection: courseTeacherConnectionList) {
+                if (courseTeacherConnection.getCourseId().intValue() == course.getId().intValue()){
+                    for (CourseTeacher courseTeacher: courseTeacherList){
+                        if (courseTeacher.getId().intValue() == courseTeacherConnection.getTeacherId()){
+                            courseListViewDto.setTeacherName(courseTeacher.getTeacherName());
+                            break;
+                        }
+                    }
                 }
             }
+
             for (Map<String, Object> openNum : openNumList) {
                 int courseId = (Integer) openNum.get("courseId");
                 if (courseId == course.getId()) {
@@ -96,7 +115,7 @@ public class CourseService extends BaseService {
 
         if (count > 0){
             CourseTeacher courseTeacher = CourseTeacherDtoMapper.INSTANCE.insertDtoToEntity(courseInsertDto);
-            courseTeacher.setCourseId(courseEntity.getId());
+            //courseTeacher.setCourseId(courseEntity.getId());
             courseTeacherMapper.insertSelective(courseTeacher);
         }
 

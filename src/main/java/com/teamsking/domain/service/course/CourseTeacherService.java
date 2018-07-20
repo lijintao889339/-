@@ -55,10 +55,10 @@ public class CourseTeacherService {
         return courseTeacherMapper.updateByPrimaryKeySelective(courseTeacher);
     }
 
-    public List<CourseTeacher> getTeacherByCourseIdList(List<Integer> courseIds) {
+    public List<CourseTeacher> getTeacherByTeacherIdList(List<Integer> teacherIds) {
         Example teacherExample = new Example(CourseTeacher.class);
         Example.Criteria cri = teacherExample.createCriteria();
-        cri.andIn("courseId", courseIds);
+        cri.andIn("id", teacherIds);
         return courseTeacherMapper.selectByExample(teacherExample);
     }
 
