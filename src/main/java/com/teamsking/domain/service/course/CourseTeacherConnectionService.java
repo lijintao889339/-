@@ -13,7 +13,6 @@ import java.util.List;
 /**
 *@author linhao
 */
-
 @Service
 @Slf4j
 public class CourseTeacherConnectionService extends BaseService {
