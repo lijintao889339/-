@@ -76,16 +76,15 @@ public class CourseService extends BaseService {
         for (Course course : courseList) {
             CourseListViewDto courseListViewDto = CourseDtoMapper.INSTANCE.entityToListViewDto(course);
 
-            for (CourseTeacherConnection courseTeacherConnection: courseTeacherConnectionList) {
-                if (courseTeacherConnection.getCourseId().intValue() == course.getId().intValue()){
-                    for (CourseTeacher courseTeacher: courseTeacherList){
-                        if (courseTeacher.getId().intValue() == courseTeacherConnection.getTeacherId()){
+            for (CourseTeacherConnection courseTeacherConnection: courseTeacherConnectionList)
+                if (courseTeacherConnection.getCourseId().intValue() == course.getId().intValue()) {
+                    for (CourseTeacher courseTeacher : courseTeacherList) {
+                        if (courseTeacher.getId().intValue() == courseTeacherConnection.getTeacherId()) {
                             courseListViewDto.setTeacherName(courseTeacher.getTeacherName());
                             break;
                         }
                     }
                 }
-            }
 
             for (Map<String, Object> openNum : openNumList) {
                 int courseId = (Integer) openNum.get("courseId");
@@ -209,6 +208,14 @@ public class CourseService extends BaseService {
         Example.Criteria cri = courseExample.createCriteria();
         cri.andIn("id", idList);
         return courseMapper.updateByExampleSelective(course,courseExample);
+
+    }
+
+
+    public List<Course> getCourseByCourseIdsList(List<Integer> courseIds){
+
+        Example courseExample = new Example(Course.class);
+        return courseMapper.selectByExample(courseExample);
 
     }
 }

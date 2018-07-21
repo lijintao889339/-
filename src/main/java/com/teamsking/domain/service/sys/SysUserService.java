@@ -1,11 +1,13 @@
 package com.teamsking.domain.service.sys;
 
+import com.teamsking.domain.entity.course.Course;
 import com.teamsking.domain.entity.sys.SysUser;
 import com.teamsking.domain.repository.SysUserMapper;
 import java.util.List;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import tk.mybatis.mapper.entity.Example;
 
 @Service
 @Slf4j
@@ -21,6 +23,18 @@ public class SysUserService {
     public List<SysUser> list(){
 
         return sysUserMapper.selectAll();
+    }
+
+    /**
+     * 根据userIds查询用户名称
+     * @param userIds
+     * @return
+     */
+    public List<SysUser> getSysUserByUserIdList(List<Integer> userIds){
+
+        Example userExample = new Example(SysUser.class);
+        return sysUserMapper.selectByExample(userExample);
+
     }
 
     /**

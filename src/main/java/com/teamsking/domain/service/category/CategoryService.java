@@ -98,4 +98,16 @@ public class CategoryService {
 
     }
 
+    /**
+     * 根据categoryIds查询课程分类
+     * @param categoryIds
+     * @return
+     */
+    public List<Category> getCategoryByCategoryId(List<Integer> categoryIds){
+
+        Example categoryExample = new Example(Category.class);
+        return categoryMapper.selectByExample(categoryExample);
+
+    }
+
 }
