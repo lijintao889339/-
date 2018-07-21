@@ -19,14 +19,14 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @Slf4j
-@Api(tags = "班次管理操作接口")
+@Api(tags = "班课管理操作接口")
 public class OpenController extends BaseController {
 
     @Autowired
     OpenService openService;
 
 
-    @ApiOperation(value = "班次管理列表", notes = "可分页", produces = "application/json")
+    @ApiOperation(value = "班课管理列表", notes = "可分页", produces = "application/json")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "pageNo", paramType = "query",value = "页码", required = true, example = "1"),
             @ApiImplicitParam(name = "pageSize", paramType = "query", value = "页大小", required = true, example = "10")
@@ -37,9 +37,9 @@ public class OpenController extends BaseController {
     }
 
 
-    @ApiOperation(value = "添加班次管理", consumes= "application/json")
+    @ApiOperation(value = "添加班课管理", consumes= "application/json")
     @ApiImplicitParams( {
-            @ApiImplicitParam(name = "open", value = "班次管理", required = true, dataType = "OpenDto")
+            @ApiImplicitParam(name = "open", value = "班课管理", required = true, dataType = "OpenDto")
     })
     @PostMapping("/open")
     public Result addOpen(@RequestBody OpenDto open){
@@ -50,9 +50,9 @@ public class OpenController extends BaseController {
     }
 
 
-    @ApiOperation(value = "删除班次管理", consumes= "application/json")
+    @ApiOperation(value = "删除班课管理", consumes= "application/json")
     @ApiImplicitParams( {
-            @ApiImplicitParam(name = "id", value = "班次管理", paramType = "query", required = true, dataType = "Integer")
+            @ApiImplicitParam(name = "id", value = "班课管理", paramType = "query", required = true, dataType = "Integer")
     })
     @DeleteMapping("/open/{id}")
     public Result removeOpen(@PathVariable int id){
@@ -62,9 +62,9 @@ public class OpenController extends BaseController {
 
     }
 
-    @ApiOperation(value = "修改班次管理", consumes= "application/json")
+    @ApiOperation(value = "修改班课管理", consumes= "application/json")
     @ApiImplicitParams( {
-            @ApiImplicitParam(name = "open", value = "班次管理", required = true, dataType = "OpenDto")
+            @ApiImplicitParam(name = "open", value = "班课管理", required = true, dataType = "OpenDto")
     })
     @PutMapping("/open/{id}")
     public Result modifyOpen(@PathVariable int id,
@@ -78,7 +78,7 @@ public class OpenController extends BaseController {
     }
 
 
-    @ApiOperation(value = "课程查看(班次列表)", notes = "可分页", produces = "application/json")
+    @ApiOperation(value = "课程查看(班课列表)", notes = "可分页", produces = "application/json")
     @ApiImplicitParams( {
             @ApiImplicitParam(name = "pageNo", paramType = "query", value = "页码", required = true, example = "1"),
             @ApiImplicitParam(name = "pageSize", paramType = "query", value = "页大小", required = true, example = "10"),
@@ -89,9 +89,9 @@ public class OpenController extends BaseController {
         return Result.success().addData("pager", warpPage(openService.listByCourseId(fixPage(pageNo), fixPage(pageSize),courseId)));
     }
 
-    @ApiOperation(value = "修改班次状态", consumes = "application/json")
+    @ApiOperation(value = "修改班课状态", consumes = "application/json")
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "id", value = "班次的主键", paramType = "query", required = true, dataType = "int")
+            @ApiImplicitParam(name = "id", value = "班课的主键", paramType = "query", required = true, dataType = "int")
     })
     @PutMapping("/open/{id}/status")
     public Result modifyOpenPublishFlag(@PathVariable("id") int id){
@@ -99,6 +99,5 @@ public class OpenController extends BaseController {
         openService.modifyPublishFlagById(id);
         return Result.success();
     }
-
 
 }
