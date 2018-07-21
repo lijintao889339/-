@@ -19,4 +19,6 @@ public interface OpenDtoMapper {
 
     OpenListViewDto entityToListViewDto(Open open);
 
+    List<OpenListViewDto> entityToListViewDtoList(List<Open> openList);
+
 }

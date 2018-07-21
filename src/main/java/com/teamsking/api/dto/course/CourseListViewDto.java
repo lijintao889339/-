@@ -4,6 +4,8 @@ import com.teamsking.api.dto.Dto;
 import io.swagger.models.auth.In;
 import lombok.Data;
 
+import java.util.List;
+
 /**
  * 课程列表视图用DTO
  *
@@ -21,7 +23,7 @@ public class CourseListViewDto extends Dto {
 
     private String courseStatus;
 
-    private String teacherName;
+    private List<String> teacherName;
 
     private int openNum;
 

@@ -1,5 +1,6 @@
 package com.teamsking.api.dto.course;
 
+import com.google.common.collect.Lists;
 import com.teamsking.domain.entity.course.Course;
 import java.util.List;
 import org.mapstruct.Mapper;
@@ -17,6 +18,8 @@ public interface CourseDtoMapper {
     Course dtoToEntity(CourseDto courseDto);
 
     CourseListViewDto entityToListViewDto(Course course);
+
+    List<CourseListViewDto> entityToListViewDtoList(List<Course> courses);
 
     Course insertDtoToEntity(CourseInsertDto courseInsertDto);
 }

@@ -19,5 +19,6 @@
     <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
     <result column="delete_status" jdbcType="INTEGER" property="deleteStatus" />
     <result column="category_id" jdbcType="INTEGER" property="categoryId" />
+    <result column="evaluate_content" jdbcType="VARCHAR" property="evaluateContent" />
   </resultMap>
 </mapper>

@@ -122,6 +122,17 @@ public class CourseEvaluate {
      *
      * @mbg.generated Fri Jul 20 11:13:21 CST 2018
      */
+
+    private String evaluateContent;
+
+    public String getEvaluateContent() {
+        return evaluateContent;
+    }
+
+    public void setEvaluateContent(String evaluateContent) {
+        this.evaluateContent = evaluateContent;
+    }
+
     public Integer getId() {
         return id;
     }

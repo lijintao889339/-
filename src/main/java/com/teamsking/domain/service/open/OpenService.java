@@ -56,7 +56,6 @@ public class OpenService extends BaseService {
         List<Integer> openIds = Lists.newArrayList();
         List<Integer> courseIds = Lists.newArrayList();
         List<Integer> shcoolIds = Lists.newArrayList();
-        List<OpenListViewDto> resultList = Lists.newArrayList();
 
         PageHelper.startPage(pageNo, pageSize);
 
@@ -79,35 +78,35 @@ public class OpenService extends BaseService {
         //根据学校Id查询学校名称
         List<School> schoolList = schoolService.getSchoolByShcoolIdList(shcoolIds);
 
-        for (Open open: openList) {
-            OpenListViewDto openListViewDto = OpenDtoMapper.INSTANCE.entityToListViewDto(open);
+        List<OpenListViewDto> openListViewDtoList = OpenDtoMapper.INSTANCE.entityToListViewDtoList(openList);
+
+        for (OpenListViewDto open: openListViewDtoList) {
 
             for (Map<String,Object> studentNum : studentNumList) {
                 int openId = (Integer) studentNum.get("openId");
                 if (openId == open.getId()) {
-                    openListViewDto.setStudentNum(((Long) studentNum.get("count")).intValue());
+                    open.setStudentNum(((Long) studentNum.get("count")).intValue());
                     break;
                 }
             }
 
             for (Node node : nodeList){
                 if (node.getOpenId().intValue() == open.getId().intValue()){
-                    openListViewDto.setCoverPath(node.getCoverPath());
+                    open.setCoverPath(node.getCoverPath());
                     break;
                 }
             }
 
             for (School school : schoolList){
                 if (school.getId().intValue() == open.getSchoolId().intValue()){
-                    openListViewDto.setSchoolName(school.getSchoolName());
+                    open.setSchoolName(school.getSchoolName());
                     break;
                 }
             }
 
-            resultList.add(openListViewDto);
         }
 
-        return convertPage((Page)openList,resultList);
+        return convertPage((Page)openList,openListViewDtoList);
     }
 
     /**
@@ -156,7 +155,6 @@ public class OpenService extends BaseService {
     public Page listByCourseId(int pageNo, int pageSize, int courseId) {
 
         List<Integer> schoolIds = Lists.newArrayList();
-        List<OpenListViewDto> resultList = Lists.newArrayList();
         List<Integer> openIds = Lists.newArrayList();
 
         PageHelper.startPage(pageNo, pageSize);
@@ -182,12 +180,13 @@ public class OpenService extends BaseService {
         //根据班次Id查询班次封面地址
         List<Node> nodeList = nodeService.getNodeByOpenIdList(openIds);
 
-        for (Open open : openList) {
-            OpenListViewDto openListViewDto = OpenDtoMapper.INSTANCE.entityToListViewDto(open);
+        List<OpenListViewDto> openListViewDtoList = OpenDtoMapper.INSTANCE.entityToListViewDtoList(openList);
+
+        for (OpenListViewDto open : openListViewDtoList) {
 
             for (School school : schoolList) {
                 if (school.getId().intValue() == open.getSchoolId().intValue()) {
-                    openListViewDto.setSchoolName(school.getSchoolName());
+                    open.setSchoolName(school.getSchoolName());
                     break;
                 }
             }
@@ -195,22 +194,20 @@ public class OpenService extends BaseService {
             for (Map<String,Object> studentNum : studentNumList) {
                 int openId = (Integer) studentNum.get("openId");
                 if (openId == open.getId()) {
-                    openListViewDto.setStudentNum(((Long) studentNum.get("count")).intValue());
+                    open.setStudentNum(((Long) studentNum.get("count")).intValue());
                     break;
                 }
             }
 
             for (Node node : nodeList) {
                 if (node.getOpenId().intValue() == open.getId().intValue()) {
-                    openListViewDto.setCoverPath(node.getCoverPath());
+                    open.setCoverPath(node.getCoverPath());
                     break;
                 }
             }
 
-            resultList.add(openListViewDto);
         }
-
-        return convertPage((Page) openList, resultList);
+        return convertPage((Page) openList, openListViewDtoList);
 
     }
 

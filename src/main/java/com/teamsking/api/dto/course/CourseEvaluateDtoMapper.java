@@ -18,4 +18,6 @@ public interface CourseEvaluateDtoMapper {
 
     CourseEvaluate dtoToEntity(CourseEvaluateDto courseEvaluateDto);
 
+    CourseEvaluateInfoDto entityToInfoDto(CourseEvaluate courseEvaluate);
+
 }

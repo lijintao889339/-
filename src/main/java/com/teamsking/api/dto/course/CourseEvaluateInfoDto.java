@@ -5,19 +5,15 @@ import lombok.Data;
 
 import java.util.List;
 
-
+/**
+*@author linhao
+*/
 @Data
-public class CourseEvaluateDto extends Dto {
-
-    private Integer id;
-
-    private Integer categoryId;
-
-    private Integer userId;
-
-    private Integer courseId;
+public class CourseEvaluateInfoDto extends Dto {
 
     private String userName;
+
+    private String avatar;
 
     private String courseName;
 
@@ -25,9 +21,8 @@ public class CourseEvaluateDto extends Dto {
 
     private List<String> teacherName;
 
-    private Integer isShow;
+    private String evaluateContent;
 
     private String categoryName;
-
 
 }

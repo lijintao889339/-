@@ -12,6 +12,7 @@ import com.teamsking.domain.repository.CourseMapper;
 import com.teamsking.domain.repository.CourseTeacherMapper;
 import com.teamsking.domain.repository.OpenMapper;
 import com.teamsking.domain.service.BaseService;
+
 import java.util.List;
 import java.util.Map;
 
@@ -66,21 +67,24 @@ public class CourseService extends BaseService {
         }
 
         List<CourseTeacherConnection> courseTeacherConnectionList = courseTeacherConnectionService.getTeacherByCourseIdList(courseIds);
-        for (CourseTeacherConnection courseTeacherConnection: courseTeacherConnectionList) {
+        for (CourseTeacherConnection courseTeacherConnection : courseTeacherConnectionList) {
             teacherIds.add(courseTeacherConnection.getTeacherId());
         }
 
         List<CourseTeacher> courseTeacherList = courseTeacherService.getTeacherByTeacherIdList(teacherIds);
         List<Map<String, Object>> openNumList = openMapper.countByCourseIdsGroupByCourseId(courseIds);
 
-        for (Course course : courseList) {
-            CourseListViewDto courseListViewDto = CourseDtoMapper.INSTANCE.entityToListViewDto(course);
+        List<CourseListViewDto> courseListViewDtoList = CourseDtoMapper.INSTANCE.entityToListViewDtoList(courseList);
 
-            for (CourseTeacherConnection courseTeacherConnection: courseTeacherConnectionList)
+        for (CourseListViewDto course : courseListViewDtoList) {
+
+            List<String> teacherNameList = Lists.newArrayList();
+            for (CourseTeacherConnection courseTeacherConnection : courseTeacherConnectionList)
                 if (courseTeacherConnection.getCourseId().intValue() == course.getId().intValue()) {
                     for (CourseTeacher courseTeacher : courseTeacherList) {
                         if (courseTeacher.getId().intValue() == courseTeacherConnection.getTeacherId()) {
-                            courseListViewDto.setTeacherName(courseTeacher.getTeacherName());
+                            teacherNameList.add(courseTeacher.getTeacherName());
+                            course.setTeacherName(teacherNameList);
                             break;
                         }
                     }
@@ -89,13 +93,13 @@ public class CourseService extends BaseService {
             for (Map<String, Object> openNum : openNumList) {
                 int courseId = (Integer) openNum.get("courseId");
                 if (courseId == course.getId()) {
-                    courseListViewDto.setOpenNum(((Long) openNum.get("count")).intValue());
+                    course.setOpenNum(((Long) openNum.get("count")).intValue());
                     break;
                 }
+
             }
-            resultList.add(courseListViewDto);
         }
-        return convertPage((Page)courseList,resultList);
+        return convertPage((Page) courseList, courseListViewDtoList);
     }
 
     /**
@@ -112,7 +116,7 @@ public class CourseService extends BaseService {
         int count = courseMapper.insert(courseEntity);
 
 
-        if (count > 0){
+        if (count > 0) {
             CourseTeacher courseTeacher = CourseTeacherDtoMapper.INSTANCE.insertDtoToEntity(courseInsertDto);
             //courseTeacher.setCourseId(courseEntity.getId());
             courseTeacherMapper.insertSelective(courseTeacher);
@@ -143,6 +147,7 @@ public class CourseService extends BaseService {
 
     /**
      * 根据课程ID删除课程及其下面的班次
+     *
      * @param id
      */
     public int remove1(int id) {
@@ -164,6 +169,7 @@ public class CourseService extends BaseService {
 
     /**
      * 根据主键修改课程状态
+     *
      * @param id
      * @return
      */
@@ -173,10 +179,10 @@ public class CourseService extends BaseService {
         Course course = courseMapper.selectByPrimaryKey(id);
         String courseStatus = course.getCourseStatus();
 
-        if ("30".equals(courseStatus)){
+        if ("30".equals(courseStatus)) {
             courseStatus = "10";
 
-        }else {
+        } else {
             courseStatus = "30";
         }
 
@@ -189,6 +195,7 @@ public class CourseService extends BaseService {
 
     /**
      * 根据主键批量删除课程(及其下面的班次)
+     *
      * @param ids
      * @return
      */
@@ -197,7 +204,7 @@ public class CourseService extends BaseService {
         openService.removeOpenByCouseIds(ids);
 
         List<Integer> idList = Lists.newArrayList();
-        for (Integer id: ids) {
+        for (Integer id : ids) {
             idList.add(id);
         }
 
@@ -207,12 +214,12 @@ public class CourseService extends BaseService {
         Example courseExample = new Example(Course.class);
         Example.Criteria cri = courseExample.createCriteria();
         cri.andIn("id", idList);
-        return courseMapper.updateByExampleSelective(course,courseExample);
+        return courseMapper.updateByExampleSelective(course, courseExample);
 
     }
 
 
-    public List<Course> getCourseByCourseIdsList(List<Integer> courseIds){
+    public List<Course> getCourseByCourseIdsList(List<Integer> courseIds) {
 
         Example courseExample = new Example(Course.class);
         return courseMapper.selectByExample(courseExample);

@@ -10,6 +10,7 @@ import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -32,6 +33,17 @@ public class CourseEvaluateController extends BaseController {
                                      @RequestParam int pageSize){
 
         return Result.success().addData("pager", warpPage(courseEvaluateService.list(fixPage(pageNo), fixPage(pageSize))));
+
+    }
+
+    @ApiOperation(value ="课程评价详情", produces = "application/json")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "id",paramType = "query", value = "课程评价的主键", required = true, dataType = "int")
+    })
+    @GetMapping("/course_evaluate/{id}/information")
+    public Result getCourseEvaluteInfo(@PathVariable("id") int id){
+
+        return Result.success().addData("pager",courseEvaluateService.getCourseEvaluteInfoById(id));
 
     }
 

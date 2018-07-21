@@ -25,6 +25,8 @@ public class OpenListViewDto extends Dto {
     //课程封面地址（node实体类）
     private String coverPath;
 
+    private Integer schoolId;
+
     //所属学校（school实体类）
     private String schoolName;
 
