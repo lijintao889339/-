@@ -21,6 +21,7 @@ import com.teamsking.domain.service.sys.SysUserService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import tk.mybatis.mapper.entity.Example;
 
 
 import java.util.List;
@@ -191,5 +192,26 @@ public class CourseEvaluateService extends BaseService {
         courseEvaluateInfoDto.setCategoryName(categoryEntity.getCategoryName());
 
         return courseEvaluateInfoDto;
+    }
+
+    /**
+     * 根据IDS批量删除课程评价
+     * @param ids
+     * @return
+     */
+    public int removeCourseEvaluateByIds(Integer[] ids) {
+
+        List<Integer> idList = Lists.newArrayList();
+        for (Integer id : ids) {
+            idList.add(id);
+        }
+
+        CourseEvaluate courseEvaluate = new CourseEvaluate();
+        courseEvaluate.setDeleteStatus(1);
+
+        Example courseEvaluateExample = new Example(Course.class);
+        Example.Criteria cri = courseEvaluateExample.createCriteria();
+        cri.andIn("id", idList);
+        return courseEvaluateMapper.updateByExampleSelective(courseEvaluate, courseEvaluateExample);
     }
 }

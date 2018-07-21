@@ -100,14 +100,9 @@ public class CourseController extends BaseController {
     @DeleteMapping("/courses/multi_delete")
     public Result removeMultiCourse(@RequestParam Integer[] ids){
 
-        int count = courseService.romoveCourseByIds(ids);
+        courseService.romoveCourseByIds(ids);
+        return Result.success();
 
-        if (count > 0){
-            return Result.success();
-
-        } else {
-            return Result.exception("批量删除课程失败");
-        }
     }
 
 }

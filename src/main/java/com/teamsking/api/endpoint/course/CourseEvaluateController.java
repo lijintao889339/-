@@ -9,10 +9,7 @@ import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 
 @RestController
@@ -45,6 +42,17 @@ public class CourseEvaluateController extends BaseController {
 
         return Result.success().addData("pager",courseEvaluateService.getCourseEvaluteInfoById(id));
 
+    }
+
+    @ApiOperation(value = "批量删除课程评价", produces = "application/json")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "ids",value = "课程评价的主键", required = true)
+    })
+    @DeleteMapping("/course_evaluates/multi_delete")
+    public Result removeMultiCourseEvaluates(@RequestParam Integer[] ids){
+
+        courseEvaluateService.removeCourseEvaluateByIds(ids);
+        return Result.success();
     }
 
 }
