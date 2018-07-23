@@ -1,12 +1,14 @@
 package com.teamsking.domain.service.category;
 
 import com.google.common.collect.Lists;
+import com.teamsking.api.dto.category.AddCategoryNameDto;
 import com.teamsking.api.dto.category.CategoryDtoMapper;
 import com.teamsking.api.dto.category.CategoryListViewDto;
 import com.teamsking.domain.entity.category.Category;
 
 import com.teamsking.domain.repository.CategoryMapper;
 import java.util.List;
+
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -143,11 +145,15 @@ public class CategoryService {
         //遍历获取分类名称
         for (CategoryListViewDto category: categoryListViewDtoList) {
 
-            List<String> categorySecondNameList = Lists.newArrayList();
+            List<AddCategoryNameDto> categories = Lists.newArrayList();
             for (Category categorySecond:categorySecondList) {
+                AddCategoryNameDto addCategoryNameDto = new AddCategoryNameDto();
                 if (categorySecond.getParentId().intValue() == category.getId().intValue()){
-                    categorySecondNameList.add(categorySecond.getCategoryName());
-                    category.setCategorySecondName(categorySecondNameList);
+                    addCategoryNameDto.setId(categorySecond.getId());
+                    addCategoryNameDto.setCategoryName(categorySecond.getCategoryName());
+                    addCategoryNameDto.setParentId(categorySecond.getParentId());
+                    categories.add(addCategoryNameDto);
+                    category.setCategories(categories);
                 }
             }
         }
