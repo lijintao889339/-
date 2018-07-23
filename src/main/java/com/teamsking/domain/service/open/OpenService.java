@@ -4,6 +4,7 @@ package com.teamsking.domain.service.open;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.google.common.collect.Lists;
+import com.teamsking.api.dto.open.OpenCopyDto;
 import com.teamsking.api.dto.open.OpenListViewDto;
 import com.teamsking.api.dto.open.OpenDtoMapper;
 import com.teamsking.domain.entity.course.Course;
@@ -14,6 +15,7 @@ import com.teamsking.domain.repository.CourseMapper;
 import com.teamsking.domain.repository.OpenMapper;
 
 import com.teamsking.domain.repository.OpenUserMapper;
+import com.teamsking.domain.repository.SchoolMapper;
 import com.teamsking.domain.service.BaseService;
 
 import java.util.List;
@@ -37,6 +39,8 @@ public class OpenService extends BaseService {
     CourseMapper courseMapper;
     @Autowired
     OpenUserMapper openUserMapper;
+    @Autowired
+    SchoolMapper schoolMapper;
 
     @Autowired
     SchoolService schoolService;
@@ -243,6 +247,31 @@ public class OpenService extends BaseService {
         open.setPublishFlag(1);
 
         return openMapper.updateByPrimaryKeySelective(open);
+
+    }
+
+    /**
+     * 班次复制操作
+     * @param openCopyDto
+     * @return
+     */
+    public int copyOpen(OpenCopyDto openCopyDto){
+
+        Open openEntity = OpenDtoMapper.INSTANCE.insertDtoToEntity(openCopyDto);
+
+        //根据班课Id查询班课信息
+        Integer openId = openCopyDto.getId();
+        Open open = openMapper.selectByPrimaryKey(openId);
+
+        //给复制的班课添加学校Id
+        openEntity.setSchoolId(open.getSchoolId());
+
+        //添加选课
+        openEntity.setOpenMode(open.getOpenMode());
+        openEntity.setDeleteStatus(2);//删除状态：1 已删除 2 未删除
+        openEntity.setPublishFlag(2);//发布状态：1 已发布 2 未发布
+
+        return openMapper.insert(openEntity);
 
     }
 }

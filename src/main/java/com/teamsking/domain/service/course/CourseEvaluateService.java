@@ -6,7 +6,6 @@ import com.google.common.collect.Lists;
 
 import com.teamsking.api.dto.course.CourseEvaluateDto;
 import com.teamsking.api.dto.course.CourseEvaluateDtoMapper;
-import com.teamsking.api.dto.course.CourseEvaluateDtoMapperImpl;
 import com.teamsking.api.dto.course.CourseEvaluateInfoDto;
 import com.teamsking.domain.entity.category.Category;
 import com.teamsking.domain.entity.course.Course;
@@ -99,6 +98,7 @@ public class CourseEvaluateService extends BaseService {
             for (SysUser sysUser:sysUserList) {
                 if (sysUser.getId().intValue() == courseEvaluate.getUserId()){
                     courseEvaluate.setUserName(sysUser.getUserName());
+                    courseEvaluate.setAvatar(sysUser.getAvatar());
                     break;
                 }
             }
@@ -143,56 +143,56 @@ public class CourseEvaluateService extends BaseService {
      * @param id
      * @return
      */
-    public CourseEvaluateInfoDto getCourseEvaluteInfoById( int id) {
-
-
-        //根据id查询课程评价
-        CourseEvaluate courseEvaluate = courseEvaluateMapper.selectByPrimaryKey(id);
-
-        //数据转换
-        CourseEvaluateInfoDto courseEvaluateInfoDto = CourseEvaluateDtoMapper.INSTANCE.entityToInfoDto(courseEvaluate);
-
-        //根据用户id查询用户相关内容
-        Integer userId = courseEvaluate.getUserId();
-        SysUser sysUser = sysUserMapper.selectByPrimaryKey(userId);
-        courseEvaluateInfoDto.setAvatar(sysUser.getAvatar());
-        courseEvaluateInfoDto.setUserName(sysUser.getUserName());
-
-        //根据课程Id查询课程课程名称
-        Integer courseId = courseEvaluate.getCourseId();
-        Course course = courseMapper.selectByPrimaryKey(courseId);
-        courseEvaluateInfoDto.setCourseName(course.getCourseName());
-
-        //根据课程Id查询课程老师关系列表
-        CourseTeacherConnection courseTeacherConnection = new CourseTeacherConnection();
-        courseTeacherConnection.setCourseId(courseId);
-        List<CourseTeacherConnection> courseTeacherConnectionList = courseTeacherConnectionMapper.select(courseTeacherConnection);
-        //遍历集合，获取老师Id列表
-        List<Integer> teacherIds = Lists.newArrayList();
-        for (CourseTeacherConnection courseTeacher: courseTeacherConnectionList) {
-            teacherIds.add(courseTeacher.getTeacherId());
-        }
-        //通过老师Id列表获取老师列表
-        List<CourseTeacher> teacherList = courseTeacherService.getTeacherByTeacherIdList(teacherIds);
-        //遍历集合，获取老师名称列表
-        List<String> teacherNameList = Lists.newArrayList();
-        for (CourseTeacher teacher:teacherList) {
-            teacherNameList.add(teacher.getTeacherName());
-        }
-        //获取课程Id所对应的授课老师列表
-        courseEvaluateInfoDto.setTeacherName(teacherNameList);
-
-        //根据分类Id获取课程对应的二级分类Id
-        Integer categoryId = courseEvaluate.getCategoryId();
-        Category category = categoryMapper.selectByPrimaryKey(categoryId);
-        //获取二级分类Id的父级Id
-        Integer parentId = category.getParentId();
-        Category categoryEntity = categoryMapper.selectByPrimaryKey(parentId);
-        //获取课程对应的一级分类名称
-        courseEvaluateInfoDto.setCategoryName(categoryEntity.getCategoryName());
-
-        return courseEvaluateInfoDto;
-    }
+//    public CourseEvaluateInfoDto getCourseEvaluteInfoById( int id) {
+//
+//
+//        //根据id查询课程评价
+//        CourseEvaluate courseEvaluate = courseEvaluateMapper.selectByPrimaryKey(id);
+//
+//        //数据转换
+//        CourseEvaluateInfoDto courseEvaluateInfoDto = CourseEvaluateDtoMapper.INSTANCE.entityToInfoDto(courseEvaluate);
+//
+//        //根据用户id查询用户相关内容
+//        Integer userId = courseEvaluate.getUserId();
+//        SysUser sysUser = sysUserMapper.selectByPrimaryKey(userId);
+//        courseEvaluateInfoDto.setAvatar(sysUser.getAvatar());
+//        courseEvaluateInfoDto.setUserName(sysUser.getUserName());
+//
+//        //根据课程Id查询课程课程名称
+//        Integer courseId = courseEvaluate.getCourseId();
+//        Course course = courseMapper.selectByPrimaryKey(courseId);
+//        courseEvaluateInfoDto.setCourseName(course.getCourseName());
+//
+//        //根据课程Id查询课程老师关系列表
+//        CourseTeacherConnection courseTeacherConnection = new CourseTeacherConnection();
+//        courseTeacherConnection.setCourseId(courseId);
+//        List<CourseTeacherConnection> courseTeacherConnectionList = courseTeacherConnectionMapper.select(courseTeacherConnection);
+//        //遍历集合，获取老师Id列表
+//        List<Integer> teacherIds = Lists.newArrayList();
+//        for (CourseTeacherConnection courseTeacher: courseTeacherConnectionList) {
+//            teacherIds.add(courseTeacher.getTeacherId());
+//        }
+//        //通过老师Id列表获取老师列表
+//        List<CourseTeacher> teacherList = courseTeacherService.getTeacherByTeacherIdList(teacherIds);
+//        //遍历集合，获取老师名称列表
+//        List<String> teacherNameList = Lists.newArrayList();
+//        for (CourseTeacher teacher:teacherList) {
+//            teacherNameList.add(teacher.getTeacherName());
+//        }
+//        //获取课程Id所对应的授课老师列表
+//        courseEvaluateInfoDto.setTeacherName(teacherNameList);
+//
+//        //根据分类Id获取课程对应的二级分类Id
+//        Integer categoryId = courseEvaluate.getCategoryId();
+//        Category category = categoryMapper.selectByPrimaryKey(categoryId);
+//        //获取二级分类Id的父级Id
+//        Integer parentId = category.getParentId();
+//        Category categoryEntity = categoryMapper.selectByPrimaryKey(parentId);
+//        //获取课程对应的一级分类名称
+//        courseEvaluateInfoDto.setCategoryName(categoryEntity.getCategoryName());
+//
+//        return courseEvaluateInfoDto;
+//    }
 
     /**
      * 根据IDS批量删除课程评价

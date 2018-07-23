@@ -33,16 +33,16 @@ public class CourseEvaluateController extends BaseController {
 
     }
 
-    @ApiOperation(value ="课程评价详情", produces = "application/json")
-    @ApiImplicitParams({
-            @ApiImplicitParam(name = "id",paramType = "query", value = "课程评价的主键", required = true, dataType = "int")
-    })
-    @GetMapping("/course_evaluate/{id}/information")
-    public Result getCourseEvaluteInfo(@PathVariable("id") int id){
-
-        return Result.success().addData("pager",courseEvaluateService.getCourseEvaluteInfoById(id));
-
-    }
+//    @ApiOperation(value ="课程评价详情", produces = "application/json")
+//    @ApiImplicitParams({
+//            @ApiImplicitParam(name = "id",paramType = "query", value = "课程评价的主键", required = true, dataType = "int")
+//    })
+//    @GetMapping("/course_evaluate/{id}/information")
+//    public Result getCourseEvaluteInfo(@PathVariable("id") int id){
+//
+//        return Result.success().addData("pager",courseEvaluateService.getCourseEvaluteInfoById(id));
+//
+//    }
 
     @ApiOperation(value = "批量删除课程评价", produces = "application/json")
     @ApiImplicitParams({

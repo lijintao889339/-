@@ -2,6 +2,7 @@ package com.teamsking.api.endpoint.open;
 
 
 import com.github.pagehelper.PageHelper;
+import com.teamsking.api.dto.open.OpenCopyDto;
 import com.teamsking.api.dto.open.OpenDto;
 import com.teamsking.api.dto.open.OpenDtoMapper;
 import com.teamsking.api.endpoint.BaseController;
@@ -48,6 +49,21 @@ public class OpenController extends BaseController {
         return Result.success();
 
     }
+
+
+    @ApiOperation(value = "复制班课", consumes= "application/json")
+    @ApiImplicitParams( {
+            @ApiImplicitParam(name = "openCopyDto", value = "复制班课", required = true, dataType = "OpenCopyDto")
+    })
+    @PostMapping("/copy/open")
+    public Result copyOpen(@RequestBody OpenCopyDto openCopyDto){
+
+        openService.copyOpen(openCopyDto);
+        return Result.success();
+
+    }
+
+
 
 
     @ApiOperation(value = "删除班课管理", consumes= "application/json")

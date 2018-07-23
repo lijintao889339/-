@@ -21,4 +21,6 @@ public interface OpenDtoMapper {
 
     List<OpenListViewDto> entityToListViewDtoList(List<Open> openList);
 
+    Open insertDtoToEntity(OpenCopyDto openCopyDto);
+
 }

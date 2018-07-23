@@ -29,5 +29,9 @@ public class CourseEvaluateDto extends Dto {
 
     private String categoryName;
 
+    private String avatar;
+
+    private String evaluateContent;
+
 
 }
