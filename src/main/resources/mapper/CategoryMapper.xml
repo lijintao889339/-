@@ -8,7 +8,7 @@
       This element was generated on Tue Jun 26 17:08:40 CST 2018.
     -->
     <id column="id" jdbcType="INTEGER" property="id" />
-    <result column="category_name" jdbcType="VARCHAR" property="categoryName" />
+    <result column="label" jdbcType="VARCHAR" property="label" />
     <result column="short_name" jdbcType="VARCHAR" property="shortName" />
     <result column="parent_id" jdbcType="INTEGER" property="parentId" />
     <result column="description" jdbcType="VARCHAR" property="description" />

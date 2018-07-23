@@ -9,7 +9,7 @@ import java.util.Date;
 public class EditCourseCategoryDto extends Dto {
 
     private Integer id;
-    private String categoryName;
+    private String label;
     private Integer isShow;
     private Integer updateId;
     private Date updatedTime;

@@ -8,7 +8,7 @@ import lombok.Data;
 public class CategoryDto extends Dto {
 
     private Integer id;
-    private String categoryName;
+    private String label;
     private String shortName;
     private Integer parentId;
     private String description;

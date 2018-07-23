@@ -114,7 +114,7 @@ public class CourseEvaluateService extends BaseService {
                 if (category.getId().intValue() == courseEvaluate.getCategoryId()){
                    for (Category parentCategory : categoryParentList){
                        if (parentCategory.getId().intValue() == category.getParentId()){
-                           courseEvaluate.setCategoryName(parentCategory.getCategoryName());
+                           courseEvaluate.setCategoryName(parentCategory.getLabel());
                            break;
                        }
                    }

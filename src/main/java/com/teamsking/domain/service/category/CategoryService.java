@@ -150,7 +150,7 @@ public class CategoryService {
                 AddCategoryNameDto addCategoryNameDto = new AddCategoryNameDto();
                 if (categorySecond.getParentId().intValue() == category.getId().intValue()){
                     addCategoryNameDto.setId(categorySecond.getId());
-                    addCategoryNameDto.setCategoryName(categorySecond.getCategoryName());
+                    addCategoryNameDto.setLabel(categorySecond.getLabel());
                     addCategoryNameDto.setParentId(categorySecond.getParentId());
                     categories.add(addCategoryNameDto);
                     category.setCategories(categories);

@@ -7,7 +7,7 @@ import lombok.Data;
 public class AddCourseCategoryDto extends Dto {
 
     private Integer id;
-    private String categoryName;
+    private String label;
     private Integer parentId;
     private Integer displayOrder;
     private String keyWord;

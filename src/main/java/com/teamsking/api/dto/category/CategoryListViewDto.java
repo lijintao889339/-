@@ -12,7 +12,7 @@ public class CategoryListViewDto extends Dto{
 
     private Integer id;
 
-    private String categoryName;
+    private String label;
 
     private List<AddCategoryNameDto> categories;
 
