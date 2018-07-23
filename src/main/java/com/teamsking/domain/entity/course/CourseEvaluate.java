@@ -40,7 +40,7 @@ public class CourseEvaluate {
      *
      * @mbg.generated Fri Jul 20 11:13:21 CST 2018
      */
-    private String evaluate;
+    private Double evaluate;
 
     /**
      *
@@ -205,7 +205,7 @@ public class CourseEvaluate {
      *
      * @mbg.generated Fri Jul 20 11:13:21 CST 2018
      */
-    public String getEvaluate() {
+    public Double getEvaluate() {
         return evaluate;
     }
 
@@ -217,7 +217,7 @@ public class CourseEvaluate {
      *
      * @mbg.generated Fri Jul 20 11:13:21 CST 2018
      */
-    public void setEvaluate(String evaluate) {
+    public void setEvaluate(Double evaluate) {
         this.evaluate = evaluate;
     }
 

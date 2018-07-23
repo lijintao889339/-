@@ -21,7 +21,7 @@ public class CourseEvaluateDto extends Dto {
 
     private String courseName;
 
-    private String evaluate;
+    private Double evaluate;
 
     private List<String> teacherName;
 
