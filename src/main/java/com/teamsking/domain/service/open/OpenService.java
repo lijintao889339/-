@@ -63,7 +63,9 @@ public class OpenService extends BaseService {
 
         PageHelper.startPage(pageNo, pageSize);
 
-        List<Open> openList = openMapper.selectAll();
+        Open openEntity = new Open();
+        openEntity.setDeleteStatus(2);
+        List<Open> openList = openMapper.select(openEntity);
         for (Open open: openList) {
             courseIds.add(open.getCourseId());
             shcoolIds.add(open.getSchoolId());
