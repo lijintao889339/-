@@ -29,18 +29,13 @@ public class CategoryController extends BaseController {
     OpenService openService;
 
 
-    @ApiOperation(value = "类别管理列表", notes = "可分页", produces = "application/json")
-    @ApiImplicitParams({
-            @ApiImplicitParam(name = "pageNo", value = "页码", required = true, example = "1"),
-            @ApiImplicitParam(name = "pageSize", value = "页大小", required = true, example = "10")
-    })
-    @GetMapping("/categories")
-    public Result categoryList(int pageNo,int pageSize){
+    @ApiOperation(value = "课程类别列表", produces = "application/json")
 
-        PageHelper.startPage(fixPage(pageNo), fixPage(pageSize));
-        List<Category> categoryList = categoryService.list();
-        List<AddCourseCategoryDto> categoryDtoList = CategoryDtoMapper.INSTANCE.entityListToDtoList1(categoryList);
-        return Result.success().addData("pager", warpPage(categoryDtoList));
+    @GetMapping("/categories")
+    public Result categoryList(){
+
+        List<CategoryListViewDto> categoryList = categoryService.getAllCategory();
+        return Result.success().addData("pager", categoryList);
 
     }
 
@@ -136,8 +131,6 @@ public class CategoryController extends BaseController {
 
     }
 
-
-
     @ApiOperation(value = "修改类别管理", consumes= "application/json")
     @ApiImplicitParams( {
             @ApiImplicitParam(name = "category", value = "类别管理", required = true, dataType = "CategoryDto")
@@ -152,7 +145,5 @@ public class CategoryController extends BaseController {
         return Result.success();
 
     }
-
-
 
 }

@@ -25,5 +25,7 @@ public interface CategoryDtoMapper {
 
     List<AddCourseCategoryDto> entityListToDtoList1(List<Category> entityList);
 
+    List<CategoryListViewDto> entityToListViewDtoList(List<Category> categories);
+
 
 }

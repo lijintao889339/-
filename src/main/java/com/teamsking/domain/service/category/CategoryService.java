@@ -1,5 +1,8 @@
 package com.teamsking.domain.service.category;
 
+import com.google.common.collect.Lists;
+import com.teamsking.api.dto.category.CategoryDtoMapper;
+import com.teamsking.api.dto.category.CategoryListViewDto;
 import com.teamsking.domain.entity.category.Category;
 
 import com.teamsking.domain.repository.CategoryMapper;
@@ -109,5 +112,46 @@ public class CategoryService {
         return categoryMapper.selectByExample(categoryExample);
 
     }
+
+    /**
+     * 查询分类列表
+     */
+    public List<CategoryListViewDto> getAllCategory(){
+
+        //查询所有的一级分类列表
+        List<Integer> parentIds = Lists.newArrayList();
+        Category categoryEntity = new Category();
+        categoryEntity.setParentId(0);
+        categoryEntity.setDeleteStatus(2);
+        List<Category> categoryList = categoryMapper.select(categoryEntity);
+
+        //遍历集合，获取二级分类的父级id
+        for (Category category : categoryList) {
+            parentIds.add(category.getId());
+
+        }
+
+        //根据父级Id获取二级分类
+        Example categoryExample = new Example(Category.class);
+        Example.Criteria cri = categoryExample.createCriteria();
+        cri.andIn("parentId",parentIds);
+        cri.andEqualTo("deleteStatus",2);
+        List<Category> categorySecondList = categoryMapper.selectByExample(categoryExample);
+
+        //数据转换
+        List<CategoryListViewDto> categoryListViewDtoList = CategoryDtoMapper.INSTANCE.entityToListViewDtoList(categoryList);
+        //遍历获取分类名称
+        for (CategoryListViewDto category: categoryListViewDtoList) {
+
+            List<String> categorySecondNameList = Lists.newArrayList();
+            for (Category categorySecond:categorySecondList) {
+                if (categorySecond.getParentId().intValue() == category.getId().intValue()){
+                    categorySecondNameList.add(categorySecond.getCategoryName());
+                    category.setCategorySecondName(categorySecondNameList);
+                }
+            }
+        }
+        return categoryListViewDtoList;
+   }
 
 }
