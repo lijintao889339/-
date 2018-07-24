@@ -1,6 +1,10 @@
 package com.teamsking.api.endpoint.course;
 
+import com.teamsking.api.dto.course.CourseEvaluateDto;
+import com.teamsking.api.dto.course.CourseEvaluateDtoMapper;
 import com.teamsking.api.endpoint.BaseController;
+import com.teamsking.domain.entity.course.CourseEvaluate;
+import com.teamsking.domain.repository.CourseEvaluateMapper;
 import com.teamsking.domain.service.course.CourseEvaluateService;
 import com.teamsking.util.Result;
 import io.swagger.annotations.Api;
@@ -52,6 +56,21 @@ public class CourseEvaluateController extends BaseController {
     public Result removeMultiCourseEvaluates(@RequestParam Integer[] ids){
 
         courseEvaluateService.removeCourseEvaluateByIds(ids);
+        return Result.success();
+    }
+
+    @ApiOperation(value = "是否显示课程评价", produces = "application/json")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "id",value = "课程评价的主键", required = true, dataType = "int"),
+            @ApiImplicitParam(name = "courseEvaluate", value = "课程评价", required = true, dataType = "CourseEvaluateDto")
+    })
+    @PutMapping("/course_evaluate/{id}")
+    public Result removeMultiCourseEvaluates(@PathVariable("id") int id,
+                                             @RequestBody CourseEvaluateDto courseEvaluate){
+
+        CourseEvaluate courseEvaluateEntity = CourseEvaluateDtoMapper.INSTANCE.dtoToEntity(courseEvaluate);
+        courseEvaluateEntity.setId(id);
+        courseEvaluateService.isShowById(courseEvaluateEntity);
         return Result.success();
     }
 

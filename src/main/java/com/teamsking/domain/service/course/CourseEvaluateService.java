@@ -214,4 +214,19 @@ public class CourseEvaluateService extends BaseService {
         cri.andIn("id", idList);
         return courseEvaluateMapper.updateByExampleSelective(courseEvaluate, courseEvaluateExample);
     }
+
+    /**
+     * 判断是否可以显示课程评价
+     * @param courseEvaluate
+     * @return
+     */
+    public int isShowById(CourseEvaluate courseEvaluate){
+
+        if (true == courseEvaluate.getIsShow()){
+            courseEvaluate.setIsShow(true);
+        }else {
+            courseEvaluate.setIsShow(false);
+        }
+        return courseEvaluateMapper.updateByPrimaryKeySelective(courseEvaluate);
+    }
 }
