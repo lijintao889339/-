@@ -25,7 +25,7 @@ public class CourseEvaluateDto extends Dto {
 
     private List<String> teacherName;
 
-    private Integer isShow;
+    private Boolean isShow;
 
     private String categoryName;
 

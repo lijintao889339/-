@@ -53,12 +53,15 @@ public class OpenController extends BaseController {
 
     @ApiOperation(value = "复制班课", consumes= "application/json")
     @ApiImplicitParams( {
-            @ApiImplicitParam(name = "openCopyDto", value = "复制班课", required = true, dataType = "OpenCopyDto")
-    })
-    @PostMapping("/copy/open")
-    public Result copyOpen(@RequestBody OpenCopyDto openCopyDto){
+            @ApiImplicitParam(name = "openCopyDto", value = "复制班课", required = true, dataType = "OpenCopyDto"),
+            @ApiImplicitParam(name = "id", value = "班课的主键", required = true, dataType = "Integer")
 
-        openService.copyOpen(openCopyDto);
+    })
+    @PostMapping("/copy/open/{id}")
+    public Result copyOpen(@RequestBody OpenCopyDto openCopyDto,
+                           @PathVariable int id){
+
+        openService.copyOpen(openCopyDto,id);
         return Result.success();
 
     }

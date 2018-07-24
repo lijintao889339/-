@@ -257,19 +257,20 @@ public class OpenService extends BaseService {
      * @param openCopyDto
      * @return
      */
-    public int copyOpen(OpenCopyDto openCopyDto){
+    public int copyOpen(OpenCopyDto openCopyDto,Integer id){
 
         Open openEntity = OpenDtoMapper.INSTANCE.insertDtoToEntity(openCopyDto);
 
         //根据班课Id查询班课信息
-        Integer openId = openCopyDto.getId();
-        Open open = openMapper.selectByPrimaryKey(openId);
+        Open open = openMapper.selectByPrimaryKey(id);
 
         //给复制的班课添加学校Id
         openEntity.setSchoolId(open.getSchoolId());
 
         //添加选课
         openEntity.setOpenMode(open.getOpenMode());
+        openEntity.setCourseId(open.getCourseId());
+        openEntity.setCourseStatus(open.getCourseStatus());
         openEntity.setDeleteStatus(2);//删除状态：1 已删除 2 未删除
         openEntity.setPublishFlag(2);//发布状态：1 已发布 2 未发布
 

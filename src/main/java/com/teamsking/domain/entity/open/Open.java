@@ -2,6 +2,7 @@ package com.teamsking.domain.entity.open;
 
 import java.math.BigDecimal;
 import java.util.Date;
+import javax.persistence.Column;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
@@ -243,6 +244,8 @@ public class Open {
      */
 
     private String openSell;
+
+    private Integer copyInfo;
 
     public String getOpenSell() {
         return openSell;
@@ -842,5 +845,13 @@ public class Open {
      */
     public void setCourseType(Integer courseType) {
         this.courseType = courseType;
+    }
+
+    public Integer getCopyInfo() {
+        return copyInfo;
+    }
+
+    public void setCopyInfo(Integer copyInfo) {
+        this.copyInfo = copyInfo;
     }
 }

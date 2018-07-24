@@ -12,7 +12,7 @@
     <result column="course_id" jdbcType="INTEGER" property="courseId" />
     <result column="evaluate" jdbcType="DOUBLE" property="evaluate" />
     <result column="course_teacher_id" jdbcType="INTEGER" property="courseTeacherId" />
-    <result column="is_show" jdbcType="INTEGER" property="isShow" />
+    <result column="is_show" jdbcType="BOOLEAN" property="isShow" />
     <result column="create_id" jdbcType="INTEGER" property="createId" />
     <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
     <result column="update_id" jdbcType="INTEGER" property="updateId" />

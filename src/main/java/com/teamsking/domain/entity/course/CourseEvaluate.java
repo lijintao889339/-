@@ -58,7 +58,7 @@ public class CourseEvaluate {
      *
      * @mbg.generated Fri Jul 20 11:13:21 CST 2018
      */
-    private Integer isShow;
+    private Boolean isShow;
 
     /**
      *
@@ -253,7 +253,7 @@ public class CourseEvaluate {
      *
      * @mbg.generated Fri Jul 20 11:13:21 CST 2018
      */
-    public Integer getIsShow() {
+    public Boolean getIsShow() {
         return isShow;
     }
 
@@ -265,7 +265,7 @@ public class CourseEvaluate {
      *
      * @mbg.generated Fri Jul 20 11:13:21 CST 2018
      */
-    public void setIsShow(Integer isShow) {
+    public void setIsShow(Boolean isShow) {
         this.isShow = isShow;
     }
 

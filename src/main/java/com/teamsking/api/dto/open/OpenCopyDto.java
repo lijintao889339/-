@@ -7,13 +7,11 @@ import java.util.Date;
 
 @Data
 public class OpenCopyDto extends Dto {
-
-
-    private Integer id;
+    private Integer openId;
     private Date beginTime;
     private Date endTime;
-    private String courseName;
-    private Integer copy;
+    private String openName;
+    private Integer copyInfo;
     private String schoolName;
     private Integer openMode;
 

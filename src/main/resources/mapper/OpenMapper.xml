@@ -33,6 +33,7 @@
         <result column="difficulty_status" jdbcType="INTEGER" property="difficultyStatus"/>
         <result column="course_type" jdbcType="INTEGER" property="courseType"/>
         <result column="open_sell" jdbcType="VARCHAR" property="openSell"/>
+        <result column="copy_info" jdbcType="INTEGER" property="copyInfo"/>
     </resultMap>
 
     <select id="countByCourseIdsGroupByCourseId" resultType="java.util.Map">
