@@ -9,10 +9,10 @@ public class AddCourseCategoryDto extends Dto {
     private Integer id;
     private String label;
     private Integer parentId;
-    private Integer displayOrder;
+    private String imageUrl;
     private String keyWord;
-    private Integer isShow;
+    private Boolean isShow;
     private String description;
-
+    private Boolean isFirstLabel;
 
 }

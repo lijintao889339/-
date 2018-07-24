@@ -33,12 +33,26 @@ public class CategoryService {
 
 
     /**
-     * 创建课程分类
+     * 创建课程一级分类
      * @param category
      * @return
      */
-    public int save(Category category){
+    public int saveFirstLabel(Category category){
         category.setDeleteStatus(2);
+        category.setIsFirstLabel(true);
+        return categoryMapper.insert(category);
+
+    }
+
+    /**
+     * 创建课程二级分类
+     * @param category
+     * @return
+     */
+    public int saveSecondLabel(Category category){
+        category.setDeleteStatus(2);
+        category.setIsFirstLabel(false);
+        category.setIsShow(true);
         return categoryMapper.insert(category);
 
     }
@@ -145,15 +159,16 @@ public class CategoryService {
         //遍历获取分类名称
         for (CategoryListViewDto category: categoryListViewDtoList) {
 
-            List<AddCategoryNameDto> categories = Lists.newArrayList();
+            List<AddCategoryNameDto> children = Lists.newArrayList();
             for (Category categorySecond:categorySecondList) {
                 AddCategoryNameDto addCategoryNameDto = new AddCategoryNameDto();
                 if (categorySecond.getParentId().intValue() == category.getId().intValue()){
                     addCategoryNameDto.setId(categorySecond.getId());
                     addCategoryNameDto.setLabel(categorySecond.getLabel());
-                    addCategoryNameDto.setParentId(categorySecond.getParentId());
-                    categories.add(addCategoryNameDto);
-                    category.setCategories(categories);
+                    addCategoryNameDto.setIsShow(categorySecond.getIsShow());
+                    addCategoryNameDto.setIsFirstLabel(categorySecond.getIsFirstLabel());
+                    children.add(addCategoryNameDto);
+                    category.setChildren(children);
                 }
             }
         }

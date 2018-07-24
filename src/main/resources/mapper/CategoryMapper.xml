@@ -22,8 +22,9 @@
     <result column="image_name" jdbcType="VARCHAR" property="imageName" />
     <result column="image_url" jdbcType="VARCHAR" property="imageUrl" />
     <result column="ad_desc" jdbcType="VARCHAR" property="adDesc" />
-    <result column="is_show" jdbcType="INTEGER" property="isShow" />
+    <result column="is_show" jdbcType="BOOLEAN" property="isShow" />
     <result column="key_word" jdbcType="VARCHAR" property="keyWord"/>
     <result column="update_id" jdbcType="INTEGER" property="updateId" />
+    <result column="is_firsr_label" jdbcType="BOOLEAN" property="isFirstLabel" />
   </resultMap>
 </mapper>

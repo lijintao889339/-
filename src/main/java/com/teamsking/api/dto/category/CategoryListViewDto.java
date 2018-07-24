@@ -1,11 +1,9 @@
 package com.teamsking.api.dto.category;
 
 import com.teamsking.api.dto.Dto;
-import com.teamsking.domain.entity.category.Category;
 import lombok.Data;
 
 import java.util.List;
-import java.util.Map;
 
 @Data
 public class CategoryListViewDto extends Dto{
@@ -14,6 +12,10 @@ public class CategoryListViewDto extends Dto{
 
     private String label;
 
-    private List<AddCategoryNameDto> categories;
+    private Boolean isFirstLabel;
+
+    private Boolean isShow;
+
+    private List<AddCategoryNameDto> children;
 
 }

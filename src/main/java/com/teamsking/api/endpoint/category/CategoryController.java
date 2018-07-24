@@ -48,7 +48,7 @@ public class CategoryController extends BaseController {
     public Result addCategory(@RequestBody AddCourseCategoryDto addCourseCategory){
 
         Category categoryEntity = CategoryDtoMapper.INSTANCE.dtoToEntity1(addCourseCategory);
-        categoryService.save(categoryEntity);
+        categoryService.saveFirstLabel(categoryEntity);
         return Result.success();
 
     }
@@ -66,7 +66,7 @@ public class CategoryController extends BaseController {
 
         Category categoryEntity = CategoryDtoMapper.INSTANCE.dtoToEntity2(addCategoryNameDto);
         categoryEntity.setParentId(id);
-        categoryService.save(categoryEntity);
+        categoryService.saveSecondLabel(categoryEntity);
         return Result.success();
 
     }
@@ -126,7 +126,7 @@ public class CategoryController extends BaseController {
     @DeleteMapping("/two/category/{id}")
     public Result removeTwoCategory(@PathVariable int id){
 
-        categoryService.removeCategoryById(id);
+        categoryService.removeFirstCategoryById(id);
         return Result.success();
 
     }

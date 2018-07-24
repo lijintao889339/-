@@ -7,7 +7,13 @@ import lombok.Data;
 public class AddCategoryNameDto extends Dto {
 
     private Integer id;
+
     private String label;
+
+    private Boolean isShow;
+
+    private Boolean isFirstLabel;
+
     private Integer parentId;
 
 }

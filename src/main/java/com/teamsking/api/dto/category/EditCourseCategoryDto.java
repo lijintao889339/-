@@ -10,7 +10,7 @@ public class EditCourseCategoryDto extends Dto {
 
     private Integer id;
     private String label;
-    private Integer isShow;
+    private Boolean isShow;
     private Integer updateId;
     private Date updatedTime;
 
