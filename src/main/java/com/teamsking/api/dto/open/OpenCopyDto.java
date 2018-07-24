@@ -11,6 +11,7 @@ public class OpenCopyDto extends Dto {
     private Date beginTime;
     private Date endTime;
     private String openName;
+    private String openCover;
     private Integer copyInfo;
     private String schoolName;
     private Integer openMode;

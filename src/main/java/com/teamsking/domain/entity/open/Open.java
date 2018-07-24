@@ -247,6 +247,8 @@ public class Open {
 
     private Integer copyInfo;
 
+    private String openCover;
+
     public String getOpenSell() {
         return openSell;
     }
@@ -853,5 +855,13 @@ public class Open {
 
     public void setCopyInfo(Integer copyInfo) {
         this.copyInfo = copyInfo;
+    }
+
+    public String getOpenCover() {
+        return openCover;
+    }
+
+    public void setOpenCover(String openCover) {
+        this.openCover = openCover;
     }
 }

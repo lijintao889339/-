@@ -22,8 +22,7 @@ public class OpenListViewDto extends Dto {
 
     private Integer publishFlag;
 
-    //课程封面地址（node实体类）
-    private String coverPath;
+    private String openCover;
 
     private Integer schoolId;
 

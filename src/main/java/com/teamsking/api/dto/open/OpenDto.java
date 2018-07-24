@@ -33,5 +33,7 @@ public class OpenDto extends Dto {
     private Integer deleteStatus;
     private Integer difficultyStatus;
     private Integer courseType;
+    private String openCover;
+
 
 }

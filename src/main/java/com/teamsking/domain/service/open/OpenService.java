@@ -75,9 +75,6 @@ public class OpenService extends BaseService {
         //根据班次Id查询学生数量
         List<Map<String, Object>> studentNumList = openUserMapper.countByOpenIdsGroupByOpenId(openIds);
 
-        //根据班次Id查询班次封面地址
-        List<Node> nodeList = nodeService.getNodeByOpenIdList(openIds);
-
         //根据课程Id查询课程名称
         List<Course> courseList =  courseService.getCourseByCourseIdList(courseIds);
 
@@ -92,13 +89,6 @@ public class OpenService extends BaseService {
                 int openId = (Integer) studentNum.get("openId");
                 if (openId == open.getId()) {
                     open.setStudentNum(((Long) studentNum.get("count")).intValue());
-                    break;
-                }
-            }
-
-            for (Node node : nodeList){
-                if (node.getOpenId().intValue() == open.getId().intValue()){
-                    open.setCoverPath(node.getCoverPath());
                     break;
                 }
             }
@@ -183,9 +173,6 @@ public class OpenService extends BaseService {
         //根据班次Id查询学生数量
         List<Map<String, Object>> studentNumList = openUserMapper.countByOpenIdsGroupByOpenId(openIds);
 
-        //根据班次Id查询班次封面地址
-        List<Node> nodeList = nodeService.getNodeByOpenIdList(openIds);
-
         List<OpenListViewDto> openListViewDtoList = OpenDtoMapper.INSTANCE.entityToListViewDtoList(openList);
 
         for (OpenListViewDto open : openListViewDtoList) {
@@ -201,13 +188,6 @@ public class OpenService extends BaseService {
                 int openId = (Integer) studentNum.get("openId");
                 if (openId == open.getId()) {
                     open.setStudentNum(((Long) studentNum.get("count")).intValue());
-                    break;
-                }
-            }
-
-            for (Node node : nodeList) {
-                if (node.getOpenId().intValue() == open.getId().intValue()) {
-                    open.setCoverPath(node.getCoverPath());
                     break;
                 }
             }
@@ -266,6 +246,8 @@ public class OpenService extends BaseService {
 
         //给复制的班课添加学校Id
         openEntity.setSchoolId(open.getSchoolId());
+
+        openEntity.setOpenCover(open.getOpenCover());
 
         //添加选课
         openEntity.setOpenMode(open.getOpenMode());
