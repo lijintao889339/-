@@ -22,3 +22,4 @@ public abstract class BaseService {
         return page;
     }
 }
+
