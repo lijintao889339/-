@@ -51,7 +51,6 @@ public class CourseService extends BaseService {
      */
     public Page list(int pageNo, int pageSize) {
         List<Integer> courseIds = Lists.newArrayList();
-        List<CourseListViewDto> resultList = Lists.newArrayList();
         List<Integer> teacherIds = Lists.newArrayList();
 
         PageHelper.startPage(pageNo, pageSize);
@@ -116,7 +115,6 @@ public class CourseService extends BaseService {
 
         if (count > 0) {
             CourseTeacher courseTeacher = CourseTeacherDtoMapper.INSTANCE.insertDtoToEntity(courseInsertDto);
-            //courseTeacher.setCourseId(courseEntity.getId());
             courseTeacherMapper.insertSelective(courseTeacher);
         }
 
@@ -222,5 +220,12 @@ public class CourseService extends BaseService {
         Example courseExample = new Example(Course.class);
         return courseMapper.selectByExample(courseExample);
 
+    }
+
+    public List<Course> getCourseListByCategoryId(int id) {
+
+        Example courseExample = new Example(Course.class);
+        courseExample.and().andEqualTo("categoryId",id);
+        return courseMapper.selectByExample(courseExample);
     }
 }

@@ -23,4 +23,8 @@ public interface OpenDtoMapper {
 
     Open insertDtoToEntity(OpenCopyDto openCopyDto);
 
+    OpenIdAndNameDto entityToOpenIdAndName(Open open);
+
+    List<OpenIdAndNameDto> entityToListOpenIdAndName(List<Open> openList);
+
 }

@@ -249,6 +249,16 @@ public class Open {
 
     private String openCover;
 
+    private Integer categoryId;
+
+    public Integer getCategoryId() {
+        return categoryId;
+    }
+
+    public void setCategoryId(Integer categoryId) {
+        this.categoryId = categoryId;
+    }
+
     public String getOpenSell() {
         return openSell;
     }

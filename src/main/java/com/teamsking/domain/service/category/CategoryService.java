@@ -1,14 +1,23 @@
 package com.teamsking.domain.service.category;
 
+import com.github.pagehelper.Page;
+import com.github.pagehelper.PageHelper;
 import com.google.common.collect.Lists;
 import com.teamsking.api.dto.category.AddCategoryNameDto;
 import com.teamsking.api.dto.category.CategoryDtoMapper;
 import com.teamsking.api.dto.category.CategoryListViewDto;
+import com.teamsking.api.dto.open.OpenDtoMapper;
+import com.teamsking.api.dto.open.OpenIdAndNameDto;
 import com.teamsking.domain.entity.category.Category;
 
+import com.teamsking.domain.entity.course.Course;
+import com.teamsking.domain.entity.open.Open;
 import com.teamsking.domain.repository.CategoryMapper;
 import java.util.List;
 
+import com.teamsking.domain.service.BaseService;
+import com.teamsking.domain.service.course.CourseService;
+import com.teamsking.domain.service.open.OpenService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -16,21 +25,13 @@ import tk.mybatis.mapper.entity.Example;
 
 @Slf4j
 @Service
-public class CategoryService {
+public class CategoryService extends BaseService {
 
     @Autowired
     CategoryMapper categoryMapper;
 
-    /**
-     * 获取类别管理列表
-     * @return
-     */
-    public List<Category> list(){
-
-        return categoryMapper.selectAll();
-
-    }
-
+    @Autowired
+    OpenService openService;
 
     /**
      * 创建课程一级分类
@@ -58,24 +59,12 @@ public class CategoryService {
     }
 
 
-
     /**
-     * 删除类别管理
+     * 删除课程分类
      * @param id
      * @return
      */
-    public int remove(Integer id){
-
-        return categoryMapper.deleteByPrimaryKey(id);
-
-    }
-
-    /**
-     * 删除一级分类
-     * @param id
-     * @return
-     */
-    public int removeFirstCategoryById(Integer id){
+    public int removeCategoryById(Integer id){
 
 
         Category category = new Category();
@@ -88,31 +77,13 @@ public class CategoryService {
 
     }
 
-
-    /**
-     * 删除二级分类
-     * @param id
-     * @return
-     */
-    public int removeCategoryById(Integer id){
-
-        Category category = new Category();
-        category.setDeleteStatus(1);
-
-        Example categoryExample = new Example(Category.class);
-        categoryExample.or().andEqualTo("id",id);
-        return categoryMapper.updateByExampleSelective(category,categoryExample);
-
-    }
-
-
     /**
      * 修改类别管理
      * @param category
      * @return
      */
     public int modify(Category category){
-        category.setDeleteStatus(2);
+
         return categoryMapper.updateByPrimaryKeySelective(category);
 
     }
@@ -175,4 +146,49 @@ public class CategoryService {
         return categoryListViewDtoList;
    }
 
+    /**
+     * 分页获取课程分类下面的班课列表
+     * @param pageNo
+     * @param pageSize
+     * @param id
+     * @return
+     */
+    public Page getCategoryOpensById(int pageNo, int pageSize,int id) {
+
+        List<Integer> categoryIds = Lists.newArrayList();
+
+        //根据分类Id获取分类信息
+        Category category = categoryMapper.selectByPrimaryKey(id);
+
+
+        List<Open> openList;
+
+        //判断是否为一级分类
+        if (true == category.getIsFirstLabel()){
+            Category secondCategory = new Category();
+            secondCategory.setParentId(category.getId());
+
+            //查询一级分类下的二级分类列表
+            List<Category> categoryList = categoryMapper.select(secondCategory);
+            for (Category categoryEntity : categoryList) {
+                categoryIds.add(categoryEntity.getId());
+            }
+
+            PageHelper.startPage(pageNo, pageSize);
+
+            //根据分类Ids获取其下面的班次列表
+            openList = openService.getOPenListByCategoryIdList(categoryIds);
+
+        }else {
+            PageHelper.startPage(pageNo, pageSize);
+
+            //根据分类Id获取其下面的班次列表
+            openList = openService.getOpenListByCategoryId(id);
+
+        }
+
+        List<OpenIdAndNameDto>  openIdAndNameDtoList = OpenDtoMapper.INSTANCE.entityToListOpenIdAndName(openList);
+        return convertPage((Page)openList,openIdAndNameDtoList);
+
+    }
 }

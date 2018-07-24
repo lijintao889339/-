@@ -72,8 +72,6 @@ public class CategoryController extends BaseController {
     }
 
 
-
-
     @ApiOperation(value = "课程分类更新接口", consumes= "application/json")
     @ApiImplicitParams( {
             @ApiImplicitParam(name = "editCourseCategory", value = "课程分类更新接口", required = true, dataType = "EditCourseCategoryDto")
@@ -83,7 +81,6 @@ public class CategoryController extends BaseController {
                                            @RequestBody EditCourseCategoryDto editCourseCategory){
 
         Category categoryEntity = CategoryDtoMapper.INSTANCE.dtoToEntity3(editCourseCategory);
-
         categoryEntity.setId(id);
         categoryService.modify(categoryEntity);
         return Result.success();
@@ -91,59 +88,28 @@ public class CategoryController extends BaseController {
     }
 
 
-
-    @ApiOperation(value = "删除类别管理", consumes= "application/json")
-    @ApiImplicitParams( {
-            @ApiImplicitParam(name = "id", value = "类别管理", required = true, dataType = "Integer")
+    @ApiOperation(value = "删除课程分类",produces = "application/json")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "id",value = "课程分类的主键", required = true, paramType = "query", dataType = "int")
     })
     @DeleteMapping("/category/{id}")
-    public Result removeCategory(@PathVariable int id){
-
-        categoryService.remove(id);
-        return Result.success();
-
-    }
-
-
-
-    @ApiOperation(value = "删除一级分类",produces = "application/json")
-    @ApiImplicitParams({
-            @ApiImplicitParam(name = "id",value = "一级分类的主键", required = true, paramType = "query", dataType = "int")
-    })
-    @DeleteMapping("/first/category/{id}")
     public Result removeFirstCategory(@PathVariable int id){
 
-        categoryService.removeFirstCategoryById(id);
+        categoryService.removeCategoryById(id);
         return Result.success();
     }
 
 
-
-    @ApiOperation(value = "删除二级分类",produces = "application/json")
+    @ApiOperation(value = "查看课程分类下面的班课", consumes = "application/json")
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "id",value = "二级分类的主键", required = true, dataType = "int")
+            @ApiImplicitParam(name = "pageNo", paramType = "query", value = "页码", required = true, example = "1"),
+            @ApiImplicitParam(name = "pageSize", paramType = "query", value = "页大小", required = true, example = "10"),
+            @ApiImplicitParam(name = "id", value = "分类的主键", required = true, dataType = "int")
     })
-    @DeleteMapping("/two/category/{id}")
-    public Result removeTwoCategory(@PathVariable int id){
+    @GetMapping("/category/{id}/opens")
+    public Result getCategoryOpens(@RequestParam int pageNo, @RequestParam int pageSize, @PathVariable int id){
 
-        categoryService.removeFirstCategoryById(id);
-        return Result.success();
-
-    }
-
-    @ApiOperation(value = "修改类别管理", consumes= "application/json")
-    @ApiImplicitParams( {
-            @ApiImplicitParam(name = "category", value = "类别管理", required = true, dataType = "CategoryDto")
-    })
-    @PutMapping("/category/{id}")
-    public Result modifyCategory(@PathVariable int id,
-                                 @RequestBody CategoryDto category){
-
-        Category categoryEntity = CategoryDtoMapper.INSTANCE.dtoToEntity(category);
-        categoryEntity.setId(id);
-        categoryService.modify(categoryEntity);
-        return Result.success();
-
+        return Result.success().addData("pager",warpPage(categoryService.getCategoryOpensById(fixPage(pageNo),fixPage(pageSize),id)));
     }
 
 }

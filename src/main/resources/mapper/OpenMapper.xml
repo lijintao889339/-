@@ -35,6 +35,7 @@
         <result column="open_sell" jdbcType="VARCHAR" property="openSell"/>
         <result column="copy_info" jdbcType="INTEGER" property="copyInfo"/>
         <result column="open_cover" jdbcType="VARCHAR" property="openCover"/>
+        <result column="category_id" jdbcType="INTEGER" property="categoryId"/>
     </resultMap>
 
     <select id="countByCourseIdsGroupByCourseId" resultType="java.util.Map">

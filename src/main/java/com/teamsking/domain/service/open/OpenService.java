@@ -259,4 +259,31 @@ public class OpenService extends BaseService {
         return openMapper.insert(openEntity);
 
     }
+
+    /**
+     * 根据分类Id查询班课列表
+     * @param categoryId
+     * @return
+     */
+    public List<Open> getOpenListByCategoryId(int categoryId) {
+
+        Open open = new Open();
+        open.setCategoryId(categoryId);
+        return openMapper.select(open);
+
+    }
+
+    /**
+     * 根据分类Ids查询班课列表
+     * @param categoryIds
+     * @return
+     */
+    public List<Open> getOPenListByCategoryIdList(List<Integer> categoryIds) {
+
+        Example openExample = new Example(Open.class);
+        Example.Criteria cri = openExample.createCriteria();
+        cri.andIn("categoryId",categoryIds);
+        return openMapper.selectByExample(openExample);
+
+    }
 }
