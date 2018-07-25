@@ -25,5 +25,7 @@
     <result column="avatar" jdbcType="VARCHAR" property="avatar" />
     <result column="activation_status" jdbcType="INTEGER" property="activationStatus" />
     <result column="delete_status" jdbcType="INTEGER" property="deleteStatus" />
+    <result column="we_chat" jdbcType="VARCHAR" property="weChat" />
+    <result column="mico_blog" jdbcType="VARCHAR" property="micoBlog" />
   </resultMap>
 </mapper>
