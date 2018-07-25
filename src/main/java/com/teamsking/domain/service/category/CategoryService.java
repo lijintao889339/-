@@ -10,13 +10,11 @@ import com.teamsking.api.dto.open.OpenDtoMapper;
 import com.teamsking.api.dto.open.OpenIdAndNameDto;
 import com.teamsking.domain.entity.category.Category;
 
-import com.teamsking.domain.entity.course.Course;
 import com.teamsking.domain.entity.open.Open;
 import com.teamsking.domain.repository.CategoryMapper;
 import java.util.List;
 
 import com.teamsking.domain.service.BaseService;
-import com.teamsking.domain.service.course.CourseService;
 import com.teamsking.domain.service.open.OpenService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -189,6 +187,33 @@ public class CategoryService extends BaseService {
 
         List<OpenIdAndNameDto>  openIdAndNameDtoList = OpenDtoMapper.INSTANCE.entityToListOpenIdAndName(openList);
         return convertPage((Page)openList,openIdAndNameDtoList);
+
+    }
+
+    /**
+     * 获取所有一级分类
+     * @return
+     */
+    public List<Category> getAllFirstCategory() {
+
+        Category category = new Category();
+        category.setParentId(0);
+        category.setDeleteStatus(2);
+        return categoryMapper.select(category);
+
+    }
+
+    /**
+     * 获取一级分类下的所有二级分类
+     * @param id
+     * @return
+     */
+    public List<Category> getSecondCategoryById(int id) {
+
+        Category category = new Category();
+        category.setParentId(id);
+        category.setDeleteStatus(2);
+        return categoryMapper.select(category);
 
     }
 }

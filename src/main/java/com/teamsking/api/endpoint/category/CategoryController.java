@@ -112,4 +112,21 @@ public class CategoryController extends BaseController {
         return Result.success().addData("pager",warpPage(categoryService.getCategoryOpensById(fixPage(pageNo),fixPage(pageSize),id)));
     }
 
+    @ApiOperation(value = "一级分类列表", consumes = "application/json")
+    @GetMapping("/first_categories")
+    public Result getFirstCategory(){
+
+        return Result.success().addData("pager",categoryService.getAllFirstCategory());
+    }
+
+    @ApiOperation(value = "二级分类列表", consumes = "application/json")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "id", value = "分类的主键", required = true, dataType = "int")
+    })
+    @GetMapping("/second_categories/{id}")
+    public Result getSecondCategory(@PathVariable("id") int id){
+
+        return Result.success().addData("pager",categoryService.getSecondCategoryById(id));
+    }
+
 }
