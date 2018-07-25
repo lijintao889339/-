@@ -251,6 +251,12 @@ public class Open {
 
     private Integer categoryId;
 
+    //新添字段(可见范围)
+    private Integer visibleRange;
+
+    //新添字段(学习类型)
+    private Integer studyType;
+
     public Integer getCategoryId() {
         return categoryId;
     }
@@ -873,5 +879,21 @@ public class Open {
 
     public void setOpenCover(String openCover) {
         this.openCover = openCover;
+    }
+
+    public Integer getVisibleRange() {
+        return visibleRange;
+    }
+
+    public void setVisibleRange(Integer visibleRange) {
+        this.visibleRange = visibleRange;
+    }
+
+    public Integer getStudyType() {
+        return studyType;
+    }
+
+    public void setStudyType(Integer studyType) {
+        this.studyType = studyType;
     }
 }
