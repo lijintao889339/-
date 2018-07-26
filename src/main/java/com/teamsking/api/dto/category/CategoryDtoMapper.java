@@ -1,5 +1,6 @@
 package com.teamsking.api.dto.category;
 
+import com.teamsking.api.dto.open.AddOpenDto;
 import com.teamsking.domain.entity.category.Category;
 import java.util.List;
 import org.mapstruct.Mapper;
@@ -26,6 +27,8 @@ public interface CategoryDtoMapper {
     List<AddCourseCategoryDto> entityListToDtoList1(List<Category> entityList);
 
     List<CategoryListViewDto> entityToListViewDtoList(List<Category> categories);
+
+    Category insertDtoAddToEntity(AddOpenDto addOpenDto);
 
 
 }

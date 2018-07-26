@@ -4,10 +4,12 @@ import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.google.common.collect.Lists;
 import com.teamsking.api.dto.course.*;
+import com.teamsking.domain.entity.category.Category;
 import com.teamsking.domain.entity.course.Course;
 import com.teamsking.domain.entity.course.CourseTeacher;
 import com.teamsking.domain.entity.course.CourseTeacherConnection;
 import com.teamsking.domain.entity.open.Open;
+import com.teamsking.domain.entity.school.School;
 import com.teamsking.domain.repository.CourseMapper;
 import com.teamsking.domain.repository.CourseTeacherMapper;
 import com.teamsking.domain.repository.OpenMapper;
@@ -16,7 +18,9 @@ import com.teamsking.domain.service.BaseService;
 import java.util.List;
 import java.util.Map;
 
+import com.teamsking.domain.service.category.CategoryService;
 import com.teamsking.domain.service.open.OpenService;
+import com.teamsking.domain.service.school.SchoolService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -43,6 +47,11 @@ public class CourseService extends BaseService {
 
     @Autowired
     CourseTeacherConnectionService courseTeacherConnectionService;
+
+    @Autowired
+    CategoryService categoryService;
+    @Autowired
+    SchoolService schoolService;
 
     /**
      * 获取课程列表
@@ -222,10 +231,46 @@ public class CourseService extends BaseService {
 
     }
 
-    public List<Course> getCourseListByCategoryId(int id) {
+    /**
+     * 通过一级分类id查询课程列表
+     * @param id
+     * @return
+     */
+    public List<CourseSchoolDto> getCourseListByCategoryId(int id) {
+        //获取一级分类下的所有二级分类
+        List<Category> categoryList = categoryService.getSecondCategoryById(id);
+
+        List<Integer> categoryIds = Lists.newArrayList();
+
+        for (Category category:categoryList) {
+            categoryIds.add(category.getId());
+
+        }
 
         Example courseExample = new Example(Course.class);
-        courseExample.and().andEqualTo("categoryId",id);
-        return courseMapper.selectByExample(courseExample);
+        Example.Criteria cri = courseExample.createCriteria();
+        cri.andIn("categoryId", categoryIds);
+        List<Course> courseList = courseMapper.selectByExample(courseExample);
+
+        List<CourseSchoolDto> courseSchoolDtoList = CourseDtoMapper.INSTANCE.entityToCourseSchoolDtoList(courseList);
+
+        List<Integer> schoolIds = Lists.newArrayList();
+        for (Course course : courseList) {
+            schoolIds.add(course.getSchoolId());
+        }
+
+        List<School> schoolList = schoolService.getSchoolListByIds(schoolIds);
+        for (School school : schoolList){
+
+            for (CourseSchoolDto courseSchoolDto : courseSchoolDtoList) {
+                if (courseSchoolDto.getSchoolId().intValue() == school.getId().intValue()){
+                    courseSchoolDto.setSchoolName(school.getSchoolName());
+                    break;
+                }
+            }
+
+        }
+
+        return courseSchoolDtoList;
     }
 }

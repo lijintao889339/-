@@ -1,5 +1,6 @@
 package com.teamsking.api.dto.school;
 
+import com.teamsking.api.dto.open.AddOpenDto;
 import com.teamsking.domain.entity.school.School;
 import java.util.List;
 import org.mapstruct.Mapper;
@@ -18,5 +19,7 @@ public interface SchoolDtoMapper {
     SchoolDto entityToDto(School school);
 
     School dtoToEntity(SchoolDto schoolDto);
+
+    School addDtoToEntity(AddOpenDto addOpenDto);
 
 }

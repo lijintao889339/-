@@ -27,4 +27,6 @@ public interface OpenDtoMapper {
 
     List<OpenIdAndNameDto> entityToListOpenIdAndName(List<Open> openList);
 
+    Open insertDtoAddToEntity(AddOpenDto addOpenDto);
+
 }

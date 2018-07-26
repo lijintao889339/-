@@ -1,12 +1,15 @@
 package com.teamsking.domain.service.open;
 
 
+import afu.org.checkerframework.checker.oigj.qual.O;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.google.common.collect.Lists;
+import com.teamsking.api.dto.open.AddOpenDto;
 import com.teamsking.api.dto.open.OpenCopyDto;
 import com.teamsking.api.dto.open.OpenListViewDto;
 import com.teamsking.api.dto.open.OpenDtoMapper;
+import com.teamsking.api.dto.school.SchoolDtoMapper;
 import com.teamsking.domain.entity.course.Course;
 import com.teamsking.domain.entity.node.Node;
 import com.teamsking.domain.entity.open.Open;
@@ -41,6 +44,7 @@ public class OpenService extends BaseService {
     OpenUserMapper openUserMapper;
     @Autowired
     SchoolMapper schoolMapper;
+
 
     @Autowired
     SchoolService schoolService;
@@ -284,6 +288,24 @@ public class OpenService extends BaseService {
         Example.Criteria cri = openExample.createCriteria();
         cri.andIn("categoryId",categoryIds);
         return openMapper.selectByExample(openExample);
+
+    }
+
+
+
+    public int addOpen(AddOpenDto addOpenDto){
+
+        Open openEntity = OpenDtoMapper.INSTANCE.insertDtoAddToEntity(addOpenDto);
+
+        //根据课程id获取该课程的二级分类id
+        Course course = courseMapper.selectByPrimaryKey(openEntity.getCourseId());
+        Integer categoryId = course.getCategoryId();
+        //设置添加的班课的二级分类Id
+        openEntity.setCategoryId(categoryId);
+
+        openEntity.setDeleteStatus(2);//删除状态：1 已删除 2 未删除
+
+        return openMapper.insertSelective(openEntity);
 
     }
 }

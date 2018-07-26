@@ -5,7 +5,9 @@ import com.teamsking.api.dto.course.CourseDto;
 import com.teamsking.api.dto.course.CourseDtoMapper;
 import com.teamsking.api.dto.course.CourseInsertDto;
 import com.teamsking.api.endpoint.BaseController;
+import com.teamsking.domain.entity.category.Category;
 import com.teamsking.domain.entity.course.Course;
+import com.teamsking.domain.service.category.CategoryService;
 import com.teamsking.domain.service.course.CourseService;
 import com.teamsking.domain.service.course.CourseTeacherService;
 import com.teamsking.util.Result;
@@ -35,6 +37,9 @@ public class CourseController extends BaseController {
     CourseService courseService;
     @Autowired
     CourseTeacherService courseTeacherService;
+
+    @Autowired
+    CategoryService categoryService;
 
     @ApiOperation(value = "课程列表", notes = "可分页", produces = "application/json")
     @ApiImplicitParams( {
@@ -104,5 +109,19 @@ public class CourseController extends BaseController {
         return Result.success();
 
     }
+
+
+    @ApiOperation(value = "一级分类下的课程列表",produces = "application/json")
+    @ApiImplicitParams( {
+            @ApiImplicitParam(name = "id", value = "一级分类的主键", required = true ,dataType = "Integer")
+    })
+    @GetMapping("/first_category/{id}/courses")
+    public Result courseOpenList(@PathVariable int id){
+
+        return Result.success().addData("pager",courseService.getCourseListByCategoryId(id));
+
+    }
+
+
 
 }

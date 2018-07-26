@@ -2,11 +2,14 @@ package com.teamsking.api.endpoint.open;
 
 
 import com.github.pagehelper.PageHelper;
+import com.teamsking.api.dto.open.AddOpenDto;
 import com.teamsking.api.dto.open.OpenCopyDto;
 import com.teamsking.api.dto.open.OpenDto;
 import com.teamsking.api.dto.open.OpenDtoMapper;
 import com.teamsking.api.endpoint.BaseController;
 import com.teamsking.domain.entity.open.Open;
+import com.teamsking.domain.service.category.CategoryService;
+import com.teamsking.domain.service.course.CourseService;
 import com.teamsking.domain.service.open.OpenService;
 import com.teamsking.util.Result;
 import io.swagger.annotations.Api;
@@ -25,6 +28,12 @@ public class OpenController extends BaseController {
 
     @Autowired
     OpenService openService;
+
+    @Autowired
+    CategoryService categoryService;
+
+    @Autowired
+    CourseService courseService;
 
 
     @ApiOperation(value = "班课管理列表", notes = "可分页", produces = "application/json")
@@ -118,5 +127,20 @@ public class OpenController extends BaseController {
         openService.modifyPublishFlagById(id);
         return Result.success();
     }
+
+
+    @ApiOperation(value = "创建班课", consumes= "application/json")
+    @ApiImplicitParams( {
+            @ApiImplicitParam(name = "addOpenDto", value = "创建班课", required = true, dataType = "AddOpenDto")
+    })
+    @PostMapping("/add_open")
+    public Result addOpen(@RequestBody AddOpenDto addOpenDto){
+
+        openService.addOpen(addOpenDto);
+
+        return Result.success();
+
+    }
+
 
 }

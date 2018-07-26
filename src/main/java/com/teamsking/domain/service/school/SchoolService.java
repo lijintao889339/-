@@ -68,4 +68,18 @@ public class SchoolService {
         return schoolMapper.selectByExample(schoolExample);
 
     }
+
+    /**
+     * 根据学校Ids获取学校列表
+     * @param schoolIds
+     * @return
+     */
+    public List<School> getSchoolListByIds(List<Integer> schoolIds) {
+
+        Example schoolExample = new Example(School.class);
+        Example.Criteria cri = schoolExample.createCriteria();
+        cri.andIn("id",schoolIds);
+        return schoolMapper.selectByExample(schoolExample);
+
+    }
 }
