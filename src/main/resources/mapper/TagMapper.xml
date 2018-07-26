@@ -16,4 +16,17 @@
     <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
     <result column="delete_status" jdbcType="INTEGER" property="deleteStatus" />
   </resultMap>
+
+  <!--批量添加标签名称-->
+  <insert id="insertTagByTags" useGeneratedKeys="true" keyProperty="id" parameterType="java.util.List">
+      <!--<selectKey resultType ="java.lang.Integer" keyProperty= "id" order= "AFTER">
+          SELECT LAST_INSERT_ID()
+      </selectKey >-->
+     insert into tag(delete_status,tag_name) values
+       <foreach item="tag" collection="list" index="index" separator="," >
+         (#{tag.deleteStatus},
+         #{tag.tagName})
+       </foreach>
+  </insert>
+
 </mapper>

@@ -16,4 +16,17 @@
     <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
     <result column="delete_status" jdbcType="INTEGER" property="deleteStatus" />
   </resultMap>
+
+  <!--批量添加用户和标签关系-->
+  <insert id="insertUserTagByUserTags" parameterType="java.util.List">
+    insert into user_tag(tag_id,user_id,delete_status) values
+    <if test="userTagList != null and userTagList.size() > 0 ">
+      <foreach item="userTag" collection="userTagList" index="index" separator="," >
+        (#{userTag.tagId},
+        #{userTag.userId},
+        #{userTag.deleteStatus})
+      </foreach>
+    </if>
+  </insert>
+
 </mapper>

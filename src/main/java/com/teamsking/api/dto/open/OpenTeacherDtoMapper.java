@@ -17,4 +17,6 @@ public interface OpenTeacherDtoMapper {
 
     OpenTeacher dtoToEntity(OpenTeacherDto openTeacherDto);
 
+    OpenTeacher addDtoToEntity(AddOpenTeacherDto addOpenTeacherDto);
+
 }

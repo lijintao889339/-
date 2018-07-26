@@ -1,6 +1,7 @@
 package com.teamsking.domain.entity.tag;
 
 import java.util.Date;
+import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
@@ -14,6 +15,7 @@ public class UserTag {
      * @mbg.generated Thu Jul 05 21:18:43 CST 2018
      */
     @Id
+    @GeneratedValue(generator = "JDBC")
     private Integer id;
 
     /**

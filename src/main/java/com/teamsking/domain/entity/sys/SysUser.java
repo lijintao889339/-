@@ -1,5 +1,6 @@
 package com.teamsking.domain.entity.sys;
 
+import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
@@ -13,6 +14,7 @@ public class SysUser {
      * @mbg.generated Tue Jun 19 14:08:57 CST 2018
      */
     @Id
+    @GeneratedValue(generator = "JDBC")
     private Integer id;
 
     /**

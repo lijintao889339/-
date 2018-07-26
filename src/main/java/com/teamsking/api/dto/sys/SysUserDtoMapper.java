@@ -1,6 +1,7 @@
 package com.teamsking.api.dto.sys;
 
 
+import com.teamsking.api.dto.open.AddOpenTeacherDto;
 import com.teamsking.domain.entity.sys.SysUser;
 import java.util.List;
 import org.mapstruct.Mapper;
@@ -17,6 +18,6 @@ public interface SysUserDtoMapper {
 
     SysUser dtoToEntity(SysUserDto sysUserDto);
 
-
+    SysUser AddTeacherDtoToEtity(AddOpenTeacherDto addOpenTeacherDto);
 
 }

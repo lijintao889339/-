@@ -1,6 +1,7 @@
 package com.teamsking.api.endpoint.open;
 
 import com.github.pagehelper.PageHelper;
+import com.teamsking.api.dto.open.AddOpenTeacherDto;
 import com.teamsking.api.dto.open.OpenTeacherDto;
 import com.teamsking.api.dto.open.OpenTeacherDtoMapper;
 import com.teamsking.api.endpoint.BaseController;
@@ -54,13 +55,12 @@ public class OpenTeacherController extends BaseController {
 
     @ApiOperation(value = "添加班次-教师管理", consumes= "application/json")
     @ApiImplicitParams( {
-            @ApiImplicitParam(name = "openTeacher", value = "班次教师管理", required = true, dataType = "OpenTeacherDto")
+            @ApiImplicitParam(name = "openTeacher", value = "班次教师管理", required = true, dataType = "AddOpenTeacherDto")
     })
     @PostMapping("/open_teacher")
-    public Result addOpenTeacher(@RequestBody OpenTeacherDto openTeacher){
+    public Result addOpenTeacher(@RequestBody AddOpenTeacherDto openTeacher){
 
-        OpenTeacher openTeacherEntity = OpenTeacherDtoMapper.INSTANCE.dtoToEntity(openTeacher);
-        openTeacherService.save(openTeacherEntity);
+        openTeacherService.save(openTeacher);
         return Result.success();
 
     }
