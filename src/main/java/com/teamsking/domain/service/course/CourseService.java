@@ -116,7 +116,7 @@ public class CourseService extends BaseService {
      * @param courseInsertDto
      * @return
      */
-    public int save(CourseInsertDto courseInsertDto) {
+    public Course save(CourseInsertDto courseInsertDto) {
 
         //向课程表添加信息
         Course courseEntity = CourseDtoMapper.INSTANCE.insertDtoToEntity(courseInsertDto);
@@ -135,7 +135,7 @@ public class CourseService extends BaseService {
         }
         courseTeacherConnectionMapper.insertConnectionByCourseAndTeachers(courseTeacherConnectionList);
 
-        return count;
+        return courseEntity;
     }
 
     /**

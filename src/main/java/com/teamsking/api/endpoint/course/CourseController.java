@@ -59,8 +59,8 @@ public class CourseController extends BaseController {
     @PostMapping("/course")
     public Result addCourse(@RequestBody CourseInsertDto courseInsertDto) {
 
-        courseService.save(courseInsertDto);
-        return Result.success();
+        Course course = courseService.save(courseInsertDto);
+        return Result.success().addData("course",course);
     }
 
     @ApiOperation(value = "删除课程", consumes = "application/json")
