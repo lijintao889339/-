@@ -38,6 +38,11 @@
         <result column="category_id" jdbcType="INTEGER" property="categoryId"/>
         <result column="visible_range" jdbcType="INTEGER" property="visibleRange"/>
         <result column="study_type" jdbcType="INTEGER" property="studyType"/>
+        <result column="open_introduce" jdbcType="VARCHAR" property="openIntroduce"/>
+        <result column="key_word" jdbcType="VARCHAR" property="keyWord"/>
+        <result column="open_free" jdbcType="INTEGER" property="openFree"/>
+        <result column="range" jdbcType="INTEGER" property="range"/>
+
     </resultMap>
 
     <select id="countByCourseIdsGroupByCourseId" resultType="java.util.Map">
