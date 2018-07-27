@@ -1,6 +1,7 @@
 package com.teamsking.api.endpoint.course;
 
 import com.github.pagehelper.PageHelper;
+import com.teamsking.api.dto.course.ChapterSectionDto;
 import com.teamsking.api.dto.course.CourseChapterDto;
 import com.teamsking.api.dto.course.CourseChapterDtoMapper;
 import com.teamsking.api.endpoint.BaseController;
@@ -35,22 +36,18 @@ public class CourseChapterController extends BaseController {
 
     /**
      * 获取课程-章列表管理
-     * @param pageNo
-     * @param pageSize
+     * @param courseId
      * @return
      */
     @ApiOperation(value = "课程-章的列表", notes = "可分页", produces = "application/json")
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "pageNo", value ="页码", required = true, example = "1") ,
-            @ApiImplicitParam(name = "pageSize", value = "页大小", required = true, example = "10")
+            @ApiImplicitParam(name = "courseId", value = "课程的主键", required = true, dataType = "int")
     })
-    @GetMapping("/course_chapters")
-    public Result CourseChapterList(int pageNo, int pageSize){
+    @GetMapping("/course_chapters/{courseId}")
+    public Result CourseChapterList(@PathVariable int courseId){
 
-        PageHelper.startPage(fixPage(pageNo), fixPage(pageSize));
-        List<CourseChapter> courseChapterList = courseChapterService.list();
-        List<CourseChapterDto> courseChapterDtoList = CourseChapterDtoMapper.INSTANCE.entityListToDtoList(courseChapterList);
-        return Result.success().addData("pager",warpPage(courseChapterDtoList));
+        List<ChapterSectionDto> chapterSectionDtoList = courseChapterService.list(courseId);
+        return Result.success().addData("chapterSectionDtoList",warpPage(chapterSectionDtoList));
     }
 
     /**
