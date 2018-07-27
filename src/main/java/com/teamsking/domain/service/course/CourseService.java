@@ -9,8 +9,10 @@ import com.teamsking.domain.entity.course.Course;
 import com.teamsking.domain.entity.course.CourseTeacher;
 import com.teamsking.domain.entity.course.CourseTeacherConnection;
 import com.teamsking.domain.entity.open.Open;
+import com.teamsking.domain.entity.open.OpenTeacher;
 import com.teamsking.domain.entity.school.School;
 import com.teamsking.domain.repository.CourseMapper;
+import com.teamsking.domain.repository.CourseTeacherConnectionMapper;
 import com.teamsking.domain.repository.CourseTeacherMapper;
 import com.teamsking.domain.repository.OpenMapper;
 import com.teamsking.domain.service.BaseService;
@@ -20,6 +22,7 @@ import java.util.Map;
 
 import com.teamsking.domain.service.category.CategoryService;
 import com.teamsking.domain.service.open.OpenService;
+import com.teamsking.domain.service.open.OpenTeacherService;
 import com.teamsking.domain.service.school.SchoolService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,22 +35,21 @@ public class CourseService extends BaseService {
 
     @Autowired
     CourseMapper courseMapper;
-
     @Autowired
     OpenMapper openMapper;
-
     @Autowired
     CourseTeacherMapper courseTeacherMapper;
+    @Autowired
+    CourseTeacherConnectionMapper courseTeacherConnectionMapper;
 
     @Autowired
     CourseTeacherService courseTeacherService;
-
     @Autowired
     OpenService openService;
-
+    @Autowired
+    OpenTeacherService openTeacherService;
     @Autowired
     CourseTeacherConnectionService courseTeacherConnectionService;
-
     @Autowired
     CategoryService categoryService;
     @Autowired
@@ -116,16 +118,22 @@ public class CourseService extends BaseService {
      */
     public int save(CourseInsertDto courseInsertDto) {
 
+        //向课程表添加信息
         Course courseEntity = CourseDtoMapper.INSTANCE.insertDtoToEntity(courseInsertDto);
         courseEntity.setCourseStatus("10");
         courseEntity.setDeleteStatus(2);
         int count = courseMapper.insert(courseEntity);
 
-
-        if (count > 0) {
-            CourseTeacher courseTeacher = CourseTeacherDtoMapper.INSTANCE.insertDtoToEntity(courseInsertDto);
-            courseTeacherMapper.insertSelective(courseTeacher);
+        //将老师Id添加到课程老师关系表
+        Integer[] teacherIds = courseInsertDto.getTeacherId();
+        List<CourseTeacherConnection> courseTeacherConnectionList = Lists.newArrayList();
+        for (Integer teacherId : teacherIds) {
+            CourseTeacherConnection courseTeacherConnection = new CourseTeacherConnection();
+            courseTeacherConnection.setCourseId(courseEntity.getId());
+            courseTeacherConnection.setTeacherId(teacherId);
+            courseTeacherConnectionList.add(courseTeacherConnection);
         }
+        courseTeacherConnectionMapper.insertConnectionByCourseAndTeachers(courseTeacherConnectionList);
 
         return count;
     }

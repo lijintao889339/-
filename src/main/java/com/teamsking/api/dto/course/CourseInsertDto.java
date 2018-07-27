@@ -22,5 +22,5 @@ public class CourseInsertDto {
 
     private Integer categoryId;
 
-    private String teacherName;
+    private Integer[] teacherId;
 }
