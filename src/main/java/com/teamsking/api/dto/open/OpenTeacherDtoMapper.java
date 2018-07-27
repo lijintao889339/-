@@ -19,4 +19,6 @@ public interface OpenTeacherDtoMapper {
 
     OpenTeacher addDtoToEntity(AddOpenTeacherDto addOpenTeacherDto);
 
+    List<OpenTeacherNameDto> entityListToNameDtoList(List<OpenTeacher> entityList);
+
 }

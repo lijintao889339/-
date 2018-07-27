@@ -4,6 +4,7 @@ import com.github.pagehelper.PageHelper;
 import com.teamsking.api.dto.open.AddOpenTeacherDto;
 import com.teamsking.api.dto.open.OpenTeacherDto;
 import com.teamsking.api.dto.open.OpenTeacherDtoMapper;
+import com.teamsking.api.dto.open.OpenTeacherNameDto;
 import com.teamsking.api.endpoint.BaseController;
 import com.teamsking.domain.entity.open.OpenTeacher;
 import com.teamsking.domain.service.open.OpenTeacherService;
@@ -35,20 +36,14 @@ public class OpenTeacherController extends BaseController {
 
 
     @ApiOperation(value = "班次-教师管理列表", notes = "可分页", produces = "application/json")
-    @ApiImplicitParams({
-            @ApiImplicitParam(name = "pageNo", value = "页码", required = true, example = "1"),
-            @ApiImplicitParam(name = "pageSize", value = "页大小", required = true, example = "10")
-    })
     @GetMapping("/open_teachers")
-    public Result openTeacherList(int pageNo,int pageSize){
-
-        PageHelper.startPage(fixPage(pageNo), fixPage(pageSize));
+    public Result openTeacherList(){
 
         List<OpenTeacher> openTeacherList = openTeacherService.list();
 
-        List<OpenTeacherDto> openTeacherDtoList = OpenTeacherDtoMapper.INSTANCE.entityListToDtoList(openTeacherList);
+        List<OpenTeacherNameDto> openTeacherNameDtoList = OpenTeacherDtoMapper.INSTANCE.entityListToNameDtoList(openTeacherList);
 
-        return Result.success().addData("pager", warpPage(openTeacherDtoList));
+        return Result.success().addData("pager", warpPage(openTeacherNameDtoList));
 
     }
 

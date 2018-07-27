@@ -40,7 +40,9 @@ public class OpenTeacherService {
      */
     public List<OpenTeacher> list(){
 
-        return openTeacherMapper.selectAll();
+        OpenTeacher openTeacher = new OpenTeacher();
+        openTeacher.setDeleteStatus(2);
+        return openTeacherMapper.select(openTeacher);
     }
 
     /**
