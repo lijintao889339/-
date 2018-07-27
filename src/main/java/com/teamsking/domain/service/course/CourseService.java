@@ -231,10 +231,16 @@ public class CourseService extends BaseService {
 
     }
 
-
+    /**
+     * 根据课程Ids获取课程列表
+     * @param courseIds
+     * @return
+     */
     public List<Course> getCourseByCourseIdsList(List<Integer> courseIds) {
 
         Example courseExample = new Example(Course.class);
+        Example.Criteria cri = courseExample.createCriteria();
+        cri.andIn("id", courseIds);
         return courseMapper.selectByExample(courseExample);
 
     }
@@ -280,5 +286,38 @@ public class CourseService extends BaseService {
         }
 
         return courseSchoolDtoList;
+    }
+
+    /**
+     * 根据课程Id获取课程
+     * @param id
+     * @return
+     */
+    public CourseEditDto getCourseById(int id) {
+
+        //根据Id获取课程信息
+        Course course = courseMapper.selectByPrimaryKey(id);
+
+        //获取该课程与老师的关系
+        List<CourseTeacherConnection> courseTeacherConnectionList = courseTeacherConnectionService.getTeacherByCourseId(course.getId());
+
+        //获取该课程下的老师Ids
+        List<Integer> teacherIds = Lists.newArrayList();
+        for (CourseTeacherConnection courseTeacherConnection: courseTeacherConnectionList){
+            teacherIds.add(courseTeacherConnection.getTeacherId());
+        }
+
+        //根据老师Ids获取老师姓名List
+        List<String> teacherNameList = Lists.newArrayList();
+        List<OpenTeacher> openTeacherList = openTeacherService.getTeacherListByTeacherIds(teacherIds);
+        for (OpenTeacher openTeacher : openTeacherList){
+            teacherNameList.add(openTeacher.getTeacherName());
+        }
+
+        //数据转换
+        CourseEditDto courseEditDto = CourseDtoMapper.INSTANCE.entityToCourseEditDto(course);
+        courseEditDto.setTeacherName(teacherNameList);
+
+        return courseEditDto;
     }
 }

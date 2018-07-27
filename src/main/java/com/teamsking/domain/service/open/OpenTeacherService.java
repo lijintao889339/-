@@ -18,6 +18,7 @@ import com.teamsking.domain.repository.UserTagMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import tk.mybatis.mapper.entity.Example;
 
 @Slf4j
 @Service
@@ -120,4 +121,17 @@ public class OpenTeacherService {
 
     }
 
+    /**
+     * 通过老师Ids获取老师信息列表
+     * @param teacherIds
+     * @return
+     */
+    public List<OpenTeacher> getTeacherListByTeacherIds(List<Integer> teacherIds) {
+
+        Example teacherExample = new Example(OpenTeacher.class);
+        Example.Criteria cri = teacherExample.createCriteria();
+        cri.andIn("id",teacherIds);
+        return openTeacherMapper.selectByExample(teacherExample);
+
+    }
 }

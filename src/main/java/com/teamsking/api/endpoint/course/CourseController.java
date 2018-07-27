@@ -51,6 +51,15 @@ public class CourseController extends BaseController {
         return Result.success().addData("pager", warpPage(courseService.list(fixPage(pageNo), fixPage(pageSize))));
     }
 
+    @ApiOperation(value = "编辑前获取课程", notes = "可分页", produces = "application/json")
+    @ApiImplicitParams( {
+            @ApiImplicitParam(name = "id", value = "课程的主键", required = true, dataType = "Integer")
+    })
+    @GetMapping("/course/{id}")
+    public Result getCourse(@PathVariable int id){
+
+        return Result.success().addData("course",courseService.getCourseById(id));
+    }
 
     @ApiOperation(value = "添加课程", consumes = "application/json")
     @ApiImplicitParams( {
