@@ -29,6 +29,7 @@
     <result column="visible_range" jdbcType="INTEGER" property="visibleRange"/>
     <result column="course_sell" jdbcType="VARCHAR" property="courseSell"/>
     <result column="qc_code" jdbcType="VARCHAR" property="qcCode"/>
+    <result column="course_introduction" jdbcType="VARCHAR" property="courseIntroduction"/>
   </resultMap>
 
 </mapper>

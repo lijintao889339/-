@@ -18,7 +18,7 @@ public class CourseInsertDto {
 
     private Integer visibleRange;
 
-    private String simpleInfo;
+    private String courseIntroduction;
 
     private Integer categoryId;
 

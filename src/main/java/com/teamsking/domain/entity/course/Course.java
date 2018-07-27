@@ -158,6 +158,16 @@ public class Course {
 
     private String qcCode;
 
+    private String courseIntroduction;
+
+    public String getCourseIntroduction() {
+        return courseIntroduction;
+    }
+
+    public void setCourseIntroduction(String courseIntroduction) {
+        this.courseIntroduction = courseIntroduction;
+    }
+
     public String getqcCode() {
         return qcCode;
     }
