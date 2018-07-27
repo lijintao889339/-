@@ -148,7 +148,7 @@ public class Course {
 
     private Integer courseFree;
 
-    private String courseKeyword;
+    private String KeyWord;
 
     private Integer categoryId;
 
@@ -190,12 +190,12 @@ public class Course {
         this.visibleRange = visibleRange;
     }
 
-    public String getCourseKeyword() {
-        return courseKeyword;
+    public String getKeyWord() {
+        return KeyWord;
     }
 
-    public void setCourseKeyword(String courseKeyword) {
-        this.courseKeyword = courseKeyword;
+    public void setKeyWord(String keyWord) {
+        KeyWord = keyWord;
     }
 
     public Integer getCourseFree() {
