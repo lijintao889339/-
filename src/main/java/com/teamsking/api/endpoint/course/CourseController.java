@@ -1,11 +1,8 @@
 package com.teamsking.api.endpoint.course;
 
 
-import com.teamsking.api.dto.course.CourseDto;
-import com.teamsking.api.dto.course.CourseDtoMapper;
 import com.teamsking.api.dto.course.CourseInsertDto;
 import com.teamsking.api.endpoint.BaseController;
-import com.teamsking.domain.entity.category.Category;
 import com.teamsking.domain.entity.course.Course;
 import com.teamsking.domain.service.category.CategoryService;
 import com.teamsking.domain.service.course.CourseService;
@@ -25,8 +22,6 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-
-import java.util.List;
 
 @RestController
 @Api(tags = "课程操作接口")
@@ -51,15 +46,7 @@ public class CourseController extends BaseController {
         return Result.success().addData("pager", warpPage(courseService.list(fixPage(pageNo), fixPage(pageSize))));
     }
 
-    @ApiOperation(value = "编辑前获取课程", notes = "可分页", produces = "application/json")
-    @ApiImplicitParams( {
-            @ApiImplicitParam(name = "id", value = "课程的主键", required = true, dataType = "Integer")
-    })
-    @GetMapping("/course/{id}")
-    public Result getCourse(@PathVariable int id){
 
-        return Result.success().addData("course",courseService.getCourseById(id));
-    }
 
     @ApiOperation(value = "添加课程", consumes = "application/json")
     @ApiImplicitParams( {
@@ -72,29 +59,7 @@ public class CourseController extends BaseController {
         return Result.success().addData("course",course);
     }
 
-    @ApiOperation(value = "删除课程", consumes = "application/json")
-    @ApiImplicitParams( {
-        @ApiImplicitParam(name = "id", value = "课程", required = true, dataType = "Integer")
-    })
-    @DeleteMapping("/course/{id}")
-    public Result removeCourse(@PathVariable("id") int id) {
-        courseService.remove1(id);
-        return Result.success();
-    }
 
-    @ApiOperation(value = "修改课程", consumes = "application/json")
-    @ApiImplicitParams( {
-        @ApiImplicitParam(name = "course", value = "课程", required = true, dataType = "CourseDto")
-    })
-    @PutMapping("/course/{id}")
-    public Result modifyCourse(@PathVariable int id,
-                               @RequestBody CourseDto course) {
-        Course courseEntity = CourseDtoMapper.INSTANCE.dtoToEntity(course);
-        courseEntity.setId(id);
-        courseService.modify(courseEntity);
-        return Result.success();
-
-    }
 
     @ApiOperation(value = "修改课程状态", produces = "application/json")
     @ApiImplicitParams({
@@ -106,6 +71,7 @@ public class CourseController extends BaseController {
         courseService.modifyCourseSatusById(id);
         return Result.success();
     }
+
 
     @ApiOperation(value = "批量删除课程",produces = "application/json")
     @ApiImplicitParams({

@@ -26,6 +26,5 @@ public interface CourseDtoMapper {
 
     List<CourseSchoolDto> entityToCourseSchoolDtoList(List<Course> courseList);
 
-    CourseEditDto entityToCourseEditDto(Course course);
 }
 

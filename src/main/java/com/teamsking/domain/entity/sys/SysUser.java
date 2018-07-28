@@ -179,26 +179,6 @@ public class SysUser {
      * @mbg.generated Tue Jun 19 14:08:57 CST 2018
      */
 
-    private String weChat;
-
-    private String micoBlog;
-
-    public String getWeChat() {
-        return weChat;
-    }
-
-    public void setWeChat(String weChat) {
-        this.weChat = weChat;
-    }
-
-    public String getMicoBlog() {
-        return micoBlog;
-    }
-
-    public void setMicoBlog(String micoBlog) {
-        this.micoBlog = micoBlog;
-    }
-
     public Integer getId() {
         return id;
     }

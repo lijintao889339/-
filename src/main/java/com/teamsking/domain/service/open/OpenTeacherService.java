@@ -51,7 +51,7 @@ public class OpenTeacherService {
      * @param openTeacher
      * @return
      */
-    public int save(AddOpenTeacherDto openTeacher){
+    /*public int save(AddOpenTeacherDto openTeacher){
 
         //先在用户表中添加老师基本信息(头像、姓名、微博、微信)
         SysUser sysUser = SysUserDtoMapper.INSTANCE.AddTeacherDtoToEtity(openTeacher);
@@ -72,7 +72,7 @@ public class OpenTeacherService {
         }
         tagMapper.insertTagByTags(tagList);
 
-        //2.讲添加的标签和该老师(用户)关联
+        //2.将添加的标签和该老师(用户)关联
         //(1)获取添加的标签Id
         List<Integer> tagIdList = Lists.newArrayList();
         for (Tag tag : tagList) {
@@ -97,7 +97,7 @@ public class OpenTeacherService {
         openTeacherEntity.setTeacherName(sysUser.getUserName());
         openTeacherEntity.setDeleteStatus(2);
         return openTeacherMapper.insertSelective(openTeacherEntity);
-    }
+    }*/
 
     /**
      * 删除班次-教师管理

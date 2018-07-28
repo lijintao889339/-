@@ -17,5 +17,11 @@
     <result column="update_id" jdbcType="INTEGER" property="updateId" />
     <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
     <result column="delete_status" jdbcType="INTEGER" property="deleteStatus" />
+    <result column="we_chat" jdbcType="VARCHAR" property="weChat" />
+    <result column="mico_blog" jdbcType="VARCHAR" property="micoBlog" />
+    <result column="teacher_type" jdbcType="VARCHAR" property="teacherType" />
+    <result column="teacher_avatar" jdbcType="VARCHAR" property="teacherAvatar" />
+    <result column="teacher_info" jdbcType="VARCHAR" property="teacherInfo" />
+    <result column="teacher_organization" jdbcType="VARCHAR" property="teacherOrganization" />
   </resultMap>
 </mapper>
