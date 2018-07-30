@@ -126,30 +126,45 @@ public class OpenController extends BaseController {
     }
 
 
-    @ApiOperation(value = "创建班课", consumes= "application/json")
-    @ApiImplicitParams( {
-            @ApiImplicitParam(name = "addOpenDto", value = "创建班课", required = true, dataType = "AddOpenDto")
-    })
-    @PostMapping("/add_open")
-    public Result addOpen(@RequestBody AddOpenDto addOpenDto){
+//    @ApiOperation(value = "创建班课", consumes= "application/json")
+//    @ApiImplicitParams( {
+//            @ApiImplicitParam(name = "addOpenDto", value = "创建班课", required = true, dataType = "AddOpenDto")
+//    })
+//    @PostMapping("/add_open")
+//    public Result addOpen(@RequestBody AddOpenDto addOpenDto){
+//
+//        openService.addOpen(addOpenDto);
+//
+//        return Result.success();
+//
+//    }
 
-        openService.addOpen(addOpenDto);
 
-        return Result.success();
+//    @ApiOperation(value = "查询班课信息", consumes= "application/json")
+//    @ApiImplicitParams( {
+//            @ApiImplicitParam(name = "id", value = "班课主键", required = true, dataType = "Integer")
+//    })
+//    @GetMapping("/edit_open/{id}")
+//    public Result editOpen(@PathVariable int id){
+//
+//        return Result.success().addData("pager", (openService.editOpen(id)));
+//
+//    }
 
-    }
 
+//    @ApiOperation(value = "编辑保存班课", consumes= "application/json")
+//    @ApiImplicitParams( {
+//            @ApiImplicitParam(name = "editOpenDto", value = "编辑保存班课", required = true, dataType = "EditOpenDto")
+//    })
+//    @PutMapping("/edit_preservation_open")
+//    public Result editPreservationOpen(@RequestBody EditOpenDto editOpenDto){
+//
+//        openService.editPreservationOpen(editOpenDto);
+//
+//        return Result.success();
+//
+//    }
 
-    @ApiOperation(value = "查询班课信息", consumes= "application/json")
-    @ApiImplicitParams( {
-            @ApiImplicitParam(name = "id", value = "班课主键", required = true, dataType = "Integer")
-    })
-    @GetMapping("/edit_open/{id}")
-    public Result editOpen(@PathVariable int id){
-
-        return Result.success().addData("pager", (openService.editOpen(id)));
-
-    }
 
 
 }

@@ -38,6 +38,9 @@
         <result column="category_id" jdbcType="INTEGER" property="categoryId"/>
         <result column="visible_range" jdbcType="INTEGER" property="visibleRange"/>
         <result column="study_type" jdbcType="INTEGER" property="studyType"/>
+        <result column="open_introduce" jdbcType="VARCHAR" property="openIntroduce"/>
+        <result column="key_word" jdbcType="INTEGER" property="keyWord"/>
+        <result column="open_free" jdbcType="VARCHAR" property="openFree"/>
 
     </resultMap>
 

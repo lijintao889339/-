@@ -22,5 +22,7 @@
     <result column="update_id" jdbcType="INTEGER" property="updateId" />
     <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
     <result column="delete_status" jdbcType="INTEGER" property="deleteStatus" />
+    <result column="we_chat" jdbcType="VARCHAR" property="weChat" />
+    <result column="mico_blog" jdbcType="VARCHAR" property="micoBlog" />
   </resultMap>
 </mapper>

@@ -294,21 +294,21 @@ public class OpenService extends BaseService {
      * @param addOpenDto
      * @return
      */
-    public int addOpen(AddOpenDto addOpenDto){
-
-        Open openEntity = OpenDtoMapper.INSTANCE.insertDtoAddToEntity(addOpenDto);
-
-        //根据课程id获取该课程的二级分类id
-        Course course = courseMapper.selectByPrimaryKey(openEntity.getCourseId());
-        Integer categoryId = course.getCategoryId();
-        //设置添加的班课的二级分类Id
-        openEntity.setCategoryId(categoryId);
-
-        openEntity.setDeleteStatus(2);//删除状态：1 已删除 2 未删除
-
-        return openMapper.insertSelective(openEntity);
-
-    }
+//    public int addOpen(AddOpenDto addOpenDto){
+//
+//        Open openEntity = OpenDtoMapper.INSTANCE.insertDtoAddToEntity(addOpenDto);
+//
+//        //根据课程id获取该课程的二级分类id
+//        Course course = courseMapper.selectByPrimaryKey(openEntity.getCourseId());
+//        Integer categoryId = course.getCategoryId();
+//        //设置添加的班课的二级分类Id
+//        openEntity.setCategoryId(categoryId);
+//
+//        openEntity.setDeleteStatus(2);//删除状态：1 已删除 2 未删除
+//
+//        return openMapper.insertSelective(openEntity);
+//
+//    }
 
 
     /**
@@ -316,12 +316,42 @@ public class OpenService extends BaseService {
      * @param id
      * @return
      */
-    public Open editOpen(int id){
-        //根据id查询班课信息
-        Open open = openMapper.selectByPrimaryKey(id);
+//    public Open editOpen(int id){
+//        //根据id查询班课信息
+//        Open open = openMapper.selectByPrimaryKey(id);
+//
+//        return open;
+//
+//
+//    }
 
-        return open;
+    /**
+     * 根据id编辑保存班课信息
+     * @param editOpenDto
+     * @return
+     */
+//    public int editPreservationOpen(EditOpenDto editOpenDto){
+//
+//        Open openEntity = OpenDtoMapper.INSTANCE.editInsertDtoToEntity(editOpenDto);
+//
+//        Course course = courseMapper.selectByPrimaryKey(openEntity.getCourseId());
+//        Integer categoryId = course.getCategoryId();
+//        openEntity.setCategoryId(categoryId);
+//        //openEntity.setDeleteStatus(2);
+//
+//        Integer[] teacherIds = editOpenDto.getTeacherId();
+//        List<OpenTeacherConnection> openTeacherConnectionList = Lists.newArrayList();
+//        for (Integer teacherId : teacherIds) {
+//            OpenTeacherConnection openTeacherConnection = new OpenTeacherConnection();
+//            openTeacherConnection.setOpenId(openEntity.getId());
+//            openTeacherConnection.setTeacherId(teacherId);
+//            openTeacherConnectionList.add(openTeacherConnection);
+//        }
+//        openTeacherConnectionMapper.insertConnectionByOpenAndTeachers(openTeacherConnectionList);
+//
+//        //return openMapper.updateByPrimaryKeySelective(openEntity);
+//        return openMapper.updateByPrimaryKeySelective(openEntity);
+//
+//    }
 
-
-    }
 }

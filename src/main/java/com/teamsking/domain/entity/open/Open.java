@@ -251,6 +251,11 @@ public class Open {
 
     private Integer categoryId;
 
+    private String openIntroduce;
+
+    private Integer keyWord;
+
+    private String openFree;
 
     //新添字段(可见范围)
     private Integer visibleRange;
@@ -898,4 +903,27 @@ public class Open {
         this.studyType = studyType;
     }
 
+    public String getOpenIntroduce() {
+        return openIntroduce;
+    }
+
+    public void setOpenIntroduce(String openIntroduce) {
+        this.openIntroduce = openIntroduce;
+    }
+
+    public Integer getKeyWord() {
+        return keyWord;
+    }
+
+    public void setKeyWord(Integer keyWord) {
+        this.keyWord = keyWord;
+    }
+
+    public String getOpenFree() {
+        return openFree;
+    }
+
+    public void setOpenFree(String openFree) {
+        this.openFree = openFree;
+    }
 }
