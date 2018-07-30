@@ -22,6 +22,8 @@ public interface CourseDtoMapper {
 
     Course insertDtoToEntity(CourseInsertDto courseInsertDto);
 
+    CourseBeforeEditDto entityToBeforeEditDto(Course course);
+
     CourseSchoolDto entityToCourseSchoolDto(Course course);
 
     List<CourseSchoolDto> entityToCourseSchoolDtoList(List<Course> courseList);

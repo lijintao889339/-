@@ -59,6 +59,15 @@ public class CourseController extends BaseController {
         return Result.success().addData("course",course);
     }
 
+    @ApiOperation(value = "课程列表", produces = "application/json")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "id", value = "课程的主键", required = true, dataType = "int")
+    })
+    @GetMapping("course/{id}")
+    public Result getCourseBeforeEdit(@PathVariable int id){
+
+        return Result.success().addData("course",courseService.getCourseAndTeacherById(id));
+    }
 
 
     @ApiOperation(value = "修改课程状态", produces = "application/json")

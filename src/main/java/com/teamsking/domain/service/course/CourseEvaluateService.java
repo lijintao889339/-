@@ -75,7 +75,7 @@ public class CourseEvaluateService extends BaseService {
 
         List<SysUser> sysUserList = sysUserService.getSysUserByUserIdList(userIds);
 
-        List<Course> courseList = courseService.getCourseByCourseIdsList(courseIds);
+        List<Course> courseList = courseService.getCourseByCourseIdList(courseIds);
 
         List<Category> categoryList = categoryService.getCategoryByCategoryId(categoryIds);
         for (Category category:categoryList) {
