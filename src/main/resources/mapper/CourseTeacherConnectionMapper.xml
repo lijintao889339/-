@@ -17,7 +17,7 @@
     <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
   </resultMap>
 
-  <!--批量插入班课老师关系数据-->
+  <!--批量插入课程老师关系数据-->
   <insert id="insertConnectionByCourseAndTeachers" parameterType="java.util.List">
     insert into course_teacher_connection(course_id,teacher_id) values
     <if test="courseTeacherConnectionList != null and courseTeacherConnectionList.size() > 0 ">

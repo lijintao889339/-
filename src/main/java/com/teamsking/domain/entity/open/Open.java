@@ -261,7 +261,7 @@ public class Open {
     private Integer openFree;
 
     //可见范围(全部可见，部分可见)
-    private Integer range;
+    private Integer visualRange;
 
     //新添字段(可见范围)
     private Integer visibleRange;
@@ -933,11 +933,11 @@ public class Open {
         this.openFree = openFree;
     }
 
-    public Integer getRange() {
-        return range;
+    public Integer getVisualRange() {
+        return visualRange;
     }
 
-    public void setRange(Integer range) {
-        this.range = range;
+    public void setVisualRange(Integer visualRange) {
+        this.visualRange = visualRange;
     }
 }

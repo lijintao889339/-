@@ -15,4 +15,15 @@
     <result column="update_id" jdbcType="INTEGER" property="updateId" />
     <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
   </resultMap>
+
+  <!--批量插入班课老师关系数据-->
+  <insert id="insertConnectionByOpenAndTeachers" parameterType="java.util.List">
+    insert into open_teacher_connection(open_id,teacher_id) values
+    <if test="openTeacherConnectionList != null and openTeacherConnectionList.size() > 0 ">
+      <foreach item="item" collection="openTeacherConnectionList" index="index" separator="," >
+        (#{item.openId},
+        #{item.teacherId})
+      </foreach>
+    </if>
+  </insert>
 </mapper>

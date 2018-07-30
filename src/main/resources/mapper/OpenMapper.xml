@@ -41,7 +41,7 @@
         <result column="open_introduce" jdbcType="VARCHAR" property="openIntroduce"/>
         <result column="key_word" jdbcType="VARCHAR" property="keyWord"/>
         <result column="open_free" jdbcType="INTEGER" property="openFree"/>
-        <result column="range" jdbcType="INTEGER" property="range"/>
+        <result column="visual_range" jdbcType="INTEGER" property="visualRange"/>
 
     </resultMap>
 

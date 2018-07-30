@@ -2,10 +2,7 @@ package com.teamsking.api.endpoint.open;
 
 
 import com.github.pagehelper.PageHelper;
-import com.teamsking.api.dto.open.AddOpenDto;
-import com.teamsking.api.dto.open.OpenCopyDto;
-import com.teamsking.api.dto.open.OpenDto;
-import com.teamsking.api.dto.open.OpenDtoMapper;
+import com.teamsking.api.dto.open.*;
 import com.teamsking.api.endpoint.BaseController;
 import com.teamsking.domain.entity.open.Open;
 import com.teamsking.domain.service.category.CategoryService;
@@ -139,6 +136,19 @@ public class OpenController extends BaseController {
         openService.addOpen(addOpenDto);
 
         return Result.success();
+
+    }
+
+
+    @ApiOperation(value = "查询班课信息", consumes= "application/json")
+    @ApiImplicitParams( {
+            @ApiImplicitParam(name = "id", value = "班课主键", required = true, dataType = "Integer")
+    })
+    @GetMapping("/edit_open/{id}")
+    public Result editOpen(@PathVariable int id){
+
+        //openService.editOpen(id);
+        return Result.success().addData("pager", (openService.editOpen(id)));
 
     }
 

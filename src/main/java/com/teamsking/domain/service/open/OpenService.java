@@ -5,20 +5,15 @@ import afu.org.checkerframework.checker.oigj.qual.O;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.google.common.collect.Lists;
-import com.teamsking.api.dto.open.AddOpenDto;
-import com.teamsking.api.dto.open.OpenCopyDto;
-import com.teamsking.api.dto.open.OpenListViewDto;
-import com.teamsking.api.dto.open.OpenDtoMapper;
+import com.teamsking.api.dto.open.*;
 import com.teamsking.api.dto.school.SchoolDtoMapper;
 import com.teamsking.domain.entity.course.Course;
 import com.teamsking.domain.entity.node.Node;
 import com.teamsking.domain.entity.open.Open;
+import com.teamsking.domain.entity.open.OpenTeacherConnection;
 import com.teamsking.domain.entity.school.School;
-import com.teamsking.domain.repository.CourseMapper;
-import com.teamsking.domain.repository.OpenMapper;
+import com.teamsking.domain.repository.*;
 
-import com.teamsking.domain.repository.OpenUserMapper;
-import com.teamsking.domain.repository.SchoolMapper;
 import com.teamsking.domain.service.BaseService;
 
 import java.util.List;
@@ -44,6 +39,8 @@ public class OpenService extends BaseService {
     OpenUserMapper openUserMapper;
     @Autowired
     SchoolMapper schoolMapper;
+    @Autowired
+    OpenTeacherConnectionMapper openTeacherConnectionMapper;
 
 
     @Autowired
@@ -292,7 +289,11 @@ public class OpenService extends BaseService {
     }
 
 
-
+    /**
+     * 创建班课
+     * @param addOpenDto
+     * @return
+     */
     public int addOpen(AddOpenDto addOpenDto){
 
         Open openEntity = OpenDtoMapper.INSTANCE.insertDtoAddToEntity(addOpenDto);
@@ -306,6 +307,22 @@ public class OpenService extends BaseService {
         openEntity.setDeleteStatus(2);//删除状态：1 已删除 2 未删除
 
         return openMapper.insertSelective(openEntity);
+
+    }
+
+
+    /**
+     * 根据id查询班课信息
+     * @param id
+     * @return
+     */
+    public Open editOpen(int id){
+
+        //根据id查询班课信息
+        Open open = openMapper.selectByPrimaryKey(id);
+
+        return open;
+
 
     }
 }

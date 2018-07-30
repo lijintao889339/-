@@ -29,4 +29,8 @@ public interface OpenDtoMapper {
 
     Open insertDtoAddToEntity(AddOpenDto addOpenDto);
 
+    Open editInsertDtoToEntity(EditOpenDto editOpenDto);
+
+    EditOpenDto entityToEditDto(Open open);
+
 }
