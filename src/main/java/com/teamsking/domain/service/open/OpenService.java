@@ -317,7 +317,6 @@ public class OpenService extends BaseService {
      * @return
      */
     public Open editOpen(int id){
-
         //根据id查询班课信息
         Open open = openMapper.selectByPrimaryKey(id);
 

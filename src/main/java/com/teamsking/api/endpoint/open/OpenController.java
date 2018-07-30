@@ -147,7 +147,6 @@ public class OpenController extends BaseController {
     @GetMapping("/edit_open/{id}")
     public Result editOpen(@PathVariable int id){
 
-        //openService.editOpen(id);
         return Result.success().addData("pager", (openService.editOpen(id)));
 
     }

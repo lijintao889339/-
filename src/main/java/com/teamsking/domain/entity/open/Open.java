@@ -251,17 +251,6 @@ public class Open {
 
     private Integer categoryId;
 
-    //班课描述
-    private String openIntroduce;
-
-    //班课关键字
-    private String keyWord;
-
-    //班课价格
-    private Integer openFree;
-
-    //可见范围(全部可见，部分可见)
-    private Integer visualRange;
 
     //新添字段(可见范围)
     private Integer visibleRange;
@@ -909,35 +898,4 @@ public class Open {
         this.studyType = studyType;
     }
 
-    public String getOpenIntroduce() {
-        return openIntroduce;
-    }
-
-    public void setOpenIntroduce(String openIntroduce) {
-        this.openIntroduce = openIntroduce;
-    }
-
-    public String getKeyWord() {
-        return keyWord;
-    }
-
-    public void setKeyWord(String keyWord) {
-        this.keyWord = keyWord;
-    }
-
-    public Integer getOpenFree() {
-        return openFree;
-    }
-
-    public void setOpenFree(Integer openFree) {
-        this.openFree = openFree;
-    }
-
-    public Integer getVisualRange() {
-        return visualRange;
-    }
-
-    public void setVisualRange(Integer visualRange) {
-        this.visualRange = visualRange;
-    }
 }
