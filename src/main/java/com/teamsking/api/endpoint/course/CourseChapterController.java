@@ -47,7 +47,7 @@ public class CourseChapterController extends BaseController {
     public Result CourseChapterList(@PathVariable int courseId){
 
         List<ChapterSectionDto> chapterSectionDtoList = courseChapterService.list(courseId);
-        return Result.success().addData("chapterSectionDtoList",warpPage(chapterSectionDtoList));
+        return Result.success().addData("chapterSectionDtoList",chapterSectionDtoList);
     }
 
     /**

@@ -53,8 +53,7 @@ public class CourseTeacherController extends BaseController {
     })
     @PostMapping("/course_teacher")
     public Result addCourseTeacher(@RequestBody CourseTeacherDto courseTeacher){
-        CourseTeacher courseTeacherEntity = CourseTeacherDtoMapper.INSTANCE.dtoToEntity(courseTeacher);
-        courseTeacherService.save(courseTeacherEntity);
+        courseTeacherService.save(courseTeacher);
         return Result.success();
     }
 

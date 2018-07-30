@@ -11,23 +11,15 @@ public class CourseTeacherDto extends Dto {
 
     private String teacherName;
 
-    private Integer courseId;
+    private String weChat;
 
-    private Integer userId;
+    private String micoBlog;
 
-    private Integer displayOrder;
+    private String teacherType;
 
-    private Integer openCourse;
+    private String teacherAvatar;
 
-    private Integer createId;
+    private String teacherInfo;
 
-    private Date createTime;
-
-    private Integer updateId;
-
-    private Date updateTime;
-
-    private Integer deleteStatus;
-
-
+    private String[] tagName;
 }
