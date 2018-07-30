@@ -139,7 +139,11 @@ public class CourseService extends BaseService {
     }
 
 
-
+    /**
+     * 通过课程Ids获取课程信息
+     * @param courseIds
+     * @return
+     */
     public List<Course> getCourseByCourseIdList(List<Integer> courseIds) {
 
         Example courseExample = new Example(Course.class);

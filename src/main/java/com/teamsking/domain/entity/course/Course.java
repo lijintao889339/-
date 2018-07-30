@@ -148,7 +148,7 @@ public class Course {
 
     private Integer courseFree;
 
-    private String KeyWord;
+    private String keyWord;
 
     private Integer categoryId;
 
@@ -201,11 +201,11 @@ public class Course {
     }
 
     public String getKeyWord() {
-        return KeyWord;
+        return keyWord;
     }
 
     public void setKeyWord(String keyWord) {
-        KeyWord = keyWord;
+        this.keyWord = keyWord;
     }
 
     public Integer getCourseFree() {

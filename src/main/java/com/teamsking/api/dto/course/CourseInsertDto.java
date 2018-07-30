@@ -12,7 +12,7 @@ public class CourseInsertDto {
 
     private String courseCover;
 
-    private String KeyWord;
+    private String keyWord;
 
     private Integer courseFree;
 
