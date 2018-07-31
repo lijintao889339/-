@@ -11,6 +11,8 @@ import java.util.List;
 @Data
 public class CourseBeforeEditDto extends Dto {
 
+    private Integer id;
+
     private String courseName;
 
     private String courseCover;

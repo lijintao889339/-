@@ -3,6 +3,7 @@ package com.teamsking.domain.service.course;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
 import com.teamsking.api.dto.course.*;
 import com.teamsking.domain.entity.category.Category;
 import com.teamsking.domain.entity.course.Course;
@@ -261,6 +262,11 @@ public class CourseService extends BaseService {
         return courseSchoolDtoList;
     }
 
+    /**
+     * 编辑课程前，根据Id获取课程及其相关信息
+     * @param id
+     * @return
+     */
     public CourseBeforeEditDto getCourseAndTeacherById(int id) {
 
         //根据Id查询课程信息
@@ -284,5 +290,33 @@ public class CourseService extends BaseService {
         }
         courseBeforeEditDto.setTeacherNameList(teacherNameList);
         return courseBeforeEditDto;
+    }
+
+    /**
+     * 编辑课程
+     * @param courseInsertDto
+     * @return
+     */
+    public int modify(CourseInsertDto courseInsertDto) {
+
+        //更新课程信息
+        Course course = CourseDtoMapper.INSTANCE.insertDtoToEntity(courseInsertDto);
+        int count = courseMapper.updateByPrimaryKeySelective(course);
+
+        //根据课程id删除之前的关系记录
+        courseTeacherConnectionService.removeConnectionByCourseId(courseInsertDto.getId());
+
+        //遍历老师Id,添加新的老师与课程的关系
+        Integer[] teacherIds = courseInsertDto.getTeacherId();
+        List<CourseTeacherConnection> courseTeacherConnectionList = Lists.newArrayList();
+        for (Integer teacherId : teacherIds) {
+
+            CourseTeacherConnection connection = new CourseTeacherConnection();
+            connection.setCourseId(courseInsertDto.getId());
+            connection.setTeacherId(teacherId);
+            courseTeacherConnectionList.add(connection);
+        }
+
+        return courseTeacherConnectionMapper.insertConnectionByCourseAndTeachers(courseTeacherConnectionList);
     }
 }

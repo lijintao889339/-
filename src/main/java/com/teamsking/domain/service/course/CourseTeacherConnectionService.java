@@ -1,5 +1,6 @@
 package com.teamsking.domain.service.course;
 
+import com.google.common.collect.Lists;
 import com.teamsking.domain.entity.course.CourseTeacherConnection;
 import com.teamsking.domain.repository.CourseTeacherConnectionMapper;
 import com.teamsking.domain.service.BaseService;
@@ -43,5 +44,18 @@ public class CourseTeacherConnectionService extends BaseService {
         CourseTeacherConnection courseTeacherConnection = new CourseTeacherConnection();
         courseTeacherConnection.setCourseId(courseId);
         return courseTeacherConnectionMapper.select(courseTeacherConnection);
+    }
+
+
+    /**
+     * 根据课程id删除与其相关的老师记录
+     * @param courseId
+     * @return
+     */
+    public int removeConnectionByCourseId(Integer courseId) {
+
+        Example example = new Example(CourseTeacherConnection.class);
+        example.and().andEqualTo("courseId",courseId);
+        return courseTeacherConnectionMapper.deleteByExample(example);
     }
 }

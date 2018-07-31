@@ -3,6 +3,7 @@ package com.teamsking.domain.service.course;
 import com.google.common.collect.Lists;
 import com.teamsking.api.dto.course.CourseTeacherDto;
 import com.teamsking.api.dto.course.CourseTeacherDtoMapper;
+import com.teamsking.api.dto.course.CourseTeacherNameDto;
 import com.teamsking.domain.entity.course.CourseTeacher;
 import com.teamsking.domain.entity.course.CourseTeacherTag;
 import com.teamsking.domain.entity.tag.Tag;
@@ -123,5 +124,14 @@ public class CourseTeacherService {
 
         return courseTeacherMapper.insert(courseTeacher);
 
+    }
+
+    public List<CourseTeacherNameDto> getTeacherName() {
+
+        List<CourseTeacher> courseTeacherList = courseTeacherMapper.selectAll();
+
+        List<CourseTeacherNameDto> courseTeacherNameDtoList = CourseTeacherDtoMapper.INSTANCE.entityListToNameListDto(courseTeacherList);
+
+        return courseTeacherNameDtoList;
     }
 }

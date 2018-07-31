@@ -59,7 +59,8 @@ public class CourseController extends BaseController {
         return Result.success().addData("course",course);
     }
 
-    @ApiOperation(value = "课程列表", produces = "application/json")
+
+    @ApiOperation(value = "编辑课程前获取课程", produces = "application/json")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "id", value = "课程的主键", required = true, dataType = "int")
     })
@@ -67,6 +68,17 @@ public class CourseController extends BaseController {
     public Result getCourseBeforeEdit(@PathVariable int id){
 
         return Result.success().addData("course",courseService.getCourseAndTeacherById(id));
+    }
+
+    @ApiOperation(value = "编辑课程", produces = "application/json")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "courseInsertDto", value = "课程及其相关信息", required = true, dataType = "CourseInsertDto")
+    })
+    @PutMapping("/course")
+    public Result modify(@RequestBody CourseInsertDto courseInsertDto){
+
+        courseService.modify(courseInsertDto);
+        return Result.success();
     }
 
 

@@ -8,6 +8,8 @@ import lombok.Data;
 @Data
 public class CourseInsertDto {
 
+    private Integer id;
+
     private String courseName;
 
     private String courseCover;

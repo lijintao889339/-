@@ -4,6 +4,7 @@ package com.teamsking.api.endpoint.course;
 import com.github.pagehelper.PageHelper;
 import com.teamsking.api.dto.course.CourseTeacherDto;
 import com.teamsking.api.dto.course.CourseTeacherDtoMapper;
+import com.teamsking.api.dto.course.CourseTeacherNameDto;
 import com.teamsking.api.endpoint.BaseController;
 import com.teamsking.domain.entity.course.CourseTeacher;
 import com.teamsking.domain.service.course.CourseTeacherService;
@@ -82,6 +83,14 @@ public class CourseTeacherController extends BaseController {
         courseTeacherEntity.setId(id);
         courseTeacherService.modify(courseTeacherEntity);
         return Result.success();
+
+    }
+
+    @ApiOperation(value = "课程-教师姓名列表", produces = "application/json")
+    @GetMapping("/course_teachers_name")
+    public Result getCourseTeacherName(){
+        List<CourseTeacherNameDto> courseTeacherList = courseTeacherService.getTeacherName();
+        return Result.success().addData("courseTeacherList",courseTeacherList);
 
     }
 

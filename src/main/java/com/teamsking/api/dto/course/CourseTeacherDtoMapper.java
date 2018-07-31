@@ -16,4 +16,6 @@ public interface CourseTeacherDtoMapper {
     CourseTeacherDto entityToDto(CourseTeacher courseTeacher);
 
     CourseTeacher dtoToEntity(CourseTeacherDto courseTeacherDto);
+
+    List<CourseTeacherNameDto> entityListToNameListDto(List<CourseTeacher> courseTeacherList);
 }
