@@ -15,4 +15,15 @@
     <result column="update_id" jdbcType="INTEGER" property="updateId" />
     <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
   </resultMap>
+
+  <!--批量添加课程老师和标签关系-->
+  <insert id="insertOpenTeacherTagByTags" parameterType="java.util.List">
+    insert into open_teacher_tag(tag_id,open_teacher_id) values
+    <if test="openTeacherTagList != null and openTeacherTagList.size() > 0 ">
+      <foreach item="item" collection="openTeacherTagList" index="index" separator="," >
+        (#{item.tagId},
+        #{item.openTeacherId})
+      </foreach>
+    </if>
+  </insert>
 </mapper>

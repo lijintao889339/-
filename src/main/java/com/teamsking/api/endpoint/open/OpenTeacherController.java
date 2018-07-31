@@ -48,17 +48,17 @@ public class OpenTeacherController extends BaseController {
     }
 
 
-    /*@ApiOperation(value = "添加班次-教师管理", consumes= "application/json")
+    @ApiOperation(value = "添加班次-教师管理", consumes= "application/json")
     @ApiImplicitParams( {
-            @ApiImplicitParam(name = "openTeacher", value = "班次教师管理", required = true, dataType = "AddOpenTeacherDto")
+            @ApiImplicitParam(name = "addOpenTeacher", value = "班次教师管理", required = true, dataType = "AddOpenTeacherDto")
     })
     @PostMapping("/open_teacher")
-    public Result addOpenTeacher(@RequestBody AddOpenTeacherDto openTeacher){
+    public Result addOpenTeacher(@RequestBody AddOpenTeacherDto addOpenTeacherDto){
 
-        openTeacherService.save(openTeacher);
+        openTeacherService.save(addOpenTeacherDto);
         return Result.success();
 
-    }*/
+    }
 
 
     @ApiOperation(value = "添加班次-教师管理", consumes= "application/json")
