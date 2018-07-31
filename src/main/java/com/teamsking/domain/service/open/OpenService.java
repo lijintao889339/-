@@ -294,21 +294,32 @@ public class OpenService extends BaseService {
      * @param addOpenDto
      * @return
      */
-//    public int addOpen(AddOpenDto addOpenDto){
-//
-//        Open openEntity = OpenDtoMapper.INSTANCE.insertDtoAddToEntity(addOpenDto);
-//
-//        //根据课程id获取该课程的二级分类id
+    public Open addOpen(AddOpenDto addOpenDto){
+
+        Open openEntity = OpenDtoMapper.INSTANCE.insertDtoAddToEntity(addOpenDto);
+
+        //根据课程id获取该课程的二级分类id
 //        Course course = courseMapper.selectByPrimaryKey(openEntity.getCourseId());
 //        Integer categoryId = course.getCategoryId();
-//        //设置添加的班课的二级分类Id
-//        openEntity.setCategoryId(categoryId);
-//
-//        openEntity.setDeleteStatus(2);//删除状态：1 已删除 2 未删除
-//
-//        return openMapper.insertSelective(openEntity);
-//
-//    }
+        //设置添加的班课的二级分类Id
+        //openEntity.setCategoryId(categoryId);
+        openEntity.setCourseStatus(10);
+        openEntity.setDeleteStatus(2);//删除状态：1 已删除 2 未删除
+
+        Integer[] teacherIds = addOpenDto.getTeacherId();
+        List<OpenTeacherConnection> openTeacherConnectionList = Lists.newArrayList();
+        for (Integer teacherId : teacherIds) {
+            OpenTeacherConnection openTeacherConnection = new OpenTeacherConnection();
+            openTeacherConnection.setOpenId(openEntity.getId());
+            openTeacherConnection.setTeacherId(teacherId);
+            openTeacherConnectionList.add(openTeacherConnection);
+        }
+
+        openTeacherConnectionMapper.insertConnectionByOpenAndTeachers(openTeacherConnectionList);
+
+        return openEntity;
+
+    }
 
 
     /**

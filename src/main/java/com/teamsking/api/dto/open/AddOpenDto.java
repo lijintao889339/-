@@ -3,10 +3,10 @@ package com.teamsking.api.dto.open;
 import com.teamsking.api.dto.Dto;
 import lombok.Data;
 
-import java.util.Date;
-
 @Data
 public class AddOpenDto extends Dto {
+
+    private Integer id;
 
     private Integer courseId;
 
@@ -14,19 +14,17 @@ public class AddOpenDto extends Dto {
 
     private String openName;
 
-    private Date beginTime;
-
-    private Date endTime;
-
-    private Integer schoolId;
+    private Integer[] teacherId;
 
     private String openCover;
 
-    private String courseCover;
-
     private Integer visibleRange;
 
-    private Integer studyType;
+    private String openIntroduce;
+
+    private Integer keyWord;
+
+    private String openFree;
     
 
 }

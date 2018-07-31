@@ -49,7 +49,7 @@ public class OpenController extends BaseController {
             @ApiImplicitParam(name = "open", value = "班课管理", required = true, dataType = "OpenDto")
     })
     @PostMapping("/open")
-    public Result addOpen(@RequestBody OpenDto open){
+    public Result copyOpen(@RequestBody OpenDto open){
         Open openEntity = OpenDtoMapper.INSTANCE.dtoToEntity(open);
         openService.save(openEntity);
         return Result.success();
@@ -126,18 +126,18 @@ public class OpenController extends BaseController {
     }
 
 
-//    @ApiOperation(value = "创建班课", consumes= "application/json")
-//    @ApiImplicitParams( {
-//            @ApiImplicitParam(name = "addOpenDto", value = "创建班课", required = true, dataType = "AddOpenDto")
-//    })
-//    @PostMapping("/add_open")
-//    public Result addOpen(@RequestBody AddOpenDto addOpenDto){
-//
-//        openService.addOpen(addOpenDto);
-//
-//        return Result.success();
-//
-//    }
+    @ApiOperation(value = "创建班课", consumes= "application/json")
+    @ApiImplicitParams( {
+            @ApiImplicitParam(name = "addOpenDto", value = "创建班课", required = true, dataType = "AddOpenDto")
+    })
+    @PostMapping("/add_open")
+    public Result addOpen(@RequestBody AddOpenDto addOpenDto){
+
+        openService.addOpen(addOpenDto);
+
+        return Result.success();
+
+    }
 
 
 //    @ApiOperation(value = "查询班课信息", consumes= "application/json")
