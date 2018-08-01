@@ -3,19 +3,15 @@ package com.teamsking.domain.service.course;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.google.common.collect.Lists;
-import com.google.common.collect.Maps;
 import com.teamsking.api.dto.course.*;
+import com.teamsking.api.dto.sys.SysUserDtoMapper;
+import com.teamsking.api.dto.sys.UserDto;
 import com.teamsking.domain.entity.category.Category;
-import com.teamsking.domain.entity.course.Course;
-import com.teamsking.domain.entity.course.CourseTeacher;
-import com.teamsking.domain.entity.course.CourseTeacherConnection;
-import com.teamsking.domain.entity.open.Open;
-import com.teamsking.domain.entity.open.OpenTeacher;
+import com.teamsking.domain.entity.course.*;
 import com.teamsking.domain.entity.school.School;
-import com.teamsking.domain.repository.CourseMapper;
-import com.teamsking.domain.repository.CourseTeacherConnectionMapper;
-import com.teamsking.domain.repository.CourseTeacherMapper;
-import com.teamsking.domain.repository.OpenMapper;
+import com.teamsking.domain.entity.sys.SysRole;
+import com.teamsking.domain.entity.sys.SysUser;
+import com.teamsking.domain.repository.*;
 import com.teamsking.domain.service.BaseService;
 
 import java.util.List;
@@ -25,6 +21,8 @@ import com.teamsking.domain.service.category.CategoryService;
 import com.teamsking.domain.service.open.OpenService;
 import com.teamsking.domain.service.open.OpenTeacherService;
 import com.teamsking.domain.service.school.SchoolService;
+import com.teamsking.domain.service.sys.SysUserService;
+import com.teamsking.domain.service.sys.UserCourseService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -42,6 +40,12 @@ public class CourseService extends BaseService {
     CourseTeacherMapper courseTeacherMapper;
     @Autowired
     CourseTeacherConnectionMapper courseTeacherConnectionMapper;
+    @Autowired
+    CourseChapterMapper courseChapterMapper;
+    @Autowired
+    CourseSectionMapper courseSectionMapper;
+    @Autowired
+    UserCourseMapper userCourseMapper;
 
     @Autowired
     CourseTeacherService courseTeacherService;
@@ -55,6 +59,10 @@ public class CourseService extends BaseService {
     CategoryService categoryService;
     @Autowired
     SchoolService schoolService;
+    @Autowired
+    SysUserService sysUserService;
+    @Autowired
+    UserCourseService userCourseService;
 
     /**
      * 获取课程列表
@@ -135,6 +143,18 @@ public class CourseService extends BaseService {
             courseTeacherConnectionList.add(courseTeacherConnection);
         }
         courseTeacherConnectionMapper.insertConnectionByCourseAndTeachers(courseTeacherConnectionList);
+
+        //判断此课程的可见范围(部分角色为老师的用户还是全部)
+        if (courseInsertDto.getVisibleRange() == 2 && null != courseInsertDto.getUserId()){
+            //将用户Id添加到课程用户关系表
+            Integer[] userIds = courseInsertDto.getUserId();
+            for (Integer userId : userIds){
+                UserCourse userCourse = new UserCourse();
+                userCourse.setUserId(userId);
+                userCourse.setCourseId(courseEntity.getId());
+                userCourseMapper.insertSelective(userCourse);
+            }
+        }
 
         return courseEntity;
     }
@@ -282,13 +302,35 @@ public class CourseService extends BaseService {
             teacherIdList.add(courseTeacherConnection.getTeacherId());
         }
 
-        //2.根据老师IdList获取老师姓名
+        //2.根据老师IdList获取老师信息
         List<CourseTeacher> courseTeacherList = courseTeacherService.getTeacherByTeacherIdList(teacherIdList);
-        List<String> teacherNameList = Lists.newArrayList();
-        for (CourseTeacher courseTeacher : courseTeacherList){
-            teacherNameList.add(courseTeacher.getTeacherName());
+        List<CourseTeacherNameDto> courseTeacherNameDtoList = CourseTeacherDtoMapper.INSTANCE.entityListToNameListDto(courseTeacherList);
+        courseBeforeEditDto.setTeacherNameDtoList(courseTeacherNameDtoList);
+
+        //根据课程Id查询该课程用户权限信息
+        if (course.getVisibleRange() == 2){
+           //获取所有角色为老师的用户
+           List<SysUser> userCourseList = sysUserService.getUserNameByRoleId();
+           List<UserDto> userDtoListAll = SysUserDtoMapper.INSTANCE.entityDtoToUserDtoList(userCourseList);
+           courseBeforeEditDto.setUserDtoListAll(userDtoListAll);
+
+           //获取该课程下的角色为老师的用户
+           //1.获取与该课程有关的用户Id
+           UserCourse newUserCourse = new UserCourse();
+           newUserCourse.setCourseId(id);
+           List<UserCourse> userCourses = userCourseMapper.select(newUserCourse);
+
+           List<Integer> userIdList = Lists.newArrayList();
+           for (UserCourse userCourse : userCourses){
+                userIdList.add(userCourse.getUserId());
+           }
+           //2.根据用户IdList获取老师信息
+           List<SysUser> sysUserList = sysUserService.getSysUserByUserIdList(userIdList);
+           List<UserDto> userDtoListById = SysUserDtoMapper.INSTANCE.entityDtoToUserDtoList(sysUserList);
+           courseBeforeEditDto.setUserDtoListById(userDtoListById);
         }
-        courseBeforeEditDto.setTeacherNameList(teacherNameList);
+
+
         return courseBeforeEditDto;
     }
 
@@ -303,10 +345,10 @@ public class CourseService extends BaseService {
         Course course = CourseDtoMapper.INSTANCE.insertDtoToEntity(courseInsertDto);
         int count = courseMapper.updateByPrimaryKeySelective(course);
 
-        //根据课程id删除之前的关系记录
+        //更新课程和老师关系
+        //1.根据课程id删除之前的老师和课程关系记录
         courseTeacherConnectionService.removeConnectionByCourseId(courseInsertDto.getId());
-
-        //遍历老师Id,添加新的老师与课程的关系
+        //2.遍历老师Id,添加新的老师与课程的关系
         Integer[] teacherIds = courseInsertDto.getTeacherId();
         List<CourseTeacherConnection> courseTeacherConnectionList = Lists.newArrayList();
         for (Integer teacherId : teacherIds) {
@@ -316,7 +358,93 @@ public class CourseService extends BaseService {
             connection.setTeacherId(teacherId);
             courseTeacherConnectionList.add(connection);
         }
+        courseTeacherConnectionMapper.insertConnectionByCourseAndTeachers(courseTeacherConnectionList);
 
-        return courseTeacherConnectionMapper.insertConnectionByCourseAndTeachers(courseTeacherConnectionList);
+        //更新课程和用户关系(权限设置：部分可见或全部可见)
+        // 先查询之前课程与用户有无关系
+        UserCourse userCourse = new UserCourse();
+        userCourse.setCourseId(courseInsertDto.getId());
+        List<UserCourse> userCourses = userCourseMapper.select(userCourse);
+
+        if (courseInsertDto.getVisibleRange() == 2){
+            //如果权限设置修改为部分可见
+            Integer[] userIds = courseInsertDto.getUserId();
+            List<UserCourse> userCourseList = Lists.newArrayList();
+            if (null == userCourses){
+                //如果之前课程与用户无关系，直接添加关系
+                for (Integer userId : userIds){
+                    UserCourse newUserCourse = new UserCourse();
+                    newUserCourse.setCourseId(courseInsertDto.getId());
+                    newUserCourse.setUserId(userId);
+                    userCourseMapper.insertSelective(newUserCourse);
+                }
+            }else {
+                //如果之前课程与用户有关系，先删除之前的关系，再添加关系
+                //1.根据课程id删除之前的用户和课程关系记录
+                userCourseService.removeUserCourseByCourseId(courseInsertDto.getId());
+
+                //2.添加更新的用户和课程的关系
+                for (Integer userId : userIds){
+                    UserCourse newUserCourse = new UserCourse();
+                    newUserCourse.setCourseId(courseInsertDto.getId());
+                    newUserCourse.setUserId(userId);
+                    userCourseMapper.insertSelective(newUserCourse);
+                }
+            }
+        }else {
+           //如果权限设置修改为全部可见
+            if (null != userCourses){
+                //如果之前课程与用户有关系，删除之前的关系
+                userCourseService.removeUserCourseByCourseId(courseInsertDto.getId());
+            }
+        }
+        return count;
+    }
+
+    /**
+     * 添加课程下面的章节并且返回
+     * @param courseChapterSectionDtoList
+     * @param id
+     * @return
+     */
+    public List<CourseChapterSectionDto> saveChapterAndSection(List<CourseChapterSectionDto> courseChapterSectionDtoList, int id) {
+
+        //遍历参数List，获取章名称和节名称
+        List<String> chapterNameList = Lists.newArrayList();
+        List<String> sectionNameList = Lists.newArrayList();
+        for (CourseChapterSectionDto courseChapterSectionDto : courseChapterSectionDtoList){
+            chapterNameList.add(courseChapterSectionDto.getLable());
+            sectionNameList.add(courseChapterSectionDto.getChildren());
+        }
+
+        //添加课程下章的信息
+        for (int i=0; i < chapterNameList.size(); i++){
+            CourseChapter courseChapter = new CourseChapter();
+            courseChapter.setDeleteStatus(2);
+            courseChapter.setChapterStatus(1);
+            courseChapter.setCourseId(id);
+            courseChapter.setDisplayOrder(i+1);
+            courseChapter.setChapterName(chapterNameList.get(i));
+            courseChapterMapper.insertSelective(courseChapter);
+        }
+
+        //添加课程下节的信息
+        for (String chapterName : chapterNameList){
+           /* if (){
+
+            }*/
+        }
+        for (int i=0; i < sectionNameList.size(); i++){
+            CourseSection courseSection = new CourseSection();
+            courseSection.setDeleteStatus(2);
+            courseSection.setCourseId(id);
+            //courseSection.setChapterId();
+            courseSection.setDiaplayOrder(i+1);
+            courseSection.setTitle(sectionNameList.get(i));
+            courseSectionMapper.insertSelective(courseSection);
+        }
+
+        return courseChapterSectionDtoList;
+
     }
 }

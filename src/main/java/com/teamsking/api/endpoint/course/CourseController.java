@@ -1,6 +1,7 @@
 package com.teamsking.api.endpoint.course;
 
 
+import com.teamsking.api.dto.course.CourseChapterSectionDto;
 import com.teamsking.api.dto.course.CourseInsertDto;
 import com.teamsking.api.endpoint.BaseController;
 import com.teamsking.domain.entity.course.Course;
@@ -22,6 +23,8 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.List;
 
 @RestController
 @Api(tags = "课程操作接口")
@@ -115,6 +118,20 @@ public class CourseController extends BaseController {
 
         return Result.success().addData("pager",courseService.getCourseListByCategoryId(id));
 
+    }
+
+
+    @ApiOperation(value = "添加课程(添加章和节)", produces = "application/json")
+    @ApiImplicitParams( {
+            @ApiImplicitParam(name = "courseChapterSectionDtoList", value = "课程的章和节", required = true, dataType = "List<CourseChapterSectionDto>"),
+            @ApiImplicitParam(name = "id", value = "课程的主键", required = true, dataType = "int")
+    })
+    @PostMapping("/course/{id}/chapter_sections")
+    public Result addCourse(@RequestBody List<CourseChapterSectionDto> courseChapterSectionDtoList,
+                            @PathVariable int id) {
+
+        List<CourseChapterSectionDto> courseList = courseService.saveChapterAndSection(courseChapterSectionDtoList,id);
+        return Result.success().addData("courseList",courseList);
     }
 
 

@@ -3,6 +3,7 @@ package com.teamsking.api.endpoint.sys;
 import com.github.pagehelper.PageHelper;
 import com.teamsking.api.dto.sys.SysUserDto;
 import com.teamsking.api.dto.sys.SysUserDtoMapper;
+import com.teamsking.api.dto.sys.UserDto;
 import com.teamsking.api.endpoint.BaseController;
 import com.teamsking.domain.entity.sys.SysUser;
 import com.teamsking.domain.service.sys.SysUserService;
@@ -14,13 +15,7 @@ import io.swagger.annotations.ApiOperation;
 import java.util.List;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @Api(tags = "用户操作接口")
@@ -104,6 +99,15 @@ public class SysUserController extends BaseController {
         sysUserEntity.setId(id);
         sysUserService.modify(sysUserEntity);
         return Result.success();
+    }
+
+
+    @ApiOperation(value = "角色为老师的用户列表", produces = "application/json")
+    @GetMapping("/role_user")
+    public Result getUserName(){
+
+        List<UserDto> userDtoList = SysUserDtoMapper.INSTANCE.entityDtoToUserDtoList(sysUserService.getUserNameByRoleId());
+        return Result.success().addData("userDtoList",userDtoList);
     }
 
 

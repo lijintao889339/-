@@ -1,9 +1,14 @@
 package com.teamsking.domain.service.sys;
 
+import com.google.common.collect.Lists;
 import com.teamsking.domain.entity.course.Course;
 import com.teamsking.domain.entity.sys.SysUser;
+import com.teamsking.domain.entity.sys.SysUserRole;
 import com.teamsking.domain.repository.SysUserMapper;
 import java.util.List;
+
+import com.teamsking.domain.repository.SysUserRoleMapper;
+import com.teamsking.domain.service.BaseService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -11,10 +16,12 @@ import tk.mybatis.mapper.entity.Example;
 
 @Service
 @Slf4j
-public class SysUserService {
+public class SysUserService extends BaseService {
 
     @Autowired
     SysUserMapper sysUserMapper;
+    @Autowired
+    SysUserRoleMapper sysUserRoleMapper;
 
     /**
      * 查询所有的用户
@@ -33,6 +40,8 @@ public class SysUserService {
     public List<SysUser> getSysUserByUserIdList(List<Integer> userIds){
 
         Example userExample = new Example(SysUser.class);
+        Example.Criteria cri = userExample.createCriteria();
+        cri.andIn("id",userIds);
         return sysUserMapper.selectByExample(userExample);
 
     }
@@ -67,5 +76,26 @@ public class SysUserService {
        return sysUserMapper.updateByPrimaryKeySelective(sysUser);
     }
 
+    /**
+     * 获取所有角色为老师的用户列表
+     * @return
+     */
+    public List<SysUser> getUserNameByRoleId() {
+
+        //获取角色为老师(角色id为1)的用户idList
+        List<Integer> userIdList = Lists.newArrayList();
+        SysUserRole sysUserRole = new SysUserRole();
+        sysUserRole.setRoleId(1);
+        List<SysUserRole> sysUserRoleList = sysUserRoleMapper.select(sysUserRole);
+        for (SysUserRole userRole : sysUserRoleList){
+            userIdList.add(userRole.getUserId());
+        }
+
+        //获取userIdList对应的用户姓名
+        Example userExample = new Example(SysUser.class);
+        Example.Criteria cri = userExample.createCriteria();
+        cri.andIn("id",userIdList);
+        return sysUserMapper.selectByExample(userExample);
+    }
 
 }

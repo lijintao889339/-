@@ -20,4 +20,6 @@ public interface SysUserDtoMapper {
 
     SysUser AddTeacherDtoToEtity(AddOpenTeacherDto addOpenTeacherDto);
 
+    List<UserDto> entityDtoToUserDtoList(List<SysUser> sysUserList);
+
 }

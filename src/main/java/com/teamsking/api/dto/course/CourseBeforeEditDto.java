@@ -1,6 +1,7 @@
 package com.teamsking.api.dto.course;
 
 import com.teamsking.api.dto.Dto;
+import com.teamsking.api.dto.sys.UserDto;
 import lombok.Data;
 
 import java.util.List;
@@ -27,6 +28,10 @@ public class CourseBeforeEditDto extends Dto {
 
     private Integer categoryId;
 
-    private List<String> teacherNameList;
+    private List<CourseTeacherNameDto> teacherNameDtoList;
+
+    private List<UserDto> userDtoListAll;
+
+    private List<UserDto> userDtoListById;
 
 }
