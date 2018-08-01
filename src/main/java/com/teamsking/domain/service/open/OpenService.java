@@ -10,6 +10,7 @@ import com.teamsking.api.dto.school.SchoolDtoMapper;
 import com.teamsking.domain.entity.course.Course;
 import com.teamsking.domain.entity.node.Node;
 import com.teamsking.domain.entity.open.Open;
+import com.teamsking.domain.entity.open.OpenRole;
 import com.teamsking.domain.entity.open.OpenTeacherConnection;
 import com.teamsking.domain.entity.school.School;
 import com.teamsking.domain.repository.*;
@@ -41,6 +42,8 @@ public class OpenService extends BaseService {
     SchoolMapper schoolMapper;
     @Autowired
     OpenTeacherConnectionMapper openTeacherConnectionMapper;
+    @Autowired
+    OpenRoleMapper openRoleMapper;
 
 
     @Autowired
@@ -305,17 +308,28 @@ public class OpenService extends BaseService {
         //openEntity.setCategoryId(categoryId);
         openEntity.setCourseStatus(10);
         openEntity.setDeleteStatus(2);//删除状态：1 已删除 2 未删除
+        //将角色id添加到班课角色关系表
+        Integer[] roleIds = addOpenDto.getRoleId();
+        List<OpenRole> openRoleList = Lists.newArrayList();
+        for (Integer roleId : roleIds) {
+            OpenRole openRole = new OpenRole();
+            openRole.setOpenId(openEntity.getId());
+            openRole.setRoleId(roleId);
+            openRoleList.add(openRole);
+        }
+        openRoleMapper.insertConnectionByOpenAndRole(openRoleList);
 
-//        Integer[] teacherIds = addOpenDto.getTeacherId();
-//        List<OpenTeacherConnection> openTeacherConnectionList = Lists.newArrayList();
-//        for (Integer teacherId : teacherIds) {
-//            OpenTeacherConnection openTeacherConnection = new OpenTeacherConnection();
-//            openTeacherConnection.setOpenId(openEntity.getId());
-//            openTeacherConnection.setTeacherId(teacherId);
-//            openTeacherConnectionList.add(openTeacherConnection);
-//        }
-//
-//        openTeacherConnectionMapper.insertConnectionByOpenAndTeachers(openTeacherConnectionList);
+        //将授课教师id添加到班课教师关系表
+        Integer[] teacherIds = addOpenDto.getTeacherId();
+        List<OpenTeacherConnection> openTeacherConnectionList = Lists.newArrayList();
+        for (Integer teacherId : teacherIds) {
+            OpenTeacherConnection openTeacherConnection = new OpenTeacherConnection();
+            openTeacherConnection.setOpenId(openEntity.getId());
+            openTeacherConnection.setTeacherId(teacherId);
+            openTeacherConnectionList.add(openTeacherConnection);
+        }
+
+        openTeacherConnectionMapper.insertConnectionByOpenAndTeachers(openTeacherConnectionList);
 
         return openMapper.insertSelective(openEntity);
 

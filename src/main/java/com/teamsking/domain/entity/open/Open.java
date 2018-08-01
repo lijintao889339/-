@@ -253,7 +253,7 @@ public class Open {
 
     private String openIntroduce;
 
-    private Integer keyWord;
+    private String keyWord;
 
     private String openFree;
 
@@ -911,19 +911,19 @@ public class Open {
         this.openIntroduce = openIntroduce;
     }
 
-    public Integer getKeyWord() {
-        return keyWord;
-    }
-
-    public void setKeyWord(Integer keyWord) {
-        this.keyWord = keyWord;
-    }
-
     public String getOpenFree() {
         return openFree;
     }
 
     public void setOpenFree(String openFree) {
         this.openFree = openFree;
+    }
+
+    public String getKeyWord() {
+        return keyWord;
+    }
+
+    public void setKeyWord(String keyWord) {
+        this.keyWord = keyWord;
     }
 }

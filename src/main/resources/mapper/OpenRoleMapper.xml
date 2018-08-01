@@ -11,4 +11,15 @@
     <result column="role_id" jdbcType="INTEGER" property="roleId" />
     <result column="open_id" jdbcType="INTEGER" property="openId" />
   </resultMap>
+
+  <!--批量插入班课角色关系数据-->
+  <insert id="insertConnectionByOpenAndRole" parameterType="java.util.List">
+    insert into open_role(open_id,role_id) values
+    <if test="openRoleList != null and openRoleList.size() > 0 ">
+      <foreach item="item" collection="openRoleList" index="index" separator="," >
+        (#{item.openId},
+        #{item.roleId})
+      </foreach>
+    </if>
+  </insert>
 </mapper>

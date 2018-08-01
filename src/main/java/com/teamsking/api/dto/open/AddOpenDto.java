@@ -11,7 +11,9 @@ public class AddOpenDto extends Dto {
 
     private Integer id;
 
-    private Integer roleId;
+    private Integer[] roleId;
+
+    private Integer[] teacherId;
 
     private Integer courseId;
 
@@ -30,7 +32,7 @@ public class AddOpenDto extends Dto {
 
     private String openIntroduce;
 
-    private Integer keyWord;
+    private String keyWord;
 
     private String openFree;
 
