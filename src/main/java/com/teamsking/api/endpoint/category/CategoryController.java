@@ -29,7 +29,7 @@ public class CategoryController extends BaseController {
     OpenService openService;
 
 
-    @ApiOperation(value = "课程类别列表", produces = "application/json")
+    @ApiOperation(value = "班课类别列表", produces = "application/json")
 
     @GetMapping("/categories")
     public Result categoryList(){
@@ -42,7 +42,7 @@ public class CategoryController extends BaseController {
 
     @ApiOperation(value = "创建课程分类接口", consumes= "application/json")
     @ApiImplicitParams( {
-            @ApiImplicitParam(name = "addCourseCategory", value = "创建课程分类", required = true, dataType = "AddCourseCategoryDto")
+            @ApiImplicitParam(name = "addCourseCategory", value = "创建班课分类", required = true, dataType = "AddCourseCategoryDto")
     })
     @PostMapping("/category")
     public Result addCategory(@RequestBody AddCourseCategoryDto addCourseCategory){
@@ -72,9 +72,9 @@ public class CategoryController extends BaseController {
     }
 
 
-    @ApiOperation(value = "课程分类更新接口", consumes= "application/json")
+    @ApiOperation(value = "班课分类更新接口", consumes= "application/json")
     @ApiImplicitParams( {
-            @ApiImplicitParam(name = "editCourseCategory", value = "课程分类更新接口", required = true, dataType = "EditCourseCategoryDto")
+            @ApiImplicitParam(name = "editCourseCategory", value = "班课分类更新接口", required = true, dataType = "EditCourseCategoryDto")
     })
     @PutMapping("/edit_course_category/{id}")
     public Result modifyEditCourseCategory(@PathVariable int id,
@@ -100,7 +100,7 @@ public class CategoryController extends BaseController {
     }
 
 
-    @ApiOperation(value = "查看课程分类下面的班课", consumes = "application/json")
+    @ApiOperation(value = "查看班课分类下面的班课", consumes = "application/json")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "pageNo", paramType = "query", value = "页码", required = true, example = "1"),
             @ApiImplicitParam(name = "pageSize", paramType = "query", value = "页大小", required = true, example = "10"),

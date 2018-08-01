@@ -32,7 +32,7 @@ public class CategoryService extends BaseService {
     OpenService openService;
 
     /**
-     * 创建课程一级分类
+     * 创建班课一级分类
      * @param category
      * @return
      */
@@ -44,7 +44,7 @@ public class CategoryService extends BaseService {
     }
 
     /**
-     * 创建课程二级分类
+     * 创建班课二级分类
      * @param category
      * @return
      */
@@ -58,7 +58,7 @@ public class CategoryService extends BaseService {
 
 
     /**
-     * 删除课程分类
+     * 删除班课分类
      * @param id
      * @return
      */
@@ -87,7 +87,7 @@ public class CategoryService extends BaseService {
     }
 
     /**
-     * 根据categoryIds查询课程分类
+     * 根据categoryIds查询班课分类
      * @param categoryIds
      * @return
      */
@@ -145,7 +145,7 @@ public class CategoryService extends BaseService {
    }
 
     /**
-     * 分页获取课程分类下面的班课列表
+     * 分页获取班课分类下面的班课列表
      * @param pageNo
      * @param pageSize
      * @param id
