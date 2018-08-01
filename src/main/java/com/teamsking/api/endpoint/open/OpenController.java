@@ -139,6 +139,20 @@ public class OpenController extends BaseController {
 
     }
 
+    @ApiOperation(value = "创建班课教学模式", consumes= "application/json")
+    @ApiImplicitParams( {
+            @ApiImplicitParam(name = "addOpenDto", value = "创建班课教学模式", required = true, dataType = "AddOpenDto")
+    })
+    @PutMapping("/open_teaching_model")
+    public Result addOpenTeachingModel(@RequestBody AddOpenDto addOpenDto){
+
+        openService.addTeachingModel(addOpenDto);
+
+        return Result.success();
+
+    }
+
+
 
 //    @ApiOperation(value = "查询班课信息", consumes= "application/json")
 //    @ApiImplicitParams( {

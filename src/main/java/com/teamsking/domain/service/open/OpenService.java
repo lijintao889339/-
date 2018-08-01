@@ -294,30 +294,30 @@ public class OpenService extends BaseService {
      * @param addOpenDto
      * @return
      */
-    public Open addOpen(AddOpenDto addOpenDto){
+    public int addOpen(AddOpenDto addOpenDto){
 
         Open openEntity = OpenDtoMapper.INSTANCE.insertDtoAddToEntity(addOpenDto);
 
         //根据课程id获取该课程的二级分类id
-//        Course course = courseMapper.selectByPrimaryKey(openEntity.getCourseId());
-//        Integer categoryId = course.getCategoryId();
+        //Course course = courseMapper.selectByPrimaryKey(openEntity.getCourseId());
+        //Integer categoryId = course.getCategoryId();
         //设置添加的班课的二级分类Id
         //openEntity.setCategoryId(categoryId);
         openEntity.setCourseStatus(10);
         openEntity.setDeleteStatus(2);//删除状态：1 已删除 2 未删除
 
-        Integer[] teacherIds = addOpenDto.getTeacherId();
-        List<OpenTeacherConnection> openTeacherConnectionList = Lists.newArrayList();
-        for (Integer teacherId : teacherIds) {
-            OpenTeacherConnection openTeacherConnection = new OpenTeacherConnection();
-            openTeacherConnection.setOpenId(openEntity.getId());
-            openTeacherConnection.setTeacherId(teacherId);
-            openTeacherConnectionList.add(openTeacherConnection);
-        }
+//        Integer[] teacherIds = addOpenDto.getTeacherId();
+//        List<OpenTeacherConnection> openTeacherConnectionList = Lists.newArrayList();
+//        for (Integer teacherId : teacherIds) {
+//            OpenTeacherConnection openTeacherConnection = new OpenTeacherConnection();
+//            openTeacherConnection.setOpenId(openEntity.getId());
+//            openTeacherConnection.setTeacherId(teacherId);
+//            openTeacherConnectionList.add(openTeacherConnection);
+//        }
+//
+//        openTeacherConnectionMapper.insertConnectionByOpenAndTeachers(openTeacherConnectionList);
 
-        openTeacherConnectionMapper.insertConnectionByOpenAndTeachers(openTeacherConnectionList);
-
-        return openEntity;
+        return openMapper.insertSelective(openEntity);
 
     }
 
@@ -364,5 +364,20 @@ public class OpenService extends BaseService {
 //        return openMapper.updateByPrimaryKeySelective(openEntity);
 //
 //    }
+
+
+    /**
+     * 根据id创建教学模式
+     * @param addOpenDto
+     * @return
+     */
+    public int addTeachingModel(AddOpenDto addOpenDto){
+
+        Open openEntity = OpenDtoMapper.INSTANCE.insertDtoAddToEntity(addOpenDto);
+
+        return openMapper.updateByPrimaryKeySelective(openEntity);
+    }
+
+
 
 }
