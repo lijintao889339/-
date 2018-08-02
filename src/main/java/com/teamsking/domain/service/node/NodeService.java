@@ -33,6 +33,22 @@ public class NodeService {
         return nodeMapper.insert(node);
     }
 
+
+    /**
+     * 根据班课id查询视频信息
+     * @param openId
+     * @return
+     */
+    public Node query(Integer openId){
+
+//        Example nodeExample = new Example(Node.class);
+//        Example.Criteria cri = nodeExample.createCriteria();
+//        cri.andIn("openId",);
+//        return nodeMapper.selectByExample(nodeExample);
+        return nodeMapper.selectByPrimaryKey(openId);
+
+    }
+
     /**
      * 删除资源管理
      * @param id

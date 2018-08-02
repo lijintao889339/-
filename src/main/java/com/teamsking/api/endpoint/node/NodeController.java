@@ -46,6 +46,20 @@ public class NodeController extends BaseController {
 
     }
 
+    @ApiOperation(value = "查询视频信息", consumes= "application/json")
+    @ApiImplicitParams( {
+            @ApiImplicitParam(name = "id", value = "班课id", required = true, dataType = "Integer")
+    })
+    @GetMapping("/query_node/{openId}")
+    public Result queryVideo(@PathVariable int openId){
+
+        return Result.success().addData("pager",nodeService.query(openId));
+
+    }
+
+
+
+
     @ApiOperation(value = "添加资源管理", consumes= "application/json")
     @ApiImplicitParams( {
             @ApiImplicitParam(name = "node", value = "资源管理", required = true, dataType = "NodeDto")
