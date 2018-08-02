@@ -1,7 +1,7 @@
-package com.teamsking.api.dto.course;
+package com.teamsking.api.endpoint.course;
 
+import com.teamsking.api.dto.course.CourseCategoryDto;
 import com.teamsking.api.endpoint.BaseController;
-import com.teamsking.domain.entity.course.CourseCategory;
 import com.teamsking.domain.service.course.CourseCategoryService;
 import com.teamsking.util.Result;
 import io.swagger.annotations.Api;
@@ -10,10 +10,7 @@ import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -49,6 +46,19 @@ public class CourseCategoryController extends BaseController {
 
         List<CourseCategoryDto> courseCategoryDtoList = courseCategoryService.getSecondCourseCategory(id);
         return Result.success().addData("courseCategoryDtoList",courseCategoryDtoList);
+    }
+
+    @ApiOperation(value = "新增二级课程分类", consumes = "application/json")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "courseCategoryDto", value = "二级课程分类信息", required = true, dataType = "CourseCategoryDto"),
+            @ApiImplicitParam(name = "id", value = "一级课程分类主键", required = true, dataType = "int")
+    })
+    @PostMapping("/second_course_category/{id}")
+    public Result addSecondCourseCategory(@RequestBody CourseCategoryDto courseCategoryDto,
+                                          @PathVariable int id){
+
+        courseCategoryService.saveSecondCourseCategory(courseCategoryDto,id);
+        return Result.success();
     }
 
 }
