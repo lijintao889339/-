@@ -51,6 +51,7 @@ public class CourseChapterService {
 
         //遍历集合
         for (ChapterSectionDto chapterSectionDto : chapterSectionDtoList){
+            chapterSectionDto.setIsFirstLabel(true);
 
             List<SectionTitleAndOrderDto> sectionList = Lists.newArrayList();
             for (CourseSection courseSection : courseSectionList){
@@ -59,6 +60,7 @@ public class CourseChapterService {
                     section.setId(courseSection.getId());
                     section.setDiaplayOrder(courseSection.getDiaplayOrder());
                     section.setTitle(courseSection.getTitle());
+                    section.setIsFirstLabel(false);
                     sectionList.add(section);
                     chapterSectionDto.setSectionDtoList(sectionList);
                 }

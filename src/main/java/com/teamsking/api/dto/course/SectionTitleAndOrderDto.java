@@ -15,4 +15,5 @@ public class SectionTitleAndOrderDto extends Dto {
 
     private Integer diaplayOrder;
 
+    private Boolean isFirstLabel;
 }

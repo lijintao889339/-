@@ -65,6 +65,8 @@ public class CourseService extends BaseService {
     SysUserService sysUserService;
     @Autowired
     UserCourseService userCourseService;
+    @Autowired
+    CourseChapterService courseChapterService;
 
     /**
      * 获取课程列表
@@ -409,21 +411,10 @@ public class CourseService extends BaseService {
      * @param id
      * @return
      */
-    public CourseChapterSectionDto[] saveChapterAndSection(CourseChapterSectionDto[] courseChapterSections, int id) {
-
-        //遍历参数List，获取章信息
-       // List<CourseChapter> courseChapterList = Lists.newArrayList();
-        //List<String> sectionNameList = Lists.newArrayList();
-        /*for (CategoryListViewDto categoryListViewDto : courseChapterSectionDtoList){
-            CourseChapter courseChapter = new CourseChapter();
-            categoryListViewDto.getId();
-            categoryListViewDto.getChildren();
-            categoryListViewDto.getIsFirstLabel();
-            categoryListViewDto.getLabel();
-        }*/
+    public List<ChapterSectionDto> saveChapterAndSection(CourseChapterSectionDto[] courseChapterSections, int id) {
 
         //添加课程下章的信息
-       /*for (int i=0; i < courseChapterSections.length; i++){
+       for (int i=0; i < courseChapterSections.length; i++){
             CourseChapter courseChapter = new CourseChapter();
             courseChapter.setDeleteStatus(2);
             courseChapter.setChapterStatus(1);
@@ -432,43 +423,22 @@ public class CourseService extends BaseService {
             courseChapter.setChapterName(courseChapterSections[i].getLabel());
             courseChapterMapper.insertSelective(courseChapter);
 
-            List<AddCategoryNameDto> coueseSectionDtoList = courseChapterSectionList.getList().get(i).getChildren();
-            for (int j=0; j < coueseSectionDtoList.size(); j++){
-                if (coueseSectionDtoList.get(i).getId() == coueseSectionDtoList.get(j).getParentId()){
+            //添加课程下的节消息
+            CourseChapterSecondDto[] courseChapterSecondDtos = courseChapterSections[i].getChildren();
+            for (int j=0; j < courseChapterSecondDtos.length; j++){
+                if (courseChapterSections[i].getId() == courseChapterSecondDtos[j].getParentId()){
                     CourseSection courseSection = new CourseSection();
                     courseSection.setDeleteStatus(2);
                     courseSection.setCourseId(id);
                     courseSection.setChapterId(courseChapter.getId());
                     courseSection.setDiaplayOrder(j+1);
-                    courseSection.setTitle(coueseSectionDtoList.get(i).getLabel());
+                    courseSection.setTitle(courseChapterSecondDtos[j].getLabel());
                     courseSectionMapper.insertSelective(courseSection);
                 }
-
             }
-        }*/
+        }
 
-        //添加课程下节的信息
-        /*for (String chapterName : chapterNameList){
-
-        }*/
-        //List<AddCategoryNameDto> coueseSectionDtoList = Lists.newArrayList();
-        /*for (CategoryListViewDto courseChapterSection : courseChapterSectionDtoList){
-            coueseSectionDtoList = courseChapterSection.getChildren();
-
-            for (int i=0; i < coueseSectionDtoList.size(); i++){
-                CourseSection courseSection = new CourseSection();
-                courseSection.setDeleteStatus(2);
-                courseSection.setCourseId(id);
-                //courseSection.setChapterId();
-                courseSection.setDiaplayOrder(i+1);
-                courseSection.setTitle(courseChapterSectionDtoList.get(i).getLabel());
-                courseSectionMapper.insertSelective(courseSection);
-            }
-        }*/
-
-
-        //return courseChapterSectionDtoList;
-        return courseChapterSections;
-
+        //查询刚刚创建的章和节的信息
+        return courseChapterService.list(id);
     }
 }

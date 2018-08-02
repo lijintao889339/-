@@ -2,6 +2,7 @@ package com.teamsking.api.endpoint.course;
 
 
 import com.teamsking.api.dto.category.CategoryListViewDto;
+import com.teamsking.api.dto.course.ChapterSectionDto;
 import com.teamsking.api.dto.course.CourseChapterSectionDto;
 import com.teamsking.api.dto.course.CourseInsertDto;
 import com.teamsking.api.endpoint.BaseController;
@@ -131,8 +132,8 @@ public class CourseController extends BaseController {
     public Result addCourse(@RequestBody CourseChapterSectionDto[] courseChapterSections,
                             @PathVariable int courseId) {
 
-        CourseChapterSectionDto[] courseChapterSectionDtos = courseService.saveChapterAndSection(courseChapterSections,courseId);
-        return Result.success().addData("courseChapterSectionDtos",courseChapterSectionDtos);
+        List<ChapterSectionDto> chapterSectionDtoList = courseService.saveChapterAndSection(courseChapterSections,courseId);
+        return Result.success().addData("courseChapterSectionDtos",chapterSectionDtoList);
     }
 
 

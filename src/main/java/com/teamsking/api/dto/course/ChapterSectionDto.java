@@ -15,6 +15,8 @@ public class ChapterSectionDto extends Dto {
 
     private String chapterName;
 
+    private Boolean isFirstLabel;
+
     private List<SectionTitleAndOrderDto> sectionDtoList;
 
 }
