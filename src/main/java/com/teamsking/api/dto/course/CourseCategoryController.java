@@ -1,6 +1,7 @@
 package com.teamsking.api.dto.course;
 
 import com.teamsking.api.endpoint.BaseController;
+import com.teamsking.domain.entity.course.CourseCategory;
 import com.teamsking.domain.service.course.CourseCategoryService;
 import com.teamsking.util.Result;
 import io.swagger.annotations.Api;
@@ -13,6 +14,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.List;
 
 /**
 *@author linhao
@@ -37,14 +40,15 @@ public class CourseCategoryController extends BaseController {
         return Result.success().addData("pager",warpPage(courseCategoryService.list(fixPage(pageNo),fixPage(pageSize))));
     }
 
-    /*@ApiOperation(value = "获取二级分类", produces = "application/json")
+    @ApiOperation(value = "获取二级分类", produces = "application/json")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "id", value = "一级课程分类主键", required = true, dataType = "int")
     })
     @GetMapping("/course_category/{id}")
     public Result list(@PathVariable int id){
 
-        return Result.success().addData("pager",warpPage(courseCategoryService.list(fixPage(pageNo),fixPage(pageSize))));
+        List<CourseCategoryDto> courseCategoryDtoList = courseCategoryService.getSecondCourseCategory(id);
+        return Result.success().addData("courseCategoryDtoList",courseCategoryDtoList);
     }
-*/
+
 }

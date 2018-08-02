@@ -43,4 +43,21 @@ public class CourseCategoryService extends BaseService {
         List<CourseCategoryDto> courseCategoryDtoList = CourseCategoryDtoMapper.INSTANCE.entityListToDtoList(courseCategoryList);
         return convertPage((Page)courseCategoryList,courseCategoryDtoList);
     }
+
+    /**
+     * 根据一级分类id获取二级课程分类
+     * @param id
+     * @return
+     */
+    public List<CourseCategoryDto> getSecondCourseCategory(int id) {
+
+        CourseCategory courseCategory = new CourseCategory();
+        courseCategory.setDeleteStatus(2);
+        courseCategory.setParentId(id);
+        List<CourseCategory> courseCategoryList = courseCategoryMapper.select(courseCategory);
+
+        //数据转换
+        List<CourseCategoryDto> courseCategoryDtoList = CourseCategoryDtoMapper.INSTANCE.entityListToDtoList(courseCategoryList);
+        return courseCategoryDtoList;
+    }
 }
