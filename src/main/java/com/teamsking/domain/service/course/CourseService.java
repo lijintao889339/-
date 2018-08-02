@@ -405,11 +405,11 @@ public class CourseService extends BaseService {
 
     /**
      * 添加课程下面的章节并且返回
-     * @param courseChapterSectionList
+     * @param courseChapterSections
      * @param id
      * @return
      */
-    public List<CategoryListViewDto> saveChapterAndSection(CourseChapterSectionDto[] courseChapterSectionList, int id) {
+    public CourseChapterSectionDto[] saveChapterAndSection(CourseChapterSectionDto[] courseChapterSections, int id) {
 
         //遍历参数List，获取章信息
        // List<CourseChapter> courseChapterList = Lists.newArrayList();
@@ -423,13 +423,13 @@ public class CourseService extends BaseService {
         }*/
 
         //添加课程下章的信息
-       /*for (int i=0; i < courseChapterSectionList.length(); i++){
+       /*for (int i=0; i < courseChapterSections.length; i++){
             CourseChapter courseChapter = new CourseChapter();
             courseChapter.setDeleteStatus(2);
             courseChapter.setChapterStatus(1);
             courseChapter.setCourseId(id);
             courseChapter.setDisplayOrder(i+1);
-            courseChapter.setChapterName(courseChapterSectionList.getList().get(i).getLabel());
+            courseChapter.setChapterName(courseChapterSections[i].getLabel());
             courseChapterMapper.insertSelective(courseChapter);
 
             List<AddCategoryNameDto> coueseSectionDtoList = courseChapterSectionList.getList().get(i).getChildren();
@@ -468,7 +468,7 @@ public class CourseService extends BaseService {
 
 
         //return courseChapterSectionDtoList;
-        return null;
+        return courseChapterSections;
 
     }
 }

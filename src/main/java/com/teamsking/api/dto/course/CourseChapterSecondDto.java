@@ -7,16 +7,15 @@ import lombok.Data;
 *@author linhao
 */
 @Data
-public class CourseChapterSectionDto extends Dto {
+public class CourseChapterSecondDto extends Dto {
 
     private Integer id;
 
     private String label;
 
-    private Boolean isFirstLabel;
-
     private Boolean isShow;
 
-    private CourseChapterSecondDto[] children;
+    private Boolean isFirstLabel;
 
+    private Integer parentId;
 }
