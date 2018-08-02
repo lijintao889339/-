@@ -30,6 +30,10 @@ public class CourseBeforeEditDto extends Dto {
 
     private List<CourseTeacherNameDto> courseTeacherList;
 
+    private Integer teacherId;
+
+    private Integer userId;
+
     private List<UserDto> userDtoListAll;
 
     private List<UserDto> userDtoListById;
