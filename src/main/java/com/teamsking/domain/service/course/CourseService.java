@@ -3,6 +3,8 @@ package com.teamsking.domain.service.course;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.google.common.collect.Lists;
+import com.teamsking.api.dto.category.AddCategoryNameDto;
+import com.teamsking.api.dto.category.CategoryListViewDto;
 import com.teamsking.api.dto.course.*;
 import com.teamsking.api.dto.sys.SysUserDtoMapper;
 import com.teamsking.api.dto.sys.UserDto;
@@ -305,7 +307,7 @@ public class CourseService extends BaseService {
         //2.根据老师IdList获取老师信息
         List<CourseTeacher> courseTeacherList = courseTeacherService.getTeacherByTeacherIdList(teacherIdList);
         List<CourseTeacherNameDto> courseTeacherNameDtoList = CourseTeacherDtoMapper.INSTANCE.entityListToNameListDto(courseTeacherList);
-        courseBeforeEditDto.setTeacherNameDtoList(courseTeacherNameDtoList);
+        courseBeforeEditDto.setCourseTeacherList(courseTeacherNameDtoList);
 
         //根据课程Id查询该课程用户权限信息
         if (course.getVisibleRange() == 2){
@@ -403,48 +405,70 @@ public class CourseService extends BaseService {
 
     /**
      * 添加课程下面的章节并且返回
-     * @param courseChapterSectionDtoList
+     * @param courseChapterSectionList
      * @param id
      * @return
      */
-    public List<CourseChapterSectionDto> saveChapterAndSection(List<CourseChapterSectionDto> courseChapterSectionDtoList, int id) {
+    public List<CategoryListViewDto> saveChapterAndSection(CourseChapterSectionDto[] courseChapterSectionList, int id) {
 
-        //遍历参数List，获取章名称和节名称
-        List<String> chapterNameList = Lists.newArrayList();
-        List<String> sectionNameList = Lists.newArrayList();
-        for (CourseChapterSectionDto courseChapterSectionDto : courseChapterSectionDtoList){
-            chapterNameList.add(courseChapterSectionDto.getLable());
-            sectionNameList.add(courseChapterSectionDto.getChildren());
-        }
+        //遍历参数List，获取章信息
+       // List<CourseChapter> courseChapterList = Lists.newArrayList();
+        //List<String> sectionNameList = Lists.newArrayList();
+        /*for (CategoryListViewDto categoryListViewDto : courseChapterSectionDtoList){
+            CourseChapter courseChapter = new CourseChapter();
+            categoryListViewDto.getId();
+            categoryListViewDto.getChildren();
+            categoryListViewDto.getIsFirstLabel();
+            categoryListViewDto.getLabel();
+        }*/
 
         //添加课程下章的信息
-        for (int i=0; i < chapterNameList.size(); i++){
+       /*for (int i=0; i < courseChapterSectionList.length(); i++){
             CourseChapter courseChapter = new CourseChapter();
             courseChapter.setDeleteStatus(2);
             courseChapter.setChapterStatus(1);
             courseChapter.setCourseId(id);
             courseChapter.setDisplayOrder(i+1);
-            courseChapter.setChapterName(chapterNameList.get(i));
+            courseChapter.setChapterName(courseChapterSectionList.getList().get(i).getLabel());
             courseChapterMapper.insertSelective(courseChapter);
-        }
+
+            List<AddCategoryNameDto> coueseSectionDtoList = courseChapterSectionList.getList().get(i).getChildren();
+            for (int j=0; j < coueseSectionDtoList.size(); j++){
+                if (coueseSectionDtoList.get(i).getId() == coueseSectionDtoList.get(j).getParentId()){
+                    CourseSection courseSection = new CourseSection();
+                    courseSection.setDeleteStatus(2);
+                    courseSection.setCourseId(id);
+                    courseSection.setChapterId(courseChapter.getId());
+                    courseSection.setDiaplayOrder(j+1);
+                    courseSection.setTitle(coueseSectionDtoList.get(i).getLabel());
+                    courseSectionMapper.insertSelective(courseSection);
+                }
+
+            }
+        }*/
 
         //添加课程下节的信息
-        for (String chapterName : chapterNameList){
-           /* if (){
+        /*for (String chapterName : chapterNameList){
 
-            }*/
-        }
-        for (int i=0; i < sectionNameList.size(); i++){
-            CourseSection courseSection = new CourseSection();
-            courseSection.setDeleteStatus(2);
-            courseSection.setCourseId(id);
-            //courseSection.setChapterId();
-            courseSection.setDiaplayOrder(i+1);
-            courseSection.setTitle(sectionNameList.get(i));
-            courseSectionMapper.insertSelective(courseSection);
-        }
+        }*/
+        //List<AddCategoryNameDto> coueseSectionDtoList = Lists.newArrayList();
+        /*for (CategoryListViewDto courseChapterSection : courseChapterSectionDtoList){
+            coueseSectionDtoList = courseChapterSection.getChildren();
 
-        return courseChapterSectionDtoList;
+            for (int i=0; i < coueseSectionDtoList.size(); i++){
+                CourseSection courseSection = new CourseSection();
+                courseSection.setDeleteStatus(2);
+                courseSection.setCourseId(id);
+                //courseSection.setChapterId();
+                courseSection.setDiaplayOrder(i+1);
+                courseSection.setTitle(courseChapterSectionDtoList.get(i).getLabel());
+                courseSectionMapper.insertSelective(courseSection);
+            }
+        }*/
+
+
+        //return courseChapterSectionDtoList;
+        return null;
 
     }
 }

@@ -33,5 +33,4 @@ public class CourseBeforeEditDto extends Dto {
     private List<UserDto> userDtoListAll;
 
     private List<UserDto> userDtoListById;
-
 }
