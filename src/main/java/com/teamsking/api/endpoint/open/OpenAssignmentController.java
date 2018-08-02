@@ -53,6 +53,20 @@ public class OpenAssignmentController extends BaseController {
         return Result.success().addData("pager",warpPage(openAssignmentDtoList));
     }
 
+
+    @ApiOperation(value = "根据班课id查询作业信息", consumes= "application/json")
+    @ApiImplicitParams( {
+            @ApiImplicitParam(name = "id", value = "班课id", required = true, dataType = "Integer")
+    })
+    @GetMapping("/query_open_assignment/{openId}")
+    public Result queryVideo(@PathVariable int openId){
+
+        return Result.success().addData("list",openAssignmentService.query(openId));
+
+    }
+
+
+
     /**
      * 添加班次作业管理
      * @param openAssignment

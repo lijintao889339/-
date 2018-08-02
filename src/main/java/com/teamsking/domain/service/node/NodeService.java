@@ -39,13 +39,13 @@ public class NodeService {
      * @param openId
      * @return
      */
-    public Node query(Integer openId){
+    public List<Node> query(Integer openId){
 
-//        Example nodeExample = new Example(Node.class);
-//        Example.Criteria cri = nodeExample.createCriteria();
-//        cri.andIn("openId",);
-//        return nodeMapper.selectByExample(nodeExample);
-        return nodeMapper.selectByPrimaryKey(openId);
+        Node node = new Node();
+        node.setId(openId);
+        node.setDeleteStatus(2);
+
+        return nodeMapper.select(node);
 
     }
 

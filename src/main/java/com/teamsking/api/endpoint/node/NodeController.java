@@ -53,7 +53,7 @@ public class NodeController extends BaseController {
     @GetMapping("/query_node/{openId}")
     public Result queryVideo(@PathVariable int openId){
 
-        return Result.success().addData("pager",nodeService.query(openId));
+        return Result.success().addData("list",nodeService.query(openId));
 
     }
 
