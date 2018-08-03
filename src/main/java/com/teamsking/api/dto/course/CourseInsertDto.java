@@ -24,6 +24,8 @@ public class CourseInsertDto {
 
     private Integer categoryId;
 
+    private Integer firstCategoryId;
+
     private Integer[] teacherId;
 
     private Integer[] userId;

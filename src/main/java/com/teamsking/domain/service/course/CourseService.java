@@ -248,7 +248,7 @@ public class CourseService extends BaseService {
      * @param id
      * @return
      */
-    public List<CourseSchoolDto> getCourseListByCategoryId(int id) {
+    /*public List<CourseSchoolDto> getCourseListByCategoryId(int id) {
         //获取一级分类下的所有二级分类
         List<Category> categoryList = categoryService.getSecondCategoryById(id);
 
@@ -284,7 +284,7 @@ public class CourseService extends BaseService {
         }
 
         return courseSchoolDtoList;
-    }
+    }*/
 
     /**
      * 编辑课程前，根据Id获取课程及其相关信息

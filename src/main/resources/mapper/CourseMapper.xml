@@ -30,6 +30,7 @@
     <result column="course_sell" jdbcType="VARCHAR" property="courseSell"/>
     <result column="qc_code" jdbcType="VARCHAR" property="qcCode"/>
     <result column="course_introduction" jdbcType="VARCHAR" property="courseIntroduction"/>
+    <result column="first_category_id" jdbcType="INTEGER" property="firstCategoryId"/>
   </resultMap>
 
 </mapper>

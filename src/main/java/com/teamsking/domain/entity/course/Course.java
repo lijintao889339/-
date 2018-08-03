@@ -158,6 +158,16 @@ public class Course {
 
     private String qcCode;
 
+    private Integer firstCategoryId;
+
+    public Integer getFirstCategoryId() {
+        return firstCategoryId;
+    }
+
+    public void setFirstCategoryId(Integer firstCategoryId) {
+        this.firstCategoryId = firstCategoryId;
+    }
+
     private String courseIntroduction;
 
     public String getCourseIntroduction() {

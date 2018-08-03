@@ -111,7 +111,7 @@ public class CourseController extends BaseController {
 
     }
 
-    @ApiOperation(value = "一级分类下的课程列表",produces = "application/json")
+    /*@ApiOperation(value = "一级分类下的课程列表",produces = "application/json")
     @ApiImplicitParams( {
             @ApiImplicitParam(name = "id", value = "一级分类的主键", required = true ,dataType = "Integer")
     })
@@ -120,7 +120,7 @@ public class CourseController extends BaseController {
 
         return Result.success().addData("pager",courseService.getCourseListByCategoryId(id));
 
-    }
+    }*/
 
 
     @ApiOperation(value = "添加课程(添加章和节)", produces = "application/json")

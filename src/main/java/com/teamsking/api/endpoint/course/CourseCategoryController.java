@@ -2,6 +2,7 @@ package com.teamsking.api.endpoint.course;
 
 import com.teamsking.api.dto.course.CourseCategoryDto;
 import com.teamsking.api.dto.course.CourseCategoryDtoMapper;
+import com.teamsking.api.dto.course.CourseCategoryNameDto;
 import com.teamsking.api.endpoint.BaseController;
 import com.teamsking.domain.entity.course.CourseCategory;
 import com.teamsking.domain.service.course.CourseCategoryService;
@@ -46,7 +47,7 @@ public class CourseCategoryController extends BaseController {
             @ApiImplicitParam(name = "id", value = "一级课程分类主键", required = true, dataType = "int")
     })
     @GetMapping("/course_category/{id}")
-    public Result list(@PathVariable int id){
+    public Result getSecondCourseCategory(@PathVariable int id){
 
         List<CourseCategoryDto> courseCategoryDtoList = courseCategoryService.getSecondCourseCategory(id);
         return Result.success().addData("courseCategoryDtoList",courseCategoryDtoList);
@@ -116,6 +117,29 @@ public class CourseCategoryController extends BaseController {
 
         courseCategoryService.isShowById(courseCategoryDto,id);
         return Result.success();
+    }
+
+
+    @ApiOperation(value = "一级分类列表", consumes = "application/json")
+    @GetMapping("/first_course_categories")
+    public Result getFirstCategory(){
+
+        List<CourseCategory> courseCategoryList = courseCategoryService.getAllFirstCategory();
+        List<CourseCategoryNameDto> courseCategoryNameDtoList = CourseCategoryDtoMapper.INSTANCE.entityListToNameDtoList(courseCategoryList);
+        return Result.success().addData("courseCategoryNameDtoList",courseCategoryNameDtoList);
+    }
+
+
+    @ApiOperation(value = "二级分类列表", consumes = "application/json")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "id", value = "分类的主键", required = true, dataType = "int")
+    })
+    @GetMapping("/second_course_categories/{id}")
+    public Result getSecondCategory(@PathVariable("id") int id){
+
+        List<CourseCategory> courseCategoryList = courseCategoryService.getSecondCategoryById(id);
+        List<CourseCategoryNameDto> courseCategoryNameDtoList = CourseCategoryDtoMapper.INSTANCE.entityListToNameDtoList(courseCategoryList);
+        return Result.success().addData("courseCategoryNameDtoList",courseCategoryNameDtoList);
     }
 
 }

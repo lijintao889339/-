@@ -28,6 +28,8 @@ public class CourseBeforeEditDto extends Dto {
 
     private Integer categoryId;
 
+    private Integer firstCategoryId;
+
     private List<CourseTeacherNameDto> courseTeacherList;
 
     private Integer teacherId;

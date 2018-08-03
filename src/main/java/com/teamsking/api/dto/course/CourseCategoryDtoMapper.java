@@ -18,4 +18,6 @@ public interface CourseCategoryDtoMapper {
 
     CourseCategory dtoToEntity(CourseCategoryDto courseCategoryDto);
 
+    List<CourseCategoryNameDto> entityListToNameDtoList(List<CourseCategory> courseCategoryList);
+
 }

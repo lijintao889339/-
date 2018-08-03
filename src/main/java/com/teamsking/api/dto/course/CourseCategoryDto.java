@@ -21,4 +21,6 @@ public class CourseCategoryDto extends Dto {
 
     private Boolean isFirstLabel;
 
+    private Integer courseCount;
+
 }

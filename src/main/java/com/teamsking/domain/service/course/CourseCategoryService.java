@@ -5,8 +5,11 @@ import com.github.pagehelper.PageHelper;
 import com.google.common.collect.Lists;
 import com.teamsking.api.dto.course.CourseCategoryDto;
 import com.teamsking.api.dto.course.CourseCategoryDtoMapper;
+import com.teamsking.api.dto.course.CourseCategoryNameDto;
+import com.teamsking.domain.entity.course.Course;
 import com.teamsking.domain.entity.course.CourseCategory;
 import com.teamsking.domain.repository.CourseCategoryMapper;
+import com.teamsking.domain.repository.CourseMapper;
 import com.teamsking.domain.service.BaseService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,6 +27,8 @@ public class CourseCategoryService extends BaseService {
 
     @Autowired
     CourseCategoryMapper courseCategoryMapper;
+    @Autowired
+    CourseMapper courseMapper;
 
     /**
      *获取一级课程分类
@@ -43,6 +48,16 @@ public class CourseCategoryService extends BaseService {
 
         //数据转换
         List<CourseCategoryDto> courseCategoryDtoList = CourseCategoryDtoMapper.INSTANCE.entityListToDtoList(courseCategoryList);
+
+        //获取一级分类下的课程数量
+        for (CourseCategoryDto courseCategoryDto : courseCategoryDtoList){
+            //查询该一级分类下课程数量
+            Course course = new Course();
+            course.setFirstCategoryId(courseCategoryDto.getId());
+            int count = courseMapper.selectCount(course);
+            courseCategoryDto.setCourseCount(count);
+        }
+
         return convertPage((Page)courseCategoryList,courseCategoryDtoList);
     }
 
@@ -60,6 +75,14 @@ public class CourseCategoryService extends BaseService {
 
         //数据转换
         List<CourseCategoryDto> courseCategoryDtoList = CourseCategoryDtoMapper.INSTANCE.entityListToDtoList(courseCategoryList);
+
+        for (CourseCategoryDto courseCategoryDto : courseCategoryDtoList){
+            //查询该分类下课程数量
+            Course course = new Course();
+            course.setCategoryId(courseCategoryDto.getId());
+            int count = courseMapper.selectCount(course);
+            courseCategoryDto.setCourseCount(count);
+        }
         return courseCategoryDtoList;
     }
 
@@ -155,5 +178,32 @@ public class CourseCategoryService extends BaseService {
         courseCategoryExample.or().andEqualTo("id",id);
         courseCategoryExample.or().andEqualTo("parentId",id);
         return courseCategoryMapper.updateByExampleSelective(courseCategory,courseCategoryExample);
+    }
+
+    /**
+     * 获取所有一级分类
+     * @return
+     */
+    public List<CourseCategory> getAllFirstCategory() {
+
+        CourseCategory courseCategory = new CourseCategory();
+        courseCategory.setParentId(0);
+        courseCategory.setDeleteStatus(2);
+        return courseCategoryMapper.select(courseCategory);
+
+    }
+
+    /**
+     * 获取一级分类下的所有二级分类
+     * @param id
+     * @return
+     */
+    public List<CourseCategory> getSecondCategoryById(int id) {
+
+        CourseCategory courseCategory = new CourseCategory();
+        courseCategory.setParentId(id);
+        courseCategory.setDeleteStatus(2);
+        return courseCategoryMapper.select(courseCategory);
+
     }
 }
