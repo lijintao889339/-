@@ -65,7 +65,7 @@ public class CourseEvaluateController extends BaseController {
             @ApiImplicitParam(name = "courseEvaluate", value = "课程评价", required = true, dataType = "CourseEvaluateDto")
     })
     @PutMapping("/course_evaluate/{id}")
-    public Result removeMultiCourseEvaluates(@PathVariable("id") int id,
+    public Result isShowCourseEvaluate(@PathVariable("id") int id,
                                              @RequestBody CourseEvaluateDto courseEvaluate){
 
         CourseEvaluate courseEvaluateEntity = CourseEvaluateDtoMapper.INSTANCE.dtoToEntity(courseEvaluate);

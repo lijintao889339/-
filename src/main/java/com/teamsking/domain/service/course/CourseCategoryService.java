@@ -2,6 +2,7 @@ package com.teamsking.domain.service.course;
 
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
+import com.google.common.collect.Lists;
 import com.teamsking.api.dto.course.CourseCategoryDto;
 import com.teamsking.api.dto.course.CourseCategoryDtoMapper;
 import com.teamsking.domain.entity.course.CourseCategory;
@@ -10,6 +11,7 @@ import com.teamsking.domain.service.BaseService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import tk.mybatis.mapper.entity.Example;
 
 import java.util.List;
 
@@ -24,7 +26,7 @@ public class CourseCategoryService extends BaseService {
     CourseCategoryMapper courseCategoryMapper;
 
     /**
-     *
+     *获取一级课程分类
      * @param pageNo
      * @param pageSize
      * @return
@@ -84,5 +86,74 @@ public class CourseCategoryService extends BaseService {
         newCourseCategory.setLabel(courseCategoryDto.getLabel());
         return courseCategoryMapper.insertSelective(newCourseCategory);
 
+    }
+
+    /**
+     * 编辑课程分类
+     * @param courseCategoryDto
+     * @param id
+     * @return
+     */
+    public int modifyCourseCategory(CourseCategoryDto courseCategoryDto, int id) {
+
+        CourseCategory courseCategory = CourseCategoryDtoMapper.INSTANCE.dtoToEntity(courseCategoryDto);
+        courseCategory.setId(id);
+        return courseCategoryMapper.updateByPrimaryKeySelective(courseCategory);
+
+    }
+
+    /**
+     * 删除课程分类
+     * @param id
+     * @return
+     */
+    public int removeCourseCategory(int id) {
+
+        CourseCategory courseCategory = new CourseCategory();
+        courseCategory.setDeleteStatus(1);
+
+        Example courseCategoryExample = new Example(CourseCategory.class);
+        courseCategoryExample.or().andEqualTo("id",id);
+        courseCategoryExample.or().andEqualTo("parentId",id);
+        return courseCategoryMapper.updateByExampleSelective(courseCategory,courseCategoryExample);
+    }
+
+    public int removeCourseCategoryByIds(Integer[] ids) {
+
+        List<Integer> idList = Lists.newArrayList();
+        for (Integer id : ids){
+            idList.add(id);
+        }
+
+        CourseCategory courseCategory = new CourseCategory();
+        courseCategory.setDeleteStatus(1);
+
+        Example courseCategoryExample = new Example(CourseCategory.class);
+        Example.Criteria cri = courseCategoryExample.createCriteria();
+        cri.orIn("id",idList);
+        cri.orIn("parentId",idList);
+        return courseCategoryMapper.updateByExampleSelective(courseCategory,courseCategoryExample);
+
+    }
+
+    /**
+     * 是否显示课程分类
+     * @param courseCategoryDto
+     * @param id
+     */
+    public int isShowById(CourseCategoryDto courseCategoryDto, int id) {
+
+        CourseCategory courseCategory = new CourseCategory();
+
+        if (courseCategoryDto.getIsShow()){
+            courseCategory.setIsShow(true);
+        }else {
+            courseCategory.setIsShow(false);
+        }
+
+        Example courseCategoryExample = new Example(CourseCategory.class);
+        courseCategoryExample.or().andEqualTo("id",id);
+        courseCategoryExample.or().andEqualTo("parentId",id);
+        return courseCategoryMapper.updateByExampleSelective(courseCategory,courseCategoryExample);
     }
 }
