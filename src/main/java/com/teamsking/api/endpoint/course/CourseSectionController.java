@@ -61,13 +61,12 @@ public class CourseSectionController extends BaseController {
      */
     @ApiOperation(value = "添加课程中的节", consumes = "application/json")
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "courseSection", value = "课程的节", required = true, dataType = "CourseSectionDto")
+            @ApiImplicitParam(name = "courseSectionDto", value = "课程的节", required = true, dataType = "CourseSectionDto")
     })
     @PostMapping("/course_section")
     public Result addCourseSection(@RequestBody CourseSectionDto courseSectionDto){
 
-        CourseSection courseSectionEntity = CourseSectionDtoMapper.INSTANCE.dtoToEntity(courseSectionDto);
-        courseSectionService.save(courseSectionEntity);
+        courseSectionService.save(courseSectionDto);
         return Result.success();
     }
 
@@ -89,21 +88,17 @@ public class CourseSectionController extends BaseController {
 
     /**
      * 修改课程-节
-     * @param id
      * @param courseSectionDto
      * @return
      */
-    @ApiOperation(value = "删除课程的节", consumes = "application/json")
+    @ApiOperation(value = "修改课程的节", consumes = "application/json")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "courseSection", value = "课程中的节", required = true, dataType = "CourseSectionDto")
     })
-    @PutMapping("/course_section/{id}")
-    public Result modify(@PathVariable("id") int id,
-                         @RequestBody CourseSectionDto courseSectionDto){
+    @PutMapping("/course_section")
+    public Result modify(@RequestBody CourseSectionDto courseSectionDto){
 
-        CourseSection courseSectionEntity = CourseSectionDtoMapper.INSTANCE.dtoToEntity(courseSectionDto);
-        courseSectionEntity.setId(id);
-        courseSectionService.modify(courseSectionEntity);
+        courseSectionService.modify(courseSectionDto);
         return Result.success();
     }
 }

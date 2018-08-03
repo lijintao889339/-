@@ -1,10 +1,7 @@
 package com.teamsking.domain.service.course;
 
 import com.google.common.collect.Lists;
-import com.teamsking.api.dto.course.ChapterSectionDto;
-import com.teamsking.api.dto.course.CourseChapterDtoMapper;
-import com.teamsking.api.dto.course.CourseSectionDtoMapper;
-import com.teamsking.api.dto.course.SectionTitleAndOrderDto;
+import com.teamsking.api.dto.course.*;
 import com.teamsking.domain.entity.course.CourseChapter;
 import com.teamsking.domain.entity.course.CourseSection;
 import com.teamsking.domain.repository.CourseChapterMapper;
@@ -71,12 +68,21 @@ public class CourseChapterService {
 
     /**
      * 添加课程中的章
-     * @param courseChapter
+     * @param courseChapterDto
      * @return
      */
-    public int save(CourseChapter courseChapter){
+    public int save(CourseChapterDto courseChapterDto){
 
-        return courseChapterMapper.insert(courseChapter);
+        //先查询此课程有多少章
+        CourseChapter courseChapter = new CourseChapter();
+        courseChapter.setCourseId(courseChapterDto.getCourseId());
+        int count = courseChapterMapper.selectCount(courseChapter);
+
+        CourseChapter newCourseChapter = CourseChapterDtoMapper.INSTANCE.dtoToEntity(courseChapterDto);
+        newCourseChapter.setDeleteStatus(2);
+        newCourseChapter.setDisplayOrder(count + 1);
+        newCourseChapter.setDeleteStatus(1);
+        return courseChapterMapper.insertSelective(newCourseChapter);
     }
 
     /**
@@ -86,16 +92,24 @@ public class CourseChapterService {
      */
     public int remove(int id){
 
-        return courseChapterMapper.deleteByPrimaryKey(id);
+        //先将该章下的节删除
+        courseSectionService.removeSectionByChapterId(id);
+
+        //再删除该章
+        CourseChapter courseChapter = new CourseChapter();
+        courseChapter.setDeleteStatus(1);
+        courseChapter.setId(id);
+        return courseChapterMapper.updateByPrimaryKeySelective(courseChapter);
     }
 
     /**
      * 修改课程中的章
-     * @param courseChapter
+     * @param courseChapterDto
      * @return
      */
-    public int modify(CourseChapter courseChapter){
+    public int modify(CourseChapterDto courseChapterDto){
 
+        CourseChapter courseChapter = CourseChapterDtoMapper.INSTANCE.dtoToEntity(courseChapterDto);
         return courseChapterMapper.updateByPrimaryKeySelective(courseChapter);
     }
 

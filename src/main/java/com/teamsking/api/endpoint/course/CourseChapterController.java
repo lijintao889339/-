@@ -52,18 +52,17 @@ public class CourseChapterController extends BaseController {
 
     /**
      * 添加课程-章管理
-     * @param courseChapter
+     * @param courseChapterDto
      * @return
      */
-    @ApiOperation(value = "添加课程中的章", consumes = "application/json")
+    @ApiOperation(value = "添加某一课程的章", consumes = "application/json")
     @ApiImplicitParams({
-            @ApiImplicitParam (name = "courseChapter", value = "课程的章", required = true, dataType = "CourseChapterDto")
+            @ApiImplicitParam (name = "courseChapterDto", value = "课程的章", required = true, dataType = "CourseChapterDto")
     })
     @PostMapping("/course_chapter")
-    public Result addCourseChapter(@RequestBody CourseChapterDto courseChapter){
+    public Result addCourseChapter(@RequestBody CourseChapterDto courseChapterDto){
 
-        CourseChapter courseChapterEntity = CourseChapterDtoMapper.INSTANCE.dtoToEntity(courseChapter);
-        courseChapterService.save(courseChapterEntity);
+        courseChapterService.save(courseChapterDto);
         return Result.success();
     }
 
@@ -85,21 +84,17 @@ public class CourseChapterController extends BaseController {
 
     /**
      * 修改课程-章管理
-     * @param id
-     * @param courseChapter
+     * @param courseChapterDto
      * @return
      */
     @ApiOperation(value = "修改课程中的章", consumes = "application/json")
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "courseChapter", value = "课程的章", required = true, dataType = "CourseChapterDto")
+            @ApiImplicitParam(name = "courseChapterDto", value = "课程的章", required = true, dataType = "CourseChapterDto")
     })
-    @PutMapping("/course_chapter/{id}")
-    public Result modify(@PathVariable("id") int id,
-                         @RequestBody CourseChapterDto courseChapter){
+    @PutMapping("/course_chapter")
+    public Result modify(@RequestBody CourseChapterDto courseChapterDto){
 
-        CourseChapter courseChapterEntity = CourseChapterDtoMapper.INSTANCE.dtoToEntity(courseChapter);
-        courseChapterEntity.setId(id);
-        courseChapterService.modify(courseChapterEntity);
+        courseChapterService.modify(courseChapterDto);
         return Result.success();
     }
 
