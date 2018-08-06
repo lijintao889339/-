@@ -18,5 +18,9 @@ public interface OpenSetDtoMapper {
 
     OpenSet dtoToEntity(OpenSetDto openSetDto);
 
+    OpenSet insertDtoQuerySet(QueryOpenSetDto queryOpenSetDto);
+
+    QueryOpenSetDto entityToQuerySet(OpenSet openSet);
+
 
 }

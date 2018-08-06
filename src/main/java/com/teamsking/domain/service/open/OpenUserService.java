@@ -56,4 +56,15 @@ public class OpenUserService {
         return openUserMapper.updateByPrimaryKeySelective(openUser);
     }
 
+    /**
+     * 根据openId查询用户选课列表
+     * @param openId
+     * @return
+     */
+    public List<OpenUser> getOpenUserByOpenId(Integer openId) {
+
+        OpenUser openUser = new OpenUser();
+        openUser.setId(openId);
+        return openUserMapper.select(openUser);
+    }
 }

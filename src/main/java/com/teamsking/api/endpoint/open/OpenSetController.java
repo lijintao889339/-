@@ -48,6 +48,19 @@ public class OpenSetController extends BaseController {
     }
 
 
+//    @ApiOperation(value = "根据openId查询成绩", consumes= "application/json")
+//    @ApiImplicitParams( {
+//            @ApiImplicitParam(name = "openId", value = "班课主键", required = true, dataType = "Integer")
+//    })
+//    @GetMapping("/query_open_set/{openId}")
+//    public Result queryOpenSet(@PathVariable int openId){
+//
+//        return Result.success().addData("pager", openSetService.queryOpenSet(openId));
+//
+//    }
+
+
+
     @ApiOperation(value = "添加班次-成绩管理", consumes= "application/json")
     @ApiImplicitParams( {
             @ApiImplicitParam(name = "openSet", value = "班次成绩管理", required = true, dataType = "OpenSetDto")

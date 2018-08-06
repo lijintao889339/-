@@ -6,6 +6,7 @@ import java.util.List;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import tk.mybatis.mapper.entity.Example;
 
 /**
 *@author linhao
@@ -55,5 +56,21 @@ public class OpenSectionService {
 
         return openSectionMapper.updateByPrimaryKeySelective(openSection);
     }
+
+
+    /**
+     * 根据章ids查询下面的节信息
+     * @param chapterIds
+     * @return
+     */
+    public List<OpenSection> getSectionListByChapterIds(List<Integer> chapterIds){
+
+        Example sectionExample = new Example(OpenSection.class);
+        Example.Criteria cri = sectionExample.createCriteria();
+        cri.andIn("chapterId",chapterIds);
+        cri.andEqualTo("deleteStatus",2);
+        return openSectionMapper.selectByExample(sectionExample);
+    }
+
 
 }

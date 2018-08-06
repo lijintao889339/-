@@ -10,4 +10,5 @@ import java.util.Map;
 public interface OpenUserMapper extends Mapper<OpenUser> {
 
     List<Map<String,Object>> countByOpenIdsGroupByOpenId(@Param("openIds") List<Integer> openIds);
+    List<OpenUser> countByOpenIdByUserId(@Param("openId") Integer openId);
 }
