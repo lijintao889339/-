@@ -1,8 +1,13 @@
 package com.teamsking.domain.service.course;
 
+import com.teamsking.api.dto.course.CourseItemDto;
+import com.teamsking.api.dto.course.CourseItemDtoMapper;
 import com.teamsking.domain.entity.course.CourseItem;
+import com.teamsking.domain.entity.node.Node;
 import com.teamsking.domain.repository.CourseItemMapper;
 import java.util.List;
+
+import com.teamsking.domain.repository.NodeMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -16,14 +21,47 @@ public class CourseItemService {
 
     @Autowired
     CourseItemMapper courseItemMapper;
+    @Autowired
+    NodeMapper nodeMapper;
 
     /**
      * 获取课程中章节项的列表
+     * @param sectionId
      * @return
      */
-    public List<CourseItem> list( ){
+    public List<CourseItemDto> list(int sectionId){
 
-        return courseItemMapper.selectAll();
+        //根据节id查询小项内容
+        CourseItem courseItem = new CourseItem();
+        courseItem.setSectionId(sectionId);
+        List<CourseItem> courseItemList = courseItemMapper.select(courseItem);
+
+        List<CourseItemDto> courseItemDtoList = CourseItemDtoMapper.INSTANCE.entityListToDtoList(courseItemList);
+        //CourseItemCategoryDto courseItemCategoryDto = CourseItemDtoMapper.INSTANCE.entityListToCategoryDto(courseItemList);
+
+        //遍历集合
+        for (CourseItemDto itemDto : courseItemDtoList){
+            if (20 == itemDto.getItemType()){
+                //小项类型为文档
+                itemDto.setType(20);
+
+            }else if (10 == itemDto.getItemType()){
+                //查询此小项的资源类型
+                Node node = nodeMapper.selectByPrimaryKey(itemDto.getRelationId());
+                if (50 == node.getNodeType()){
+                    //资源类型为视频
+                    itemDto.setType(50);
+
+                }else if (60 == node.getNodeType()){
+                    //资源类型为音频
+                    itemDto.setType(60);
+                }else if (70 == node.getNodeType()){
+                    //资源类型为图片
+                    itemDto.setType(70);
+                }
+            }
+        }
+        return courseItemDtoList;
     }
 
     /**

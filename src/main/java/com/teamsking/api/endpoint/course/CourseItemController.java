@@ -1,6 +1,5 @@
 package com.teamsking.api.endpoint.course;
 
-import com.github.pagehelper.PageHelper;
 import com.teamsking.api.dto.course.CourseItemDto;
 import com.teamsking.api.dto.course.CourseItemDtoMapper;
 import com.teamsking.api.endpoint.BaseController;
@@ -36,22 +35,18 @@ public class CourseItemController extends BaseController {
 
     /**
      * 获取课程中章节项的列表
-     * @param pageNo
-     * @param pageSize
+     * @param sectionId
      * @return
      */
     @ApiOperation(value = "课程中章节项的列表", notes = "可分页", produces = "application/json")
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "pageNo", value = "页码", required = true, example = "1"),
-            @ApiImplicitParam(name = "pageSize", value = "页大小", required = true, example = "10")
+            @ApiImplicitParam(name = "sectionId", value = "节的主键", required = true, dataType = "int")
     })
-    @GetMapping("/course_items")
-    public Result courseItemList(int pageNo, int pageSize){
+    @GetMapping("/course_items/{sectionId}")
+    public Result courseItemList(@PathVariable int sectionId){
 
-        PageHelper.startPage(fixPage(pageNo),fixPage(pageSize));
-        List<CourseItem> courseItemList = courseItemService.list();
-        List<CourseItemDto> courseItemDtoList = CourseItemDtoMapper.INSTANCE.entityListToDtoList(courseItemList);
-        return Result.success().addData("pager",warpPage(courseItemDtoList));
+         List<CourseItemDto> courseItemDtoList = courseItemService.list(sectionId);
+        return Result.success().addData("courseItemDtoList",courseItemDtoList);
     }
 
     /**
