@@ -66,9 +66,11 @@ public class OpenSectionService {
     public List<OpenSection> getSectionListByChapterIds(List<Integer> chapterIds){
 
         Example sectionExample = new Example(OpenSection.class);
-        Example.Criteria cri = sectionExample.createCriteria();
-        cri.andIn("chapterId",chapterIds);
-        cri.andEqualTo("deleteStatus",2);
+        sectionExample.and().andEqualTo("deleteStatus",2);
+        sectionExample.and().andIn("chapterId",chapterIds);
+        //Example.Criteria cri = sectionExample.createCriteria();
+        ///cri.andIn("chapterId",chapterIds);
+        //cri.andEqualTo("deleteStatus",2);
         return openSectionMapper.selectByExample(sectionExample);
     }
 

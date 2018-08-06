@@ -1,6 +1,7 @@
 package com.teamsking.api.endpoint.open;
 
 import com.github.pagehelper.PageHelper;
+import com.teamsking.api.dto.open.ChapterSectionDto;
 import com.teamsking.api.dto.open.OpenChapterDto;
 import com.teamsking.api.dto.open.OpenChapterDtoMapper;
 import com.teamsking.api.endpoint.BaseController;
@@ -53,22 +54,54 @@ public class OpenChapterController extends BaseController {
         return Result.success().addData("pager",warpPage(openChapterDtoList));
     }
 
+
+    @ApiOperation(value = "班课-章的列表", notes = "可分页", produces = "application/json")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "openId", value = "班课的主键", required = true, dataType = "int")
+    })
+    @GetMapping("/open_chapter/{openId}")
+    public Result openChapterLists(@PathVariable int openId){
+
+        List<ChapterSectionDto> chapterSectionDtoList = openChapterService.chapterList(openId);
+
+        return Result.success().addData("chapterSectionDtoList",chapterSectionDtoList);
+
+    }
+
+
     /**
      * 添加班次-章管理
-     * @param openChapter
+     * @param
      * @return
      */
-    @ApiOperation(value = "添加班次—章", consumes = "application/json")
+//    @ApiOperation(value = "添加班次—章", consumes = "application/json")
+//    @ApiImplicitParams({
+//            @ApiImplicitParam(name = "openChapter", value = "班次-章", required = true, dataType = "OpenChapterDto")
+//    })
+//    @PostMapping("/open_chapter")
+//    public Result addOpenChapter(@RequestBody OpenChapterDto openChapter){
+//
+//        OpenChapter openChapterEntity = OpenChapterDtoMapper.INSTANCE.dtoToEntity(openChapter);
+//        openChapterService.save(openChapterEntity);
+//        return Result.success();
+//    }
+
+
+
+    @ApiOperation(value = "添加班课—章", consumes = "application/json")
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "openChapter", value = "班次-章", required = true, dataType = "OpenChapterDto")
+            @ApiImplicitParam(name = "openChapterDto", value = "班课的章", required = true, dataType = "OpenChapterDto")
     })
     @PostMapping("/open_chapter")
-    public Result addOpenChapter(@RequestBody OpenChapterDto openChapter){
+    public Result saveChapter(@RequestBody OpenChapterDto openChapterDto){
 
-        OpenChapter openChapterEntity = OpenChapterDtoMapper.INSTANCE.dtoToEntity(openChapter);
-        openChapterService.save(openChapterEntity);
+        openChapterService.saveChapter(openChapterDto);
+
         return Result.success();
+
     }
+
+
 
     /**
      * 删除班次-章管理
