@@ -3,15 +3,11 @@ package com.teamsking.domain.service.course;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.google.common.collect.Lists;
-import com.teamsking.api.dto.category.AddCategoryNameDto;
-import com.teamsking.api.dto.category.CategoryListViewDto;
 import com.teamsking.api.dto.course.*;
 import com.teamsking.api.dto.sys.SysUserDtoMapper;
 import com.teamsking.api.dto.sys.UserDto;
-import com.teamsking.domain.entity.category.Category;
 import com.teamsking.domain.entity.course.*;
-import com.teamsking.domain.entity.school.School;
-import com.teamsking.domain.entity.sys.SysRole;
+import com.teamsking.domain.entity.node.Node;
 import com.teamsking.domain.entity.sys.SysUser;
 import com.teamsking.domain.repository.*;
 import com.teamsking.domain.service.BaseService;
@@ -48,6 +44,10 @@ public class CourseService extends BaseService {
     CourseSectionMapper courseSectionMapper;
     @Autowired
     UserCourseMapper userCourseMapper;
+    @Autowired
+    NodeMapper nodeMapper;
+    @Autowired
+    CourseItemMapper courseItemMapper;
 
     @Autowired
     CourseTeacherService courseTeacherService;
@@ -441,4 +441,46 @@ public class CourseService extends BaseService {
         //查询刚刚创建的章和节的信息
         return courseChapterService.list(id);
     }
+
+    public int saveCourseSectionItems(AddCourseItemDto[] addCourseItemDto, int sectionId) {
+
+        //根据节Id查询节信息
+        CourseSection courseSection = courseSectionMapper.selectByPrimaryKey(sectionId);
+
+        int count = 0;
+        //将课程下的小项内容添加到资源表
+        for (int i=0; i<addCourseItemDto.length; i++){
+            Node node = new Node();
+            node.setDeleteStatus(2);
+            node.setNodeType(addCourseItemDto[i].getNodeType());
+            node.setFilePath(addCourseItemDto[i].getFilePath());
+            node.setTitle(addCourseItemDto[i].getTitle());
+            node.setSuffixName(addCourseItemDto[i].getSuffixName());
+
+            nodeMapper.insertSelective(node);
+
+            CourseItem courseItem = new CourseItem();
+            courseItem.setCourseId(courseSection.getCourseId());
+            courseItem.setChapterId(courseSection.getChapterId());
+            courseItem.setSectionId(courseSection.getId());
+            courseItem.setDeleteStatus(2);
+            courseItem.setRelationId(node.getId());
+            courseItem.setItemName(node.getTitle());
+            courseItem.setDisplayOrder(i + 1);
+            //文档类型
+            if (10 == node.getNodeType() || 20 == node.getNodeType() || 30 == node.getNodeType()
+                    || 40 == node.getNodeType() || 80 == node.getNodeType()){
+                courseItem.setItemType(20);
+            }
+            //视频类型（包括音频、图片）
+            if (50 == node.getNodeType() || 60 == node.getNodeType() || 70 == node.getNodeType()){
+                courseItem.setItemType(10);
+            }
+            count = courseItemMapper.insertSelective(courseItem);
+
+        }
+
+        return count;
+    }
+
 }

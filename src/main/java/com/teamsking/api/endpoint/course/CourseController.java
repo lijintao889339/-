@@ -1,7 +1,7 @@
 package com.teamsking.api.endpoint.course;
 
 
-import com.teamsking.api.dto.category.CategoryListViewDto;
+import com.teamsking.api.dto.course.AddCourseItemDto;
 import com.teamsking.api.dto.course.ChapterSectionDto;
 import com.teamsking.api.dto.course.CourseChapterSectionDto;
 import com.teamsking.api.dto.course.CourseInsertDto;
@@ -134,6 +134,19 @@ public class CourseController extends BaseController {
 
         List<ChapterSectionDto> chapterSectionDtoList = courseService.saveChapterAndSection(courseChapterSections,courseId);
         return Result.success().addData("courseChapterSectionDtos",chapterSectionDtoList);
+    }
+
+
+    @ApiOperation(value = "添加小项内容", produces = "application/json")
+    @ApiImplicitParams( {
+            @ApiImplicitParam(name = "addCourseItemDto", value = "课程小项的内容", required = true, dataType = "AddCourseItemDto")
+    })
+    @PostMapping("/course_items/{sectionId}")
+    public Result addCourse(@RequestBody AddCourseItemDto[] addCourseItemDto,
+                            @PathVariable int sectionId) {
+
+        courseService.saveCourseSectionItems(addCourseItemDto,sectionId);
+        return Result.success();
     }
 
 
