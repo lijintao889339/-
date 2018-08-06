@@ -13,10 +13,10 @@ public class ChapterSectionDto extends Dto {
 
     private Integer id;
 
-    private String chapterName;
+    private String label;
 
     private Boolean isFirstLabel;
 
-    private List<SectionTitleAndOrderDto> sectionDtoList;
+    private List<SectionTitleAndOrderDto> children;
 
 }

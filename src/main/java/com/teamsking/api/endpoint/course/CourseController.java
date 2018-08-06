@@ -82,8 +82,8 @@ public class CourseController extends BaseController {
     @PutMapping("/course")
     public Result modify(@RequestBody CourseInsertDto courseInsertDto){
 
-        courseService.modify(courseInsertDto);
-        return Result.success();
+        Course course = courseService.modify(courseInsertDto);
+        return Result.success().addData("course",course);
     }
 
 

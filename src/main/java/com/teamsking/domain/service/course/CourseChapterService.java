@@ -56,10 +56,10 @@ public class CourseChapterService {
                 if (chapterSectionDto.getId().intValue() == courseSection.getChapterId().intValue()){
                     section.setId(courseSection.getId());
                     section.setDiaplayOrder(courseSection.getDiaplayOrder());
-                    section.setTitle(courseSection.getTitle());
+                    section.setLabel(courseSection.getTitle());
                     section.setIsFirstLabel(false);
                     sectionList.add(section);
-                    chapterSectionDto.setSectionDtoList(sectionList);
+                    chapterSectionDto.setChildren(sectionList);
                 }
             }
         }

@@ -205,7 +205,7 @@ public class OpenService extends BaseService {
      * 根据课程主键删除其下面的班次
      * @param ids
      */
-    public int removeOpenByCouseIds(Integer[] ids) {
+    /*public int removeOpenByCouseIds(Integer[] ids) {
 
         List<Integer> courseIdList = Lists.newArrayList();
         for (Integer courseId: ids) {
@@ -219,7 +219,7 @@ public class OpenService extends BaseService {
         Example.Criteria cri = openExample.createCriteria();
         cri.andIn("courseId",courseIdList);
         return openMapper.updateByExampleSelective(open,openExample);
-    }
+    }*/
 
     /**
      * 根据课程主键修改课程状态

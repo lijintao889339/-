@@ -9,13 +9,9 @@ import lombok.Data;
 @Data
 public class CourseChapterSectionDto extends Dto {
 
-    private Integer id;
-
     private String label;
 
     private Boolean isFirstLabel;
-
-    private Boolean isShow;
 
     private CourseChapterSecondDto[] children;
 

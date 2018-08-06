@@ -11,7 +11,7 @@ public class SectionTitleAndOrderDto extends Dto {
 
     private Integer id;
 
-    private String title;
+    private String label;
 
     private Integer diaplayOrder;
 

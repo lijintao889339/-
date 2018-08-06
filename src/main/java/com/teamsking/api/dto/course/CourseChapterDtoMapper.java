@@ -3,6 +3,7 @@ package com.teamsking.api.dto.course;
 import com.teamsking.domain.entity.course.CourseChapter;
 import java.util.List;
 import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
 import org.mapstruct.factory.Mappers;
 
 @Mapper
@@ -15,6 +16,9 @@ public interface CourseChapterDtoMapper {
     CourseChapterDto entityToDto(CourseChapter courseChapter);
 
     CourseChapter dtoToEntity(CourseChapterDto courseChapterDto);
+
+    @Mapping(source = "chapterName", target = "label")
+    ChapterSectionDto entityToChapterSectionDto(CourseChapter courseChapter);
 
     List<ChapterSectionDto> entityListToChapterSectionDtoList(List<CourseChapter> courseChapterList);
 

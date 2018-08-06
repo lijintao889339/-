@@ -205,14 +205,14 @@ public class CourseService extends BaseService {
     }
 
     /**
-     * 根据主键批量删除课程(及其下面的班次)
+     * 根据主键批量删除课程
      *
      * @param ids
      * @return
      */
     public int romoveCourseByIds(Integer[] ids) {
 
-        openService.removeOpenByCouseIds(ids);
+       // openService.removeOpenByCouseIds(ids);
 
         List<Integer> idList = Lists.newArrayList();
         for (Integer id : ids) {
@@ -343,7 +343,7 @@ public class CourseService extends BaseService {
      * @param courseInsertDto
      * @return
      */
-    public int modify(CourseInsertDto courseInsertDto) {
+    public Course modify(CourseInsertDto courseInsertDto) {
 
         //更新课程信息
         Course course = CourseDtoMapper.INSTANCE.insertDtoToEntity(courseInsertDto);
@@ -402,7 +402,7 @@ public class CourseService extends BaseService {
                 userCourseService.removeUserCourseByCourseId(courseInsertDto.getId());
             }
         }
-        return count;
+        return course;
     }
 
     /**
@@ -413,8 +413,8 @@ public class CourseService extends BaseService {
      */
     public List<ChapterSectionDto> saveChapterAndSection(CourseChapterSectionDto[] courseChapterSections, int id) {
 
-        //添加课程下章的信息
-       for (int i=0; i < courseChapterSections.length; i++){
+        for (int i=0; i < courseChapterSections.length; i++){
+            //创建课程下的章
             CourseChapter courseChapter = new CourseChapter();
             courseChapter.setDeleteStatus(2);
             courseChapter.setChapterStatus(1);
@@ -423,19 +423,19 @@ public class CourseService extends BaseService {
             courseChapter.setChapterName(courseChapterSections[i].getLabel());
             courseChapterMapper.insertSelective(courseChapter);
 
-            //添加课程下的节消息
-            CourseChapterSecondDto[] courseChapterSecondDtos = courseChapterSections[i].getChildren();
-            for (int j=0; j < courseChapterSecondDtos.length; j++){
-                if (courseChapterSections[i].getId() == courseChapterSecondDtos[j].getParentId()){
-                    CourseSection courseSection = new CourseSection();
-                    courseSection.setDeleteStatus(2);
-                    courseSection.setCourseId(id);
-                    courseSection.setChapterId(courseChapter.getId());
-                    courseSection.setDiaplayOrder(j+1);
-                    courseSection.setTitle(courseChapterSecondDtos[j].getLabel());
-                    courseSectionMapper.insertSelective(courseSection);
-                }
+            CourseChapterSecondDto[] chapterSecondDtos = courseChapterSections[i].getChildren();
+            for (int j=0; j < chapterSecondDtos.length; j++){
+                //创建章下的节
+                CourseSection courseSection = new CourseSection();
+                courseSection.setDeleteStatus(2);
+                courseSection.setCourseId(id);
+                courseSection.setChapterId(courseChapter.getId());
+                courseSection.setDiaplayOrder(j+1);
+                courseSection.setTitle(chapterSecondDtos[j].getLabel());
+                courseSectionMapper.insertSelective(courseSection);
+
             }
+
         }
 
         //查询刚刚创建的章和节的信息

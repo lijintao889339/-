@@ -9,13 +9,8 @@ import lombok.Data;
 @Data
 public class CourseChapterSecondDto extends Dto {
 
-    private Integer id;
-
     private String label;
-
-    private Boolean isShow;
 
     private Boolean isFirstLabel;
 
-    private Integer parentId;
 }
