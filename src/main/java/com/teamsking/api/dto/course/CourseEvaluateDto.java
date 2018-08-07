@@ -15,6 +15,8 @@ public class CourseEvaluateDto extends Dto {
 
     private Integer userId;
 
+    private String studentNo;
+
     private Integer courseId;
 
     private String userName;

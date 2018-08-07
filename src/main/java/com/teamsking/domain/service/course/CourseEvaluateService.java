@@ -52,7 +52,12 @@ public class CourseEvaluateService extends BaseService {
     @Autowired
     CategoryService categoryService;
 
-
+    /**
+     * 分页获取课程模板评价
+     * @param pageNo
+     * @param pageSize
+     * @return
+     */
     public Page list(int pageNo, int pageSize){
 
         List<Integer> courseIds = Lists.newArrayList();
@@ -61,48 +66,60 @@ public class CourseEvaluateService extends BaseService {
         List<Integer> categoryIds = Lists.newArrayList();
         List<Integer> parentIds = Lists.newArrayList();
 
+        //分页(对下面第一个查出结果分页)
         PageHelper.startPage(pageNo, pageSize);
 
+        //查询索引的课程模板评价
         CourseEvaluate courseEvaluateEntity = new CourseEvaluate();
         courseEvaluateEntity.setDeleteStatus(2);
         List<CourseEvaluate> courseEvaluateList = courseEvaluateMapper.select(courseEvaluateEntity);
 
+        //遍历集合(获取课程ids,用户ids，二级分类ids)
         for (CourseEvaluate courseEvaluate : courseEvaluateList) {
             courseIds.add(courseEvaluate.getCourseId());
             userIds.add(courseEvaluate.getUserId());
             categoryIds.add(courseEvaluate.getCategoryId());
         }
 
+        //查询用户信息
         List<SysUser> sysUserList = sysUserService.getSysUserByUserIdList(userIds);
 
+        //查询课程模板信息
         List<Course> courseList = courseService.getCourseByCourseIdList(courseIds);
 
+        //查询分类信息(二级分类)
         List<Category> categoryList = categoryService.getCategoryByCategoryId(categoryIds);
         for (Category category:categoryList) {
             parentIds.add(category.getParentId());
         }
-
+        //查询分类信息(一级分类)
         List<Category> categoryParentList = categoryService.getCategoryByCategoryId(parentIds);
 
+        //查询授课老师和课程模板关系(获取老师Ids)
         List<CourseTeacherConnection> courseTeacherConnectionList = courseTeacherConnectionService.getTeacherByCourseIdList(courseIds);
         for (CourseTeacherConnection courseTeacherConnection: courseTeacherConnectionList) {
             teacherIds.add(courseTeacherConnection.getTeacherId());
         }
-
+        //查询授课老师信息
         List<CourseTeacher> courseTeacherList = courseTeacherService.getTeacherByTeacherIdList(teacherIds);
 
+        //数据转换
         List<CourseEvaluateDto> courseEvaluateDtoList = CourseEvaluateDtoMapper.INSTANCE.entityListToDtoList(courseEvaluateList);
 
+        //遍历集合
         for (CourseEvaluateDto courseEvaluate : courseEvaluateDtoList) {
 
+            //遍历集合，获取用户信息
             for (SysUser sysUser:sysUserList) {
                 if (sysUser.getId().intValue() == courseEvaluate.getUserId()){
                     courseEvaluate.setUserName(sysUser.getUserName());
                     courseEvaluate.setAvatar(sysUser.getAvatar());
+                    courseEvaluate.setStudentNo(sysUser.getStudentNo());
                     break;
                 }
             }
 
+            //遍历集合，获取课程模板信息
             for (Course course:courseList) {
                 if (course.getId().intValue() == courseEvaluate.getCourseId()) {
                     courseEvaluate.setCourseName(course.getCourseName());
@@ -110,6 +127,7 @@ public class CourseEvaluateService extends BaseService {
                 }
             }
 
+            //遍历集合，获取课程分类模板信息
             for (Category category : categoryList){
                 if (category.getId().intValue() == courseEvaluate.getCategoryId()){
                    for (Category parentCategory : categoryParentList){
@@ -121,6 +139,7 @@ public class CourseEvaluateService extends BaseService {
                 }
             }
 
+            //遍历集合，获取授课老师信息
             List<String> teacherNameList = Lists.newArrayList();
             for (CourseTeacherConnection courseTeacherConnection : courseTeacherConnectionList) {
                 if (courseTeacherConnection.getCourseId().intValue() == courseEvaluate.getCourseId().intValue()) {
@@ -195,7 +214,7 @@ public class CourseEvaluateService extends BaseService {
 //    }
 
     /**
-     * 根据IDS批量删除课程评价
+     * 根据IDS批量删除课程模板评价
      * @param ids
      * @return
      */
@@ -216,7 +235,7 @@ public class CourseEvaluateService extends BaseService {
     }
 
     /**
-     * 判断是否可以显示课程评价
+     * 判断是否可以显示课程模板评价
      * @param courseEvaluate
      * @return
      */
@@ -229,4 +248,22 @@ public class CourseEvaluateService extends BaseService {
         }
         return courseEvaluateMapper.updateByPrimaryKeySelective(courseEvaluate);
     }
+
+
+    /**
+     * 通过条件搜索课程模板评价
+     * @param pageNo
+     * @param pageSize
+     * @param courseId
+     * @param categoryId
+     * @param teacherId
+     * @return
+     */
+    /*public List listBySearching(int pageNo, int pageSize, Integer courseId, Integer categoryId, Integer teacherId) {
+
+        if (null != courseId){
+
+        }
+
+    }*/
 }

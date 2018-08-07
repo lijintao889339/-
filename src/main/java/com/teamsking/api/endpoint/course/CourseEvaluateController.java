@@ -18,20 +18,19 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @Slf4j
-@Api(tags = "课程评价操作接口")
+@Api(tags = "课程模板评价操作接口")
 public class CourseEvaluateController extends BaseController {
 
     @Autowired
     CourseEvaluateService courseEvaluateService;
 
-    @ApiOperation(value = "课程评价", notes = "可分页", produces = "application/json")
+    @ApiOperation(value = "课程模板评价", notes = "可分页", produces = "application/json")
     @ApiImplicitParams( {
             @ApiImplicitParam(name = "pageNo", paramType = "query", value = "页码", required = true, example = "1"),
             @ApiImplicitParam(name = "pageSize", paramType = "query", value = "页大小", required = true, example = "10")
     })
-    @GetMapping("/course_evaluate")
-    public Result courseEvaluateList(@RequestParam int pageNo,
-                                     @RequestParam int pageSize){
+    @GetMapping("/course_evaluates")
+    public Result courseEvaluateList(@RequestParam int pageNo,@RequestParam int pageSize){
 
         return Result.success().addData("pager", warpPage(courseEvaluateService.list(fixPage(pageNo), fixPage(pageSize))));
 
@@ -48,7 +47,7 @@ public class CourseEvaluateController extends BaseController {
 //
 //    }
 
-    @ApiOperation(value = "批量删除课程评价", produces = "application/json")
+    @ApiOperation(value = "批量删除课程模板评价", produces = "application/json")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "ids",value = "课程评价的主键", required = true)
     })
@@ -59,10 +58,10 @@ public class CourseEvaluateController extends BaseController {
         return Result.success();
     }
 
-    @ApiOperation(value = "是否显示课程评价", produces = "application/json")
+    @ApiOperation(value = "是否显示课程模板评价", produces = "application/json")
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "id",value = "课程评价的主键", required = true, dataType = "int"),
-            @ApiImplicitParam(name = "courseEvaluate", value = "课程评价", required = true, dataType = "CourseEvaluateDto")
+            @ApiImplicitParam(name = "id",value = "课程模板评价的主键", required = true, dataType = "int"),
+            @ApiImplicitParam(name = "courseEvaluate", value = "课程模板评价", required = true, dataType = "CourseEvaluateDto")
     })
     @PutMapping("/course_evaluate/{id}")
     public Result isShowCourseEvaluate(@PathVariable("id") int id,
@@ -74,4 +73,21 @@ public class CourseEvaluateController extends BaseController {
         return Result.success();
     }
 
+
+
+    /*@ApiOperation(value = "通过搜索条件获取课程模板评价", produces = "application/json")
+    @ApiImplicitParams( {
+            @ApiImplicitParam(name = "pageNo", paramType = "query", value = "页码", required = true, example = "1"),
+            @ApiImplicitParam(name = "pageSize", paramType = "query", value = "页大小", required = true, example = "10"),
+            @ApiImplicitParam(name = "courseId", paramType = "query", value = "课程模板主键", dataType = "int"),
+            @ApiImplicitParam(name = "categoryId", paramType = "query", value = "课程分类模板主键", dataType = "int"),
+            @ApiImplicitParam(name = "teacherId", paramType = "query", value = "授课老师主键", dataType = "int")
+    })
+    @GetMapping("/searching_course_evaluates")
+    public Result getCourseEvaluateByCourse(@RequestParam int pageNo, @RequestParam int pageSize, @RequestParam int courseId,
+                                            @RequestParam int categoryId, @RequestParam int teacherId){
+
+        return Result.success().addData("pager", warpPage(courseEvaluateService.listBySearching(fixPage(pageNo), fixPage(pageSize),courseId,categoryId,teacherId)));
+
+    }*/
 }
