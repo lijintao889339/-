@@ -30,7 +30,7 @@ public class CourseCategoryController extends BaseController {
     CourseCategoryService courseCategoryService;
 
 
-    @ApiOperation(value = "一级班课分类列表", notes = "可分页", produces = "application/json")
+    @ApiOperation(value = "一级分类列表", notes = "可分页", produces = "application/json")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "pageNo", value = "页码", required = true, example = "1"),
             @ApiImplicitParam(name = "pageSize", value = "页大小", required = true, example = "10")

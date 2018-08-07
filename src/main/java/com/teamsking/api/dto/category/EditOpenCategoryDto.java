@@ -6,7 +6,7 @@ import lombok.Data;
 import java.util.Date;
 
 @Data
-public class EditCourseCategoryDto extends Dto {
+public class EditOpenCategoryDto extends Dto {
 
     private Integer id;
     private String label;

@@ -99,7 +99,7 @@ public class CategoryService extends BaseService {
     }
 
     /**
-     * 查询分类列表
+     * 查询班课分类列表
      */
     public List<CategoryListViewDto> getAllCategory(){
 

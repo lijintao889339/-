@@ -4,7 +4,7 @@ import com.teamsking.api.dto.Dto;
 import lombok.Data;
 
 @Data
-public class AddCourseCategoryDto extends Dto {
+public class AddOpenCategoryDto extends Dto {
 
     private Integer id;
     private String label;

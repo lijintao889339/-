@@ -55,20 +55,38 @@ public class OpenSectionController extends BaseController {
 
     /**
      * 添加班次-节管理
-     * @param openSection
+     * @param
      * @return
      */
-    @ApiOperation(value = "添加班次-节", consumes = "application/json")
+//    @ApiOperation(value = "添加班次-节", consumes = "application/json")
+//    @ApiImplicitParams({
+//            @ApiImplicitParam(name = "openSection", value = "课程-节", required = true, dataType = "OpenSectionDto")
+//    })
+//    @PostMapping("/open_section")
+//    public Result addOpenSection(@RequestBody OpenSectionDto openSection){
+//
+//        OpenSection openSectionEntity = OpenSectionDtoMapper.INSTANCE.dtoToEntity(openSection);
+//        openSectionService.save(openSectionEntity);
+//        return Result.success();
+//    }
+
+
+
+    @ApiOperation(value = "根据章id添加班次-节", consumes = "application/json")
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "openSection", value = "课程-节", required = true, dataType = "OpenSectionDto")
+            @ApiImplicitParam(name = "openSectionDto", value = "课程-节", required = true, dataType = "OpenSectionDto")
     })
     @PostMapping("/open_section")
-    public Result addOpenSection(@RequestBody OpenSectionDto openSection){
+    public Result saveOpenSection(@RequestBody OpenSectionDto openSectionDto){
 
-        OpenSection openSectionEntity = OpenSectionDtoMapper.INSTANCE.dtoToEntity(openSection);
-        openSectionService.save(openSectionEntity);
+        openSectionService.saveOpenSection(openSectionDto);
+
         return Result.success();
+
     }
+
+
+
 
     /**
      * 删除班次-节管理

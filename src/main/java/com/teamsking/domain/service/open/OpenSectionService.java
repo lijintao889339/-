@@ -1,5 +1,7 @@
 package com.teamsking.domain.service.open;
 
+import com.teamsking.api.dto.open.OpenSectionDto;
+import com.teamsking.api.dto.open.OpenSectionDtoMapper;
 import com.teamsking.domain.entity.open.OpenSection;
 import com.teamsking.domain.repository.OpenSectionMapper;
 import java.util.List;
@@ -72,6 +74,29 @@ public class OpenSectionService {
         ///cri.andIn("chapterId",chapterIds);
         //cri.andEqualTo("deleteStatus",2);
         return openSectionMapper.selectByExample(sectionExample);
+    }
+
+
+    /**
+     * 根据班课章id添加节
+     * @param openSectionDto
+     * @return
+     */
+    public int saveOpenSection(OpenSectionDto openSectionDto){
+
+        //首先查询此章有多少节
+        OpenSection openSection = new OpenSection();
+        openSection.setChapterId(openSectionDto.getChapterId());
+        int count = openSectionMapper.selectCount(openSection);
+
+        //数据转换
+        OpenSection openSectionEntity = OpenSectionDtoMapper.INSTANCE.dtoToEntity(openSectionDto);
+        openSectionEntity.setDeleteStatus(2);
+        openSectionEntity.setDiaplayOrder(count + 1);
+
+        return openSectionMapper.insertSelective(openSectionEntity);
+
+
     }
 
 

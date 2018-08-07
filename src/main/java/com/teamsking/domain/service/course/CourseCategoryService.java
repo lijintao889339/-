@@ -31,7 +31,7 @@ public class CourseCategoryService extends BaseService {
     CourseMapper courseMapper;
 
     /**
-     *获取一级班课分类
+     *获取一级课程分类
      * @param pageNo
      * @param pageSize
      * @return
@@ -62,7 +62,7 @@ public class CourseCategoryService extends BaseService {
     }
 
     /**
-     * 根据一级分类id获取二级班课分类
+     * 根据一级分类id获取二级课程分类
      * @param id
      * @return
      */

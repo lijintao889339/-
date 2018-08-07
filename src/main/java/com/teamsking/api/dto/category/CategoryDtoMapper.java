@@ -18,13 +18,13 @@ public interface CategoryDtoMapper {
 
     Category dtoToEntity(CategoryDto categoryDto);
 
-    Category dtoToEntity1(AddCourseCategoryDto addCourseCategoryDto);
+    Category dtoToEntity1(AddOpenCategoryDto addCourseCategoryDto);
 
     Category dtoToEntity2(AddCategoryNameDto addCategoryNameDto);
 
-    Category dtoToEntity3(EditCourseCategoryDto editCourseCategoryDto);
+    Category dtoToEntity3(EditOpenCategoryDto editCourseCategoryDto);
 
-    List<AddCourseCategoryDto> entityListToDtoList1(List<Category> entityList);
+    List<AddOpenCategoryDto> entityListToDtoList1(List<Category> entityList);
 
     List<CategoryListViewDto> entityToListViewDtoList(List<Category> categories);
 
