@@ -36,5 +36,7 @@ public class OpenListViewDto extends Dto {
 
     //学生数量
     private Integer studentNum;
+    //二维码
+    private String qcCode;
 
 }

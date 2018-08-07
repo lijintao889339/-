@@ -120,7 +120,7 @@ public class OpenService extends BaseService {
     }
 
     /**
-     * 删除班次管理
+     * 根据id删除班次管理
      *
      * @param id
      * @return

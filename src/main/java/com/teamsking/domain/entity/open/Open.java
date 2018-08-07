@@ -263,6 +263,8 @@ public class Open {
     //新添字段(学习类型)
     private Integer studyType;
 
+    private String qcCode;
+
     public Integer getCategoryId() {
         return categoryId;
     }
@@ -925,5 +927,13 @@ public class Open {
 
     public void setKeyWord(String keyWord) {
         this.keyWord = keyWord;
+    }
+
+    public String getQcCode() {
+        return qcCode;
+    }
+
+    public void setQcCode(String qcCode) {
+        this.qcCode = qcCode;
     }
 }
