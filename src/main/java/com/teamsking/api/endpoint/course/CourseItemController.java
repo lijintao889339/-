@@ -26,7 +26,7 @@ import org.springframework.web.bind.annotation.RestController;
 *@author linhao
 */
 @RestController
-@Api(tags = "课程的章节项管理接口")
+@Api(tags = "课程模板的小项项管理接口")
 @Slf4j
 public class CourseItemController extends BaseController {
 
@@ -38,7 +38,7 @@ public class CourseItemController extends BaseController {
      * @param sectionId
      * @return
      */
-    @ApiOperation(value = "课程中章节项的列表", notes = "可分页", produces = "application/json")
+    @ApiOperation(value = "课程模板小项的列表", notes = "可分页", produces = "application/json")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "sectionId", value = "节的主键", required = true, dataType = "int")
     })
@@ -54,7 +54,7 @@ public class CourseItemController extends BaseController {
      * @param courseItemDto
      * @return
      */
-    @ApiOperation(value = "添加课程中的章节项", consumes = "application/json")
+    /*@ApiOperation(value = "添加课程中的章节项", consumes = "application/json")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "courseItem", value = "课程的章节项", required = true, dataType = "CourseItemDto")
     })
@@ -64,16 +64,16 @@ public class CourseItemController extends BaseController {
         CourseItem courseItemEntity = CourseItemDtoMapper.INSTANCE.dtoToEntity(courseItemDto);
         courseItemService.save(courseItemEntity);
         return Result.success();
-    }
+    }*/
 
     /**
      * 删除课程的章节项
      * @param id
      * @return
      */
-    @ApiOperation(value = "删除课程中的章节项", consumes = "application/json")
+    @ApiOperation(value = "删除课程模板中的章节项", consumes = "application/json")
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "id", value = "课程-章节项的主键", required = true, dataType = "int")
+            @ApiImplicitParam(name = "id", value = "课程模板-小项的主键", required = true, dataType = "int")
     })
     @DeleteMapping("/course_item/{id}")
     public Result removeCourseItem(@PathVariable("id") int id){
@@ -84,20 +84,17 @@ public class CourseItemController extends BaseController {
 
     /**
      * 修改课程中的章节项
-     * @param id
      * @param courseItemDto
      * @return
      */
-    @ApiOperation(value = "修改课程中的章节项", consumes = "application/json")
+    @ApiOperation(value = "修改课程模板中的章节项", consumes = "application/json")
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "courseItem", value = "课程的章节项", required = true, dataType = "CourseItemDto")
+            @ApiImplicitParam(name = "courseItem", value = "课程模板的章节项", required = true, dataType = "CourseItemDto")
     })
-    @PutMapping("/course_item/{id}")
-    public Result modifyCourseItem(@PathVariable("id") int id,
-                                   @RequestBody CourseItemDto courseItemDto){
+    @PutMapping("/course_item")
+    public Result modifyCourseItem(@RequestBody CourseItemDto courseItemDto){
 
         CourseItem courseItemEntity = CourseItemDtoMapper.INSTANCE.dtoToEntity(courseItemDto);
-        courseItemEntity.setId(id);
         courseItemService.modify(courseItemEntity);
         return Result.success();
     }

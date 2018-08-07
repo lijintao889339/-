@@ -20,13 +20,13 @@ public class UserCourseService extends BaseService {
 
     /**
      * 删除与某课程有关的课程用户关系数据
-     * @param id
+     * @param courseId
      * @return
      */
-    public int removeUserCourseByCourseId(Integer id) {
+    public int removeUserCourseByCourseId(Integer courseId) {
 
         Example userCourseExample = new Example(UserCourse.class);
-        userCourseExample.and().andEqualTo("id",id);
+        userCourseExample.and().andEqualTo("courseId",courseId);
         return userCourseMapper.deleteByExample(userCourseExample);
 
     }

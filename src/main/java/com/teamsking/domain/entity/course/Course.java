@@ -152,8 +152,6 @@ public class Course {
 
     private Integer categoryId;
 
-    private Integer visibleRange;
-
     private String courseSell;
 
     private String qcCode;
@@ -200,14 +198,6 @@ public class Course {
 
     public void setCategoryId(Integer categoryId) {
         this.categoryId = categoryId;
-    }
-
-    public Integer getVisibleRange() {
-        return visibleRange;
-    }
-
-    public void setVisibleRange(Integer visibleRange) {
-        this.visibleRange = visibleRange;
     }
 
     public String getKeyWord() {

@@ -126,6 +126,10 @@ public class CourseTeacherService {
 
     }
 
+    /**
+     * 获取所有的授课老师名字
+     * @return
+     */
     public List<CourseTeacherNameDto> getTeacherName() {
 
         List<CourseTeacher> courseTeacherList = courseTeacherMapper.selectAll();

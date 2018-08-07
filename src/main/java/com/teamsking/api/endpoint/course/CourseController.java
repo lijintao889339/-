@@ -29,7 +29,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 @RestController
-@Api(tags = "课程操作接口")
+@Api(tags = "课程模板操作接口")
 @Slf4j
 public class CourseController extends BaseController {
 
@@ -41,7 +41,7 @@ public class CourseController extends BaseController {
     @Autowired
     CategoryService categoryService;
 
-    @ApiOperation(value = "课程列表", notes = "可分页", produces = "application/json")
+    @ApiOperation(value = "课程模板列表", notes = "可分页", produces = "application/json")
     @ApiImplicitParams( {
         @ApiImplicitParam(name = "pageNo", paramType = "query", value = "页码", required = true, example = "1"),
         @ApiImplicitParam(name = "pageSize", paramType = "query", value = "页大小", required = true, example = "10")
@@ -53,9 +53,9 @@ public class CourseController extends BaseController {
 
 
 
-    @ApiOperation(value = "添加课程", consumes = "application/json")
+    @ApiOperation(value = "添加课程模板", consumes = "application/json")
     @ApiImplicitParams( {
-        @ApiImplicitParam(name = "courseInsertDto", value = "课程", required = true, dataType = "CourseInsertDto")
+        @ApiImplicitParam(name = "courseInsertDto", value = "课程模板", required = true, dataType = "CourseInsertDto")
     })
     @PostMapping("/course")
     public Result addCourse(@RequestBody CourseInsertDto courseInsertDto) {
@@ -65,9 +65,9 @@ public class CourseController extends BaseController {
     }
 
 
-    @ApiOperation(value = "编辑课程前获取课程", produces = "application/json")
+    @ApiOperation(value = "编辑课程模板前获取课程", produces = "application/json")
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "id", value = "课程的主键", required = true, dataType = "int")
+            @ApiImplicitParam(name = "id", value = "课程模板的主键", required = true, dataType = "int")
     })
     @GetMapping("course/{id}")
     public Result getCourseBeforeEdit(@PathVariable int id){
@@ -75,9 +75,9 @@ public class CourseController extends BaseController {
         return Result.success().addData("course",courseService.getCourseAndTeacherById(id));
     }
 
-    @ApiOperation(value = "编辑课程", produces = "application/json")
+    @ApiOperation(value = "编辑课程模板", produces = "application/json")
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "courseInsertDto", value = "课程及其相关信息", required = true, dataType = "CourseInsertDto")
+            @ApiImplicitParam(name = "courseInsertDto", value = "课程模板及其相关信息", required = true, dataType = "CourseInsertDto")
     })
     @PutMapping("/course")
     public Result modify(@RequestBody CourseInsertDto courseInsertDto){
@@ -87,9 +87,9 @@ public class CourseController extends BaseController {
     }
 
 
-    @ApiOperation(value = "修改课程状态", produces = "application/json")
+    @ApiOperation(value = "修改课程模板状态", produces = "application/json")
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "id", value = "课程的主键", required = true)
+            @ApiImplicitParam(name = "id", value = "课程模板的主键", required = true)
     })
     @PutMapping("/course/{id}/status")
     public Result modifyCourseSatus(@PathVariable("id") int id){
@@ -99,9 +99,9 @@ public class CourseController extends BaseController {
     }
 
 
-    @ApiOperation(value = "批量删除课程",produces = "application/json")
+    @ApiOperation(value = "批量删除课程模板",produces = "application/json")
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "ids",value = "课程的主键", required = true)
+            @ApiImplicitParam(name = "ids",value = "课程模板的主键", required = true)
     })
     @DeleteMapping("/courses/multi_delete")
     public Result removeMultiCourse(@RequestParam Integer[] ids){
@@ -123,10 +123,10 @@ public class CourseController extends BaseController {
     }*/
 
 
-    @ApiOperation(value = "添加课程(添加章和节)", produces = "application/json")
+    @ApiOperation(value = "添加课程模板(添加章和节)", produces = "application/json")
     @ApiImplicitParams( {
-            @ApiImplicitParam(name = "courseChapterSectionList", value = "课程的章和节", required = true),
-            @ApiImplicitParam(name = "courseId", value = "课程的主键", required = true, dataType = "int")
+            @ApiImplicitParam(name = "courseChapterSectionList", value = "课程模板的章和节", required = true),
+            @ApiImplicitParam(name = "courseId", value = "课程模板的主键", required = true, dataType = "int")
     })
     @PostMapping("/course/{courseId}/chapter_sections")
     public Result addCourse(@RequestBody CourseChapterSectionDto[] courseChapterSections,
@@ -139,7 +139,7 @@ public class CourseController extends BaseController {
 
     @ApiOperation(value = "添加小项内容", produces = "application/json")
     @ApiImplicitParams( {
-            @ApiImplicitParam(name = "addCourseItemDto", value = "课程的小项内容", required = true, dataType = "AddCourseItemDto")
+            @ApiImplicitParam(name = "addCourseItemDto", value = "课程模板的小项内容", required = true, dataType = "AddCourseItemDto")
     })
     @PostMapping("/course_section/{sectionId}/items")
     public Result addCourse(@RequestBody AddCourseItemDto[] addCourseItemDto,

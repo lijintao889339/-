@@ -69,7 +69,7 @@ public class CourseService extends BaseService {
     CourseChapterService courseChapterService;
 
     /**
-     * 获取课程列表
+     * 获取课程模板列表
      *
      * @return
      */
@@ -124,7 +124,7 @@ public class CourseService extends BaseService {
     }
 
     /**
-     * 添加课程
+     * 添加课程模板
      *
      * @param courseInsertDto
      * @return
@@ -148,24 +148,20 @@ public class CourseService extends BaseService {
         }
         courseTeacherConnectionMapper.insertConnectionByCourseAndTeachers(courseTeacherConnectionList);
 
-        //判断此课程的可见范围(部分角色为老师的用户还是全部)
-        if (courseInsertDto.getVisibleRange() == 2 && null != courseInsertDto.getUserId()){
-            //将用户Id添加到课程用户关系表
-            Integer[] userIds = courseInsertDto.getUserId();
+        //将用户Id(导学老师)添加到课程用户关系表
+        Integer[] userIds = courseInsertDto.getUserId();
             for (Integer userId : userIds){
                 UserCourse userCourse = new UserCourse();
                 userCourse.setUserId(userId);
                 userCourse.setCourseId(courseEntity.getId());
                 userCourseMapper.insertSelective(userCourse);
-            }
         }
-
         return courseEntity;
     }
 
 
     /**
-     * 通过课程Ids获取课程信息
+     * 通过课程Ids获取课程模板信息
      * @param courseIds
      * @return
      */
@@ -181,17 +177,18 @@ public class CourseService extends BaseService {
 
 
     /**
-     * 根据主键修改课程状态
+     * 根据主键修改课程模板状态
      *
      * @param id
      * @return
      */
     public int modifyCourseSatusById(int id) {
 
-        //根据Id查询改课程的状态
+        //根据Id查询改课程模板的状态
         Course course = courseMapper.selectByPrimaryKey(id);
         String courseStatus = course.getCourseStatus();
 
+        //课程状态: 10 未发布 20 已发布 30 停用
         if ("30".equals(courseStatus)) {
             courseStatus = "10";
 
@@ -205,14 +202,12 @@ public class CourseService extends BaseService {
     }
 
     /**
-     * 根据主键批量删除课程
+     * 根据主键批量删除课程模板
      *
      * @param ids
      * @return
      */
     public int romoveCourseByIds(Integer[] ids) {
-
-       // openService.removeOpenByCouseIds(ids);
 
         List<Integer> idList = Lists.newArrayList();
         for (Integer id : ids) {
@@ -230,7 +225,7 @@ public class CourseService extends BaseService {
     }
 
     /**
-     * 根据课程Ids获取课程列表
+     * 根据课程Ids获取课程模板列表
      * @param courseIds
      * @return
      */
@@ -244,7 +239,7 @@ public class CourseService extends BaseService {
     }*/
 
     /**
-     * 通过一级分类id查询课程列表
+     * 通过一级分类id查询课程模板列表
      * @param id
      * @return
      */
@@ -287,19 +282,19 @@ public class CourseService extends BaseService {
     }*/
 
     /**
-     * 编辑课程前，根据Id获取课程及其相关信息
+     * 编辑课程前，根据Id获取课程模板及其相关信息
      * @param id
      * @return
      */
     public CourseBeforeEditDto getCourseAndTeacherById(int id) {
 
-        //根据Id查询课程信息
+        //根据Id查询课程模板信息
         Course course = courseMapper.selectByPrimaryKey(id);
         //数据转换
         CourseBeforeEditDto courseBeforeEditDto = CourseDtoMapper.INSTANCE.entityToBeforeEditDto(course);
 
         //根据课程Id查询老师信息
-        //1.获取与该课程有关的老师id
+        //1.获取与该课程模板有关的老师id
         List<CourseTeacherConnection> courseTeacherConnectionList = courseTeacherConnectionService.getTeacherByCourseId(id);
         List<Integer> teacherIdList = Lists.newArrayList();
         for (CourseTeacherConnection courseTeacherConnection : courseTeacherConnectionList){
@@ -311,14 +306,14 @@ public class CourseService extends BaseService {
         List<CourseTeacherNameDto> courseTeacherNameDtoList = CourseTeacherDtoMapper.INSTANCE.entityListToNameListDto(courseTeacherList);
         courseBeforeEditDto.setCourseTeacherList(courseTeacherNameDtoList);
 
-        //根据课程Id查询该课程用户权限信息
-        if (course.getVisibleRange() == 2){
+        //根据课程Id查询该课程导学老师信息(用户Id)
+        //if (course.getVisibleRange() == 2){
            //获取所有角色为老师的用户
-           List<SysUser> userCourseList = sysUserService.getUserNameByRoleId();
-           List<UserDto> userDtoListAll = SysUserDtoMapper.INSTANCE.entityDtoToUserDtoList(userCourseList);
-           courseBeforeEditDto.setUserDtoListAll(userDtoListAll);
+          // List<SysUser> userCourseList = sysUserService.getUserNameByRoleId();
+         //  List<UserDto> userDtoListAll = SysUserDtoMapper.INSTANCE.entityDtoToUserDtoList(userCourseList);
+          // courseBeforeEditDto.setUserDtoListAll(userDtoListAll);
 
-           //获取该课程下的角色为老师的用户
+           //获取该课程模板下的角色为导学老师的用户
            //1.获取与该课程有关的用户Id
            UserCourse newUserCourse = new UserCourse();
            newUserCourse.setCourseId(id);
@@ -332,14 +327,14 @@ public class CourseService extends BaseService {
            List<SysUser> sysUserList = sysUserService.getSysUserByUserIdList(userIdList);
            List<UserDto> userDtoListById = SysUserDtoMapper.INSTANCE.entityDtoToUserDtoList(sysUserList);
            courseBeforeEditDto.setUserDtoListById(userDtoListById);
-        }
+        //}
 
 
         return courseBeforeEditDto;
     }
 
     /**
-     * 编辑课程
+     * 编辑课程模板
      * @param courseInsertDto
      * @return
      */
@@ -350,9 +345,9 @@ public class CourseService extends BaseService {
         int count = courseMapper.updateByPrimaryKeySelective(course);
 
         //更新课程和老师关系
-        //1.根据课程id删除之前的老师和课程关系记录
+        //1.根据课程id删除之前的老师和课程模板关系记录
         courseTeacherConnectionService.removeConnectionByCourseId(courseInsertDto.getId());
-        //2.遍历老师Id,添加新的老师与课程的关系
+        //2.遍历老师Id,添加新的老师与课程模板的关系
         Integer[] teacherIds = courseInsertDto.getTeacherId();
         List<CourseTeacherConnection> courseTeacherConnectionList = Lists.newArrayList();
         for (Integer teacherId : teacherIds) {
@@ -365,17 +360,17 @@ public class CourseService extends BaseService {
         courseTeacherConnectionMapper.insertConnectionByCourseAndTeachers(courseTeacherConnectionList);
 
         //更新课程和用户关系(权限设置：部分可见或全部可见)
-        // 先查询之前课程与用户有无关系
-        UserCourse userCourse = new UserCourse();
+        // 先查询之前课程模板与用户有无关系
+        /*UserCourse userCourse = new UserCourse();
         userCourse.setCourseId(courseInsertDto.getId());
-        List<UserCourse> userCourses = userCourseMapper.select(userCourse);
+        List<UserCourse> userCourses = userCourseMapper.select(userCourse);*/
 
-        if (courseInsertDto.getVisibleRange() == 2){
+        /**if (courseInsertDto.getVisibleRange() == 2){
             //如果权限设置修改为部分可见
             Integer[] userIds = courseInsertDto.getUserId();
             List<UserCourse> userCourseList = Lists.newArrayList();
             if (null == userCourses){
-                //如果之前课程与用户无关系，直接添加关系
+                //如果之前课程模板与用户无关系，直接添加关系
                 for (Integer userId : userIds){
                     UserCourse newUserCourse = new UserCourse();
                     newUserCourse.setCourseId(courseInsertDto.getId());
@@ -383,11 +378,11 @@ public class CourseService extends BaseService {
                     userCourseMapper.insertSelective(newUserCourse);
                 }
             }else {
-                //如果之前课程与用户有关系，先删除之前的关系，再添加关系
-                //1.根据课程id删除之前的用户和课程关系记录
+                //如果之前课程模板与用户有关系，先删除之前的关系，再添加关系
+                //1.根据课程模板id删除之前的用户和课程模板关系记录
                 userCourseService.removeUserCourseByCourseId(courseInsertDto.getId());
 
-                //2.添加更新的用户和课程的关系
+                //2.添加更新的用户和课程模板的关系
                 for (Integer userId : userIds){
                     UserCourse newUserCourse = new UserCourse();
                     newUserCourse.setCourseId(courseInsertDto.getId());
@@ -398,15 +393,29 @@ public class CourseService extends BaseService {
         }else {
            //如果权限设置修改为全部可见
             if (null != userCourses){
-                //如果之前课程与用户有关系，删除之前的关系
+                //如果之前课程模板与用户有关系，删除之前的关系
                 userCourseService.removeUserCourseByCourseId(courseInsertDto.getId());
             }
+        }**/
+
+        //更新课程和用户关系(设置导学老师)
+        Integer[] userIds = courseInsertDto.getUserId();
+
+        //1.根据课程模板id删除之前的用户和课程模板关系记录
+        userCourseService.removeUserCourseByCourseId(courseInsertDto.getId());
+
+        //2.添加更新的用户和课程模板的关系
+        for (Integer userId : userIds){
+            UserCourse newUserCourse = new UserCourse();
+            newUserCourse.setCourseId(courseInsertDto.getId());
+            newUserCourse.setUserId(userId);
+            userCourseMapper.insertSelective(newUserCourse);
         }
         return course;
     }
 
     /**
-     * 添加课程下面的章节并且返回
+     * 添加课程模板下面的章节并且返回
      * @param courseChapterSections
      * @param id
      * @return
@@ -442,13 +451,19 @@ public class CourseService extends BaseService {
         return courseChapterService.list(id);
     }
 
+    /**
+     * 根据节Id添加其下的小项内容
+     * @param addCourseItemDto
+     * @param sectionId
+     * @return
+     */
     public int saveCourseSectionItems(AddCourseItemDto[] addCourseItemDto, int sectionId) {
 
         //根据节Id查询节信息
         CourseSection courseSection = courseSectionMapper.selectByPrimaryKey(sectionId);
 
         int count = 0;
-        //将课程下的小项内容添加到资源表
+        //将课程模板下的小项内容添加到资源表
         for (int i=0; i<addCourseItemDto.length; i++){
             Node node = new Node();
             node.setDeleteStatus(2);

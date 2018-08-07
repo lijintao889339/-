@@ -25,7 +25,7 @@ public class CourseItemService {
     NodeMapper nodeMapper;
 
     /**
-     * 获取课程中章节项的列表
+     * 获取课程模板中小项的列表
      * @param sectionId
      * @return
      */
@@ -65,27 +65,29 @@ public class CourseItemService {
     }
 
     /**
-     * 添加课程中的章节项
+     * 添加课程模板中的小项
      * @param courseItem
      * @return
      */
-    public int save(CourseItem courseItem){
+    /*public int save(CourseItem courseItem){
 
         return courseItemMapper.insert(courseItem);
-    }
+    }*/
 
     /**
-     * 删除课程中的章节项
+     * 删除课程模板中的小项
      * @param id
      * @return
      */
     public int remove(int id){
 
+        CourseItem courseItem = new CourseItem();
+        courseItem.setDeleteStatus(1);
         return courseItemMapper.deleteByPrimaryKey(id);
     }
 
     /**
-     * 修改课程中的章节项
+     * 修改课程模板中的小项
      * @param courseItem
      * @return
      */

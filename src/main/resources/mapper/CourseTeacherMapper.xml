@@ -9,7 +9,6 @@
     -->
     <id column="id" jdbcType="INTEGER" property="id" />
     <result column="teacher_name" jdbcType="VARCHAR" property="teacherName" />
-    <result column="user_id" jdbcType="INTEGER" property="userId" />
     <result column="display_order" jdbcType="INTEGER" property="displayOrder" />
     <result column="open_course" jdbcType="INTEGER" property="openCourse" />
     <result column="create_id" jdbcType="INTEGER" property="createId" />

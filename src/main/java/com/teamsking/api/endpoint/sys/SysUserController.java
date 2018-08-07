@@ -102,7 +102,7 @@ public class SysUserController extends BaseController {
     }
 
 
-    @ApiOperation(value = "角色为老师的用户列表", produces = "application/json")
+    @ApiOperation(value = "创建课程模板：获取所有的导学老师列表", produces = "application/json")
     @GetMapping("/role_user")
     public Result getUserName(){
 

@@ -77,12 +77,12 @@ public class SysUserService extends BaseService {
     }
 
     /**
-     * 获取所有角色为老师的用户列表
+     * 获取所有角色为导学老师的用户列表
      * @return
      */
     public List<SysUser> getUserNameByRoleId() {
 
-        //获取角色为老师(角色id为1)的用户idList
+        //获取角色为导学老师(角色id为1)的用户idList
         List<Integer> userIdList = Lists.newArrayList();
         SysUserRole sysUserRole = new SysUserRole();
         sysUserRole.setRoleId(1);

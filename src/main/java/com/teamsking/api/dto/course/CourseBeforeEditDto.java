@@ -22,8 +22,6 @@ public class CourseBeforeEditDto extends Dto {
 
     private Integer courseFree;
 
-    private Integer visibleRange;
-
     private String courseIntroduction;
 
     private Integer categoryId;
@@ -35,8 +33,6 @@ public class CourseBeforeEditDto extends Dto {
     private Integer teacherId;
 
     private Integer userId;
-
-    private List<UserDto> userDtoListAll;
 
     private List<UserDto> userDtoListById;
 }
