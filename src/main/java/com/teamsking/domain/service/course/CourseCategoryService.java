@@ -31,14 +31,14 @@ public class CourseCategoryService extends BaseService {
     CourseMapper courseMapper;
 
     /**
-     *获取一级课程分类
+     *获取一级课程模板分类
      * @param pageNo
      * @param pageSize
      * @return
      */
     public Page list(int pageNo, int pageSize) {
 
-        //获取所有的一级课程分类
+        //获取所有的一级课程模板分类
         CourseCategory courseCategory = new CourseCategory();
         courseCategory.setDeleteStatus(2);
         courseCategory.setParentId(0);
@@ -49,9 +49,9 @@ public class CourseCategoryService extends BaseService {
         //数据转换
         List<CourseCategoryDto> courseCategoryDtoList = CourseCategoryDtoMapper.INSTANCE.entityListToDtoList(courseCategoryList);
 
-        //获取一级分类下的课程数量
+        //获取一级分类下的课程模板数量
         for (CourseCategoryDto courseCategoryDto : courseCategoryDtoList){
-            //查询该一级分类下课程数量
+            //查询该一级分类下课程模板数量
             Course course = new Course();
             course.setFirstCategoryId(courseCategoryDto.getId());
             int count = courseMapper.selectCount(course);
@@ -62,7 +62,7 @@ public class CourseCategoryService extends BaseService {
     }
 
     /**
-     * 根据一级分类id获取二级课程分类
+     * 根据一级分类id获取二级课程模板分类
      * @param id
      * @return
      */
@@ -77,7 +77,7 @@ public class CourseCategoryService extends BaseService {
         List<CourseCategoryDto> courseCategoryDtoList = CourseCategoryDtoMapper.INSTANCE.entityListToDtoList(courseCategoryList);
 
         for (CourseCategoryDto courseCategoryDto : courseCategoryDtoList){
-            //查询该分类下课程数量
+            //查询该分类下课程模板数量
             Course course = new Course();
             course.setCategoryId(courseCategoryDto.getId());
             int count = courseMapper.selectCount(course);
@@ -87,7 +87,7 @@ public class CourseCategoryService extends BaseService {
     }
 
     /**
-     * 新增二级课程分类
+     * 新增二级课程模板分类
      * @param courseCategoryDto
      * @param id
      * @return
@@ -112,7 +112,7 @@ public class CourseCategoryService extends BaseService {
     }
 
     /**
-     * 编辑课程分类
+     * 编辑课程模板分类
      * @param courseCategoryDto
      * @param id
      * @return
@@ -126,7 +126,7 @@ public class CourseCategoryService extends BaseService {
     }
 
     /**
-     * 删除课程分类
+     * 删除课程模板分类
      * @param id
      * @return
      */
@@ -141,6 +141,11 @@ public class CourseCategoryService extends BaseService {
         return courseCategoryMapper.updateByExampleSelective(courseCategory,courseCategoryExample);
     }
 
+    /**
+     * 批量删除课程模板分类
+     * @param ids
+     * @return
+     */
     public int removeCourseCategoryByIds(Integer[] ids) {
 
         List<Integer> idList = Lists.newArrayList();
@@ -160,7 +165,7 @@ public class CourseCategoryService extends BaseService {
     }
 
     /**
-     * 是否显示课程分类
+     * 是否显示课程模板分类
      * @param courseCategoryDto
      * @param id
      */
@@ -181,7 +186,7 @@ public class CourseCategoryService extends BaseService {
     }
 
     /**
-     * 获取所有一级分类
+     * 获取所有一级课程模板分类
      * @return
      */
     public List<CourseCategory> getAllFirstCategory() {
@@ -194,7 +199,7 @@ public class CourseCategoryService extends BaseService {
     }
 
     /**
-     * 获取一级分类下的所有二级分类
+     * 获取一级课程模板分类下的所有二级分类
      * @param id
      * @return
      */
@@ -206,4 +211,24 @@ public class CourseCategoryService extends BaseService {
         return courseCategoryMapper.select(courseCategory);
 
     }
+
+    /**
+     * 创建一级课程模板分类
+     * @param courseCategory
+     * @return
+     */
+    public int saveFirstCourseCategory(CourseCategory courseCategory) {
+
+        CourseCategory newCourseCategory = new CourseCategory();
+        newCourseCategory.setDeleteStatus(2);
+        newCourseCategory.setParentId(0);
+        //先查询有几个一级分类
+        int count = courseCategoryMapper.selectCount(newCourseCategory);
+
+        courseCategory.setDeleteStatus(2);
+        courseCategory.setIsFirstLabel(true);
+        courseCategory.setDisplayOrder(count + 1);
+        return courseCategoryMapper.insertSelective(courseCategory);
+    }
+
 }

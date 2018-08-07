@@ -1,5 +1,6 @@
 package com.teamsking.api.endpoint.course;
 
+import com.teamsking.api.dto.course.AddFirstCourseCategoryDto;
 import com.teamsking.api.dto.course.CourseCategoryDto;
 import com.teamsking.api.dto.course.CourseCategoryDtoMapper;
 import com.teamsking.api.dto.course.CourseCategoryNameDto;
@@ -22,7 +23,7 @@ import java.util.List;
 */
 
 @RestController
-@Api(tags = "课程分类接口")
+@Api(tags = "课程模板分类接口")
 @Slf4j
 public class CourseCategoryController extends BaseController {
 
@@ -30,7 +31,7 @@ public class CourseCategoryController extends BaseController {
     CourseCategoryService courseCategoryService;
 
 
-    @ApiOperation(value = "一级分类列表", notes = "可分页", produces = "application/json")
+    @ApiOperation(value = "一级课程模板分类列表", notes = "可分页", produces = "application/json")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "pageNo", value = "页码", required = true, example = "1"),
             @ApiImplicitParam(name = "pageSize", value = "页大小", required = true, example = "10")
@@ -42,9 +43,9 @@ public class CourseCategoryController extends BaseController {
     }
 
 
-    @ApiOperation(value = "获取二级分类", produces = "application/json")
+    @ApiOperation(value = "获取二级课程模板分类", produces = "application/json")
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "id", value = "一级班课分类主键", required = true, dataType = "int")
+            @ApiImplicitParam(name = "id", value = "一级课程模板分类主键", required = true, dataType = "int")
     })
     @GetMapping("/course_category/{id}")
     public Result getSecondCourseCategory(@PathVariable int id){
@@ -54,10 +55,10 @@ public class CourseCategoryController extends BaseController {
     }
 
 
-    @ApiOperation(value = "新增二级课程分类", consumes = "application/json")
+    @ApiOperation(value = "新增二级课程模板分类", consumes = "application/json")
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "courseCategoryDto", value = "二级课程分类信息", required = true, dataType = "CourseCategoryDto"),
-            @ApiImplicitParam(name = "id", value = "一级课程分类主键", required = true, dataType = "int")
+            @ApiImplicitParam(name = "courseCategoryDto", value = "二级课程模板分类信息", required = true, dataType = "CourseCategoryDto"),
+            @ApiImplicitParam(name = "id", value = "一级课程模板分类主键", required = true, dataType = "int")
     })
     @PostMapping("/second_course_category/{id}")
     public Result addSecondCourseCategory(@RequestBody CourseCategoryDto courseCategoryDto,
@@ -68,10 +69,10 @@ public class CourseCategoryController extends BaseController {
     }
 
 
-    @ApiOperation(value = "编辑课程分类", consumes = "application/json")
+    @ApiOperation(value = "编辑课程模板分类", consumes = "application/json")
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "courseCategoryDto", value = "二级课程分类信息", required = true, dataType = "CourseCategoryDto"),
-            @ApiImplicitParam(name = "id", value = "一级课程分类主键", required = true, dataType = "int")
+            @ApiImplicitParam(name = "courseCategoryDto", value = "二级课程模板分类信息", required = true, dataType = "CourseCategoryDto"),
+            @ApiImplicitParam(name = "id", value = "一级课程模板分类主键", required = true, dataType = "int")
     })
     @PutMapping("/course_category/{id}")
     public Result modify(@RequestBody CourseCategoryDto courseCategoryDto,
@@ -82,9 +83,9 @@ public class CourseCategoryController extends BaseController {
     }
 
 
-    @ApiOperation(value = "批量删除课程分类", consumes = "application/json")
+    @ApiOperation(value = "批量删除课程模板分类", consumes = "application/json")
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "ids", value = "一级课程分类主键", required = true, dataType = "Integer[]")
+            @ApiImplicitParam(name = "ids", value = "一级课程模板分类主键", required = true, dataType = "Integer[]")
     })
     @DeleteMapping("/course_category/multi_delete")
     public Result removeMultiCourseCategory(@RequestParam Integer[] ids){
@@ -94,9 +95,9 @@ public class CourseCategoryController extends BaseController {
     }
 
 
-    @ApiOperation(value = "删除课程分类", consumes = "application/json")
+    @ApiOperation(value = "删除课程模板分类", consumes = "application/json")
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "id", value = "一级课程分类主键", required = true, dataType = "int")
+            @ApiImplicitParam(name = "id", value = "一级课程模板分类主键", required = true, dataType = "int")
     })
     @DeleteMapping("/course_category/{id}")
     public Result remove(@PathVariable int id){
@@ -106,10 +107,10 @@ public class CourseCategoryController extends BaseController {
     }
 
 
-    @ApiOperation(value = "是否显示课程分类", produces = "application/json")
+    @ApiOperation(value = "是否显示课程模板分类", produces = "application/json")
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "id",value = "课程评价的主键", required = true, dataType = "int"),
-            @ApiImplicitParam(name = "courseCategoryDto", value = "课程评价", required = true, dataType = "CourseCategoryDto")
+            @ApiImplicitParam(name = "id",value = "课程模板分类的主键", required = true, dataType = "int"),
+            @ApiImplicitParam(name = "courseCategoryDto", value = "课程模板分类", required = true, dataType = "CourseCategoryDto")
     })
     @PutMapping("/course_category/is_show/{id}")
     public Result isShowCourseCategory(@PathVariable("id") int id,
@@ -120,7 +121,7 @@ public class CourseCategoryController extends BaseController {
     }
 
 
-    @ApiOperation(value = "一级分类列表", consumes = "application/json")
+    @ApiOperation(value = "创建课程模板: 一级分类列表", consumes = "application/json")
     @GetMapping("/first_course_categories")
     public Result getFirstCategory(){
 
@@ -130,7 +131,7 @@ public class CourseCategoryController extends BaseController {
     }
 
 
-    @ApiOperation(value = "二级分类列表", consumes = "application/json")
+    @ApiOperation(value = "创建课程模板: 二级分类列表", consumes = "application/json")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "id", value = "分类的主键", required = true, dataType = "int")
     })
@@ -140,6 +141,19 @@ public class CourseCategoryController extends BaseController {
         List<CourseCategory> courseCategoryList = courseCategoryService.getSecondCategoryById(id);
         List<CourseCategoryNameDto> courseCategoryNameDtoList = CourseCategoryDtoMapper.INSTANCE.entityListToNameDtoList(courseCategoryList);
         return Result.success().addData("courseCategoryNameDtoList",courseCategoryNameDtoList);
+    }
+
+    @ApiOperation(value = "创建一级课程模板分类接口", consumes= "application/json")
+    @ApiImplicitParams( {
+            @ApiImplicitParam(name = "addCourseCategory", value = "一级课程模板分类", required = true, dataType = "AddFirstCourseCategoryDto")
+    })
+    @PostMapping("/course_category")
+    public Result addCategory(@RequestBody AddFirstCourseCategoryDto addCourseCategory){
+
+        CourseCategory courseCategory = CourseCategoryDtoMapper.INSTANCE.addDtoToEntity(addCourseCategory);
+        courseCategoryService.saveFirstCourseCategory(courseCategory);
+        return Result.success();
+
     }
 
 }

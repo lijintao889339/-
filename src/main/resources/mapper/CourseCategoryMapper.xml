@@ -18,5 +18,8 @@
     <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
     <result column="update_id" jdbcType="INTEGER" property="updateId" />
     <result column="delete_status" jdbcType="INTEGER" property="deleteStatus" />
+    <result column="key_word" jdbcType="VARCHAR" property="keyWord" />
+    <result column="description" jdbcType="VARCHAR" property="description" />
+    <result column="image_url" jdbcType="VARCHAR" property="imageUrl" />
   </resultMap>
 </mapper>
