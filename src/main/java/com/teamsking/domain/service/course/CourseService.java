@@ -21,9 +21,11 @@ import com.teamsking.domain.service.open.OpenTeacherService;
 import com.teamsking.domain.service.school.SchoolService;
 import com.teamsking.domain.service.sys.SysUserService;
 import com.teamsking.domain.service.sys.UserCourseService;
+import com.teamsking.util.Result;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import tk.mybatis.mapper.entity.Example;
 
 @Service
@@ -121,6 +123,76 @@ public class CourseService extends BaseService {
             }
         }
         return convertPage((Page) courseList, courseListViewDtoList);
+    }
+
+
+    /**
+     * 通过课程名称分页获取课程列表
+     * @param pageNo
+     * @param pageSize
+     * @param courseName
+     * @return
+     */
+    public Page listByReaching(int pageNo, int pageSize, String courseName) {
+
+        List<Integer> courseIds = Lists.newArrayList();
+        List<Integer> teacherIds = Lists.newArrayList();
+
+        //分页操作
+        PageHelper.startPage(pageNo, pageSize);
+
+        //根据课程名称模糊查询课程信息
+        Example courseExample = new Example(Course.class);
+        Example.Criteria cri = courseExample.createCriteria();
+        courseExample.and().andEqualTo("deleteStatus",2);
+        courseExample.and().andLike("courseName","%" + courseName + "%");
+        List<Course> courseList = courseMapper.selectByExample(courseExample);
+
+        if (0 != courseList.size()){
+            for (Course course : courseList) {
+                courseIds.add(course.getId());
+            }
+
+            List<CourseTeacherConnection> courseTeacherConnectionList = courseTeacherConnectionService.getTeacherByCourseIdList(courseIds);
+            for (CourseTeacherConnection courseTeacherConnection : courseTeacherConnectionList) {
+                teacherIds.add(courseTeacherConnection.getTeacherId());
+            }
+
+            List<CourseTeacher> courseTeacherList = courseTeacherService.getTeacherByTeacherIdList(teacherIds);
+            List<Map<String, Object>> openNumList = openMapper.countByCourseIdsGroupByCourseId(courseIds);
+
+            List<CourseListViewDto> courseListViewDtoList = CourseDtoMapper.INSTANCE.entityToListViewDtoList(courseList);
+
+            for (CourseListViewDto course : courseListViewDtoList) {
+
+                List<String> teacherNameList = Lists.newArrayList();
+                for (CourseTeacherConnection courseTeacherConnection : courseTeacherConnectionList)
+                    if (courseTeacherConnection.getCourseId().intValue() == course.getId().intValue()) {
+                        for (CourseTeacher courseTeacher : courseTeacherList) {
+                            if (courseTeacher.getId().intValue() == courseTeacherConnection.getTeacherId()) {
+                                teacherNameList.add(courseTeacher.getTeacherName());
+                                course.setTeacherName(teacherNameList);
+                                break;
+                            }
+                        }
+                    }
+
+                for (Map<String, Object> openNum : openNumList) {
+                    int courseId = (Integer) openNum.get("courseId");
+                    if (courseId == course.getId()) {
+                        course.setOpenNum(((Long) openNum.get("count")).intValue());
+                        break;
+                    }
+
+                }
+
+            }
+            return convertPage((Page) courseList, courseListViewDtoList);
+        }else {
+            Page p =null;
+            return p;
+        }
+
     }
 
     /**
@@ -497,5 +569,6 @@ public class CourseService extends BaseService {
 
         return count;
     }
+
 
 }

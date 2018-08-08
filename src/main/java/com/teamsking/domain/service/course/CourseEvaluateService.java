@@ -69,7 +69,7 @@ public class CourseEvaluateService extends BaseService {
         //分页(对下面第一个查出结果分页)
         PageHelper.startPage(pageNo, pageSize);
 
-        //查询索引的课程模板评价
+        //查询所有的课程模板评价
         CourseEvaluate courseEvaluateEntity = new CourseEvaluate();
         courseEvaluateEntity.setDeleteStatus(2);
         List<CourseEvaluate> courseEvaluateList = courseEvaluateMapper.select(courseEvaluateEntity);
@@ -261,7 +261,25 @@ public class CourseEvaluateService extends BaseService {
      */
     /*public List listBySearching(int pageNo, int pageSize, Integer courseId, Integer categoryId, Integer teacherId) {
 
-        if (null != courseId){
+        if (null != courseId && null != categoryId && null != teacherId){
+            //根据老师Id查询课程模板与老师的关系数据
+            CourseTeacherConnection connection = new CourseTeacherConnection();
+            connection.setTeacherId(teacherId);
+            List<CourseTeacherConnection> courseTeacherConnectionList = courseTeacherConnectionMapper.select(connection);
+
+            List<Integer> courseIds = Lists.newArrayList();
+            for (CourseTeacherConnection newConnection : courseTeacherConnectionList){
+                courseIds.add(newConnection.getCourseId());
+            }
+
+            //查询搜索的课程模板评价
+            CourseEvaluate courseEvaluateEntity = new CourseEvaluate();
+            courseEvaluateEntity.setDeleteStatus(2);
+            courseEvaluateEntity.setCourseId(courseId);
+            courseEvaluateEntity.setCategoryId(categoryId);
+            courseEvaluateEntity.setUserId();
+            List<CourseEvaluate> courseEvaluateList = courseEvaluateMapper.select(courseEvaluateEntity);
+        }else {
 
         }
 

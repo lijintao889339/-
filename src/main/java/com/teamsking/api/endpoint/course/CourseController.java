@@ -150,4 +150,26 @@ public class CourseController extends BaseController {
     }
 
 
+
+    @ApiOperation(value = "搜索课程模板列表", notes = "可分页", produces = "application/json")
+    @ApiImplicitParams( {
+            @ApiImplicitParam(name = "pageNo", paramType = "query", value = "页码", required = true, example = "1"),
+            @ApiImplicitParam(name = "pageSize", paramType = "query", value = "页大小", required = true, example = "10"),
+            @ApiImplicitParam(name = "courseName", value = "课程模板名称", required = true, example = "10", dataType = "String")
+    })
+    @GetMapping("/reaching_courses")
+    public Result courseListByReaching(@RequestParam int pageNo, @RequestParam int pageSize, @RequestParam String courseName) {
+
+        com.github.pagehelper.Page page = courseService.listByReaching(fixPage(pageNo), fixPage(pageSize),courseName);
+
+        if (null == page){
+            return Result.exception("查询无果");
+        }else {
+            return Result.success().addData("pager", warpPage(page));
+        }
+
+    }
+
+
+
 }
