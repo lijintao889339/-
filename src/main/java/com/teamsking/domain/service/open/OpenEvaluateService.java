@@ -38,6 +38,8 @@ public class OpenEvaluateService extends BaseService {
     SysUserMapper sysUserMapper;
     @Autowired
     CategoryMapper categoryMapper;
+    @Autowired
+    OpenTeacherConnectionMapper openTeacherConnectionMapper;
 
     @Autowired
     SysUserService sysUserService;
@@ -87,12 +89,6 @@ public class OpenEvaluateService extends BaseService {
         //查询分类信息(一级分类)
         List<Category> categoryList = categoryService.getCategoryByCategoryId(categoryIds);
 
-        /*for (Category category:categoryList) {
-            parentIds.add(category.getParentId());
-        }
-        //查询分类信息(一级分类)
-        List<Category> categoryParentList = categoryService.getCategoryByCategoryId(parentIds);*/
-
         //查询授课老师和班课关系(获取老师Ids)
         List<OpenTeacherConnection> connectionList = openTeacherConnectionService.getTeacherByOpenIds(openIds);
         for (OpenTeacherConnection connection: connectionList) {
@@ -101,12 +97,6 @@ public class OpenEvaluateService extends BaseService {
         //查询授课老师信息
         List<OpenTeacher> openTeacherList = openTeacherService.getTeacherByTeacherIdList(teacherIds);
 
-        /*List<CourseTeacherConnection> courseTeacherConnectionList = courseTeacherConnectionService.getTeacherByCourseIdList(courseIds);
-        for (CourseTeacherConnection courseTeacherConnection: courseTeacherConnectionList) {
-            teacherIds.add(courseTeacherConnection.getTeacherId());
-        }
-        //查询授课老师信息
-        List<CourseTeacher> courseTeacherList = courseTeacherService.getTeacherByTeacherIdList(teacherIds);*/
 
         //数据转换
         List<OpenEvaluateDto> openEvaluateDtos = OpenEvaluateDtoMapper.INSTANCE.entityListToDtoList(openEvaluateList);
@@ -135,12 +125,8 @@ public class OpenEvaluateService extends BaseService {
             //遍历集合，获取课程分类模板信息
             for (Category category : categoryList){
                 if (category.getId().intValue() == openEvaluate.getFirstCategoryId()){
-                   //for (Category parentCategory : categoryParentList){
-                      // if (parentCategory.getId().intValue() == category.getParentId()){
                     openEvaluate.setCategoryName(category.getLabel());
-                           break;
-                      // }
-                   //}
+                    break;
                 }
             }
 
@@ -259,36 +245,127 @@ public class OpenEvaluateService extends BaseService {
      * 通过条件搜索课程模板评价
      * @param pageNo
      * @param pageSize
-     * @param courseId
      * @param categoryId
      * @param teacherId
      * @return
      */
-    /*public List listBySearching(int pageNo, int pageSize, Integer courseId, Integer categoryId, Integer teacherId) {
+    public Page listBySearching(int pageNo, int pageSize, Integer categoryId, Integer teacherId) {
 
-        if (null != courseId && null != categoryId && null != teacherId){
-            //根据老师Id查询课程模板与老师的关系数据
-            CourseTeacherConnection connection = new CourseTeacherConnection();
+        List<Integer> openIds = Lists.newArrayList();
+        List<Integer> userIds = Lists.newArrayList();
+        List<Integer> teacherIds = Lists.newArrayList();
+        List<Integer> categoryIds = Lists.newArrayList();
+
+
+        //根据条件查询班课评价列表
+        Example evaluateExample = new Example(OpenEvaluate.class);
+        Example.Criteria cri = evaluateExample.createCriteria();
+        cri.andEqualTo("deleteStatus",2);
+        //根据班课分类搜索
+        if (0 != categoryId){
+            cri.andEqualTo("firstCategoryId",categoryId);
+        }
+        //根据授课老师搜索
+        if (0 != teacherId){
+            //根据老师Id查询班课与老师的关系数据
+            OpenTeacherConnection connection = new OpenTeacherConnection();
             connection.setTeacherId(teacherId);
-            List<CourseTeacherConnection> courseTeacherConnectionList = courseTeacherConnectionMapper.select(connection);
+            List<OpenTeacherConnection> connectionList = openTeacherConnectionMapper.select(connection);
 
-            List<Integer> courseIds = Lists.newArrayList();
-            for (CourseTeacherConnection newConnection : courseTeacherConnectionList){
-                courseIds.add(newConnection.getCourseId());
+            //遍历集合，获取openIdList
+            List<Integer> openIdList = Lists.newArrayList();
+            for (OpenTeacherConnection openTeacherConnection : connectionList){
+                openIdList.add(openTeacherConnection.getOpenId());
             }
 
-            //查询搜索的课程模板评价
-            *//*OpenEvaluate courseEvaluateEntity = new OpenEvaluate();
-            courseEvaluateEntity.setDeleteStatus(2);
-            courseEvaluateEntity.setCourseId(courseId);
-            courseEvaluateEntity.setCategoryId(categoryId);
-            List<OpenEvaluate> courseEvaluateList = courseEvaluateMapper.select(courseEvaluateEntity);*//*
-
-            Example evaluate
-
-        }else {
-
+            //给数据库设置课程ids
+            cri.andIn("openId",openIdList);
         }
 
-    }*/
+        //分页(对下面第一个查出结果分页)
+        PageHelper.startPage(pageNo, pageSize);
+
+        List<OpenEvaluate> openEvaluateList = openEvaluateMapper.selectByExample(evaluateExample);
+
+        if (0 != openEvaluateList.size()){
+
+            //遍历集合(获取班课ids,用户ids，一级分类ids)
+            for (OpenEvaluate openEvaluate : openEvaluateList) {
+                openIds.add(openEvaluate.getOpenId());
+                userIds.add(openEvaluate.getUserId());
+                categoryIds.add(openEvaluate.getFirstCategoryId());
+            }
+
+            //查询用户信息
+            List<SysUser> sysUserList = sysUserService.getSysUserByUserIdList(userIds);
+
+            //查询班课信息
+            List<Open> openList = openService.getOpenByOpenIds(openIds);
+
+            //查询分类信息(一级分类)
+            List<Category> categoryList = categoryService.getCategoryByCategoryId(categoryIds);
+
+            //查询授课老师和班课关系(获取老师Ids)
+            List<OpenTeacherConnection> connectionList = openTeacherConnectionService.getTeacherByOpenIds(openIds);
+            for (OpenTeacherConnection connection: connectionList) {
+                teacherIds.add(connection.getTeacherId());
+            }
+            //查询授课老师信息
+            List<OpenTeacher> openTeacherList = openTeacherService.getTeacherByTeacherIdList(teacherIds);
+
+
+            //数据转换
+            List<OpenEvaluateDto> openEvaluateDtos = OpenEvaluateDtoMapper.INSTANCE.entityListToDtoList(openEvaluateList);
+
+            //遍历集合
+            for (OpenEvaluateDto openEvaluate : openEvaluateDtos) {
+
+                //遍历集合，获取用户信息
+                for (SysUser sysUser:sysUserList) {
+                    if (sysUser.getId().intValue() == openEvaluate.getUserId()){
+                        openEvaluate.setUserName(sysUser.getUserName());
+                        openEvaluate.setAvatar(sysUser.getAvatar());
+                        openEvaluate.setStudentNo(sysUser.getStudentNo());
+                        break;
+                    }
+                }
+
+                //遍历集合，获取班课信息
+                for (Open open:openList) {
+                    if (open.getId().intValue() == openEvaluate.getOpenId()) {
+                        openEvaluate.setOpenName(open.getOpenName());
+                        break;
+                    }
+                }
+
+                //遍历集合，获取课程分类模板信息
+                for (Category category : categoryList){
+                    if (category.getId().intValue() == openEvaluate.getFirstCategoryId()){
+                        openEvaluate.setCategoryName(category.getLabel());
+                        break;
+                    }
+                }
+
+                //遍历集合，获取授课老师信息
+                List<String> teacherNameList = Lists.newArrayList();
+                for (OpenTeacherConnection connection : connectionList) {
+                    if (connection.getOpenId().intValue() == openEvaluate.getOpenId().intValue()) {
+                        for (OpenTeacher openTeacher : openTeacherList) {
+                            if (openTeacher.getId().intValue() == connection.getTeacherId()) {
+                                teacherNameList.add(openTeacher.getTeacherName());
+                                openEvaluate.setTeacherName(teacherNameList);
+                                break;
+                            }
+                        }
+                    }
+                }
+
+            }
+            return convertPage((Page)openEvaluateList,openEvaluateDtos);
+
+        }else {
+          Page page = null;
+          return page;
+        }
+    }
 }

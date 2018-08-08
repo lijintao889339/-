@@ -1,6 +1,7 @@
 package com.teamsking.api.endpoint.course;
 
 
+import com.github.pagehelper.Page;
 import com.teamsking.api.dto.course.AddCourseItemDto;
 import com.teamsking.api.dto.course.ChapterSectionDto;
 import com.teamsking.api.dto.course.CourseChapterSectionDto;
@@ -160,7 +161,7 @@ public class CourseController extends BaseController {
     @GetMapping("/reaching_courses")
     public Result courseListByReaching(@RequestParam int pageNo, @RequestParam int pageSize, @RequestParam String courseName) {
 
-        com.github.pagehelper.Page page = courseService.listByReaching(fixPage(pageNo), fixPage(pageSize),courseName);
+        Page page = courseService.listByReaching(fixPage(pageNo), fixPage(pageSize),courseName);
 
         if (null == page){
             return Result.exception("查询无果");

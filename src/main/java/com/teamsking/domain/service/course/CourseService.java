@@ -189,8 +189,8 @@ public class CourseService extends BaseService {
             }
             return convertPage((Page) courseList, courseListViewDtoList);
         }else {
-            Page p =null;
-            return p;
+            Page page =null;
+            return page;
         }
 
     }

@@ -1,5 +1,6 @@
 package com.teamsking.api.endpoint.open;
 
+import com.github.pagehelper.Page;
 import com.teamsking.api.dto.open.OpenEvaluateDto;
 import com.teamsking.api.dto.open.OpenEvaluateDtoMapper;
 import com.teamsking.api.endpoint.BaseController;
@@ -74,19 +75,23 @@ public class OpenEvaluateController extends BaseController {
 
 
 
-    /*@ApiOperation(value = "通过搜索条件获取课程模板评价", produces = "application/json")
+    @ApiOperation(value = "通过搜索条件获取班课评价", produces = "application/json")
     @ApiImplicitParams( {
             @ApiImplicitParam(name = "pageNo", paramType = "query", value = "页码", required = true, example = "1"),
             @ApiImplicitParam(name = "pageSize", paramType = "query", value = "页大小", required = true, example = "10"),
-            @ApiImplicitParam(name = "courseId", paramType = "query", value = "课程模板主键", dataType = "int"),
-            @ApiImplicitParam(name = "categoryId", paramType = "query", value = "课程分类模板主键", dataType = "int"),
-            @ApiImplicitParam(name = "teacherId", paramType = "query", value = "授课老师主键", dataType = "int")
+            @ApiImplicitParam(name = "categoryId", paramType = "query", value = "课程分类模板主键", dataType = "Integer"),
+            @ApiImplicitParam(name = "teacherId", paramType = "query", value = "授课老师主键", dataType = "Integer")
     })
-    @GetMapping("/searching_course_evaluates")
-    public Result getCourseEvaluateByCourse(@RequestParam int pageNo, @RequestParam int pageSize, @RequestParam int courseId,
-                                            @RequestParam int categoryId, @RequestParam int teacherId){
+    @GetMapping("/searching_open_evaluates")
+    public Result getCourseEvaluateByCourse(@RequestParam int pageNo, @RequestParam int pageSize,
+                                            @RequestParam Integer categoryId, @RequestParam Integer teacherId){
 
-        return Result.success().addData("pager", warpPage(courseEvaluateService.listBySearching(fixPage(pageNo), fixPage(pageSize),courseId,categoryId,teacherId)));
+        Page page = openEvaluateService.listBySearching(fixPage(pageNo), fixPage(pageSize),categoryId,teacherId);
 
-    }*/
+        if (null == page){
+            return Result.exception("查询无果");
+        }else {
+            return Result.success().addData("pager", warpPage(page));
+        }
+    }
 }
