@@ -100,7 +100,7 @@ public class SysUserService extends BaseService {
 
 
     /**
-     * 查询所有角色为班课老师的列表
+     * 查询所有角色为(班课)教学老师的列表
      * @return
      */
     public List<SysUser> getOpenUserNameByRoleId() {

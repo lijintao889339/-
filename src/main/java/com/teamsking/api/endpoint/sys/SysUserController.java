@@ -111,4 +111,15 @@ public class SysUserController extends BaseController {
     }
 
 
+
+    @ApiOperation(value = "创建班课：获取所有的教学老师列表", produces = "application/json")
+    @GetMapping("/open_role_user")
+    public Result getOpenUserName(){
+
+        List<UserDto> userDtoList = SysUserDtoMapper.INSTANCE.entityDtoToUserDtoList(sysUserService.getOpenUserNameByRoleId());
+        return Result.success().addData("userDtoList",userDtoList);
+
+    }
+
+
 }
