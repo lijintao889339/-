@@ -98,4 +98,28 @@ public class SysUserService extends BaseService {
         return sysUserMapper.selectByExample(userExample);
     }
 
+
+    /**
+     * 查询所有角色为班课老师的列表
+     * @return
+     */
+    public List<SysUser> getOpenUserNameByRoleId() {
+
+        //获取角色为老师(角色id为1)的用户idList
+        List<Integer> userIdList = Lists.newArrayList();
+        SysUserRole sysUserRole = new SysUserRole();
+        sysUserRole.setRoleId(2);
+        List<SysUserRole> sysUserRoleList = sysUserRoleMapper.select(sysUserRole);
+        for (SysUserRole userRole : sysUserRoleList){
+            userIdList.add(userRole.getUserId());
+        }
+
+        //获取userIdList对应的用户姓名
+        Example userExample = new Example(SysUser.class);
+        Example.Criteria cri = userExample.createCriteria();
+        cri.andIn("id",userIdList);
+        return sysUserMapper.selectByExample(userExample);
+    }
+
+
 }

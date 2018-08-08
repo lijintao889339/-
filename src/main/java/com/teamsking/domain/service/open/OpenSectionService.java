@@ -71,7 +71,7 @@ public class OpenSectionService {
         sectionExample.and().andEqualTo("deleteStatus",2);
         sectionExample.and().andIn("chapterId",chapterIds);
         //Example.Criteria cri = sectionExample.createCriteria();
-        ///cri.andIn("chapterId",chapterIds);
+        //cri.andIn("chapterId",chapterIds);
         //cri.andEqualTo("deleteStatus",2);
         return openSectionMapper.selectByExample(sectionExample);
     }

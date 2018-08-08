@@ -125,4 +125,20 @@ public class OpenTeacherService {
         return openTeacherMapper.selectByExample(teacherExample);
 
     }
+
+
+    /**
+     * 通过老师id列表获取老师信息
+     * @param teacherIds
+     * @return
+     */
+    public List<OpenTeacher> getTeacherByTeacherIdList(List<Integer> teacherIds) {
+
+        Example teacherExample = new Example(OpenTeacher.class);
+        teacherExample.and().andIn("id",teacherIds);
+        //Example.Criteria cri = teacherExample.createCriteria();
+
+        //cri.andIn("id", teacherIds);
+        return openTeacherMapper.selectByExample(teacherExample);
+    }
 }

@@ -181,4 +181,17 @@ public class OpenController extends BaseController {
 
 
 
+      @ApiOperation(value = "编辑班课前获取班课信息", consumes= "application/json")
+      @ApiImplicitParams( {
+            @ApiImplicitParam(name = "id", value = "班课主键", required = true, dataType = "Integer")
+      })
+      @GetMapping("/edit_open/{id}")
+      public Result getEditOpen(@PathVariable int id){
+
+          return Result.success().addData("open",openService.getOpenAndTeacherById(id));
+
+      }
+
+
+
 }

@@ -7,12 +7,13 @@ import com.github.pagehelper.PageHelper;
 import com.google.common.collect.Lists;
 import com.teamsking.api.dto.open.*;
 import com.teamsking.api.dto.school.SchoolDtoMapper;
+import com.teamsking.api.dto.sys.SysUserDtoMapper;
+import com.teamsking.api.dto.sys.UserDto;
 import com.teamsking.domain.entity.course.Course;
 import com.teamsking.domain.entity.node.Node;
-import com.teamsking.domain.entity.open.Open;
-import com.teamsking.domain.entity.open.OpenRole;
-import com.teamsking.domain.entity.open.OpenTeacherConnection;
+import com.teamsking.domain.entity.open.*;
 import com.teamsking.domain.entity.school.School;
+import com.teamsking.domain.entity.sys.SysUser;
 import com.teamsking.domain.repository.*;
 
 import com.teamsking.domain.service.BaseService;
@@ -23,6 +24,7 @@ import java.util.Map;
 import com.teamsking.domain.service.course.CourseService;
 import com.teamsking.domain.service.node.NodeService;
 import com.teamsking.domain.service.school.SchoolService;
+import com.teamsking.domain.service.sys.SysUserService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -44,6 +46,8 @@ public class OpenService extends BaseService {
     OpenTeacherConnectionMapper openTeacherConnectionMapper;
     @Autowired
     OpenRoleMapper openRoleMapper;
+    @Autowired
+    UserOpenMapper userOpenMapper;
 
 
     @Autowired
@@ -54,6 +58,13 @@ public class OpenService extends BaseService {
     NodeService nodeService;
     @Autowired
     CourseService courseService;
+    @Autowired
+    OpenTeacherConnectionService openTeacherConnectionService;
+    @Autowired
+    OpenTeacherService openTeacherService;
+    @Autowired
+    SysUserService sysUserService;
+
 
     /**
      * 获取班次管理列表
@@ -349,6 +360,80 @@ public class OpenService extends BaseService {
 //
 //
 //    }
+
+
+    /**
+     * 根据id查询班课相关信息（编辑）
+     * @param id
+     * @return
+     */
+    public EditOpenDto getOpenAndTeacherById(Integer id) {
+
+        //根据班课id查询班课信息
+        Open open = openMapper.selectByPrimaryKey(id);
+
+        //数据转换
+        EditOpenDto editOpenDtoEntity = OpenDtoMapper.INSTANCE.entityToEditDto(open);
+
+        //根据班课Id查询老师信息
+        //1.获取与该班课有关的老师id
+        List<OpenTeacherConnection> openTeacherConnectionList = openTeacherConnectionService.getTeacherByOpenId(id);
+        List<Integer> teacherIdList = Lists.newArrayList();
+        for (OpenTeacherConnection openTeacherConnection : openTeacherConnectionList) {
+            teacherIdList.add(openTeacherConnection.getTeacherId());
+        }
+
+        //2.根据老师IdList获取老师信息
+        List<OpenTeacher> openTeacherList = openTeacherService.getTeacherByTeacherIdList(teacherIdList);
+        List<OpenTeacherNameDto> openTeacherNameDtoList = OpenTeacherDtoMapper.INSTANCE.entityListToNameListDto(openTeacherList);
+        editOpenDtoEntity.setOpenTeacherNameList(openTeacherNameDtoList);
+
+        //根据班课Id查询该班课角色权限信息
+        /*if (open.getVisibleRange() == 2) {
+            //获取所有角色为老师的用户
+            List<SysUser> userOpenList = sysUserService.getOpenUserNameByRoleId();
+            List<UserDto> userDtoListAll = SysUserDtoMapper.INSTANCE.entityDtoToUserDtoList(userOpenList);
+            editOpenDtoEntity.setUserDtoListAll(userDtoListAll);
+
+            //获取该班课下的角色为老师的用户
+            //1.获取与该班课有关的用户Id
+            UserOpen newUserOpen = new UserOpen();
+            newUserOpen.setOpenId(id);
+            List<UserOpen> userOpens = userOpenMapper.select(newUserOpen);
+
+            List<Integer> userIdList = Lists.newArrayList();
+            for (UserOpen userOpen : userOpens) {
+                userIdList.add(userOpen.getUserId());
+            }
+
+
+            //2.根据用户IdList获取老师信息
+            List<SysUser> sysUserList = sysUserService.getSysUserByUserIdList(userIdList);
+            List<UserDto> userDtoListById = SysUserDtoMapper.INSTANCE.entityDtoToUserDtoList(sysUserList);
+            editOpenDtoEntity.setUserDtoListById(userDtoListById);
+        }*/
+
+
+        //获取该班课下的角色为老师的用户
+        //1.获取与该班课有关的用户Id
+        OpenUser newOpenUser = new OpenUser();
+        newOpenUser.setOpenId(id);
+        List<OpenUser> openUsers = openUserMapper.select(newOpenUser);
+
+        List<Integer> userIdList = Lists.newArrayList();
+        for (OpenUser openUser : openUsers) {
+            userIdList.add(openUser.getUserId());
+        }
+
+
+        //2.根据用户IdList获取老师信息
+        List<SysUser> sysUserList = sysUserService.getSysUserByUserIdList(userIdList);
+        List<UserDto> userDtoListById = SysUserDtoMapper.INSTANCE.entityDtoToUserDtoList(sysUserList);
+        editOpenDtoEntity.setUserDtoListById(userDtoListById);
+
+        return editOpenDtoEntity;
+    }
+
 
     /**
      * 根据id编辑保存班课信息
