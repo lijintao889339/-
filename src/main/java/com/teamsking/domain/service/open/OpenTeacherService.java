@@ -117,14 +117,14 @@ public class OpenTeacherService {
      * @param teacherIds
      * @return
      */
-    public List<OpenTeacher> getTeacherListByTeacherIds(List<Integer> teacherIds) {
+    /*public List<OpenTeacher> getTeacherListByTeacherIds(List<Integer> teacherIds) {
 
         Example teacherExample = new Example(OpenTeacher.class);
         Example.Criteria cri = teacherExample.createCriteria();
         cri.andIn("id",teacherIds);
         return openTeacherMapper.selectByExample(teacherExample);
 
-    }
+    }*/
 
 
     /**

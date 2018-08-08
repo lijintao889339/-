@@ -1,4 +1,4 @@
-package com.teamsking.api.dto.course;
+package com.teamsking.api.dto.open;
 
 import com.teamsking.api.dto.Dto;
 import lombok.Data;
@@ -9,13 +9,13 @@ import java.util.List;
 *@author linhao
 */
 @Data
-public class CourseEvaluateInfoDto extends Dto {
+public class OpenEvaluateInfoDto extends Dto {
 
     private String userName;
 
     private String avatar;
 
-    private String courseName;
+    private String openName;
 
     private Long evaluate;
 

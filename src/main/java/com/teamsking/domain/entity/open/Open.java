@@ -265,6 +265,16 @@ public class Open {
 
     private String qcCode;
 
+    private Integer firstCategoryId;
+
+    public Integer getFirstCategoryId() {
+        return firstCategoryId;
+    }
+
+    public void setFirstCategoryId(Integer firstCategoryId) {
+        this.firstCategoryId = firstCategoryId;
+    }
+
     public Integer getCategoryId() {
         return categoryId;
     }

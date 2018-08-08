@@ -478,5 +478,16 @@ public class OpenService extends BaseService {
     }
 
 
+    /**
+     * 根据openIds查询班课信息
+     * @param openIds
+     * @return
+     */
+    public List<Open> getOpenByOpenIds(List<Integer> openIds) {
 
+        Example openExample = new Example(Open.class);
+        Example.Criteria cri = openExample.createCriteria();
+        cri.andIn("id",openIds);
+        return openMapper.selectByExample(openExample);
+    }
 }
