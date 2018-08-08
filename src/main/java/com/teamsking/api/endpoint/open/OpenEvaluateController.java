@@ -29,7 +29,7 @@ public class OpenEvaluateController extends BaseController {
             @ApiImplicitParam(name = "pageSize", paramType = "query", value = "页大小", required = true, example = "10")
     })
     @GetMapping("/open_evaluates")
-    public Result courseEvaluateList(@RequestParam int pageNo,@RequestParam int pageSize){
+    public Result openEvaluateList(@RequestParam int pageNo,@RequestParam int pageSize){
 
         return Result.success().addData("pager", warpPage(openEvaluateService.list(fixPage(pageNo), fixPage(pageSize))));
 
@@ -46,31 +46,31 @@ public class OpenEvaluateController extends BaseController {
 //
 //    }
 
-    /*@ApiOperation(value = "批量删除课程模板评价", produces = "application/json")
+    @ApiOperation(value = "批量删除班课评价", produces = "application/json")
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "ids",value = "课程评价的主键", required = true)
+            @ApiImplicitParam(name = "ids",value = "班课评价的主键", required = true)
     })
-    @DeleteMapping("/course_evaluates/multi_delete")
-    public Result removeMultiCourseEvaluates(@RequestParam Integer[] ids){
+    @DeleteMapping("/open_evaluates/multi_delete")
+    public Result removeMultiOpenEvaluates(@RequestParam Integer[] ids){
 
-        courseEvaluateService.removeCourseEvaluateByIds(ids);
+        openEvaluateService.removeOpenEvaluateByIds(ids);
         return Result.success();
-    }*/
+    }
 
-    /*@ApiOperation(value = "是否显示课程模板评价", produces = "application/json")
+    @ApiOperation(value = "是否显示班课评价", produces = "application/json")
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "id",value = "课程模板评价的主键", required = true, dataType = "int"),
-            @ApiImplicitParam(name = "courseEvaluate", value = "课程模板评价", required = true, dataType = "OpenEvaluateDto")
+            @ApiImplicitParam(name = "id",value = "班课评价的主键", required = true, dataType = "int"),
+            @ApiImplicitParam(name = "openEvaluate", value = "班课评价", required = true, dataType = "OpenEvaluateDto")
     })
-    @PutMapping("/course_evaluate/{id}")
-    public Result isShowCourseEvaluate(@PathVariable("id") int id,
-                                             @RequestBody OpenEvaluateDto courseEvaluate){
+    @PutMapping("/open_evaluate/{id}")
+    public Result isShowOpenEvaluate(@PathVariable("id") int id,
+                                       @RequestBody OpenEvaluateDto openEvaluate){
 
-        OpenEvaluate courseEvaluateEntity = OpenEvaluateDtoMapper.INSTANCE.dtoToEntity(courseEvaluate);
-        courseEvaluateEntity.setId(id);
-        courseEvaluateService.isShowById(courseEvaluateEntity);
+        OpenEvaluate openEvaluateEntity = OpenEvaluateDtoMapper.INSTANCE.dtoToEntity(openEvaluate);
+        openEvaluateEntity.setId(id);
+        openEvaluateService.isShowById(openEvaluateEntity);
         return Result.success();
-    }*/
+    }
 
 
 

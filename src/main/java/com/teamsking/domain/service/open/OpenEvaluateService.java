@@ -22,6 +22,7 @@ import com.teamsking.domain.service.sys.SysUserService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import tk.mybatis.mapper.entity.Example;
 
 
 import java.util.List;
@@ -218,41 +219,41 @@ public class OpenEvaluateService extends BaseService {
 //    }
 
     /**
-     * 根据IDS批量删除课程模板评价
+     * 根据IDS批量删除班课评价
      * @param ids
      * @return
      */
-    /*public int removeCourseEvaluateByIds(Integer[] ids) {
+    public int removeOpenEvaluateByIds(Integer[] ids) {
 
         List<Integer> idList = Lists.newArrayList();
         for (Integer id : ids) {
             idList.add(id);
         }
 
-        OpenEvaluate courseEvaluate = new OpenEvaluate();
-        courseEvaluate.setDeleteStatus(1);
+        OpenEvaluate openEvaluate = new OpenEvaluate();
+        openEvaluate.setDeleteStatus(1);
 
-        Example courseEvaluateExample = new Example(Course.class);
-        Example.Criteria cri = courseEvaluateExample.createCriteria();
+        Example openEvaluateExample = new Example(Course.class);
+        Example.Criteria cri = openEvaluateExample.createCriteria();
         cri.andIn("id", idList);
-        return courseEvaluateMapper.updateByExampleSelective(courseEvaluate, courseEvaluateExample);
-    }*/
+        return openEvaluateMapper.updateByExampleSelective(openEvaluate, openEvaluateExample);
+    }
 
     /**
-     * 判断是否可以显示课程模板评价
+     * 判断是否可以显示班课评价
      * @param courseEvaluate
      * @return
      */
-    /*public int isShowById(OpenEvaluate courseEvaluate){
+    public int isShowById(OpenEvaluate courseEvaluate){
 
         if (true == courseEvaluate.getIsShow()){
             courseEvaluate.setIsShow(true);
         }else {
             courseEvaluate.setIsShow(false);
         }
-        return courseEvaluateMapper.updateByPrimaryKeySelective(courseEvaluate);
+        return openEvaluateMapper.updateByPrimaryKeySelective(courseEvaluate);
     }
-*/
+
 
     /**
      * 通过条件搜索课程模板评价
