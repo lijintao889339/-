@@ -46,8 +46,6 @@ public class OpenService extends BaseService {
     OpenTeacherConnectionMapper openTeacherConnectionMapper;
     @Autowired
     OpenRoleMapper openRoleMapper;
-    @Autowired
-    UserOpenMapper userOpenMapper;
 
 
     @Autowired
@@ -319,16 +317,16 @@ public class OpenService extends BaseService {
         //openEntity.setCategoryId(categoryId);
         openEntity.setCourseStatus(10);
         openEntity.setDeleteStatus(2);//删除状态：1 已删除 2 未删除
-        //将角色id添加到班课角色关系表
-        Integer[] roleIds = addOpenDto.getRoleId();
-        List<OpenRole> openRoleList = Lists.newArrayList();
-        for (Integer roleId : roleIds) {
-            OpenRole openRole = new OpenRole();
-            openRole.setOpenId(openEntity.getId());
-            openRole.setRoleId(roleId);
-            openRoleList.add(openRole);
+        //将用户id(教学老师)添加到班课用户关系表
+        Integer[] userIds = addOpenDto.getUserId();
+        //List<OpenUser> openUserList = Lists.newArrayList();
+        for (Integer userId : userIds) {
+            OpenUser openUser = new OpenUser();
+            openUser.setOpenId(openEntity.getId());
+            openUser.setUserId(userId);
+            openUserMapper.insertSelective(openUser);
         }
-        openRoleMapper.insertConnectionByOpenAndRole(openRoleList);
+        //openUserMapper.insertSelective(openUserList);
 
         //将授课教师id添加到班课教师关系表
         Integer[] teacherIds = addOpenDto.getTeacherId();

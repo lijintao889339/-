@@ -11,7 +11,7 @@ public class AddOpenDto extends Dto {
 
     private Integer id;
 
-    private Integer[] roleId;
+    private Integer[] userId;
 
     private Integer[] teacherId;
 

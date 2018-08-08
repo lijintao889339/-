@@ -7,5 +7,5 @@ import tk.mybatis.mapper.common.Mapper;
 import java.util.List;
 
 public interface OpenRoleMapper extends Mapper<OpenRole> {
-    int insertConnectionByOpenAndRole(@Param("openRoleList") List<OpenRole> openRoleList);
+    //int insertConnectionByOpenAndRole(@Param("openRoleList") List<OpenRole> openRoleList);
 }

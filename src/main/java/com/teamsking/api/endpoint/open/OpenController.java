@@ -139,6 +139,7 @@ public class OpenController extends BaseController {
 
     }
 
+
     @ApiOperation(value = "创建班课教学模式", consumes= "application/json")
     @ApiImplicitParams( {
             @ApiImplicitParam(name = "addOpenDto", value = "创建班课教学模式", required = true, dataType = "AddOpenDto")
