@@ -1,6 +1,7 @@
 package com.teamsking.api.endpoint.open;
 
 
+import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.teamsking.api.dto.open.*;
 import com.teamsking.api.endpoint.BaseController;
@@ -192,6 +193,30 @@ public class OpenController extends BaseController {
           return Result.success().addData("open",openService.getOpenAndTeacherById(id));
 
       }
+
+
+
+    @ApiOperation(value = "搜索框根据班课名称模糊查询列表", notes = "可分页", produces = "application/json")
+    @ApiImplicitParams( {
+            @ApiImplicitParam(name = "pageNo", paramType = "query", value = "页码", required = true, example = "1"),
+            @ApiImplicitParam(name = "pageSize", paramType = "query", value = "页大小", required = true, example = "10"),
+            @ApiImplicitParam(name = "openName", value = "班课名称", required = true, dataType = "String")
+    })
+    @GetMapping("/reaching_opens")
+    public Result getOpenListReaching(@RequestParam int pageNo,
+                                      @RequestParam int pageSize,
+                                      @RequestParam String openName){
+
+        Page page = openService.listByReaching(fixPage(pageNo), fixPage(pageSize),openName);
+
+        if (null == page){
+            return Result.exception("无查询结果");
+        }else {
+            return Result.success().addData("pager", warpPage(page));
+        }
+
+
+    }
 
 
 

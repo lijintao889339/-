@@ -72,7 +72,7 @@ public class OpenService extends BaseService {
 
         List<Integer> openIds = Lists.newArrayList();
         List<Integer> courseIds = Lists.newArrayList();
-        List<Integer> shcoolIds = Lists.newArrayList();
+        List<Integer> schoolIds = Lists.newArrayList();
 
         PageHelper.startPage(pageNo, pageSize);
 
@@ -81,7 +81,7 @@ public class OpenService extends BaseService {
         List<Open> openList = openMapper.select(openEntity);
         for (Open open: openList) {
             courseIds.add(open.getCourseId());
-            shcoolIds.add(open.getSchoolId());
+            schoolIds.add(open.getSchoolId());
             openIds.add(open.getId());
         }
 
@@ -92,7 +92,7 @@ public class OpenService extends BaseService {
         List<Course> courseList =  courseService.getCourseByCourseIdList(courseIds);
 
         //根据学校Id查询学校名称
-        List<School> schoolList = schoolService.getSchoolByShcoolIdList(shcoolIds);
+        List<School> schoolList = schoolService.getSchoolByShcoolIdList(schoolIds);
 
         List<OpenListViewDto> openListViewDtoList = OpenDtoMapper.INSTANCE.entityToListViewDtoList(openList);
 
@@ -117,6 +117,79 @@ public class OpenService extends BaseService {
 
         return convertPage((Page)openList,openListViewDtoList);
     }
+
+
+    /**
+     * 根据班课名称模糊查询班课信息列表
+     * @param pageNo
+     * @param pageSize
+     * @param openName
+     * @return
+     */
+    public Page listByReaching(int pageNo, int pageSize, String openName){
+
+        List<Integer> openIds = Lists.newArrayList();
+        List<Integer> courseIds = Lists.newArrayList();
+        List<Integer> schoolIds = Lists.newArrayList();
+
+        //分页操作
+        PageHelper.startPage(pageNo, pageSize);
+
+        //根据班课名称模糊查询班课信息列表
+        Example openExample = new Example(Open.class);
+        openExample.and().andEqualTo("deleteStatus",2);
+        openExample.and().andLike("openName","%" + openName + "%");
+        List<Open> openList = openMapper.selectByExample(openExample);
+
+        if (0 != openList.size()){
+            for (Open open:openList) {
+                openIds.add(open.getId());
+                schoolIds.add(open.getSchoolId());
+                courseIds.add(open.getCourseId());
+            }
+
+            //根据班次Id查询学生数量
+            List<Map<String, Object>> studentNumList = openUserMapper.countByOpenIdsGroupByOpenId(openIds);
+
+            //根据课程Id查询课程名称
+            List<Course> courseList =  courseService.getCourseByCourseIdList(courseIds);
+
+            //根据学校Id查询学校名称
+            List<School> schoolList = schoolService.getSchoolByShcoolIdList(schoolIds);
+
+            List<OpenListViewDto> openListViewDtoList = OpenDtoMapper.INSTANCE.entityToListViewDtoList(openList);
+
+            for (OpenListViewDto open: openListViewDtoList) {
+
+                for (Map<String,Object> studentNum : studentNumList) {
+                    int openId = (Integer) studentNum.get("openId");
+                    if (openId == open.getId()) {
+                        open.setStudentNum(((Long) studentNum.get("count")).intValue());
+                        break;
+                    }
+                }
+
+                for (School school : schoolList){
+                    if (school.getId().intValue() == open.getSchoolId().intValue()){
+                        open.setSchoolName(school.getSchoolName());
+                        break;
+                    }
+                }
+
+            }
+
+            return convertPage((Page)openList,openListViewDtoList);
+
+        }else {
+
+            Page page =null;
+            return page;
+        }
+
+    }
+
+
+
 
     /**
      * 添加班次管理
