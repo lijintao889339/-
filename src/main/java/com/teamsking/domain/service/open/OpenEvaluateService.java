@@ -10,8 +10,6 @@ import com.teamsking.domain.entity.category.Category;
 import com.teamsking.domain.entity.course.Course;
 import com.teamsking.domain.entity.open.Open;
 import com.teamsking.domain.entity.open.OpenEvaluate;
-import com.teamsking.domain.entity.course.CourseTeacher;
-import com.teamsking.domain.entity.course.CourseTeacherConnection;
 import com.teamsking.domain.entity.open.OpenTeacher;
 import com.teamsking.domain.entity.open.OpenTeacherConnection;
 import com.teamsking.domain.entity.sys.SysUser;
@@ -122,7 +120,7 @@ public class OpenEvaluateService extends BaseService {
                 }
             }
 
-            //遍历集合，获取课程分类模板信息
+            //遍历集合，获取班课分类模板信息
             for (Category category : categoryList){
                 if (category.getId().intValue() == openEvaluate.getFirstCategoryId()){
                     openEvaluate.setCategoryName(category.getLabel());

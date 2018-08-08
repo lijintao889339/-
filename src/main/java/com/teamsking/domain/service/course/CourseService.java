@@ -50,6 +50,8 @@ public class CourseService extends BaseService {
     NodeMapper nodeMapper;
     @Autowired
     CourseItemMapper courseItemMapper;
+    @Autowired
+    CourseCategoryMapper courseCategoryMapper;
 
     @Autowired
     CourseTeacherService courseTeacherService;
@@ -365,6 +367,16 @@ public class CourseService extends BaseService {
         //数据转换
         CourseBeforeEditDto courseBeforeEditDto = CourseDtoMapper.INSTANCE.entityToBeforeEditDto(course);
 
+        //根据课程Id查询分类信息
+        //1.获取一级课程模板分类名称
+        CourseCategory firstCategory = courseCategoryMapper.selectByPrimaryKey(course.getFirstCategoryId());
+        courseBeforeEditDto.setFirstCourseCategoryList(firstCategory.getLabel());
+
+        //2.获取二级课程模板分类名称
+        CourseCategory secondCategory = courseCategoryMapper.selectByPrimaryKey(course.getCategoryId());
+        courseBeforeEditDto.setSecondCourseCategoryList(secondCategory.getLabel());
+
+
         //根据课程Id查询老师信息
         //1.获取与该课程模板有关的老师id
         List<CourseTeacherConnection> courseTeacherConnectionList = courseTeacherConnectionService.getTeacherByCourseId(id);
@@ -398,7 +410,7 @@ public class CourseService extends BaseService {
            //2.根据用户IdList获取老师信息
            List<SysUser> sysUserList = sysUserService.getSysUserByUserIdList(userIdList);
            List<UserDto> userDtoListById = SysUserDtoMapper.INSTANCE.entityDtoToUserDtoList(sysUserList);
-           courseBeforeEditDto.setUserDtoListById(userDtoListById);
+           courseBeforeEditDto.setUserDtoList(userDtoListById);
         //}
 
 

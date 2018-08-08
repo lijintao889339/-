@@ -70,7 +70,7 @@ public class CourseController extends BaseController {
     @ApiImplicitParams({
             @ApiImplicitParam(name = "id", value = "课程模板的主键", required = true, dataType = "int")
     })
-    @GetMapping("course/{id}")
+    @GetMapping("/course/{id}")
     public Result getCourseBeforeEdit(@PathVariable int id){
 
         return Result.success().addData("course",courseService.getCourseAndTeacherById(id));

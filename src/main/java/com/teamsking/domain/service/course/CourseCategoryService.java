@@ -53,6 +53,7 @@ public class CourseCategoryService extends BaseService {
         for (CourseCategoryDto courseCategoryDto : courseCategoryDtoList){
             //查询该一级分类下课程模板数量
             Course course = new Course();
+            course.setDeleteStatus(2);
             course.setFirstCategoryId(courseCategoryDto.getId());
             int count = courseMapper.selectCount(course);
             courseCategoryDto.setCourseCount(count);
@@ -79,6 +80,7 @@ public class CourseCategoryService extends BaseService {
         for (CourseCategoryDto courseCategoryDto : courseCategoryDtoList){
             //查询该分类下课程模板数量
             Course course = new Course();
+            course.setDeleteStatus(2);
             course.setCategoryId(courseCategoryDto.getId());
             int count = courseMapper.selectCount(course);
             courseCategoryDto.setCourseCount(count);

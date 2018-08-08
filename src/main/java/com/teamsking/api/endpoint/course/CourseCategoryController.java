@@ -127,7 +127,7 @@ public class CourseCategoryController extends BaseController {
 
         List<CourseCategory> courseCategoryList = courseCategoryService.getAllFirstCategory();
         List<CourseCategoryNameDto> courseCategoryNameDtoList = CourseCategoryDtoMapper.INSTANCE.entityListToNameDtoList(courseCategoryList);
-        return Result.success().addData("courseCategoryNameDtoList",courseCategoryNameDtoList);
+        return Result.success().addData("firstCourseCategoryList",courseCategoryNameDtoList);
     }
 
 
@@ -140,7 +140,7 @@ public class CourseCategoryController extends BaseController {
 
         List<CourseCategory> courseCategoryList = courseCategoryService.getSecondCategoryById(id);
         List<CourseCategoryNameDto> courseCategoryNameDtoList = CourseCategoryDtoMapper.INSTANCE.entityListToNameDtoList(courseCategoryList);
-        return Result.success().addData("courseCategoryNameDtoList",courseCategoryNameDtoList);
+        return Result.success().addData("secondCourseCategoryList",courseCategoryNameDtoList);
     }
 
     @ApiOperation(value = "创建一级课程模板分类接口", consumes= "application/json")
