@@ -69,13 +69,14 @@ public class CourseChapterService {
     /**
      * 添加课程中的章
      * @param courseChapterDto
+     * @param courseId
      * @return
      */
-    public int save(CourseChapterDto courseChapterDto){
+    public int save(CourseChapterDto courseChapterDto, int courseId){
 
         //先查询此课程有多少章
         CourseChapter courseChapter = new CourseChapter();
-        courseChapter.setCourseId(courseChapterDto.getCourseId());
+        courseChapter.setCourseId(courseId);
         int count = courseChapterMapper.selectCount(courseChapter);
 
         CourseChapter newCourseChapter = CourseChapterDtoMapper.INSTANCE.dtoToEntity(courseChapterDto);

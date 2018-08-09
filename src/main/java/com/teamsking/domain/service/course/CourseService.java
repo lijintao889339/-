@@ -129,7 +129,7 @@ public class CourseService extends BaseService {
 
 
     /**
-     * 通过课程名称分页获取课程列表
+     * 通过课程名称搜索课程列表
      * @param pageNo
      * @param pageSize
      * @param courseName
@@ -147,7 +147,9 @@ public class CourseService extends BaseService {
         Example courseExample = new Example(Course.class);
         Example.Criteria cri = courseExample.createCriteria();
         courseExample.and().andEqualTo("deleteStatus",2);
-        courseExample.and().andLike("courseName","%" + courseName + "%");
+        if ("" != courseName){
+            courseExample.and().andLike("courseName","%" + courseName + "%");
+        }
         List<Course> courseList = courseMapper.selectByExample(courseExample);
 
         if (0 != courseList.size()){

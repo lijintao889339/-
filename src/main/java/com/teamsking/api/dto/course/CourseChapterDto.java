@@ -9,8 +9,6 @@ public class CourseChapterDto extends Dto {
 
     private Integer id;
 
-    private Integer courseId;
-
     private String chapterName;
 
 }

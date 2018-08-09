@@ -89,7 +89,7 @@ public class OpenEvaluateController extends BaseController {
         Page page = openEvaluateService.listBySearching(fixPage(pageNo), fixPage(pageSize),categoryId,teacherId);
 
         if (null == page){
-            return Result.exception("查询无果");
+            return Result.success().addData("pager",null);
         }else {
             return Result.success().addData("pager", warpPage(page));
         }

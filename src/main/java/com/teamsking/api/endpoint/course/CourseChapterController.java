@@ -59,10 +59,11 @@ public class CourseChapterController extends BaseController {
     @ApiImplicitParams({
             @ApiImplicitParam (name = "courseChapterDto", value = "课程的章", required = true, dataType = "CourseChapterDto")
     })
-    @PostMapping("/course_chapter")
-    public Result addCourseChapter(@RequestBody CourseChapterDto courseChapterDto){
+    @PostMapping("/course_chapter/{courseId}")
+    public Result addCourseChapter(@PathVariable int courseId,
+                                   @RequestBody CourseChapterDto courseChapterDto){
 
-        courseChapterService.save(courseChapterDto);
+        courseChapterService.save(courseChapterDto,courseId);
         return Result.success();
     }
 

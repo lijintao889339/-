@@ -156,7 +156,7 @@ public class CourseController extends BaseController {
     @ApiImplicitParams( {
             @ApiImplicitParam(name = "pageNo", paramType = "query", value = "页码", required = true, example = "1"),
             @ApiImplicitParam(name = "pageSize", paramType = "query", value = "页大小", required = true, example = "10"),
-            @ApiImplicitParam(name = "courseName", value = "课程模板名称", required = true, example = "10", dataType = "String")
+            @ApiImplicitParam(name = "courseName", value = "课程模板名称", required = false, dataType = "String")
     })
     @GetMapping("/reaching_courses")
     public Result courseListByReaching(@RequestParam int pageNo, @RequestParam int pageSize, @RequestParam String courseName) {
@@ -164,7 +164,7 @@ public class CourseController extends BaseController {
         Page page = courseService.listByReaching(fixPage(pageNo), fixPage(pageSize),courseName);
 
         if (null == page){
-            return Result.exception("查询无果");
+            return Result.success().addData("pager",null);
         }else {
             return Result.success().addData("pager", warpPage(page));
         }
