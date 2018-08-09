@@ -195,6 +195,20 @@ public class OpenController extends BaseController {
       }
 
 
+    @ApiOperation(value = "编辑保存班课信息", consumes= "application/json")
+    @ApiImplicitParams( {
+            @ApiImplicitParam(name = "openEditInsertDto", value = "编辑保存班课", required = true, dataType = "OpenEditInsertDto")
+    })
+    @PutMapping("/edit_preservation_open")
+    public Result editPreservationOpen(@RequestBody OpenEditInsertDto openEditInsertDto){
+
+        openService.editPreservationOpen(openEditInsertDto);
+
+        return Result.success();
+
+    }
+
+
 
     @ApiOperation(value = "搜索框根据班课名称模糊查询列表", notes = "可分页", produces = "application/json")
     @ApiImplicitParams( {

@@ -6,6 +6,7 @@ import java.util.List;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import tk.mybatis.mapper.entity.Example;
 
 /**
 *@author linhao
@@ -66,5 +67,17 @@ public class OpenUserService {
         OpenUser openUser = new OpenUser();
         openUser.setId(openId);
         return openUserMapper.select(openUser);
+    }
+
+    /**
+     * 删除与某班课有关的班课用户关系数据
+     * @param openId
+     * @return
+     */
+    public int removeOpenUserByOpenId(Integer openId) {
+
+        Example openUserExample = new Example(OpenUser.class);
+        openUserExample.and().andEqualTo("openId",openId);
+        return openUserMapper.deleteByExample(openUserExample);
     }
 }

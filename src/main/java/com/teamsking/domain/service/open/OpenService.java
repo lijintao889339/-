@@ -74,6 +74,8 @@ public class OpenService extends BaseService {
     SysUserService sysUserService;
     @Autowired
     CourseTeacherService courseTeacherService;
+    @Autowired
+    OpenUserService openUserService;
 
 
     /**
@@ -520,32 +522,48 @@ public class OpenService extends BaseService {
 
     /**
      * 根据id编辑保存班课信息
-     * @param editOpenDto
+     * @param openEditInsertDto
      * @return
      */
-//    public int editPreservationOpen(EditOpenDto editOpenDto){
-//
-//        Open openEntity = OpenDtoMapper.INSTANCE.editInsertDtoToEntity(editOpenDto);
-//
-//        Course course = courseMapper.selectByPrimaryKey(openEntity.getCourseId());
-//        Integer categoryId = course.getCategoryId();
-//        openEntity.setCategoryId(categoryId);
-//        //openEntity.setDeleteStatus(2);
-//
-//        Integer[] teacherIds = editOpenDto.getTeacherId();
-//        List<OpenTeacherConnection> openTeacherConnectionList = Lists.newArrayList();
-//        for (Integer teacherId : teacherIds) {
-//            OpenTeacherConnection openTeacherConnection = new OpenTeacherConnection();
-//            openTeacherConnection.setOpenId(openEntity.getId());
-//            openTeacherConnection.setTeacherId(teacherId);
-//            openTeacherConnectionList.add(openTeacherConnection);
-//        }
-//        openTeacherConnectionMapper.insertConnectionByOpenAndTeachers(openTeacherConnectionList);
-//
-//        //return openMapper.updateByPrimaryKeySelective(openEntity);
-//        return openMapper.updateByPrimaryKeySelective(openEntity);
-//
-//    }
+    public Open editPreservationOpen(OpenEditInsertDto openEditInsertDto){
+
+        Open openEntity = OpenDtoMapper.INSTANCE.editAddDtoToEntity(openEditInsertDto);
+
+        Course course = courseMapper.selectByPrimaryKey(openEntity.getCourseId());
+        Integer categoryId = course.getCategoryId();
+        openEntity.setCategoryId(categoryId);
+        //openEntity.setDeleteStatus(2);
+
+        Integer[] teacherIds = openEditInsertDto.getTeacherId();
+        List<OpenTeacherConnection> openTeacherConnectionList = Lists.newArrayList();
+        for (Integer teacherId : teacherIds) {
+            OpenTeacherConnection openTeacherConnection = new OpenTeacherConnection();
+            openTeacherConnection.setOpenId(openEntity.getId());
+            openTeacherConnection.setTeacherId(teacherId);
+            openTeacherConnectionList.add(openTeacherConnection);
+        }
+        openTeacherConnectionMapper.insertConnectionByOpenAndTeachers(openTeacherConnectionList);
+
+        //更新班课和用户关系(设置教学老师)
+        Integer[] userIds = openEditInsertDto.getUserId();
+
+        //1.根据openId删除之前的班课和用户的关系记录
+        openUserService.removeOpenUserByOpenId(openEditInsertDto.getId());
+
+        for (Integer userId : userIds) {
+            OpenUser openUser = new OpenUser();
+            openUser.setOpenId(openEntity.getId());
+            openUser.setUserId(userId);
+            openUserMapper.insertSelective(openUser);
+        }
+
+
+        //return openMapper.updateByPrimaryKeySelective(openEntity);
+        //return openMapper.updateByPrimaryKeySelective(openEntity);
+
+        return openEntity;
+
+    }
 
 
     /**
