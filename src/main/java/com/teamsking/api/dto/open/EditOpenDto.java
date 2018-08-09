@@ -13,7 +13,7 @@ public class EditOpenDto extends Dto {
 
     private Integer id;
 
-    private Integer openId;
+    private Integer courseId;
 
     private Integer categoryId;
 

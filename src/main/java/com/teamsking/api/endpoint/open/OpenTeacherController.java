@@ -61,7 +61,7 @@ public class OpenTeacherController extends BaseController {
     }
 
 
-    @ApiOperation(value = "添加班次-教师管理", consumes= "application/json")
+    @ApiOperation(value = "删除班次-教师管理", consumes= "application/json")
     @ApiImplicitParams( {
             @ApiImplicitParam(name = "id", value = "班次教师管理", required = true, dataType = "Integer")
     })
@@ -75,7 +75,7 @@ public class OpenTeacherController extends BaseController {
 
 
 
-    @ApiOperation(value = "添加班次-教师管理", consumes= "application/json")
+    @ApiOperation(value = "修改班次-教师管理", consumes= "application/json")
     @ApiImplicitParams( {
             @ApiImplicitParam(name = "id", value = "班次教师管理", required = true, dataType = "Integer")
     })

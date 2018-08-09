@@ -255,7 +255,7 @@ public class Open {
 
     private String keyWord;
 
-    private String openFree;
+    private Integer openFree;
 
     //新添字段(可见范围)
     private Integer visibleRange;
@@ -923,11 +923,11 @@ public class Open {
         this.openIntroduce = openIntroduce;
     }
 
-    public String getOpenFree() {
+    public Integer getOpenFree() {
         return openFree;
     }
 
-    public void setOpenFree(String openFree) {
+    public void setOpenFree(Integer openFree) {
         this.openFree = openFree;
     }
 

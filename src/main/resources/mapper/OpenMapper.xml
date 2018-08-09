@@ -40,7 +40,7 @@
         <result column="study_type" jdbcType="INTEGER" property="studyType"/>
         <result column="open_introduce" jdbcType="VARCHAR" property="openIntroduce"/>
         <result column="key_word" jdbcType="VARCHAR" property="keyWord"/>
-        <result column="open_free" jdbcType="VARCHAR" property="openFree"/>
+        <result column="open_free" jdbcType="INTEGER" property="openFree"/>
         <result column="qc_code" jdbcType="VARCHAR" property="qcCode"/>
         <result column="first_category_id" jdbcType="INTEGER" property="firstCategoryId"/>
 

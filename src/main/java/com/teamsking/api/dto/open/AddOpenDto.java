@@ -34,7 +34,7 @@ public class AddOpenDto extends Dto {
 
     private String keyWord;
 
-    private String openFree;
+    private Integer openFree;
 
     //模式
     private Integer studyMode;
