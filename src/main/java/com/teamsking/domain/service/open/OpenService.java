@@ -5,11 +5,16 @@ import afu.org.checkerframework.checker.oigj.qual.O;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.google.common.collect.Lists;
+import com.teamsking.api.dto.course.CourseDtoMapper;
+import com.teamsking.api.dto.course.CourseTeacherDtoMapper;
+import com.teamsking.api.dto.course.CourseTeacherNameDto;
 import com.teamsking.api.dto.open.*;
 import com.teamsking.api.dto.school.SchoolDtoMapper;
 import com.teamsking.api.dto.sys.SysUserDtoMapper;
 import com.teamsking.api.dto.sys.UserDto;
 import com.teamsking.domain.entity.course.Course;
+import com.teamsking.domain.entity.course.CourseTeacher;
+import com.teamsking.domain.entity.course.CourseTeacherConnection;
 import com.teamsking.domain.entity.node.Node;
 import com.teamsking.domain.entity.open.*;
 import com.teamsking.domain.entity.school.School;
@@ -22,6 +27,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.teamsking.domain.service.course.CourseService;
+import com.teamsking.domain.service.course.CourseTeacherService;
 import com.teamsking.domain.service.node.NodeService;
 import com.teamsking.domain.service.school.SchoolService;
 import com.teamsking.domain.service.sys.SysUserService;
@@ -46,6 +52,10 @@ public class OpenService extends BaseService {
     OpenTeacherConnectionMapper openTeacherConnectionMapper;
     @Autowired
     OpenRoleMapper openRoleMapper;
+    @Autowired
+    CourseTeacherConnectionMapper courseTeacherConnectionMapper;
+    @Autowired
+    OpenTeacherMapper openTeacherMapper;
 
 
     @Autowired
@@ -62,6 +72,8 @@ public class OpenService extends BaseService {
     OpenTeacherService openTeacherService;
     @Autowired
     SysUserService sysUserService;
+    @Autowired
+    CourseTeacherService courseTeacherService;
 
 
     /**
@@ -197,9 +209,9 @@ public class OpenService extends BaseService {
      * @param open
      * @return
      */
-    public int save(Open open) {
+    /*public int save(Open open) {
         return openMapper.insert(open);
-    }
+    }*/
 
     /**
      * 根据id删除班次管理
@@ -227,7 +239,7 @@ public class OpenService extends BaseService {
     }
 
     /**
-     * 查询课程下面的班次列表
+     * 查询有课程模板创建的班次列表
      *
      * @param pageNo
      * @param pageSize
@@ -560,5 +572,56 @@ public class OpenService extends BaseService {
         Example.Criteria cri = openExample.createCriteria();
         cri.andIn("id",openIds);
         return openMapper.selectByExample(openExample);
+    }
+
+    /**
+     * 根据课程模板创建班课前获取班课信息
+     * @param courseId
+     * @return
+     */
+    public AddOpenByCourseDto getOpenInfoByCourseId(int courseId) {
+
+        //根据课程模板Id获取课程模板信息
+        Course course = courseMapper.selectByPrimaryKey(courseId);
+
+        //根据课程模板Id查询该课程模板和授课老师关系信息
+        CourseTeacherConnection connection = new CourseTeacherConnection();
+        connection.setCourseId(courseId);
+        List<CourseTeacherConnection> connectionList = courseTeacherConnectionMapper.select(connection);
+
+        //遍历集合获取授课老师信息
+        List<Integer> teacherIds = Lists.newArrayList();
+        for (CourseTeacherConnection courseConnection : connectionList){
+            teacherIds.add(courseConnection.getTeacherId());
+        }
+        List<CourseTeacher> courseTeacherList = courseTeacherService.getTeacherByTeacherIdList(teacherIds);
+
+        //把查到的课程模板授课老师信息添加到班课授课老师表中
+        List<OpenTeacher> openTeacherList = CourseTeacherDtoMapper.INSTANCE.entityListToOpenTeacherList(courseTeacherList);
+
+        for (OpenTeacher openTeacher : openTeacherList){
+
+            openTeacher.setId(null);
+
+            //查询班课老师是否有次信息
+            int count = openTeacherMapper.selectCount(openTeacher);
+            if (0 == count){
+                openTeacherMapper.insertSelective(openTeacher);
+            }
+
+        }
+
+        List<CourseTeacherNameDto> teacherNameDtos = CourseTeacherDtoMapper.INSTANCE.entityListToNameListDto(courseTeacherList);
+
+        //数据转换
+        AddOpenByCourseDto openDto = CourseDtoMapper.INSTANCE.entityToOpenDto(course);
+
+        openDto.setOpenFree(course.getCourseFree());
+        openDto.setOpenIntroduce(course.getCourseIntroduction());
+        openDto.setOpenName(course.getCourseName());
+        openDto.setTeacherNameDtoList(teacherNameDtos);
+
+        return openDto;
+
     }
 }

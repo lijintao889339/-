@@ -111,6 +111,7 @@ public class CourseTeacherService {
     public List<CourseTeacher> getTeacherByTeacherIdList(List<Integer> teacherIds) {
         Example teacherExample = new Example(CourseTeacher.class);
         Example.Criteria cri = teacherExample.createCriteria();
+        cri.andEqualTo("deleteStatus",2);
         cri.andIn("id", teacherIds);
         return courseTeacherMapper.selectByExample(teacherExample);
     }

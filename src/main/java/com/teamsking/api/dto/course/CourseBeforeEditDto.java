@@ -24,15 +24,23 @@ public class CourseBeforeEditDto extends Dto {
 
     private String courseIntroduction;
 
+    //二级分类id
     //private Integer categoryId;
 
     //二级分类名称
-    private String secondCourseCategoryList;
+    //private String secondCourseCategoryList;
 
     //一级分类名称
-    private String firstCourseCategoryList;
+    //private String firstCourseCategoryList;
 
+    //二级分类Id
     //private Integer firstCategoryId;
+
+    //一级分类
+    private CourseCategoryNameDto firstCourseCategoryList;
+
+    //二级分类
+    private CourseCategoryNameDto secondCourseCategoryList;
 
     private List<CourseTeacherNameDto> courseTeacherList;
 

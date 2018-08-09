@@ -370,11 +370,13 @@ public class CourseService extends BaseService {
         //根据课程Id查询分类信息
         //1.获取一级课程模板分类名称
         CourseCategory firstCategory = courseCategoryMapper.selectByPrimaryKey(course.getFirstCategoryId());
-        courseBeforeEditDto.setFirstCourseCategoryList(firstCategory.getLabel());
+        CourseCategoryNameDto firstCategoryDto = CourseCategoryDtoMapper.INSTANCE.entityToNameDto(firstCategory);
+        courseBeforeEditDto.setFirstCourseCategoryList(firstCategoryDto);
 
         //2.获取二级课程模板分类名称
         CourseCategory secondCategory = courseCategoryMapper.selectByPrimaryKey(course.getCategoryId());
-        courseBeforeEditDto.setSecondCourseCategoryList(secondCategory.getLabel());
+        CourseCategoryNameDto secondCategoryDto = CourseCategoryDtoMapper.INSTANCE.entityToNameDto(secondCategory);
+        courseBeforeEditDto.setSecondCourseCategoryList(secondCategoryDto);
 
 
         //根据课程Id查询老师信息
