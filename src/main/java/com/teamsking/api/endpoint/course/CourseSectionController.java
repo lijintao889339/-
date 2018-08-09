@@ -61,12 +61,14 @@ public class CourseSectionController extends BaseController {
      */
     @ApiOperation(value = "添加课程中的节", consumes = "application/json")
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "courseSectionDto", value = "课程的节", required = true, dataType = "CourseSectionDto")
+            @ApiImplicitParam(name = "courseSectionDto", value = "课程的节", required = true, dataType = "CourseSectionDto"),
+            @ApiImplicitParam (name = "chapterId", value = "课程章的主键", required = true, dataType = "int")
     })
-    @PostMapping("/course_section")
-    public Result addCourseSection(@RequestBody CourseSectionDto courseSectionDto){
+    @PostMapping("/course_section/{chapterId}")
+    public Result addCourseSection(@RequestBody CourseSectionDto courseSectionDto,
+                                   @PathVariable int chapterId){
 
-        courseSectionService.save(courseSectionDto);
+        courseSectionService.save(courseSectionDto,chapterId);
         return Result.success();
     }
 
@@ -93,12 +95,14 @@ public class CourseSectionController extends BaseController {
      */
     @ApiOperation(value = "修改课程的节", consumes = "application/json")
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "courseSection", value = "课程中的节", required = true, dataType = "CourseSectionDto")
+            @ApiImplicitParam(name = "courseSection", value = "课程中的节", required = true, dataType = "CourseSectionDto"),
+            @ApiImplicitParam (name = "id", value = "课程节的主键", required = true, dataType = "int")
     })
-    @PutMapping("/course_section")
-    public Result modify(@RequestBody CourseSectionDto courseSectionDto){
+    @PutMapping("/course_section/{id}")
+    public Result modify(@RequestBody CourseSectionDto courseSectionDto,
+                         @PathVariable int id){
 
-        courseSectionService.modify(courseSectionDto);
+        courseSectionService.modify(courseSectionDto,id);
         return Result.success();
     }
 }

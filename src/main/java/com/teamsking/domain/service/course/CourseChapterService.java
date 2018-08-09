@@ -80,9 +80,10 @@ public class CourseChapterService {
         int count = courseChapterMapper.selectCount(courseChapter);
 
         CourseChapter newCourseChapter = CourseChapterDtoMapper.INSTANCE.dtoToEntity(courseChapterDto);
+        newCourseChapter.setCourseId(courseId);
         newCourseChapter.setDeleteStatus(2);
         newCourseChapter.setDisplayOrder(count + 1);
-        newCourseChapter.setDeleteStatus(1);
+        newCourseChapter.setDeleteStatus(2);
         return courseChapterMapper.insertSelective(newCourseChapter);
     }
 
@@ -106,11 +107,13 @@ public class CourseChapterService {
     /**
      * 修改课程中的章
      * @param courseChapterDto
+     * @param id
      * @return
      */
-    public int modify(CourseChapterDto courseChapterDto){
+    public int modify(CourseChapterDto courseChapterDto, int id){
 
         CourseChapter courseChapter = CourseChapterDtoMapper.INSTANCE.dtoToEntity(courseChapterDto);
+        courseChapter.setId(id);
         return courseChapterMapper.updateByPrimaryKeySelective(courseChapter);
     }
 

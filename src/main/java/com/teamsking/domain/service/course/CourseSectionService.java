@@ -49,9 +49,10 @@ public class CourseSectionService {
     /**
      * 添加课程中的节
      * @param courseSectionDto
+     * @param chapterId
      * @return
      */
-    public int save(CourseSectionDto courseSectionDto){
+    public int save(CourseSectionDto courseSectionDto, int chapterId){
 
         //先查询此章有多少节
         CourseSection courseSection = new CourseSection();
@@ -59,6 +60,7 @@ public class CourseSectionService {
         int count = courseSectionMapper.selectCount(courseSection);
 
         CourseSection newCourseSection = CourseSectionDtoMapper.INSTANCE.dtoToEntity(courseSectionDto);
+        newCourseSection.setChapterId(chapterId);
         newCourseSection.setDeleteStatus(2);
         newCourseSection.setDiaplayOrder(count + 1);
         return courseSectionMapper.insertSelective(newCourseSection);
@@ -80,11 +82,13 @@ public class CourseSectionService {
     /**
      * 修改课程中的节
      * @param courseSectionDto
+     * @param id
      * @return
      */
-    public int modify(CourseSectionDto courseSectionDto){
+    public int modify(CourseSectionDto courseSectionDto, int id){
 
         CourseSection courseSection = CourseSectionDtoMapper.INSTANCE.dtoToEntity(courseSectionDto);
+        courseSection.setId(id);
         return courseSectionMapper.updateByPrimaryKeySelective(courseSection);
     }
 
