@@ -1,6 +1,7 @@
 package com.teamsking.api.dto.open;
 
 import com.teamsking.api.dto.Dto;
+import com.teamsking.api.dto.category.AddCategoryNameDto;
 import com.teamsking.api.dto.sys.RoleDto;
 import com.teamsking.api.dto.sys.UserDto;
 import lombok.Data;
@@ -13,9 +14,13 @@ public class EditOpenDto extends Dto {
 
     private Integer id;
 
-    private Integer courseId;
+    //private Integer courseId;
 
-    private Integer categoryId;
+    //private Integer categoryId;
+
+    private AddCategoryNameDto firstOpenCategoryList;
+
+    private AddCategoryNameDto secondOpenCategoryList;
 
     private String openName;
 
@@ -43,7 +48,9 @@ public class EditOpenDto extends Dto {
 
     //private List<UserDto> userDtoListAll;
 
-    //private Integer userId;
+    private Integer userId;
+
+    private Integer teacherId;
 
     private List<UserDto> userDtoListById;
 }

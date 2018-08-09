@@ -224,10 +224,11 @@ public class OpenController extends BaseController {
         Page page = openService.listByReaching(fixPage(pageNo), fixPage(pageSize),openName);
 
         if (null == page){
-            return Result.exception("无查询结果");
+            return Result.success().addData("page",null);
         }else {
             return Result.success().addData("pager", warpPage(page));
         }
+
     }
 
     @ApiOperation(value = "根据课程模板创建班课前查询", produces = "application/json")

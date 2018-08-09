@@ -1,6 +1,7 @@
 package com.teamsking.api.dto.open;
 
 import com.teamsking.api.dto.Dto;
+import com.teamsking.api.dto.category.AddCategoryNameDto;
 import lombok.Data;
 
 import java.math.BigDecimal;

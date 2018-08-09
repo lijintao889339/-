@@ -152,7 +152,10 @@ public class OpenService extends BaseService {
         //根据班课名称模糊查询班课信息列表
         Example openExample = new Example(Open.class);
         openExample.and().andEqualTo("deleteStatus",2);
-        openExample.and().andLike("openName","%" + openName + "%");
+        if ("" != openName){
+            openExample.and().andLike("openName","%" + openName + "%");
+        }
+        //openExample.and().andLike("openName","%" + openName + "%");
         List<Open> openList = openMapper.selectByExample(openExample);
 
         if (0 != openList.size()){
