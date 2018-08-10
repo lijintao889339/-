@@ -3,6 +3,7 @@ package com.teamsking.api.dto.course;
 import com.teamsking.domain.entity.course.CourseItem;
 import java.util.List;
 import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
 import org.mapstruct.factory.Mappers;
 
 /**
@@ -15,6 +16,7 @@ public interface CourseItemDtoMapper {
 
     List<CourseItemDto> entityListToDtoList(List<CourseItem> entityList);
 
+    @Mapping(source = "itemName", target = "name")
     CourseItemDto entityToDto(CourseItem courseItem);
 
     CourseItem dtoToEntity(CourseItemDto courseItemDto);

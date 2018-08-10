@@ -89,13 +89,14 @@ public class CourseItemController extends BaseController {
      */
     @ApiOperation(value = "修改课程模板中的章节项", consumes = "application/json")
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "courseItem", value = "课程模板的章节项", required = true, dataType = "CourseItemDto")
+            @ApiImplicitParam(name = "courseItem", value = "课程模板的章节项", required = true, dataType = "CourseItemDto"),
+            @ApiImplicitParam(name = "id", value = "课程模板-小项的主键", required = true, dataType = "int")
     })
-    @PutMapping("/course_item")
-    public Result modifyCourseItem(@RequestBody CourseItemDto courseItemDto){
+    @PutMapping("/course_item/{id}")
+    public Result modifyCourseItem(@RequestBody CourseItemDto courseItemDto,
+                                   @PathVariable int id){
 
-        CourseItem courseItemEntity = CourseItemDtoMapper.INSTANCE.dtoToEntity(courseItemDto);
-        courseItemService.modify(courseItemEntity);
+        courseItemService.modify(courseItemDto,id);
         return Result.success();
     }
 }

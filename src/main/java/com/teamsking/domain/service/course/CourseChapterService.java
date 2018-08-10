@@ -37,33 +37,40 @@ public class CourseChapterService {
         courseChapterEntity.setDeleteStatus(2);
         List<CourseChapter> courseChapterList = courseChapterMapper.select(courseChapterEntity);
 
-        //根据章Ids获取其下面的节
-        for (CourseChapter courseChapter:courseChapterList) {
-            chapterIds.add(courseChapter.getId());
-        }
-        List<CourseSection> courseSectionList = courseSectionService.getSectionListByChapterIds(chapterIds);
+        if (0 != courseChapterList.size()){
+            //根据章Ids获取其下面的节
+            for (CourseChapter courseChapter:courseChapterList) {
+                chapterIds.add(courseChapter.getId());
+            }
+            List<CourseSection> courseSectionList = courseSectionService.getSectionListByChapterIds(chapterIds);
 
-        //组装数据
-        List<ChapterSectionDto> chapterSectionDtoList = CourseChapterDtoMapper.INSTANCE.entityListToChapterSectionDtoList(courseChapterList);
+            //组装数据
+            List<ChapterSectionDto> chapterSectionDtoList = CourseChapterDtoMapper.INSTANCE.entityListToChapterSectionDtoList(courseChapterList);
 
-        //遍历集合
-        for (ChapterSectionDto chapterSectionDto : chapterSectionDtoList){
-            chapterSectionDto.setIsFirstLabel(true);
+            //遍历集合
+            for (ChapterSectionDto chapterSectionDto : chapterSectionDtoList){
+                chapterSectionDto.setIsFirstLabel(true);
 
-            List<SectionTitleAndOrderDto> sectionList = Lists.newArrayList();
-            for (CourseSection courseSection : courseSectionList){
-                SectionTitleAndOrderDto section = new SectionTitleAndOrderDto();
-                if (chapterSectionDto.getId().intValue() == courseSection.getChapterId().intValue()){
-                    section.setId(courseSection.getId());
-                    section.setDiaplayOrder(courseSection.getDiaplayOrder());
-                    section.setLabel(courseSection.getTitle());
-                    section.setIsFirstLabel(false);
-                    sectionList.add(section);
-                    chapterSectionDto.setChildren(sectionList);
+                List<SectionTitleAndOrderDto> sectionList = Lists.newArrayList();
+                for (CourseSection courseSection : courseSectionList){
+                    SectionTitleAndOrderDto section = new SectionTitleAndOrderDto();
+                    if (chapterSectionDto.getId().intValue() == courseSection.getChapterId().intValue()){
+                        section.setId(courseSection.getId());
+                        section.setDiaplayOrder(courseSection.getDiaplayOrder());
+                        section.setLabel(courseSection.getTitle());
+                        section.setIsFirstLabel(false);
+                        sectionList.add(section);
+                        chapterSectionDto.setChildren(sectionList);
+                    }
                 }
             }
+            return chapterSectionDtoList;
+        }else {
+
+            List<ChapterSectionDto> chapterSectionDtoList = Lists.newArrayList();
+            return chapterSectionDtoList;
         }
-        return chapterSectionDtoList;
+
     }
 
     /**

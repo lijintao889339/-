@@ -371,14 +371,18 @@ public class CourseService extends BaseService {
 
         //根据课程Id查询分类信息
         //1.获取一级课程模板分类名称
-        CourseCategory firstCategory = courseCategoryMapper.selectByPrimaryKey(course.getFirstCategoryId());
-        CourseCategoryNameDto firstCategoryDto = CourseCategoryDtoMapper.INSTANCE.entityToNameDto(firstCategory);
-        courseBeforeEditDto.setFirstCourseCategoryList(firstCategoryDto);
+        /*CourseCategory firstCategory = courseCategoryMapper.selectByPrimaryKey(course.getFirstCategoryId());
+        List<CourseCategory> firstCategoryList = Lists.newArrayList();
+        firstCategoryList.add(firstCategory);
+        List<CourseCategoryNameDto> firstCategoryDtos = CourseCategoryDtoMapper.INSTANCE.entityListToNameDtoList(firstCategoryList);
+        courseBeforeEditDto.setFirstCategoryId(firstCategoryDtos);*/
 
         //2.获取二级课程模板分类名称
-        CourseCategory secondCategory = courseCategoryMapper.selectByPrimaryKey(course.getCategoryId());
-        CourseCategoryNameDto secondCategoryDto = CourseCategoryDtoMapper.INSTANCE.entityToNameDto(secondCategory);
-        courseBeforeEditDto.setSecondCourseCategoryList(secondCategoryDto);
+        /*CourseCategory secondCategory = courseCategoryMapper.selectByPrimaryKey(course.getCategoryId());
+        List<CourseCategory> secondCategoryList = Lists.newArrayList();
+        secondCategoryList.add(secondCategory);
+        List<CourseCategoryNameDto> secondCategoryDtos = CourseCategoryDtoMapper.INSTANCE.entityListToNameDtoList(secondCategoryList);
+        courseBeforeEditDto.setCategoryId(secondCategoryDtos);*/
 
 
         //根据课程Id查询老师信息
@@ -571,12 +575,11 @@ public class CourseService extends BaseService {
             courseItem.setItemName(node.getTitle());
             courseItem.setDisplayOrder(i + 1);
             //文档类型
-            if (10 == node.getNodeType() || 20 == node.getNodeType() || 30 == node.getNodeType()
-                    || 40 == node.getNodeType() || 80 == node.getNodeType()){
+            if (10 == node.getNodeType()){
                 courseItem.setItemType(20);
             }
             //视频类型（包括音频、图片）
-            if (50 == node.getNodeType() || 60 == node.getNodeType() || 70 == node.getNodeType()){
+            if (20 == node.getNodeType() || 30 == node.getNodeType() || 40 == node.getNodeType()){
                 courseItem.setItemType(10);
             }
             count = courseItemMapper.insertSelective(courseItem);

@@ -12,7 +12,7 @@ public class CourseItemDto extends Dto {
 
     private Integer id;
 
-    private String itemName;
+    private String Name;
 
     private Integer itemType;
 

@@ -43,21 +43,21 @@ public class CourseItemService {
         for (CourseItemDto itemDto : courseItemDtoList){
             if (20 == itemDto.getItemType()){
                 //小项类型为文档
-                itemDto.setType(20);
+                itemDto.setType(10);
 
             }else if (10 == itemDto.getItemType()){
                 //查询此小项的资源类型
                 Node node = nodeMapper.selectByPrimaryKey(itemDto.getRelationId());
-                if (50 == node.getNodeType()){
-                    //资源类型为视频
-                    itemDto.setType(50);
 
-                }else if (60 == node.getNodeType()){
+                if (20 == node.getNodeType()){
+                    //资源类型为视频
+                    itemDto.setType(20);
+                }else if (30 == node.getNodeType()){
                     //资源类型为音频
-                    itemDto.setType(60);
-                }else if (70 == node.getNodeType()){
+                    itemDto.setType(30);
+                }else if (40 == node.getNodeType()){
                     //资源类型为图片
-                    itemDto.setType(70);
+                    itemDto.setType(40);
                 }
             }
         }
@@ -83,16 +83,20 @@ public class CourseItemService {
 
         CourseItem courseItem = new CourseItem();
         courseItem.setDeleteStatus(1);
-        return courseItemMapper.deleteByPrimaryKey(id);
+        return courseItemMapper.updateByPrimaryKeySelective(courseItem);
     }
 
     /**
      * 修改课程模板中的小项
-     * @param courseItem
+     * @param courseItemDto
+     * @param id
      * @return
      */
-    public int modify(CourseItem courseItem){
+    public int modify(CourseItemDto courseItemDto , int id){
 
+        CourseItem courseItem = CourseItemDtoMapper.INSTANCE.dtoToEntity(courseItemDto);
+        courseItem.setItemName(courseItemDto.getName());
+        courseItem.setId(id);
         return courseItemMapper.updateByPrimaryKeySelective(courseItem);
     }
 
