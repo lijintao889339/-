@@ -407,8 +407,11 @@ public class OpenService extends BaseService {
         //Integer categoryId = course.getCategoryId();
         //设置添加的班课的二级分类Id
         //openEntity.setCategoryId(categoryId);
-        openEntity.setCourseStatus(10);
+        openEntity.setStudyMode(10);
         openEntity.setDeleteStatus(2);//删除状态：1 已删除 2 未删除
+        openEntity.setPublishFlag(2);  //创建的班课默认为未发布
+        //添加班课信息
+        openMapper.insertSelective(openEntity);
         //将用户id(教学老师)添加到班课用户关系表
         Integer[] userIds = addOpenDto.getUserId();
         //List<OpenUser> openUserList = Lists.newArrayList();
@@ -431,6 +434,17 @@ public class OpenService extends BaseService {
         }
 
         openTeacherConnectionMapper.insertConnectionByOpenAndTeachers(openTeacherConnectionList);
+
+        //添加成绩设置
+        if (null != addOpenDto.getOpenSetDto()){
+            //给此门课程添加成绩设置
+            OpenSet openSet = OpenSetDtoMapper.INSTANCE.dtoToEntity(addOpenDto.getOpenSetDto());
+            openSet.setOpenId(openEntity.getId());
+            openSet.setSchoolId(openEntity.getSchoolId());
+            openSet.setDeleteStatus(2);
+            openSet.setVideoOver(90);  //默认视频观看90%算观看完
+            openSetMapper.insertSelective(openSet);
+        }
 
         return openMapper.insertSelective(openEntity);
 

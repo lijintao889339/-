@@ -16,7 +16,9 @@ public class AddOpenDto extends Dto {
 
     private Integer[] teacherId;
 
-    private Integer courseId;
+    //private Integer courseId;
+
+    private Integer firstCategoryId;
 
     private Integer categoryId;
 
@@ -37,6 +39,13 @@ public class AddOpenDto extends Dto {
 
     private Integer openFree;
 
+    //退课权限
+    private Integer dropCourse;
+    //教学安排
+    private Integer openArrange;
+    //一句话介绍
+    private Integer simpleInfo;
+
     //模式
     private Integer studyMode;
 
@@ -51,5 +60,8 @@ public class AddOpenDto extends Dto {
 
     //试学章节(前几个视频)
     private Integer previewVideo;
+
+    //班课成绩设置
+    private OpenSetDto openSetDto;
 
 }
