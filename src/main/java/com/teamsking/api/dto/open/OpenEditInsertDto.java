@@ -10,9 +10,13 @@ public class OpenEditInsertDto extends Dto {
 
     private Integer id;
 
-    private Integer courseId;
+    //private Integer courseId;
+
+    //private Integer categoryId;
 
     private Integer categoryId;
+
+    private Integer firstCategoryId;
 
     private String openName;
 
