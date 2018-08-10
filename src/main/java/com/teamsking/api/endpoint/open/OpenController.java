@@ -228,8 +228,9 @@ public class OpenController extends BaseController {
         }else {
             return Result.success().addData("pager", warpPage(page));
         }
-
     }
+
+
 
     @ApiOperation(value = "根据课程模板创建班课前查询", produces = "application/json")
     @ApiImplicitParams( {
@@ -242,5 +243,20 @@ public class OpenController extends BaseController {
         return Result.success().addData("openDto",openDto);
     }
 
+
+
+    @ApiOperation(value = "根据课程模板创建班课", consumes= "application/json")
+    @ApiImplicitParams( {
+            @ApiImplicitParam(name = "addOpenCourseDto", value = "班课信息", required = true, dataType = "AddOpenCourseDto"),
+            @ApiImplicitParam(name = "courseId", value = "课程的主键", required = true, dataType = "int")
+    })
+    @PostMapping("/add_open_course/{courseId}")
+    public Result addOpenByCourse(@RequestBody AddOpenCourseDto addOpenCourseDto,
+                                  @PathVariable int courseId){
+
+        openService.saveOpenByCourse(addOpenCourseDto,courseId);
+        return Result.success();
+
+    }
 
 }

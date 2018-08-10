@@ -4,10 +4,7 @@ import com.teamsking.api.dto.open.AddOpenByCourseDto;
 import com.teamsking.domain.entity.course.Course;
 import java.util.List;
 
-import com.teamsking.domain.entity.course.CourseTeacher;
-import com.teamsking.domain.entity.open.OpenTeacher;
 import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
 import org.mapstruct.factory.Mappers;
 
 @Mapper
@@ -33,7 +30,6 @@ public interface CourseDtoMapper {
 
     List<CourseSchoolDto> entityToCourseSchoolDtoList(List<Course> courseList);
 
-    @Mapping(source = "simpleInfo", target = "courseIntroduction")
     AddOpenByCourseDto entityToOpenDto(Course course);
 
 }

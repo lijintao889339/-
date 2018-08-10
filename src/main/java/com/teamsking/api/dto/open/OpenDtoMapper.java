@@ -35,4 +35,6 @@ public interface OpenDtoMapper {
 
     EditOpenDto entityToEditDto(Open open);
 
+    Open addOpenCourseToEntity(AddOpenCourseDto addOpenCourseDto);
+
 }

@@ -13,7 +13,7 @@
         <result column="open_name" jdbcType="VARCHAR" property="openName"/>
         <result column="open_mode" jdbcType="INTEGER" property="openMode"/>
         <result column="study_mode" jdbcType="INTEGER" property="studyMode"/>
-        <result column="course_introduction" jdbcType="VARCHAR" property="courseIntroduction"/>
+        <result column="simple_info" jdbcType="VARCHAR" property="simpleInfo"/>
         <result column="course_credit" jdbcType="DECIMAL" property="courseCredit"/>
         <result column="study_hour" jdbcType="INTEGER" property="studyHour"/>
         <result column="score_day" jdbcType="INTEGER" property="scoreDay"/>
@@ -43,6 +43,7 @@
         <result column="open_free" jdbcType="INTEGER" property="openFree"/>
         <result column="qc_code" jdbcType="VARCHAR" property="qcCode"/>
         <result column="first_category_id" jdbcType="INTEGER" property="firstCategoryId"/>
+        <result column="open_arrange" jdbcType="VARCHAR" property="openArrange"/>
 
     </resultMap>
 

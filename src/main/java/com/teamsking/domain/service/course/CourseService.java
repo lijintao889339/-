@@ -209,9 +209,9 @@ public class CourseService extends BaseService {
 
         //向课程表添加信息
         Course courseEntity = CourseDtoMapper.INSTANCE.insertDtoToEntity(courseInsertDto);
-        courseEntity.setCourseStatus("10");
+        courseEntity.setCourseStatus(10);
         courseEntity.setDeleteStatus(2);
-        int count = courseMapper.insert(courseEntity);
+        courseMapper.insertSelective(courseEntity);
 
         //将老师Id添加到课程老师关系表
         Integer[] teacherIds = courseInsertDto.getTeacherId();
@@ -262,14 +262,14 @@ public class CourseService extends BaseService {
 
         //根据Id查询改课程模板的状态
         Course course = courseMapper.selectByPrimaryKey(id);
-        String courseStatus = course.getCourseStatus();
+        Integer courseStatus = course.getCourseStatus();
 
         //课程状态: 10 未发布 20 已发布 30 停用
-        if ("30".equals(courseStatus)) {
-            courseStatus = "10";
+        if (30 == courseStatus) {
+            courseStatus = 10;
 
         } else {
-            courseStatus = "30";
+            courseStatus = 30;
         }
         course.setCourseStatus(courseStatus);
 

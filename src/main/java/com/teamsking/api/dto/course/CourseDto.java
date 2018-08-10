@@ -27,7 +27,7 @@ public class CourseDto extends Dto {
 
     private Integer schoolId;
 
-    private String courseStatus;
+    private Integer courseStatus;
 
     private Integer createId;
 

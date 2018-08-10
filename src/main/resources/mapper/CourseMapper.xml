@@ -17,7 +17,7 @@
     <result column="course_video_srt" jdbcType="VARCHAR" property="courseVideoSrt" />
     <result column="level" jdbcType="VARCHAR" property="level" />
     <result column="school_id" jdbcType="INTEGER" property="schoolId" />
-    <result column="course_status" jdbcType="VARCHAR" property="courseStatus" />
+    <result column="course_status" jdbcType="INTEGER" property="courseStatus" />
     <result column="create_id" jdbcType="INTEGER" property="createId" />
     <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
     <result column="update_id" jdbcType="INTEGER" property="updateId" />

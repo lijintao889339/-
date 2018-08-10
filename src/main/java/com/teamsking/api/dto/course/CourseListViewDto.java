@@ -21,7 +21,7 @@ public class CourseListViewDto extends Dto {
 
     private Integer courseFree;
 
-    private String courseStatus;
+    private Integer courseStatus;
 
     private List<String> teacherName;
 

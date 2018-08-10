@@ -619,30 +619,75 @@ public class OpenService extends BaseService {
 
         //把查到的课程模板授课老师信息添加到班课授课老师表中
         List<OpenTeacher> openTeacherList = CourseTeacherDtoMapper.INSTANCE.entityListToOpenTeacherList(courseTeacherList);
+        List<OpenTeacher> openTeachers = Lists.newArrayList();
 
         for (OpenTeacher openTeacher : openTeacherList){
-
             openTeacher.setId(null);
-
-            //查询班课老师是否有次信息
+            //查询班课老师是否有此条数据
             int count = openTeacherMapper.selectCount(openTeacher);
             if (0 == count){
-                openTeacherMapper.insertSelective(openTeacher);
+               openTeacherMapper.insertSelective(openTeacher);
             }
+            OpenTeacher openTeacherEntity = openTeacherMapper.selectOne(openTeacher);
+            openTeachers.add(openTeacherEntity);
 
         }
 
-        List<CourseTeacherNameDto> teacherNameDtos = CourseTeacherDtoMapper.INSTANCE.entityListToNameListDto(courseTeacherList);
+        List<OpenTeacherNameDto> teacherNameDtos = OpenTeacherDtoMapper.INSTANCE.entityListToNameListDto(openTeachers);
 
         //数据转换
         AddOpenByCourseDto openDto = CourseDtoMapper.INSTANCE.entityToOpenDto(course);
 
         openDto.setOpenFree(course.getCourseFree());
-        openDto.setOpenIntroduce(course.getCourseIntroduction());
         openDto.setOpenName(course.getCourseName());
         openDto.setTeacherNameDtoList(teacherNameDtos);
 
         return openDto;
 
+    }
+
+    /**
+     * 根据课程模板创建班课
+     * @param addOpenCourseDto
+     * @param courseId
+     * @return
+     */
+    public int saveOpenByCourse(AddOpenCourseDto addOpenCourseDto, int courseId) {
+
+        //根据课程id查询课程模板信息
+        Course course = courseMapper.selectByPrimaryKey(courseId);
+
+        //数据转换
+        Open open = OpenDtoMapper.INSTANCE.addOpenCourseToEntity(addOpenCourseDto);
+
+        //添加班课基本信息
+        open.setCourseId(courseId);
+        open.setDeleteStatus(2);
+        open.setCourseStatus(course.getCourseStatus());
+        open.setPublishFlag(2);  //创建的班课默认为未发布
+        int count = openMapper.insertSelective(open);
+
+        //将用户id(教学老师)添加到班课用户关系表
+        Integer[] userIds = addOpenCourseDto.getUserId();
+        for (Integer userId : userIds) {
+            OpenUser openUser = new OpenUser();
+            openUser.setOpenId(open.getId());
+            openUser.setCourseId(courseId);
+            openUser.setUserId(userId);
+            openUserMapper.insertSelective(openUser);
+        }
+
+        //将授课教师id添加到班课教师关系表
+        Integer[] teacherIds = addOpenCourseDto.getTeacherId();
+        List<OpenTeacherConnection> openTeacherConnectionList = Lists.newArrayList();
+        for (Integer teacherId : teacherIds) {
+            OpenTeacherConnection openTeacherConnection = new OpenTeacherConnection();
+            openTeacherConnection.setOpenId(open.getId());
+            openTeacherConnection.setTeacherId(teacherId);
+            openTeacherConnectionList.add(openTeacherConnection);
+        }
+        openTeacherConnectionMapper.insertConnectionByOpenAndTeachers(openTeacherConnectionList);
+
+        return count;
     }
 }
