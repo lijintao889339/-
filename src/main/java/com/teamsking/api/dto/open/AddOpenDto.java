@@ -46,6 +46,9 @@ public class AddOpenDto extends Dto {
     //一句话介绍
     private Integer simpleInfo;
 
+    //开课范围(10：教师导入 20 本校学生 30 全部学员)
+    private Integer openMode;
+
     //模式
     private Integer studyMode;
 
