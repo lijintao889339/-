@@ -56,6 +56,8 @@ public class OpenService extends BaseService {
     CourseTeacherConnectionMapper courseTeacherConnectionMapper;
     @Autowired
     OpenTeacherMapper openTeacherMapper;
+    @Autowired
+    OpenSetMapper openSetMapper;
 
 
     @Autowired
@@ -687,6 +689,17 @@ public class OpenService extends BaseService {
             openTeacherConnectionList.add(openTeacherConnection);
         }
         openTeacherConnectionMapper.insertConnectionByOpenAndTeachers(openTeacherConnectionList);
+
+        //如果添加成绩设置
+        if (null != addOpenCourseDto.getOpenSetDto()){
+            //给此门课程添加成绩设置
+            OpenSet openSet = OpenSetDtoMapper.INSTANCE.dtoToEntity(addOpenCourseDto.getOpenSetDto());
+            openSet.setOpenId(open.getId());
+            openSet.setSchoolId(open.getSchoolId());
+            openSet.setDeleteStatus(2);
+            openSet.setVideoOver(90);  //默认视频观看90%算观看完
+            openSetMapper.insertSelective(openSet);
+        }
 
         return count;
     }

@@ -19,7 +19,7 @@ public class AddOpenCourseDto extends Dto {
 
     private Integer categoryId;
 
-    private Integer firstCateforyId;
+    private Integer firstCategoryId;
 
     private String openName;
 
@@ -57,5 +57,8 @@ public class AddOpenCourseDto extends Dto {
 
     //课程简介
     private String simpleInfo;
+
+    //班课成绩设置
+    private OpenSetDto openSetDto;
 
 }
