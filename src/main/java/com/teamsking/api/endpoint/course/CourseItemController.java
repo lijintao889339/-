@@ -1,5 +1,6 @@
 package com.teamsking.api.endpoint.course;
 
+import com.teamsking.api.dto.course.AddCourseItemDto;
 import com.teamsking.api.dto.course.CourseItemDto;
 import com.teamsking.api.dto.course.CourseItemDtoMapper;
 import com.teamsking.api.endpoint.BaseController;
@@ -87,7 +88,7 @@ public class CourseItemController extends BaseController {
      * @param courseItemDto
      * @return
      */
-    @ApiOperation(value = "修改课程模板中的章节项", consumes = "application/json")
+    @ApiOperation(value = "修改课程模板中的小项的名称(包括资源名称)", consumes = "application/json")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "courseItem", value = "课程模板的章节项", required = true, dataType = "CourseItemDto"),
             @ApiImplicitParam(name = "id", value = "课程模板-小项的主键", required = true, dataType = "int")
@@ -99,4 +100,5 @@ public class CourseItemController extends BaseController {
         courseItemService.modify(courseItemDto,id);
         return Result.success();
     }
+
 }

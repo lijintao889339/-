@@ -140,7 +140,8 @@ public class CourseController extends BaseController {
 
     @ApiOperation(value = "添加小项内容", produces = "application/json")
     @ApiImplicitParams( {
-            @ApiImplicitParam(name = "addCourseItemDto", value = "课程模板的小项内容", required = true, dataType = "AddCourseItemDto")
+            @ApiImplicitParam(name = "addCourseItemDto", value = "课程模板的小项内容", required = true, dataType = "AddCourseItemDto[]"),
+            @ApiImplicitParam(name = "sectionId", value = "课程模板的小项主键", required = true, dataType = "int")
     })
     @PostMapping("/course_section/{sectionId}/items")
     public Result addCourse(@RequestBody AddCourseItemDto[] addCourseItemDto,

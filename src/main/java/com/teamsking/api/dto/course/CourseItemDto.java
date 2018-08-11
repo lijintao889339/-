@@ -19,4 +19,8 @@ public class CourseItemDto extends Dto {
     private Integer type;
 
     private Integer relationId;
+
+    private String suffixName;
+
+    private String filePath;
 }
