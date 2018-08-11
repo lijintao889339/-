@@ -1,6 +1,7 @@
 package com.teamsking.api.endpoint.open;
 
 import com.github.pagehelper.PageHelper;
+import com.teamsking.api.dto.open.AddOpenAssignmentDto;
 import com.teamsking.api.dto.open.OpenAssignmentDto;
 import com.teamsking.api.dto.open.OpenAssignmentDtoMapper;
 import com.teamsking.api.endpoint.BaseController;
@@ -118,6 +119,21 @@ public class OpenAssignmentController extends BaseController {
         openAssignmentEntity.setId(id);
         openAssignmentService.modify(openAssignmentEntity);
         return Result.success();
+    }
+
+
+
+    @ApiOperation(value = "根据班课id添加作业", consumes = "application/json")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "addOpenAssignmentDto", value = "班次作业", required = true, dataType = "AddOpenAssignmentDto")
+    })
+    @PostMapping("/add_open_assignment")
+    public Result addOpenAssignment(@RequestBody AddOpenAssignmentDto addOpenAssignmentDto){
+
+        openAssignmentService.addOpenAssignment(addOpenAssignmentDto);
+
+        return Result.success();
+
     }
 
 }

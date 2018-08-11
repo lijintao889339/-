@@ -442,7 +442,7 @@ public class OpenService extends BaseService {
             openSet.setOpenId(openEntity.getId());
             openSet.setSchoolId(openEntity.getSchoolId());
             openSet.setDeleteStatus(2);
-            openSet.setVideoOver(90);  //默认视频观看90%算观看完
+            //openSet.setVideoOver(90);  //默认视频观看90%算观看完
             openSetMapper.insertSelective(openSet);
         }
 

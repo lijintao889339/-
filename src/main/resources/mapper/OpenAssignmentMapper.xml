@@ -23,5 +23,9 @@
     <result column="publish_socre_days" jdbcType="INTEGER" property="publishSocreDays" />
     <result column="body" jdbcType="LONGVARCHAR" property="body" />
     <result column="score" jdbcType="LONGVARCHAR" property="score" />
+    <result column="chapter_id" jdbcType="INTEGER" property="chapterId" />
+    <result column="section_id" jdbcType="INTEGER" property="sectionId" />
+    <result column="score_description" jdbcType="VARCHAR" property="scoreDescription" />
+    <result column="work_type" jdbcType="INTEGER" property="workType" />
   </resultMap>
 </mapper>

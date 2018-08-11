@@ -19,4 +19,6 @@ public interface OpenAssignmentDtoMapper {
 
     OpenAssignment dtoToEntity(OpenAssignmentDto openAssignmentDto);
 
+    OpenAssignment InterDtoEntity(AddOpenAssignmentDto addOpenAssignmentDto);
+
 }
