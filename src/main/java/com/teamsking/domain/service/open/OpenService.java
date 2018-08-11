@@ -656,6 +656,7 @@ public class OpenService extends BaseService {
 
         openDto.setOpenFree(course.getCourseFree());
         openDto.setOpenName(course.getCourseName());
+        openDto.setOpenIntroduce(course.getCourseIntroduction());
         openDto.setTeacherNameDtoList(teacherNameDtos);
 
         return openDto;

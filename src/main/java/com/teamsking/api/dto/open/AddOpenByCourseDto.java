@@ -17,6 +17,8 @@ public class AddOpenByCourseDto extends Dto {
 
     private Integer openFree;
 
+    private String openIntroduce;
+
     private List<OpenTeacherNameDto> teacherNameDtoList;
 
     private Integer courseStatus;
