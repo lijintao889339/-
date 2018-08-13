@@ -59,12 +59,14 @@ public class SchoolService {
 
     /**
      * 根据学校Ids获取学校信息
-     * @param shcoolIds
+     * @param schoolIds
      * @return
      */
-    public List<School> getSchoolByShcoolIdList(List<Integer> shcoolIds) {
+    public List<School> getSchoolByShcoolIdList(List<Integer> schoolIds) {
 
         Example schoolExample = new Example(School.class);
+        Example.Criteria cri = schoolExample.createCriteria();
+        cri.andIn("id",schoolIds);
         return schoolMapper.selectByExample(schoolExample);
 
     }
@@ -74,12 +76,12 @@ public class SchoolService {
      * @param schoolIds
      * @return
      */
-    public List<School> getSchoolListByIds(List<Integer> schoolIds) {
+    /*public List<School> getSchoolListByIds(List<Integer> schoolIds) {
 
         Example schoolExample = new Example(School.class);
         Example.Criteria cri = schoolExample.createCriteria();
         cri.andIn("id",schoolIds);
         return schoolMapper.selectByExample(schoolExample);
 
-    }
+    }*/
 }

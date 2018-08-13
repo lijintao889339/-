@@ -40,10 +40,10 @@ public class CourseItemService extends BaseService {
         //根据节id查询小项内容
         CourseItem courseItem = new CourseItem();
         courseItem.setSectionId(sectionId);
+        courseItem.setDeleteStatus(2);
         List<CourseItem> courseItemList = courseItemMapper.select(courseItem);
 
         List<CourseItemDto> courseItemDtoList = CourseItemDtoMapper.INSTANCE.entityListToDtoList(courseItemList);
-        //CourseItemCategoryDto courseItemCategoryDto = CourseItemDtoMapper.INSTANCE.entityListToCategoryDto(courseItemList);
 
         //遍历集合
         for (CourseItemDto itemDto : courseItemDtoList){
@@ -93,6 +93,7 @@ public class CourseItemService extends BaseService {
     public int remove(int id){
 
         CourseItem courseItem = new CourseItem();
+        courseItem.setId(id);
         courseItem.setDeleteStatus(1);
         return courseItemMapper.updateByPrimaryKeySelective(courseItem);
     }
