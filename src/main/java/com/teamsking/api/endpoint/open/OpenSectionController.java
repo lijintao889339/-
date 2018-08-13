@@ -123,4 +123,20 @@ public class OpenSectionController extends BaseController {
         openSectionService.modify(openSectionEntity);
         return Result.success();
     }
+
+
+    @ApiOperation(value = "根据章id查询节信息", consumes = "application/json")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "chapterId", value = "节主键", required = true, dataType = "Integer")
+    })
+    @GetMapping("/open_sections/{chapterId}")
+    public Result getOpenSectionByChapterId(@PathVariable int chapterId){
+
+        List<OpenSection> openSectionList = openSectionService.getOpenSectionByChapterId(chapterId);
+
+        return Result.success().addData("openSectionList",openSectionList);
+
+    }
+
+
 }

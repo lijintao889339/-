@@ -100,4 +100,21 @@ public class OpenSectionService {
     }
 
 
+    /**
+     * 根据章id查询所有节的信息
+     * @param chapterId
+     * @return
+     */
+    public List<OpenSection> getOpenSectionByChapterId(Integer chapterId){
+
+        OpenSection openSection = new OpenSection();
+        openSection.setChapterId(chapterId);
+
+        List<OpenSection> openSectionList = openSectionMapper.select(openSection);
+
+        return openSectionList;
+
+    }
+
+
 }
