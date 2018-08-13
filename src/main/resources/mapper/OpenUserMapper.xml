@@ -20,10 +20,12 @@
     <result column="update_id" jdbcType="INTEGER" property="updateId" />
     <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
     <result column="delete_status" jdbcType="INTEGER" property="deleteStatus" />
+    <result column="user_student_id" jdbcType="INTEGER" property="userStudentId" />
+    <result column="user_teacher_id" jdbcType="INTEGER" property="userTeacherId" />
   </resultMap>
 
   <select id="countByOpenIdsGroupByOpenId" resultType="java.util.Map">
-    select open_id as `openId`, count(*) as `count` from `open_user`
+    select user_student_id as `openId`, count(*) as `count` from `open_user`
     <where>
       <if test="openIds != null and openIds.size() > 0">
         open_id in

@@ -19,6 +19,7 @@ import com.teamsking.domain.entity.node.Node;
 import com.teamsking.domain.entity.open.*;
 import com.teamsking.domain.entity.school.School;
 import com.teamsking.domain.entity.sys.SysUser;
+import com.teamsking.domain.entity.sys.UserTeacher;
 import com.teamsking.domain.repository.*;
 
 import com.teamsking.domain.service.BaseService;
@@ -58,6 +59,8 @@ public class OpenService extends BaseService {
     OpenTeacherMapper openTeacherMapper;
     @Autowired
     OpenSetMapper openSetMapper;
+    @Autowired
+    UserTeacherMapper userTeacherMapper;
 
 
     @Autowired
@@ -374,6 +377,7 @@ public class OpenService extends BaseService {
 
         Open open = new Open();
         open.setCategoryId(categoryId);
+        open.setDeleteStatus(2);
         return openMapper.select(open);
 
     }
@@ -388,6 +392,7 @@ public class OpenService extends BaseService {
         Example openExample = new Example(Open.class);
         Example.Criteria cri = openExample.createCriteria();
         cri.andIn("categoryId",categoryIds);
+        cri.andEqualTo("deleteStatus",2);
         return openMapper.selectByExample(openExample);
 
     }
@@ -402,26 +407,23 @@ public class OpenService extends BaseService {
 
         Open openEntity = OpenDtoMapper.INSTANCE.insertDtoAddToEntity(addOpenDto);
 
-        //根据课程id获取该课程的二级分类id
-        //Course course = courseMapper.selectByPrimaryKey(openEntity.getCourseId());
-        //Integer categoryId = course.getCategoryId();
-        //设置添加的班课的二级分类Id
-        //openEntity.setCategoryId(categoryId);
         openEntity.setStudyMode(10);
         openEntity.setDeleteStatus(2);//删除状态：1 已删除 2 未删除
         openEntity.setPublishFlag(2);  //创建的班课默认为未发布
         //添加班课信息
         openMapper.insertSelective(openEntity);
-        //将用户id(教学老师)添加到班课用户关系表
+        //将教学老师添加到班课用户关系表
         Integer[] userIds = addOpenDto.getUserId();
-        //List<OpenUser> openUserList = Lists.newArrayList();
-        for (Integer userId : userIds) {
+        for (Integer teacherId  : userIds){
+            //查询到用户信息
+            UserTeacher userTeacher = userTeacherMapper.selectByPrimaryKey(teacherId);
             OpenUser openUser = new OpenUser();
             openUser.setOpenId(openEntity.getId());
-            openUser.setUserId(userId);
+            openUser.setUserId(userTeacher.getUserId());
+            openUser.setUserTeacherId(teacherId);
             openUserMapper.insertSelective(openUser);
+
         }
-        //openUserMapper.insertSelective(openUserList);
 
         //将授课教师id添加到班课教师关系表
         Integer[] teacherIds = addOpenDto.getTeacherId();
@@ -492,43 +494,25 @@ public class OpenService extends BaseService {
         List<OpenTeacherNameDto> openTeacherNameDtoList = OpenTeacherDtoMapper.INSTANCE.entityListToNameListDto(openTeacherList);
         editOpenDtoEntity.setOpenTeacherNameList(openTeacherNameDtoList);
 
-        //根据班课Id查询该班课角色权限信息
-        /*if (open.getVisibleRange() == 2) {
-            //获取所有角色为老师的用户
-            List<SysUser> userOpenList = sysUserService.getOpenUserNameByRoleId();
-            List<UserDto> userDtoListAll = SysUserDtoMapper.INSTANCE.entityDtoToUserDtoList(userOpenList);
-            editOpenDtoEntity.setUserDtoListAll(userDtoListAll);
-
-            //获取该班课下的角色为老师的用户
-            //1.获取与该班课有关的用户Id
-            UserOpen newUserOpen = new UserOpen();
-            newUserOpen.setOpenId(id);
-            List<UserOpen> userOpens = userOpenMapper.select(newUserOpen);
-
-            List<Integer> userIdList = Lists.newArrayList();
-            for (UserOpen userOpen : userOpens) {
-                userIdList.add(userOpen.getUserId());
-            }
-
-
-            //2.根据用户IdList获取老师信息
-            List<SysUser> sysUserList = sysUserService.getSysUserByUserIdList(userIdList);
-            List<UserDto> userDtoListById = SysUserDtoMapper.INSTANCE.entityDtoToUserDtoList(sysUserList);
-            editOpenDtoEntity.setUserDtoListById(userDtoListById);
-        }*/
-
-
-        //获取该班课下的角色为老师的用户
-        //1.获取与该班课有关的用户Id
+        //获取该班课下的教学老师
+        //1.获取与该班课有关的教学老师Id
         OpenUser newOpenUser = new OpenUser();
         newOpenUser.setOpenId(id);
         List<OpenUser> openUsers = openUserMapper.select(newOpenUser);
 
-        List<Integer> userIdList = Lists.newArrayList();
+        List<Integer> userTeacherIdList = Lists.newArrayList();
         for (OpenUser openUser : openUsers) {
-            userIdList.add(openUser.getUserId());
+            if (null != openUser.getUserTeacherId()){
+                userTeacherIdList.add(openUser.getUserTeacherId());
+            }
+
         }
 
+        List<Integer> userIdList = Lists.newArrayList();
+        for (Integer teacherId : userTeacherIdList){
+            UserTeacher userTeacher = userTeacherMapper.selectByPrimaryKey(teacherId);
+            userIdList.add(userTeacher.getUserId());
+        }
 
         //2.根据用户IdList获取老师信息
         List<SysUser> sysUserList = sysUserService.getSysUserByUserIdList(userIdList);
@@ -548,9 +532,9 @@ public class OpenService extends BaseService {
 
         Open openEntity = OpenDtoMapper.INSTANCE.editAddDtoToEntity(openEditInsertDto);
 
-        Course course = courseMapper.selectByPrimaryKey(openEntity.getCourseId());
+        /*Course course = courseMapper.selectByPrimaryKey(openEntity.getCourseId());
         Integer categoryId = course.getCategoryId();
-        openEntity.setCategoryId(categoryId);
+        openEntity.setCategoryId(categoryId);*/
         //openEntity.setDeleteStatus(2);
 
         Integer[] teacherIds = openEditInsertDto.getTeacherId();
@@ -686,11 +670,15 @@ public class OpenService extends BaseService {
 
         //将用户id(教学老师)添加到班课用户关系表
         Integer[] userIds = addOpenCourseDto.getUserId();
-        for (Integer userId : userIds) {
+        for (Integer teacherId : userIds) {
+            //查询到用户信息
+            UserTeacher userTeacher = userTeacherMapper.selectByPrimaryKey(teacherId);
+
             OpenUser openUser = new OpenUser();
+            openUser.setUserId(userTeacher.getUserId());
+            openUser.setUserTeacherId(teacherId);
             openUser.setOpenId(open.getId());
             openUser.setCourseId(courseId);
-            openUser.setUserId(userId);
             openUserMapper.insertSelective(openUser);
         }
 
@@ -712,7 +700,7 @@ public class OpenService extends BaseService {
             openSet.setOpenId(open.getId());
             openSet.setSchoolId(open.getSchoolId());
             openSet.setDeleteStatus(2);
-            openSet.setVideoOver(90);  //默认视频观看90%算观看完
+            //openSet.setVideoOver(90);  //默认视频观看90%算观看完
             openSetMapper.insertSelective(openSet);
         }
 

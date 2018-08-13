@@ -4,12 +4,15 @@ import com.google.common.collect.Lists;
 import com.teamsking.domain.entity.course.Course;
 import com.teamsking.domain.entity.sys.SysUser;
 import com.teamsking.domain.entity.sys.SysUserRole;
+import com.teamsking.domain.entity.sys.UserTeacher;
 import com.teamsking.domain.repository.SysUserMapper;
 import java.util.List;
 
 import com.teamsking.domain.repository.SysUserRoleMapper;
+import com.teamsking.domain.repository.UserTeacherMapper;
 import com.teamsking.domain.service.BaseService;
 import lombok.extern.slf4j.Slf4j;
+import org.checkerframework.checker.units.qual.A;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import tk.mybatis.mapper.entity.Example;
@@ -22,6 +25,8 @@ public class SysUserService extends BaseService {
     SysUserMapper sysUserMapper;
     @Autowired
     SysUserRoleMapper sysUserRoleMapper;
+    @Autowired
+    UserTeacherMapper userTeacherMapper;
 
     /**
      * 查询所有的用户
@@ -105,14 +110,20 @@ public class SysUserService extends BaseService {
      */
     public List<SysUser> getOpenUserNameByRoleId() {
 
-        //获取角色为老师(角色id为1)的用户idList
+        //获取教学老师的idList
         List<Integer> userIdList = Lists.newArrayList();
+        List<UserTeacher> userTeacherList = userTeacherMapper.selectAll();
+        for (UserTeacher userTeacher : userTeacherList){
+            userIdList.add(userTeacher.getUserId());
+        }
+
+        /*List<Integer> userIdList = Lists.newArrayList();
         SysUserRole sysUserRole = new SysUserRole();
         sysUserRole.setRoleId(2);
         List<SysUserRole> sysUserRoleList = sysUserRoleMapper.select(sysUserRole);
         for (SysUserRole userRole : sysUserRoleList){
             userIdList.add(userRole.getUserId());
-        }
+        }*/
 
         //获取userIdList对应的用户姓名
         Example userExample = new Example(SysUser.class);
