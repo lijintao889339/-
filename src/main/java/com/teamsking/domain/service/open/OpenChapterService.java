@@ -141,4 +141,21 @@ public class OpenChapterService {
         return openChapterMapper.updateByPrimaryKeySelective(openChapter);
     }
 
+
+    /**
+     * 根据班课id查询所有的章
+     * @param openId
+     * @return
+     */
+    public List<OpenChapter> getOpenChapterByOpenId(Integer openId){
+
+        OpenChapter openChapterEntity = new OpenChapter();
+        openChapterEntity.setOpenId(openId);
+        //openChapterEntity.setDeleteStatus(2);
+        List<OpenChapter> openChapterList = openChapterMapper.select(openChapterEntity);
+
+        return openChapterList;
+
+    }
+
 }

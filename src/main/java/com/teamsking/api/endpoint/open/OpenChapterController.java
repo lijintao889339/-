@@ -139,4 +139,19 @@ public class OpenChapterController extends BaseController {
         return Result.success();
     }
 
+
+
+    @ApiOperation(value = "根据openId章的列表", notes = "可分页", produces = "application/json")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "openId", value = "班课的主键", required = true, dataType = "int")
+    })
+    @GetMapping("/open_chapters/{openId}")
+    public Result getOpenChapterByOpenId(@PathVariable int openId){
+
+        List<OpenChapter> openChapterList = openChapterService.getOpenChapterByOpenId(openId);
+
+        return Result.success().addData("openChapterList",openChapterList);
+
+    }
+
 }
