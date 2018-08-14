@@ -19,5 +19,6 @@
     <result column="avatar" jdbcType="VARCHAR" property="avatar" />
     <result column="delete_status" jdbcType="INTEGER" property="deleteStatus" />
     <result column="user_id" jdbcType="INTEGER" property="userId" />
+    <result column="school_id" jdbcType="INTEGER" property="schoolId" />
   </resultMap>
 </mapper>
