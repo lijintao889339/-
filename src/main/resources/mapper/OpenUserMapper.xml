@@ -10,7 +10,6 @@
     <id column="id" jdbcType="INTEGER" property="id" />
     <result column="open_id" jdbcType="INTEGER" property="openId" />
     <result column="course_id" jdbcType="INTEGER" property="courseId" />
-    <result column="user_id" jdbcType="INTEGER" property="userId" />
     <result column="group_id" jdbcType="INTEGER" property="groupId" />
     <result column="group_name" jdbcType="VARCHAR" property="groupName" />
     <result column="leader_status" jdbcType="TINYINT" property="leaderStatus" />
@@ -21,11 +20,10 @@
     <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
     <result column="delete_status" jdbcType="INTEGER" property="deleteStatus" />
     <result column="user_student_id" jdbcType="INTEGER" property="userStudentId" />
-    <result column="user_teacher_id" jdbcType="INTEGER" property="userTeacherId" />
   </resultMap>
 
   <select id="countByOpenIdsGroupByOpenId" resultType="java.util.Map">
-    select user_student_id as `openId`, count(*) as `count` from `open_user`
+    select open_id as `openId`, count(*) as `count` from `open_user`
     <where>
       <if test="openIds != null and openIds.size() > 0">
         open_id in

@@ -3,6 +3,7 @@ package com.teamsking.api.endpoint.open;
 
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
+import com.teamsking.api.dto.course.UserStudentDto;
 import com.teamsking.api.dto.open.*;
 import com.teamsking.api.endpoint.BaseController;
 import com.teamsking.domain.entity.open.Open;
@@ -114,6 +115,7 @@ public class OpenController extends BaseController {
     public Result courseList(@RequestParam int pageNo, @RequestParam int pageSize, @PathVariable int courseId) {
         return Result.success().addData("pager", warpPage(openService.listByCourseId(fixPage(pageNo), fixPage(pageSize),courseId)));
     }
+
 
     @ApiOperation(value = "修改班课状态", consumes = "application/json")
     @ApiImplicitParams({
@@ -257,6 +259,18 @@ public class OpenController extends BaseController {
         openService.saveOpenByCourse(addOpenCourseDto,courseId);
         return Result.success();
 
+    }
+
+
+    @ApiOperation(value = "班课下的用户列表", produces = "application/json")
+    @ApiImplicitParams( {
+            @ApiImplicitParam(name = "id", value = "班课的主键", required = true, dataType = "Integer")
+    })
+    @GetMapping("/open_user/{id}")
+    public Result getOpenUser(@PathVariable int id){
+
+        List<UserStudentDto> userStudentDtos = openService.getOpenUserById(id);
+        return Result.success().addData("userStudentDtos",userStudentDtos);
     }
 
 }

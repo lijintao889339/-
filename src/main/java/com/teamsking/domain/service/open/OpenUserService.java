@@ -3,6 +3,8 @@ package com.teamsking.domain.service.open;
 import com.teamsking.domain.entity.open.OpenUser;
 import com.teamsking.domain.repository.OpenUserMapper;
 import java.util.List;
+
+import com.teamsking.domain.service.BaseService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -13,7 +15,7 @@ import tk.mybatis.mapper.entity.Example;
 */
 @Service
 @Slf4j
-public class OpenUserService {
+public class OpenUserService extends BaseService {
 
     @Autowired
     OpenUserMapper openUserMapper;
@@ -79,5 +81,17 @@ public class OpenUserService {
         Example openUserExample = new Example(OpenUser.class);
         openUserExample.and().andEqualTo("openId",openId);
         return openUserMapper.deleteByExample(openUserExample);
+    }
+
+    /**
+     * 根据openIds查询用户选课列表
+     * @param openIds
+     * @return
+     */
+    public List<OpenUser> getOpenUserListByOpenIds(List<Integer> openIds) {
+
+        Example openUserExample = new Example(OpenUser.class);
+        openUserExample.and().andIn("openId",openIds);
+        return openUserMapper.selectByExample(openUserExample);
     }
 }
