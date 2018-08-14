@@ -16,4 +16,6 @@ public interface UserTeacherDtoMapper {
 
     List<UserDto> entityDtoToUserDtoList(List<UserTeacher> userTeacherList);
 
+    List<UserTeacherDto> entityDtoToTeacherDtoList(List<UserTeacher> userTeacherList);
+
 }

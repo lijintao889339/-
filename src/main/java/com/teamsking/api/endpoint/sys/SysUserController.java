@@ -4,9 +4,11 @@ import com.github.pagehelper.PageHelper;
 import com.teamsking.api.dto.sys.SysUserDto;
 import com.teamsking.api.dto.sys.SysUserDtoMapper;
 import com.teamsking.api.dto.sys.UserDto;
+import com.teamsking.api.dto.sys.UserTeacherDto;
 import com.teamsking.api.endpoint.BaseController;
 import com.teamsking.domain.entity.sys.SysUser;
 import com.teamsking.domain.service.sys.SysUserService;
+import com.teamsking.domain.service.sys.UserTeacherService;
 import com.teamsking.util.Result;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
@@ -24,6 +26,8 @@ public class SysUserController extends BaseController {
 
     @Autowired
     SysUserService sysUserService;
+    @Autowired
+    UserTeacherService userTeacherService;
 
     /**
      * 查询用户列表
@@ -121,5 +125,19 @@ public class SysUserController extends BaseController {
 
     }
 
+
+
+    @ApiOperation(value = "获取班课的辅导老师列表", produces = "application/json")
+    @ApiImplicitParams( {
+            @ApiImplicitParam(name = "id", value = "班课的主键", required = true, dataType = "Integer"),
+            @ApiImplicitParam(name = "pageNo", paramType = "query",value = "页码", required = true, example = "1"),
+            @ApiImplicitParam(name = "pageSize", paramType = "query", value = "页大小", required = true, example = "10")
+    })
+    @GetMapping("/open_user_teacher/{id}")
+    public Result getOpenUser(@PathVariable int id, @RequestParam int pageNo, @RequestParam int pageSize){
+
+        List<UserTeacherDto> userTeacherDtos = userTeacherService.getOpenUserTeacherById(id,fixPage(pageNo),fixPage(pageSize));
+        return Result.success().addData("pager",warpPage(userTeacherDtos));
+    }
 
 }

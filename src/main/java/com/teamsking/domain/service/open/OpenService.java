@@ -718,9 +718,11 @@ public class OpenService extends BaseService {
     /**
      * 根据班课Id，获取学生信息
      * @param id
+     * @param pageNo
+     * @param pageSize
      * @return
      */
-    public List<UserStudentDto> getOpenUserById(int id) {
+    public Page getOpenUserById(int id ,int pageNo, int pageSize) {
 
         //获取该学生与班课信息
         OpenUser openUser = new OpenUser();
@@ -733,6 +735,8 @@ public class OpenService extends BaseService {
 
                 studentIds.add(openUserInfo.getUserStudentId());
         }
+
+        PageHelper.startPage(pageNo,pageSize);
 
         //获取学生信息
         List<UserStudent> userStudentList = userStudentService.getUserStudentListByIds(studentIds);
@@ -757,7 +761,7 @@ public class OpenService extends BaseService {
                 }
             }
         }
-        return userStudentDtos;
+        return convertPage((Page)userStudentList,userStudentDtos);
 
     }
 }
