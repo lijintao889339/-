@@ -1,6 +1,7 @@
 package com.teamsking.api.endpoint.open;
 
 import com.github.pagehelper.PageHelper;
+import com.teamsking.api.dto.open.AddOpenPageDto;
 import com.teamsking.api.dto.open.OpenPageDto;
 import com.teamsking.api.dto.open.OpenPageDtoMapper;
 import com.teamsking.api.endpoint.BaseController;
@@ -50,15 +51,14 @@ public class OpenPageController extends BaseController {
 
 
 
-    @ApiOperation(value = "添加班次-页面管理", consumes= "application/json")
+    @ApiOperation(value = "根据班课id添加页面", consumes= "application/json")
     @ApiImplicitParams( {
-            @ApiImplicitParam(name = "openPage", value = "班次页面管理", required = true, dataType = "OpenPageDto")
+            @ApiImplicitParam(name = "addOpenPageDto", value = "班课页面", required = true, dataType = "AddOpenPageDto")
     })
     @PostMapping("/open_page")
-    public Result addOpenPage(@RequestBody OpenPageDto openPage){
+    public Result addOpenPage(@RequestBody AddOpenPageDto addOpenPageDto){
 
-        OpenPage openPageEntity = OpenPageDtoMapper.INSTANCE.dtoToEntity(openPage);
-        openPageService.save(openPageEntity);
+        openPageService.saveOpenPage(addOpenPageDto);
         return Result.success();
 
     }
@@ -78,7 +78,7 @@ public class OpenPageController extends BaseController {
 
 
 
-    @ApiOperation(value = "添加班次-页面管理", consumes= "application/json")
+    @ApiOperation(value = "修改班次-页面管理", consumes= "application/json")
     @ApiImplicitParams( {
             @ApiImplicitParam(name = "openPage", value = "班次页面管理", required = true, dataType = "OpenPageDto")
     })

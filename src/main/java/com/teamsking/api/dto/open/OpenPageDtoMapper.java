@@ -17,4 +17,6 @@ public interface OpenPageDtoMapper {
 
     OpenPage dtoToEntity(OpenPageDto openPageDto);
 
+    OpenPage dtoToPageEntity(AddOpenPageDto addOpenPageDto);
+
 }

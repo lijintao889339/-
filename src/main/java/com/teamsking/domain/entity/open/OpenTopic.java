@@ -1,6 +1,8 @@
 package com.teamsking.domain.entity.open;
 
 import java.util.Date;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
 import javax.persistence.Table;
 
 @Table(name = "`open_topic`")
@@ -12,6 +14,8 @@ public class OpenTopic {
      *
      * @mbg.generated Tue Jun 26 17:08:40 CST 2018
      */
+    @Id
+    @GeneratedValue(generator = "JDBC")
     private Integer id;
 
     /**

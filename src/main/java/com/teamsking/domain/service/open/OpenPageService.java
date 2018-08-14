@@ -1,7 +1,11 @@
 package com.teamsking.domain.service.open;
 
 
+import com.teamsking.api.dto.open.AddOpenPageDto;
+import com.teamsking.api.dto.open.OpenPageDtoMapper;
+import com.teamsking.domain.entity.open.OpenItem;
 import com.teamsking.domain.entity.open.OpenPage;
+import com.teamsking.domain.repository.OpenItemMapper;
 import com.teamsking.domain.repository.OpenPageMapper;
 import java.util.List;
 import lombok.extern.slf4j.Slf4j;
@@ -15,6 +19,8 @@ public class OpenPageService {
 
     @Autowired
     OpenPageMapper openPageMapper;
+    @Autowired
+    OpenItemMapper openItemMapper;
 
 
     /**
@@ -28,13 +34,26 @@ public class OpenPageService {
     }
 
     /**
-     * 添加班次-页面管理
-     * @param openPage
+     * 根据班课id添加班课页面
+     * @param addOpenPageDto
      * @return
      */
-    public int save(OpenPage openPage){
+    public int saveOpenPage(AddOpenPageDto addOpenPageDto){
 
-        return openPageMapper.insert(openPage);
+        //数据转换
+        OpenPage openPageEntity = OpenPageDtoMapper.INSTANCE.dtoToPageEntity(addOpenPageDto);
+        openPageEntity.setDeleteStatus(2);
+        //添加数据
+        openPageMapper.insertSelective(openPageEntity);
+
+        OpenItem openItem = new OpenItem();
+        openItem.setContentId(openPageEntity.getId());
+        openItem.setChapterId(openPageEntity.getChapterId());
+        openItem.setSectionId(openPageEntity.getSectionId());
+        openItem.setOpenId(openPageEntity.getOpenId());
+
+
+        return openItemMapper.insertSelective(openItem);
 
     }
 

@@ -19,5 +19,7 @@
     <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
     <result column="delete_status" jdbcType="INTEGER" property="deleteStatus" />
     <result column="page_content" jdbcType="LONGVARCHAR" property="pageContent" />
+    <result column="chapter_id" jdbcType="INTEGER" property="chapterId" />
+    <result column="section_id" jdbcType="INTEGER" property="sectionId" />
   </resultMap>
 </mapper>
