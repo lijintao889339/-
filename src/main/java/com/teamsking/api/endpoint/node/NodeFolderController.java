@@ -93,7 +93,7 @@ public class NodeFolderController extends BaseController {
     @ApiImplicitParams( {
             @ApiImplicitParam(name = "openId", value = "班课id", required = true, dataType = "Integer")
     })
-    @GetMapping("/open_folders/{openId}")
+    @GetMapping("/video_open_folders/{openId}")
     public Result getNodeFolderList(@PathVariable int openId){
 
         return Result.success().addData("nodeFolderSelDtoList",nodeFolderService.getNodeFolderListByOpenId(openId));
@@ -106,12 +106,37 @@ public class NodeFolderController extends BaseController {
             @ApiImplicitParam(name = "id", value = "一级目录id", required = true, dataType = "Integer"),
             @ApiImplicitParam(name = "openId", value = "班课id", required = true, dataType = "Integer")
     })
-    @GetMapping("/open/{openId}/folders/{id}")
+    @GetMapping("/video_open/{openId}/folders/{id}")
     public Result getTwoVideoListById(@PathVariable int openId,
                                       @PathVariable int id){
 
         return Result.success().addData("nodeFolderSelDtoList",nodeFolderService.getTwoVideoListById(openId,id));
 
+    }
+
+
+
+    @ApiOperation(value = "根据openId查询课件资源文档库一级目录", consumes= "application/json")
+    @ApiImplicitParams( {
+            @ApiImplicitParam(name = "openId", value = "班课id", required = true, dataType = "Integer")
+    })
+    @GetMapping("/doc_open_folders_{openId}")
+    public Result getOneDocListByOpenId(@PathVariable int openId){
+
+        return Result.success().addData("nodeFolderSelDtoList",nodeFolderService.getOneDocListByOpenId(openId));
+
+    }
+
+    @ApiOperation(value = "根据一级目录id查询课件资源文档库子目录", consumes= "application/json")
+    @ApiImplicitParams( {
+            @ApiImplicitParam(name = "id", value = "一级目录id", required = true, dataType = "Integer"),
+            @ApiImplicitParam(name = "openId", value = "班课id", required = true, dataType = "Integer")
+    })
+    @GetMapping("/doc_open/{openId}/folders/{id}")
+    public Result getTwoDocListById(@PathVariable int openId,
+                                      @PathVariable int id){
+
+        return Result.success().addData("nodeFolderSelDtoList",nodeFolderService.getTwoDocListById(openId,id));
 
     }
 

@@ -95,8 +95,50 @@ public class NodeFolderService {
         List<NodeFolderSelDto> nodeFolderSelDtoList = NodeFolderDtoMapper.INSTANCE.entityListToDtoSelList(nodeFolderList);
 
         return nodeFolderSelDtoList;
+    }
 
 
+    /**
+     * 根据openId查询课件资源文档库一级目录
+     * @param openId
+     * @return
+     */
+    public List<NodeFolderSelDto> getOneDocListByOpenId(Integer openId){
+
+        //根据openid获取视频目录
+        NodeFolder nodeFolderEntity = new NodeFolder();
+        nodeFolderEntity.setOpenId(openId);
+        nodeFolderEntity.setParentId(0);
+        nodeFolderEntity.setDeleteStatus(2);
+        nodeFolderEntity.setFolderType(20);
+
+        List<NodeFolder> nodeFolderList = nodeFolderMapper.select(nodeFolderEntity);
+        //数据转换
+        List<NodeFolderSelDto> nodeFolderSelDtoList = NodeFolderDtoMapper.INSTANCE.entityListToDtoSelList(nodeFolderList);
+
+        return nodeFolderSelDtoList;
+
+    }
+
+    /**
+     * 根据一级目录查询课件资源文档库子目录
+     * @param openId
+     * @param id
+     * @return
+     */
+    public List<NodeFolderSelDto> getTwoDocListById(Integer openId,Integer id){
+
+        NodeFolder nodeFolderEntity = new NodeFolder();
+        nodeFolderEntity.setParentId(id);
+        nodeFolderEntity.setFolderType(20);
+        nodeFolderEntity.setDeleteStatus(2);
+        nodeFolderEntity.setOpenId(openId);
+
+        List<NodeFolder> nodeFolderList = nodeFolderMapper.select(nodeFolderEntity);
+
+        List<NodeFolderSelDto> nodeFolderSelDtoList = NodeFolderDtoMapper.INSTANCE.entityListToDtoSelList(nodeFolderList);
+
+        return nodeFolderSelDtoList;
 
     }
 
