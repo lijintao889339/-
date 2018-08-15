@@ -217,7 +217,7 @@ public class OpenController extends BaseController {
             @ApiImplicitParam(name = "pageSize", paramType = "query", value = "页大小", required = true, example = "10"),
             @ApiImplicitParam(name = "openName", value = "班课名称", required = true, dataType = "String")
     })
-    @GetMapping("/reaching_opens")
+    @GetMapping("/searching_opens")
     public Result getOpenListReaching(@RequestParam int pageNo,
                                       @RequestParam int pageSize,
                                       @RequestParam String openName){
@@ -272,6 +272,39 @@ public class OpenController extends BaseController {
 
         List<UserStudentDto> userStudentDtos = openService.getOpenUserById(id,fixPage(pageNo),fixPage(pageSize));
         return Result.success().addData("pager",warpPage(userStudentDtos));
+    }
+
+
+    @ApiOperation(value = "根据条件搜索所有班课下的用户列表", produces = "application/json")
+    @ApiImplicitParams( {
+            @ApiImplicitParam(name = "id", value = "班课的主键", required = true, dataType = "Integer"),
+            @ApiImplicitParam(name = "realName", value = "真是姓名", required = true, dataType = "String"),
+            @ApiImplicitParam(name = "studentNo", value = "学号", required = true, dataType = "String"),
+            @ApiImplicitParam(name = "pageNo", paramType = "query",value = "页码", required = true, example = "1"),
+            @ApiImplicitParam(name = "pageSize", paramType = "query", value = "页大小", required = true, example = "10")
+    })
+    @GetMapping("/searching_open_users/{id}")
+    public Result getOpenUserBySearching(@PathVariable int id,@RequestParam String realName, @RequestParam String studentNo,
+                                         @RequestParam int pageNo, @RequestParam int pageSize){
+
+        Page page = openService.getOpenUserBySearching(id,realName,studentNo,fixPage(pageNo),fixPage(pageSize));
+        if (null == page){
+            return Result.success().addData("pager",null);
+        }else {
+            return Result.success().addData("pager", warpPage(page));
+        }
+    }
+
+
+    @ApiOperation(value = "批量删除班课下的用户信息", produces = "application/json")
+    @ApiImplicitParams( {
+            @ApiImplicitParam(name = "ids", value = "班课和用户关系的主键", required = true, dataType = "Integer[]")
+    })
+    @DeleteMapping("/open_users/multi_delete")
+    public Result removeMultiOpenUser(@RequestParam Integer[] ids){
+
+        openService.removeMultiOpenUserByIds(ids);
+        return Result.success();
     }
 
 

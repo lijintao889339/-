@@ -62,6 +62,10 @@ public class OpenService extends BaseService {
     UserTeacherMapper userTeacherMapper;
     @Autowired
     OpenUserTeacherMapper openUserTeacherMapper;
+    @Autowired
+    OpenGroupMapper openGroupMapper;
+    @Autowired
+    UserStudentMapper userStudentMapper;
 
 
     @Autowired
@@ -726,6 +730,7 @@ public class OpenService extends BaseService {
 
         //获取该学生与班课信息
         OpenUser openUser = new OpenUser();
+        openUser.setDeleteStatus(2);
         openUser.setOpenId(id);
         List<OpenUser> openUserList = openUserMapper.select(openUser);
 
@@ -766,6 +771,87 @@ public class OpenService extends BaseService {
     }
 
     /**
+     * 通过搜索条件获取学生信息列表
+     * @param id
+     * @param pageNo
+     * @param pageSize
+     * @param realName
+     * @param studentNo
+     * @return
+     */
+    public Page getOpenUserBySearching(int id, String realName, String studentNo, int pageNo, int pageSize) {
+
+        //获取该学生与班课信息
+        OpenUser openUser = new OpenUser();
+        openUser.setDeleteStatus(2);
+        openUser.setOpenId(id);
+        List<OpenUser> openUserList = openUserMapper.select(openUser);
+
+        /*Example openUserExample = new Example(OpenUser.class);
+        Example.Criteria cri = openUserExample.createCriteria();
+        cri.andEqualTo("deleteStatus",2);
+        cri.andEqualTo("openId",id);
+        if (null != userName){
+            cri.andLike("userName","%" + userName + "%");
+        }
+        if (null != studentNo){
+            cri.andEqualTo("studentNo",studentNo);
+        }
+        List<OpenUser> openUserList = openUserMapper.selectByExample(openUserExample);*/
+
+
+
+        //获取学生ids
+        List<Integer> studentIds = Lists.newArrayList();
+        for (OpenUser openUserInfo : openUserList){
+
+            studentIds.add(openUserInfo.getUserStudentId());
+        }
+
+        //分页
+        PageHelper.startPage(pageNo,pageSize);
+
+        //获取学生信息
+        Example userStudentExample = new Example(UserStudent.class);
+        Example.Criteria cri = userStudentExample.createCriteria();
+        cri.andIn("id",studentIds);
+        if ("" != realName){
+            cri.andLike("realName","%" + realName + "%");
+        }else if ("" != studentNo){
+            cri.andEqualTo("studentNo",studentNo);
+        }
+        List<UserStudent> userStudentList = userStudentMapper.selectByExample(userStudentExample);
+
+        if (0 != userStudentList.size()){
+
+           //获取该学生的用户信息
+           List<Integer> userIds = Lists.newArrayList();
+           for (UserStudent userStudent : userStudentList){
+               userIds.add(userStudent.getUserId());
+           }
+           List<SysUser> sysUserList = sysUserService.getSysUserByUserIdList(userIds);
+
+           //数据转换
+           List<UserStudentDto> userStudentDtos = UserStudentDtoMapper.INSTANCE.entityListToDtoList(userStudentList);
+
+           //遍历集合，获取数据
+           for (UserStudentDto userStudentDto : userStudentDtos){
+
+               for (SysUser sysUser : sysUserList){
+                   if (userStudentDto.getUserId().intValue() == sysUser.getId().intValue()){
+                       userStudentDto.setActivationStatus(sysUser.getActivationStatus());
+                       userStudentDto.setMobile(sysUser.getMobile());
+                   }
+               }
+           }
+           return convertPage((Page)userStudentList,userStudentDtos);
+       }else {
+           Page page =null;
+           return page;
+       }
+    }
+
+    /**
      * 通过班课Id获取班课学习权限
      * @param id
      * @return
@@ -790,4 +876,46 @@ public class OpenService extends BaseService {
         open.setDropCourse(openStudyAuthorizeDto.getDropCourse());
         return openMapper.updateByPrimaryKeySelective(open);
     }
+
+    /**
+     * 批量删除班课和学生关系
+     * @param ids
+     * @return
+     */
+    public int removeMultiOpenUserByIds(Integer[] ids) {
+
+        List<Integer> idList = Lists.newArrayList();
+        for (Integer id : ids){
+            idList.add(id);
+        }
+
+        OpenUser openUser = new OpenUser();
+        openUser.setDeleteStatus(1);
+
+        Example openUserExample = new Example(OpenUser.class);
+        openUserExample.and().andIn("id",idList);
+        int count = openUserMapper.updateByExampleSelective(openUser,openUserExample);
+
+        //删除班课下的某一学生后，小组成员应少一人
+        for (Integer id : ids){
+            //根据关系id，获取班课和学生关系信息
+            OpenUser newOpenUser = openUserMapper.selectByPrimaryKey(id);
+
+            //获取该学生小组信息
+            if (null != newOpenUser.getGroupId()){
+                OpenGroup openGroup = openGroupMapper.selectByPrimaryKey(newOpenUser.getGroupId());
+                //将此学生所在小组的成员数量减1
+                if(0 != openGroup.getUserCount().intValue()){
+                    openGroup.setUserCount(openGroup.getUserCount().intValue() - 1);
+
+                    //更新数据
+                    openGroupMapper.updateByPrimaryKeySelective(openGroup);
+                }
+            }
+        }
+
+        return count;
+    }
+
+
 }
