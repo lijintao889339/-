@@ -56,7 +56,7 @@ public class NodeFolderService {
 
 
     /**
-     * 根据openId查询课件资源视频库目录
+     * 根据openId查询课件资源视频库一级目录
      * @param openId
      * @return
      */
@@ -65,6 +65,7 @@ public class NodeFolderService {
         NodeFolder nodeFolderEntity = new NodeFolder();
         nodeFolderEntity.setOpenId(openId);
         nodeFolderEntity.setParentId(0);
+        nodeFolderEntity.setDeleteStatus(2);
         nodeFolderEntity.setFolderType(10);
 
         List<NodeFolder> nodeFolderList = nodeFolderMapper.select(nodeFolderEntity);
@@ -73,6 +74,30 @@ public class NodeFolderService {
 
 
         return nodeFolderSelDtoList;
+    }
+
+    /**
+     * 根据一级目录查询课件资源视频库子目录
+     * @param id
+     * @param openId
+     * @return
+     */
+    public List<NodeFolderSelDto> getTwoVideoListById(Integer id,Integer openId){
+
+        NodeFolder nodeFolderEntity = new NodeFolder();
+        nodeFolderEntity.setParentId(id);
+        nodeFolderEntity.setFolderType(10);
+        nodeFolderEntity.setDeleteStatus(2);
+        nodeFolderEntity.setOpenId(openId);
+
+        List<NodeFolder> nodeFolderList = nodeFolderMapper.select(nodeFolderEntity);
+
+        List<NodeFolderSelDto> nodeFolderSelDtoList = NodeFolderDtoMapper.INSTANCE.entityListToDtoSelList(nodeFolderList);
+
+        return nodeFolderSelDtoList;
+
+
+
     }
 
 }

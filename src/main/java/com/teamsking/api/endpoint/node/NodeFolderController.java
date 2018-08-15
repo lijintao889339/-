@@ -89,9 +89,9 @@ public class NodeFolderController extends BaseController {
 
 
 
-    @ApiOperation(value = "根据openId查询课件资源视频库目录", consumes= "application/json")
+    @ApiOperation(value = "根据openId查询课件资源视频库一级目录", consumes= "application/json")
     @ApiImplicitParams( {
-            @ApiImplicitParam(name = "openId", value = "视频资源目录", required = true, dataType = "Integer")
+            @ApiImplicitParam(name = "openId", value = "班课id", required = true, dataType = "Integer")
     })
     @GetMapping("/open_folders/{openId}")
     public Result getNodeFolderList(@PathVariable int openId){
@@ -100,5 +100,19 @@ public class NodeFolderController extends BaseController {
 
     }
 
+
+    @ApiOperation(value = "根据一级目录id查询课件资源视频库子目录", consumes= "application/json")
+    @ApiImplicitParams( {
+            @ApiImplicitParam(name = "id", value = "一级目录id", required = true, dataType = "Integer"),
+            @ApiImplicitParam(name = "openId", value = "班课id", required = true, dataType = "Integer")
+    })
+    @GetMapping("/open/{openId}/folders/{id}")
+    public Result getTwoVideoListById(@PathVariable int openId,
+                                      @PathVariable int id){
+
+        return Result.success().addData("nodeFolderSelDtoList",nodeFolderService.getTwoVideoListById(openId,id));
+
+
+    }
 
 }
