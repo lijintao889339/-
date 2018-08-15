@@ -79,16 +79,16 @@ public class NodeFolderService {
     /**
      * 根据一级目录查询课件资源视频库子目录
      * @param id
-     * @param openId
+     * @param
      * @return
      */
-    public List<NodeFolderSelDto> getTwoVideoListById(Integer id,Integer openId){
+    public List<NodeFolderSelDto> getTwoVideoListById(Integer id){
 
         NodeFolder nodeFolderEntity = new NodeFolder();
         nodeFolderEntity.setParentId(id);
         nodeFolderEntity.setFolderType(10);
         nodeFolderEntity.setDeleteStatus(2);
-        nodeFolderEntity.setOpenId(openId);
+        //nodeFolderEntity.setOpenId(openId);
 
         List<NodeFolder> nodeFolderList = nodeFolderMapper.select(nodeFolderEntity);
 
@@ -122,17 +122,17 @@ public class NodeFolderService {
 
     /**
      * 根据一级目录查询课件资源文档库子目录
-     * @param openId
+     * @param
      * @param id
      * @return
      */
-    public List<NodeFolderSelDto> getTwoDocListById(Integer openId,Integer id){
+    public List<NodeFolderSelDto> getTwoDocListById(Integer id){
 
         NodeFolder nodeFolderEntity = new NodeFolder();
         nodeFolderEntity.setParentId(id);
         nodeFolderEntity.setFolderType(20);
         nodeFolderEntity.setDeleteStatus(2);
-        nodeFolderEntity.setOpenId(openId);
+        //nodeFolderEntity.setOpenId(openId);
 
         List<NodeFolder> nodeFolderList = nodeFolderMapper.select(nodeFolderEntity);
 
@@ -168,16 +168,16 @@ public class NodeFolderService {
     /**
      * 根据一级id查询课件资源习题库子目录
      * @param id
-     * @param openId
+     * @param
      * @return
      */
-    public List<NodeFolderSelDto> getTwoQuizListById(Integer id,Integer openId){
+    public List<NodeFolderSelDto> getTwoQuizListById(Integer id){
 
         NodeFolder nodeFolderEntity = new NodeFolder();
         nodeFolderEntity.setParentId(id);
         nodeFolderEntity.setFolderType(30);
         nodeFolderEntity.setDeleteStatus(2);
-        nodeFolderEntity.setOpenId(openId);
+        //nodeFolderEntity.setOpenId(openId);
 
         List<NodeFolder> nodeFolderList = nodeFolderMapper.select(nodeFolderEntity);
 
