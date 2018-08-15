@@ -2,7 +2,6 @@ package com.teamsking.api.endpoint.open;
 
 
 import com.github.pagehelper.Page;
-import com.github.pagehelper.PageHelper;
 import com.teamsking.api.dto.course.UserStudentDto;
 import com.teamsking.api.dto.open.*;
 import com.teamsking.api.endpoint.BaseController;
@@ -268,11 +267,37 @@ public class OpenController extends BaseController {
             @ApiImplicitParam(name = "pageNo", paramType = "query",value = "页码", required = true, example = "1"),
             @ApiImplicitParam(name = "pageSize", paramType = "query", value = "页大小", required = true, example = "10")
     })
-    @GetMapping("/open_user/{id}")
+    @GetMapping("/open_users/{id}")
     public Result getOpenUser(@PathVariable int id, @RequestParam int pageNo, @RequestParam int pageSize){
 
         List<UserStudentDto> userStudentDtos = openService.getOpenUserById(id,fixPage(pageNo),fixPage(pageSize));
         return Result.success().addData("pager",warpPage(userStudentDtos));
+    }
+
+
+    @ApiOperation(value = "获取班级成员的学习授权", produces = "application/json")
+    @ApiImplicitParams( {
+            @ApiImplicitParam(name = "id", value = "班课的主键", required = true, dataType = "Integer")
+    })
+    @GetMapping("/open_study_authorize/{id}")
+    public Result getOpenStudyAuthorize(@PathVariable int id){
+
+        OpenStudyAuthorizeDto openStudyAuthorizeDto = openService.getOpenAuthorizeById(id);
+        return Result.success().addData("openStudyAuthorizeDto",openStudyAuthorizeDto);
+    }
+
+
+    @ApiOperation(value = "修改班级成员的学习授权", consumes = "application/json")
+    @ApiImplicitParams( {
+            @ApiImplicitParam(name = "id", value = "班课的主键", required = true, dataType = "Integer"),
+            @ApiImplicitParam(name = "openStudyAuthorizeDto", value = "班课的学习权限信息", required = true, dataType = "OpenStudyAuthorizeDto")
+    })
+    @PutMapping("/open_study_authorize/{id}")
+    public Result editOpenStudyAuthorize(@PathVariable int id,
+                                         @RequestBody OpenStudyAuthorizeDto openStudyAuthorizeDto){
+
+        openService.deitOpenAuthorizeById(id,openStudyAuthorizeDto);
+        return Result.success();
     }
 
 }

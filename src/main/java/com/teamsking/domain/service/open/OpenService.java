@@ -764,4 +764,30 @@ public class OpenService extends BaseService {
         return convertPage((Page)userStudentList,userStudentDtos);
 
     }
+
+    /**
+     * 通过班课Id获取班课学习权限
+     * @param id
+     * @return
+     */
+    public OpenStudyAuthorizeDto getOpenAuthorizeById(int id) {
+
+        Open open = openMapper.selectByPrimaryKey(id);
+        OpenStudyAuthorizeDto openStudyAuthorizeDto = OpenDtoMapper.INSTANCE.entityToAuthirizeDto(open);
+        return openStudyAuthorizeDto;
+    }
+
+    /**
+     * 通过班课Id修改班课学习权限
+     * @param id
+     * @param openStudyAuthorizeDto
+     */
+    public int deitOpenAuthorizeById(int id, OpenStudyAuthorizeDto openStudyAuthorizeDto) {
+
+        Open open = new Open();
+        open.setId(id);
+        open.setOpenMode(openStudyAuthorizeDto.getOpenMode());
+        open.setDropCourse(openStudyAuthorizeDto.getDropCourse());
+        return openMapper.updateByPrimaryKeySelective(open);
+    }
 }

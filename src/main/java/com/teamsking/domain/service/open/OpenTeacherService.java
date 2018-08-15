@@ -136,6 +136,7 @@ public class OpenTeacherService {
 
         Example teacherExample = new Example(OpenTeacher.class);
         teacherExample.and().andIn("id",teacherIds);
+        teacherExample.and().andEqualTo("deleteStatus",2);
         //Example.Criteria cri = teacherExample.createCriteria();
 
         //cri.andIn("id", teacherIds);

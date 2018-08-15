@@ -32,4 +32,17 @@ public class UserTeacherGroupService extends BaseService {
         teacherGroupExample.and().andIn("userTeacherId",userTeacherIds);
         return userTeacherGroupMapper.selectByExample(teacherGroupExample);
     }
+
+
+    /**
+     * 根据分组Ids获取老师和分组信息
+     * @param groupIds
+     * @return
+     */
+    public List<UserTeacherGroup> getTeacherGroupInfoByGroupIds(List<Integer> groupIds) {
+
+        Example teacherGroupExample = new Example(UserTeacherGroup.class);
+        teacherGroupExample.and().andIn("groupId",groupIds);
+        return userTeacherGroupMapper.selectByExample(teacherGroupExample);
+    }
 }

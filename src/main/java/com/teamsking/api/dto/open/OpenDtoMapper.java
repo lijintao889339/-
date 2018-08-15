@@ -37,4 +37,6 @@ public interface OpenDtoMapper {
 
     Open addOpenCourseToEntity(AddOpenCourseDto addOpenCourseDto);
 
+    OpenStudyAuthorizeDto entityToAuthirizeDto(Open open);
+
 }

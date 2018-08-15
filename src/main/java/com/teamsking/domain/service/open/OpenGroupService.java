@@ -1,11 +1,22 @@
 package com.teamsking.domain.service.open;
 
 
+import com.github.pagehelper.Page;
+import com.github.pagehelper.PageHelper;
+import com.google.common.collect.Lists;
+import com.teamsking.api.dto.open.OpenGroupDto;
+import com.teamsking.api.dto.open.OpenGroupDtoMapper;
 import com.teamsking.domain.entity.open.OpenGroup;
+import com.teamsking.domain.entity.open.OpenUserTeacher;
+import com.teamsking.domain.entity.sys.UserTeacher;
+import com.teamsking.domain.entity.sys.UserTeacherGroup;
 import com.teamsking.domain.repository.OpenGroupMapper;
 import java.util.List;
 
+import com.teamsking.domain.repository.OpenUserTeacherMapper;
 import com.teamsking.domain.service.BaseService;
+import com.teamsking.domain.service.sys.UserTeacherGroupService;
+import com.teamsking.domain.service.sys.UserTeacherService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -18,13 +29,65 @@ public class OpenGroupService extends BaseService {
     @Autowired
     OpenGroupMapper openGroupMapper;
 
+
+    @Autowired
+    UserTeacherService userTeacherService;
+    @Autowired
+    UserTeacherGroupService userTeacherGroupService;
+
     /**
-     * 获取班次-学生组列表
+     * 获取班次下的学生组列表
+     * @param pageNo
+     * @param pageSize
+     * @param openId
      * @return
      */
-    public List<OpenGroup> list(){
+    public Page list(int pageNo, int pageSize, int openId){
 
-        return openGroupMapper.selectAll();
+        PageHelper.startPage(pageNo,pageSize);
+
+        //根据班课Id获取学生组信息
+        OpenGroup openGroup = new OpenGroup();
+        openGroup.setOpenId(openId);
+        openGroup.setDeleteStatus(2);
+        List<OpenGroup> openGroupList = openGroupMapper.select(openGroup);
+
+        List<Integer> groupIds = Lists.newArrayList();
+        for (OpenGroup group : openGroupList){
+            groupIds.add(group.getId());
+        }
+
+        //获学生组的辅导老师信息
+        //1.先获取学生组与有关的辅导老师ids
+        List<UserTeacherGroup>  userTeacherGroupList = userTeacherGroupService.getTeacherGroupInfoByGroupIds(groupIds);
+        List<Integer> userTeacherIds = Lists.newArrayList();
+        for (UserTeacherGroup userTeacherGroup : userTeacherGroupList){
+            userTeacherIds.add(userTeacherGroup.getUserTeacherId());
+        }
+
+        //2.根据辅导老师Ids获取辅导老师信息
+        List<UserTeacher> userTeacherList = userTeacherService.getUserTeacherListByIds(userTeacherIds);
+
+        //转换数据
+        List<OpenGroupDto> openGroupDtoList = OpenGroupDtoMapper.INSTANCE.entityListToDtoList(openGroupList);
+
+        //遍历集合
+        for (OpenGroupDto openGroupDto : openGroupDtoList){
+
+            List<String> userNameList = Lists.newArrayList();
+            for (UserTeacherGroup userTeacherGroup : userTeacherGroupList){
+                if (openGroupDto.getId() == userTeacherGroup.getGroupId().intValue()){
+                    for (UserTeacher userTeacher : userTeacherList){
+                        if (userTeacherGroup.getUserTeacherId().intValue() == userTeacher.getId().intValue()){
+                            userNameList.add(userTeacher.getUserName());
+                            openGroupDto.setUserNameList(userNameList);
+                        }
+                    }
+                }
+            }
+        }
+
+        return convertPage((Page)openGroupList ,openGroupDtoList);
 
     }
 
