@@ -140,4 +140,30 @@ public class NodeFolderController extends BaseController {
 
     }
 
+
+
+    @ApiOperation(value = "根据openId查询课件资源习题库一级目录", consumes= "application/json")
+    @ApiImplicitParams( {
+            @ApiImplicitParam(name = "openId", value = "班课id", required = true, dataType = "Integer")
+    })
+    @GetMapping("/quiz_open_folders_{openId}")
+    public Result getOneQuizListByOpenId(@PathVariable int openId){
+
+        return Result.success().addData("nodeFolderSelDtoList",nodeFolderService.getOneQuizListByOpenId(openId));
+
+    }
+
+    @ApiOperation(value = "根据一级目录id查询课件资源习题库子目录", consumes= "application/json")
+    @ApiImplicitParams( {
+            @ApiImplicitParam(name = "id", value = "一级目录id", required = true, dataType = "Integer"),
+            @ApiImplicitParam(name = "openId", value = "班课id", required = true, dataType = "Integer")
+    })
+    @GetMapping("/quiz_open/{openId}/folders/{id}")
+    public Result getTwoQuizListById(@PathVariable int openId,
+                                    @PathVariable int id){
+
+        return Result.success().addData("nodeFolderSelDtoList",nodeFolderService.getTwoQuizListById(openId,id));
+
+    }
+
 }
