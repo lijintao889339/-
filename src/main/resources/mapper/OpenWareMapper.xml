@@ -18,5 +18,7 @@
     <result column="delete_status" jdbcType="INTEGER" property="deleteStatus" />
     <result column="asset_id" jdbcType="INTEGER" property="assetId" />
     <result column="description" jdbcType="LONGVARCHAR" property="description" />
+    <result column="chapter_id" jdbcType="INTEGER" property="chapterId" />
+    <result column="section_id" jdbcType="INTEGER" property="sectionId" />
   </resultMap>
 </mapper>

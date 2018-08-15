@@ -87,4 +87,18 @@ public class NodeFolderController extends BaseController {
 
     }
 
+
+
+    @ApiOperation(value = "根据openId查询课件资源视频库目录", consumes= "application/json")
+    @ApiImplicitParams( {
+            @ApiImplicitParam(name = "openId", value = "视频资源目录", required = true, dataType = "Integer")
+    })
+    @GetMapping("/open_folders/{openId}")
+    public Result getNodeFolderList(@PathVariable int openId){
+
+        return Result.success().addData("nodeFolderSelDtoList",nodeFolderService.getNodeFolderListByOpenId(openId));
+
+    }
+
+
 }

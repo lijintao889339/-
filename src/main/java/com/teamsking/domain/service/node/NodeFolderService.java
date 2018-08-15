@@ -1,5 +1,7 @@
 package com.teamsking.domain.service.node;
 
+import com.teamsking.api.dto.node.NodeFolderDtoMapper;
+import com.teamsking.api.dto.node.NodeFolderSelDto;
 import com.teamsking.domain.entity.node.NodeFolder;
 import com.teamsking.domain.repository.NodeFolderMapper;
 import java.util.List;
@@ -50,6 +52,27 @@ public class NodeFolderService {
     public int modify(NodeFolder nodeFolder){
         return nodeFolderMapper.updateByPrimaryKeySelective(nodeFolder);
 
+    }
+
+
+    /**
+     * 根据openId查询课件资源视频库目录
+     * @param openId
+     * @return
+     */
+    public List<NodeFolderSelDto> getNodeFolderListByOpenId(Integer openId){
+        //根据openid获取视频目录
+        NodeFolder nodeFolderEntity = new NodeFolder();
+        nodeFolderEntity.setOpenId(openId);
+        nodeFolderEntity.setParentId(0);
+        nodeFolderEntity.setFolderType(10);
+
+        List<NodeFolder> nodeFolderList = nodeFolderMapper.select(nodeFolderEntity);
+        //数据转换
+        List<NodeFolderSelDto> nodeFolderSelDtoList = NodeFolderDtoMapper.INSTANCE.entityListToDtoSelList(nodeFolderList);
+
+
+        return nodeFolderSelDtoList;
     }
 
 }

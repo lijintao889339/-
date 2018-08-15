@@ -12,6 +12,8 @@ public interface NodeFolderDtoMapper {
 
     List<NodeFolderDto> entityListToDtoList(List<NodeFolder> entityList);
 
+    List<NodeFolderSelDto> entityListToDtoSelList(List<NodeFolder> nodeFolderList);
+
     NodeFolderDto entityToDto(NodeFolder nodeFolder);
 
     NodeFolder dtoToEntity(NodeFolderDto nodeFolderDto);
