@@ -209,5 +209,32 @@ public class NodeFolderController extends BaseController {
 
 
 
+    @ApiOperation(value = "创建一级文档库目录", consumes= "application/json")
+    @ApiImplicitParams( {
+            @ApiImplicitParam(name = "nodeFolder", value = "创建文档库目录", required = true, dataType = "NodeFolder")
+    })
+    @PostMapping("/fist_doc_node_folder")
+    public Result saveFistDoc(@RequestBody NodeFolder nodeFolder){
+
+        nodeFolderService.saveFirstDoc(nodeFolder);
+        return Result.success();
+
+    }
+
+    @ApiOperation(value = "创建一级文档库目录", consumes= "application/json")
+    @ApiImplicitParams( {
+            @ApiImplicitParam(name = "nodeFolder", value = "创建文档库目录", required = true, dataType = "NodeFolder")
+    })
+    @PostMapping("/two_video_node_folder/{id}")
+    public Result saveTwoDoc(@RequestBody NodeFolder nodeFolder,
+                               @PathVariable int id){
+
+        nodeFolderService.saveTwoDoc(nodeFolder,id);
+        return Result.success();
+
+    }
+
+
+
 
 }
