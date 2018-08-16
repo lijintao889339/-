@@ -132,5 +132,4 @@ public class SysUserService extends BaseService {
         return sysUserMapper.selectByExample(userExample);
     }
 
-
 }

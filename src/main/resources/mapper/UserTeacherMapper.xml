@@ -12,5 +12,6 @@
     <result column="user_id" jdbcType="INTEGER" property="userId" />
     <result column="delete_status" jdbcType="INTEGER" property="deleteStatus" />
     <result column="school_id" jdbcType="INTEGER" property="schoolId" />
+    <result column="email" jdbcType="VARCHAR" property="email" />
   </resultMap>
 </mapper>

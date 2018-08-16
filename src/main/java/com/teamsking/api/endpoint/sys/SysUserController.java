@@ -1,5 +1,6 @@
 package com.teamsking.api.endpoint.sys;
 
+import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.teamsking.api.dto.sys.SysUserDto;
 import com.teamsking.api.dto.sys.SysUserDtoMapper;
@@ -139,6 +140,30 @@ public class SysUserController extends BaseController {
         List<UserTeacherDto> userTeacherDtos = userTeacherService.getOpenUserTeacherById(id,fixPage(pageNo),fixPage(pageSize));
         return Result.success().addData("pager",warpPage(userTeacherDtos));
     }
+
+
+
+    @ApiOperation(value = "根据条件搜索班课的辅导老师列表", produces = "application/json")
+    @ApiImplicitParams( {
+            @ApiImplicitParam(name = "id", value = "班课的主键", required = true, dataType = "Integer"),
+            @ApiImplicitParam(name = "userName", value = "老师姓名", required = true, dataType = "String"),
+            @ApiImplicitParam(name = "email", value = "邮箱", required = true, dataType = "String"),
+            @ApiImplicitParam(name = "pageNo", paramType = "query",value = "页码", required = true, example = "1"),
+            @ApiImplicitParam(name = "pageSize", paramType = "query", value = "页大小", required = true, example = "10")
+    })
+    @GetMapping("/searching_user_teachers/{id}")
+    public Result searchingUserTeacher(@PathVariable int id, @RequestParam String userName, @RequestParam String email,
+                              @RequestParam int pageNo, @RequestParam int pageSize){
+
+        Page page = userTeacherService.searcingUserTeacherByOpenId(id,userName,email,fixPage(pageNo),fixPage(pageSize));
+        if (null == page){
+            return Result.success().addData("pager",null);
+        }else {
+            return Result.success().addData("pager",warpPage(page));
+        }
+
+    }
+
 
 
     @ApiOperation(value = "批量删除班课的辅导老师")
