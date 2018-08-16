@@ -16,5 +16,7 @@ public interface OpenGroupDtoMapper {
 
     OpenGroup dtoToEntity(OpenGroupDto openGroupDto);
 
+    List<OpenGroupNameDto> entityListToGroupNameDtoList(List<OpenGroup> openGroupList);
+
 
 }

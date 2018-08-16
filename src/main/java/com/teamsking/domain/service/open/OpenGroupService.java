@@ -6,14 +6,14 @@ import com.github.pagehelper.PageHelper;
 import com.google.common.collect.Lists;
 import com.teamsking.api.dto.open.OpenGroupDto;
 import com.teamsking.api.dto.open.OpenGroupDtoMapper;
+import com.teamsking.api.dto.open.OpenGroupNameDto;
 import com.teamsking.domain.entity.open.OpenGroup;
-import com.teamsking.domain.entity.open.OpenUserTeacher;
 import com.teamsking.domain.entity.sys.UserTeacher;
 import com.teamsking.domain.entity.sys.UserTeacherGroup;
 import com.teamsking.domain.repository.OpenGroupMapper;
 import java.util.List;
 
-import com.teamsking.domain.repository.OpenUserTeacherMapper;
+import com.teamsking.domain.repository.UserTeacherGroupMapper;
 import com.teamsking.domain.service.BaseService;
 import com.teamsking.domain.service.sys.UserTeacherGroupService;
 import com.teamsking.domain.service.sys.UserTeacherService;
@@ -28,6 +28,8 @@ public class OpenGroupService extends BaseService {
 
     @Autowired
     OpenGroupMapper openGroupMapper;
+    @Autowired
+    UserTeacherGroupMapper userTeacherGroupMapper;
 
 
     @Autowired
@@ -135,5 +137,34 @@ public class OpenGroupService extends BaseService {
         Example openGroupExample = new Example(OpenGroup.class);
         openGroupExample.and().andIn("id",groupIds);
         return openGroupMapper.selectByExample(openGroupExample);
+    }
+
+    /**
+     * 获取某一班课下的所有班组名称
+     * @param openId
+     * @return
+     */
+    public List<OpenGroup> getGroupNameByOpenId(int openId) {
+
+        OpenGroup openGroup = new OpenGroup();
+        openGroup.setDeleteStatus(2);
+        openGroup.setOpenId(openId);
+        return openGroupMapper.select(openGroup);
+
+
+    }
+
+    /**
+     * 给辅导老师添加班组
+     * @param userTeacherId
+     * @param openGroupNameDto
+     * @return
+     */
+    public int saveOpenGroupByUserTeacherId(int userTeacherId, OpenGroupNameDto openGroupNameDto) {
+
+        UserTeacherGroup userTeacherGroup = new UserTeacherGroup();
+        userTeacherGroup.setUserTeacherId(userTeacherId);
+        userTeacherGroup.setGroupId(openGroupNameDto.getId());
+        return userTeacherGroupMapper.insertSelective(userTeacherGroup);
     }
 }

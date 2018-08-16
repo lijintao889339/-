@@ -3,6 +3,7 @@ package com.teamsking.api.endpoint.open;
 import com.github.pagehelper.PageHelper;
 import com.teamsking.api.dto.open.OpenGroupDto;
 import com.teamsking.api.dto.open.OpenGroupDtoMapper;
+import com.teamsking.api.dto.open.OpenGroupNameDto;
 import com.teamsking.api.endpoint.BaseController;
 import com.teamsking.domain.entity.open.OpenGroup;
 import com.teamsking.domain.service.open.OpenGroupService;
@@ -80,9 +81,34 @@ public class OpenGroupController extends BaseController {
                                 @PathVariable int openId){
 
         return Result.success().addData("pager",warpPage(openGroupService.list(fixPage(pageNo),fixPage(pageSize),openId)));
-
-
     }
 
+
+
+    @ApiOperation(value = "班次下的班组名称列表", produces = "application/json")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "openId", value = "班课的主键", required = true, dataType = "int")
+    })
+    @GetMapping("/open_group_names/{openId}")
+    public Result getOpenGroupName(@PathVariable int openId){
+
+        List<OpenGroup> openGroupList = openGroupService.getGroupNameByOpenId(openId);
+        List<OpenGroupNameDto> openGroupNameDtoList = OpenGroupDtoMapper.INSTANCE.entityListToGroupNameDtoList(openGroupList);
+        return Result.success().addData("openGroupNameDtoList",openGroupNameDtoList);
+    }
+
+
+
+    @ApiOperation(value = "给辅导老师添加班组", produces = "application/json")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "userTeacherId", value = "辅导老师的主键", required = true, dataType = "int"),
+            @ApiImplicitParam(name = "openGroupNameDto", value = "班组信息", required = true, dataType = "OpenGroupNameDto")
+    })
+    @PostMapping("/open_group/{userTeacherId}")
+    public Result saveOpenGroup(@PathVariable int userTeacherId, @RequestBody OpenGroupNameDto openGroupNameDto){
+
+        openGroupService.saveOpenGroupByUserTeacherId(userTeacherId, openGroupNameDto);
+        return Result.success();
+    }
 
 }
