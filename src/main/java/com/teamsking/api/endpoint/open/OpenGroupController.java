@@ -134,4 +134,17 @@ public class OpenGroupController extends BaseController {
         return Result.success();
     }
 
+
+    @ApiOperation(value = "批量删除班课下班组", produces = "application/json")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "ids", value = "班组的主键", required = true, dataType = "Integer[]")
+    })
+    @DeleteMapping("/open_groups/multi_delete")
+    public Result removeMultiOpenGroup(@RequestParam Integer[] ids){
+
+        openGroupService.removeMultiOpenGroupByIds(ids);
+        return Result.success();
+    }
+
+
 }

@@ -234,4 +234,23 @@ public class OpenGroupService extends BaseService {
         return userTeacherGroupMapper.insertSelective(userTeacherGroup);
     }
 
+    /**
+     * 批量删除班课下的班组信息
+     * @param ids
+     * @return
+     */
+    public int removeMultiOpenGroupByIds(Integer[] ids) {
+
+        List<Integer> openGroupIdList = Lists.newArrayList();
+        for (Integer id : ids){
+            openGroupIdList.add(id);
+        }
+
+        OpenGroup openGroup = new OpenGroup();
+        openGroup.setDeleteStatus(1);
+
+        Example openGroupExample = new Example(OpenGroup.class);
+        openGroupExample.and().andIn("id",openGroupIdList);
+        return openGroupMapper.updateByExampleSelective(openGroup,openGroupExample);
+    }
 }
