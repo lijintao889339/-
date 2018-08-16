@@ -5,6 +5,7 @@ import com.github.pagehelper.PageHelper;
 import com.google.common.collect.Lists;
 import com.teamsking.api.dto.sys.UserTeacherDto;
 import com.teamsking.api.dto.sys.UserTeacherDtoMapper;
+import com.teamsking.api.dto.sys.UserTeacherNameDto;
 import com.teamsking.domain.entity.open.OpenGroup;
 import com.teamsking.domain.entity.open.OpenUserTeacher;
 import com.teamsking.domain.entity.school.School;
@@ -13,6 +14,7 @@ import com.teamsking.domain.entity.sys.UserTeacher;
 import com.teamsking.domain.entity.sys.UserTeacherGroup;
 import com.teamsking.domain.repository.OpenUserTeacherMapper;
 import com.teamsking.domain.repository.SysUserMapper;
+import com.teamsking.domain.repository.UserTeacherGroupMapper;
 import com.teamsking.domain.repository.UserTeacherMapper;
 import com.teamsking.domain.service.BaseService;
 import com.teamsking.domain.service.open.OpenGroupService;
@@ -39,6 +41,8 @@ public class UserTeacherService extends BaseService {
     OpenUserTeacherMapper openUserTeacherMapper;
     @Autowired
     SysUserMapper sysUserMapper;
+    @Autowired
+    UserTeacherGroupMapper userTeacherGroupMapper;
 
     @Autowired
     UserTeacherService userTeacherService;
@@ -273,5 +277,28 @@ public class UserTeacherService extends BaseService {
         return openUserTeacherMapper.deleteByExample(userTeacherExample);
     }
 
+    /**
+     * 获取所有辅导老师姓名
+     * @return
+     */
+    public List<UserTeacher> getUserTeacherNameByOpenId() {
 
+        UserTeacher userTeacher = new UserTeacher();
+        userTeacher.setDeleteStatus(2);
+        return userTeacherMapper.select(userTeacher);
+    }
+
+    /**
+     * 给班组添加辅导老师
+     * @param groupId
+     * @param userTeacherNameDto
+     * @return
+     */
+    public int saveUserTeacherByGroupId(int groupId, UserTeacherNameDto userTeacherNameDto) {
+
+        UserTeacherGroup userTeacherGroup = new UserTeacherGroup();
+        userTeacherGroup.setGroupId(groupId);
+        userTeacherGroup.setUserTeacherId(userTeacherNameDto.getId());
+        return userTeacherGroupMapper.insertSelective(userTeacherGroup);
+    }
 }

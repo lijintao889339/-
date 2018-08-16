@@ -2,12 +2,11 @@ package com.teamsking.api.endpoint.sys;
 
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
-import com.teamsking.api.dto.sys.SysUserDto;
-import com.teamsking.api.dto.sys.SysUserDtoMapper;
-import com.teamsking.api.dto.sys.UserDto;
-import com.teamsking.api.dto.sys.UserTeacherDto;
+import com.teamsking.api.dto.open.OpenGroupDtoMapper;
+import com.teamsking.api.dto.sys.*;
 import com.teamsking.api.endpoint.BaseController;
 import com.teamsking.domain.entity.sys.SysUser;
+import com.teamsking.domain.entity.sys.UserTeacher;
 import com.teamsking.domain.service.sys.SysUserService;
 import com.teamsking.domain.service.sys.UserTeacherService;
 import com.teamsking.util.Result;
@@ -177,5 +176,31 @@ public class SysUserController extends BaseController {
         userTeacherService.removeMultiOpenUserByIds(userTeacherIds,openId);
         return Result.success();
     }
+
+
+
+    @ApiOperation(value = "所有的辅导老师姓名列表", produces = "application/json")
+    @GetMapping("/user_teacher_names")
+    public Result getOpenGroupName(){
+
+        List<UserTeacher> userTeacherList = userTeacherService.getUserTeacherNameByOpenId();
+        List<UserTeacherNameDto> userTeacherNameDtoList = UserTeacherDtoMapper.INSTANCE.entityListToTeacherNameDtoList(userTeacherList);
+        return Result.success().addData("userTeacherNameDtoList",userTeacherNameDtoList);
+    }
+
+
+
+    @ApiOperation(value = "给班组添加辅导老师", produces = "application/json")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "groupId", value = "班组的主键", required = true, dataType = "int"),
+            @ApiImplicitParam(name = "userTeacherNameDto", value = "辅导老师信息", required = true, dataType = "UserTeacherNameDto")
+    })
+    @PostMapping("/user_teacher_name/{groupId}")
+    public Result saveUserTeacher(@PathVariable int groupId, @RequestBody UserTeacherNameDto userTeacherNameDto){
+
+        userTeacherService.saveUserTeacherByGroupId(groupId, userTeacherNameDto);
+        return Result.success();
+    }
+
 
 }
