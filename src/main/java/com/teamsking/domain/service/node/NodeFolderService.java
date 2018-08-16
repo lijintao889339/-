@@ -1,5 +1,6 @@
 package com.teamsking.domain.service.node;
 
+import com.google.common.collect.Lists;
 import com.teamsking.api.dto.node.NodeFolderDtoMapper;
 import com.teamsking.api.dto.node.NodeFolderSelDto;
 import com.teamsking.domain.entity.node.NodeFolder;
@@ -8,6 +9,7 @@ import java.util.List;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import tk.mybatis.mapper.entity.Example;
 
 @Service
 @Slf4j
@@ -184,6 +186,30 @@ public class NodeFolderService {
         List<NodeFolderSelDto> nodeFolderSelDtoList = NodeFolderDtoMapper.INSTANCE.entityListToDtoSelList(nodeFolderList);
 
         return nodeFolderSelDtoList;
+
+    }
+
+
+    /**
+     * 根据id批量删除课件资源目录
+     * @param ids
+     * @return
+     */
+    public int removeByIds(Integer[] ids) {
+
+        List<Integer> idList = Lists.newArrayList();
+        for (Integer id : ids){
+            idList.add(id);
+        }
+
+        NodeFolder nodeFolder = new NodeFolder();
+        nodeFolder.setDeleteStatus(1);
+
+        Example nodeFolderExample = new Example(NodeFolder.class);
+        Example.Criteria cri = nodeFolderExample.createCriteria();
+        cri.orIn("id",idList);
+        cri.orIn("parentId",idList);
+        return nodeFolderMapper.updateByExampleSelective(nodeFolder,nodeFolderExample);
 
     }
 

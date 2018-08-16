@@ -14,13 +14,7 @@ import io.swagger.annotations.ApiOperation;
 import java.util.List;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @Api(tags = "资源目录管理操作接口")
@@ -86,6 +80,24 @@ public class NodeFolderController extends BaseController {
         return Result.success();
 
     }
+
+
+
+    @ApiOperation(value = "批量删除课件资源", consumes= "application/json")
+    @ApiImplicitParams( {
+            @ApiImplicitParam(name = "ids", value = "主键id", required = true, dataType = "Integer")
+    })
+    @DeleteMapping("/node_folder")
+    public Result removeNodeFolderByIds(@RequestParam Integer[] ids){
+
+        nodeFolderService.removeByIds(ids);
+
+        return Result.success();
+
+    }
+
+
+
 
 
 
