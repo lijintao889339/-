@@ -880,9 +880,10 @@ public class OpenService extends BaseService {
     /**
      * 批量删除班课和学生关系
      * @param ids
+     * @param openId
      * @return
      */
-    public int removeMultiOpenUserByIds(Integer[] ids) {
+    public int removeMultiOpenUserByIds(Integer[] ids, int openId) {
 
         List<Integer> idList = Lists.newArrayList();
         for (Integer id : ids){
@@ -891,9 +892,10 @@ public class OpenService extends BaseService {
 
         OpenUser openUser = new OpenUser();
         openUser.setDeleteStatus(1);
+        openUser.setOpenId(openId);
 
         Example openUserExample = new Example(OpenUser.class);
-        openUserExample.and().andIn("id",idList);
+        openUserExample.and().andIn("userStudentId",idList);
         int count = openUserMapper.updateByExampleSelective(openUser,openUserExample);
 
         //删除班课下的某一学生后，小组成员应少一人

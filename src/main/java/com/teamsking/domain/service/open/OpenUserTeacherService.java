@@ -21,7 +21,7 @@ public class OpenUserTeacherService extends BaseService {
     OpenUserTeacherMapper openUserTeacherMapper;
 
     /**
-     * 根据课程Id删除班课和教学老师关系信息
+     * 根据班课Id删除班课和教学老师关系信息
      * @param openId
      * @return
      */

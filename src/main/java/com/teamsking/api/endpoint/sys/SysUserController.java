@@ -133,11 +133,24 @@ public class SysUserController extends BaseController {
             @ApiImplicitParam(name = "pageNo", paramType = "query",value = "页码", required = true, example = "1"),
             @ApiImplicitParam(name = "pageSize", paramType = "query", value = "页大小", required = true, example = "10")
     })
-    @GetMapping("/open_user_teacher/{id}")
+    @GetMapping("/open_user_teachers/{id}")
     public Result getOpenUser(@PathVariable int id, @RequestParam int pageNo, @RequestParam int pageSize){
 
         List<UserTeacherDto> userTeacherDtos = userTeacherService.getOpenUserTeacherById(id,fixPage(pageNo),fixPage(pageSize));
         return Result.success().addData("pager",warpPage(userTeacherDtos));
+    }
+
+
+    @ApiOperation(value = "批量删除班课的辅导老师")
+    @ApiImplicitParams( {
+            @ApiImplicitParam(name = "userTeacherIds", value = "辅导老师的主键", required = true, dataType = "Integer[]"),
+            @ApiImplicitParam(name = "openId", value = "班课的主键", required = true, dataType = "int")
+    })
+    @DeleteMapping("/open_user_teachers/multi_delete/{openId}")
+    public Result removeMultiOpenUser(@RequestParam Integer[] userTeacherIds, @PathVariable int openId){
+
+        userTeacherService.removeMultiOpenUserByIds(userTeacherIds,openId);
+        return Result.success();
     }
 
 }

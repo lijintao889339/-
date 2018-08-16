@@ -11,13 +11,14 @@ import com.teamsking.domain.entity.school.School;
 import com.teamsking.domain.entity.sys.SysUser;
 import com.teamsking.domain.entity.sys.UserTeacher;
 import com.teamsking.domain.entity.sys.UserTeacherGroup;
-import com.teamsking.domain.repository.OpenGroupMapper;
 import com.teamsking.domain.repository.OpenUserTeacherMapper;
 import com.teamsking.domain.repository.UserTeacherMapper;
 import com.teamsking.domain.service.BaseService;
 import com.teamsking.domain.service.open.OpenGroupService;
+import com.teamsking.domain.service.open.OpenUserTeacherService;
 import com.teamsking.domain.service.school.SchoolService;
 import lombok.extern.slf4j.Slf4j;
+import org.checkerframework.checker.units.qual.A;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import tk.mybatis.mapper.entity.Example;
@@ -46,6 +47,8 @@ public class UserTeacherService extends BaseService {
     UserTeacherGroupService userTeacherGroupService;
     @Autowired
     OpenGroupService openGroupService;
+    @Autowired
+    OpenUserTeacherService openUserTeacherService;
 
     /**
      * 根据辅导老师idList获取辅导老师信息
@@ -143,5 +146,24 @@ public class UserTeacherService extends BaseService {
 
         }
         return convertPage((Page)userTeacherList,userTeacherDtos);
+    }
+
+    /**
+     * 批量删除班课与辅导老师关系信息
+     * @param userTeacherIdsds
+     * @param openId
+     * @return
+     */
+    public int removeMultiOpenUserByIds(Integer[] userTeacherIdsds, int openId) {
+
+        List<Integer> idList = Lists.newArrayList();
+        for (Integer id : userTeacherIdsds){
+            idList.add(id);
+        }
+
+        Example userTeacherExample = new Example(OpenUserTeacher.class);
+        userTeacherExample.and().andEqualTo("openId",openId);
+        userTeacherExample.and().andIn("userTeacherId",idList);
+        return openUserTeacherMapper.deleteByExample(userTeacherExample);
     }
 }
