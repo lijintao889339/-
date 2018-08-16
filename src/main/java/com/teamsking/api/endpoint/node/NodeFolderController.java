@@ -193,7 +193,7 @@ public class NodeFolderController extends BaseController {
 
     }
 
-    @ApiOperation(value = "创建一级视频库目录", consumes= "application/json")
+    @ApiOperation(value = "创建视频库子目录", consumes= "application/json")
     @ApiImplicitParams( {
             @ApiImplicitParam(name = "nodeFolder", value = "创建视频库目录", required = true, dataType = "NodeFolder")
     })
@@ -221,15 +221,43 @@ public class NodeFolderController extends BaseController {
 
     }
 
-    @ApiOperation(value = "创建一级文档库目录", consumes= "application/json")
+    @ApiOperation(value = "创建文档库子目录", consumes= "application/json")
     @ApiImplicitParams( {
             @ApiImplicitParam(name = "nodeFolder", value = "创建文档库目录", required = true, dataType = "NodeFolder")
     })
-    @PostMapping("/two_video_node_folder/{id}")
+    @PostMapping("/two_doc_node_folder/{id}")
     public Result saveTwoDoc(@RequestBody NodeFolder nodeFolder,
                                @PathVariable int id){
 
         nodeFolderService.saveTwoDoc(nodeFolder,id);
+        return Result.success();
+
+    }
+
+
+
+
+    @ApiOperation(value = "创建一级习题库目录", consumes= "application/json")
+    @ApiImplicitParams( {
+            @ApiImplicitParam(name = "nodeFolder", value = "创建习题库目录", required = true, dataType = "NodeFolder")
+    })
+    @PostMapping("/fist_quiz_node_folder")
+    public Result saveFistQuiz(@RequestBody NodeFolder nodeFolder){
+
+        nodeFolderService.saveFirstQuiz(nodeFolder);
+        return Result.success();
+
+    }
+
+    @ApiOperation(value = "创建习题库子目录", consumes= "application/json")
+    @ApiImplicitParams( {
+            @ApiImplicitParam(name = "nodeFolder", value = "创建文档库目录", required = true, dataType = "NodeFolder")
+    })
+    @PostMapping("/two_quiz_node_folder/{id}")
+    public Result saveTwoQuiz(@RequestBody NodeFolder nodeFolder,
+                             @PathVariable int id){
+
+        nodeFolderService.saveTwoQuiz(nodeFolder,id);
         return Result.success();
 
     }

@@ -275,4 +275,35 @@ public class NodeFolderService {
 
     }
 
+
+    /**
+     * 创建习题库目录
+     * @param nodeFolder
+     * @return
+     */
+    public int saveFirstQuiz(NodeFolder nodeFolder) {
+
+        nodeFolder.setDeleteStatus(2);
+        nodeFolder.setFolderType(30);
+        nodeFolder.setParentId(0);
+
+        return nodeFolderMapper.insertSelective(nodeFolder);
+    }
+
+    /**
+     * 创建习题库子目录
+     * @param nodeFolder
+     * @param id
+     * @return
+     */
+    public int saveTwoQuiz(NodeFolder nodeFolder,Integer id){
+
+        nodeFolder.setDeleteStatus(2);
+        nodeFolder.setFolderType(30);
+        nodeFolder.setParentId(id);
+
+        return nodeFolderMapper.insertSelective(nodeFolder);
+
+    }
+
 }
