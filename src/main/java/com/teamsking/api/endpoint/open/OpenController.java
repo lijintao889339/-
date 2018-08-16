@@ -296,9 +296,9 @@ public class OpenController extends BaseController {
     }
 
 
-    @ApiOperation(value = "批量删除班课下的用户信息")
+    @ApiOperation(value = "批量删除班课下的学生信息")
     @ApiImplicitParams( {
-            @ApiImplicitParam(name = "ids", value = "班课和用户关系的主键", required = true, dataType = "Integer[]"),
+            @ApiImplicitParam(name = "ids", value = "学生的主键", required = true, dataType = "Integer[]"),
             @ApiImplicitParam(name = "openId", value = "班课的主键", required = true, dataType = "int")
     })
     @DeleteMapping("/open_users/multi_delete/{openId}")

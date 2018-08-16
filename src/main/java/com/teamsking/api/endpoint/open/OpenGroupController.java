@@ -1,5 +1,6 @@
 package com.teamsking.api.endpoint.open;
 
+import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.teamsking.api.dto.open.OpenGroupDto;
 import com.teamsking.api.dto.open.OpenGroupDtoMapper;
@@ -81,6 +82,28 @@ public class OpenGroupController extends BaseController {
                                 @PathVariable int openId){
 
         return Result.success().addData("pager",warpPage(openGroupService.list(fixPage(pageNo),fixPage(pageSize),openId)));
+    }
+
+
+
+    @ApiOperation(value = "根据条件搜索班次下的班组列表", notes = "可分页", produces = "application/json")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "pageNo", value = "页码", required = true, example = "1"),
+            @ApiImplicitParam(name = "pageSize", value = "页大小", required = true, example = "10"),
+            @ApiImplicitParam(name = "openId", value = "班课的主键", required = true, dataType = "int"),
+            @ApiImplicitParam(name = "groupName", value = "班组名称", required = true, dataType = "String")
+    })
+    @GetMapping("/searching_open_groups/{openId}")
+    public Result searchingOpenGroupList(@RequestParam int pageNo, @RequestParam int pageSize,
+                                @PathVariable int openId, @RequestParam String groupName){
+
+        Page page = openGroupService.searchingOpenGroupByOpenId(fixPage(pageNo),fixPage(pageSize),openId,groupName);
+        if (null == page){
+            return Result.success().addData("pager",null);
+        }else {
+            return Result.success().addData("pager",warpPage(page));
+        }
+
     }
 
 

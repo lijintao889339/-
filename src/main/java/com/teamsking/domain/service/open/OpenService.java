@@ -892,10 +892,10 @@ public class OpenService extends BaseService {
 
         OpenUser openUser = new OpenUser();
         openUser.setDeleteStatus(1);
-        openUser.setOpenId(openId);
 
         Example openUserExample = new Example(OpenUser.class);
         openUserExample.and().andIn("userStudentId",idList);
+        openUserExample.and().andEqualTo("openId",openId);
         int count = openUserMapper.updateByExampleSelective(openUser,openUserExample);
 
         //删除班课下的某一学生后，小组成员应少一人

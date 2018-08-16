@@ -94,6 +94,72 @@ public class OpenGroupService extends BaseService {
     }
 
     /**
+     * 根据条件搜索班组信息
+     * @param pageNo
+     * @param pageSize
+     * @param openId
+     * @param groupName
+     * @return
+     */
+    public Page searchingOpenGroupByOpenId(int pageNo, int pageSize, int openId, String groupName) {
+
+        PageHelper.startPage(pageNo,pageSize);
+
+        Example openGroupExample = new Example(OpenGroup.class);
+        Example.Criteria cri = openGroupExample.createCriteria();
+        cri.andEqualTo("openId",openId);
+        cri.andEqualTo("deleteStatus",2);
+        if ("" != groupName){
+            cri.andLike("groupName","%" + groupName + "%");
+        }
+        List<OpenGroup> openGroupList = openGroupMapper.selectByExample(openGroupExample);
+
+        if (0 != openGroupList.size()){
+
+            List<Integer> groupIds = Lists.newArrayList();
+            for (OpenGroup group : openGroupList){
+                groupIds.add(group.getId());
+            }
+
+            //获学生组的辅导老师信息
+            //1.先获取学生组与有关的辅导老师ids
+            List<UserTeacherGroup>  userTeacherGroupList = userTeacherGroupService.getTeacherGroupInfoByGroupIds(groupIds);
+            List<Integer> userTeacherIds = Lists.newArrayList();
+            for (UserTeacherGroup userTeacherGroup : userTeacherGroupList){
+                userTeacherIds.add(userTeacherGroup.getUserTeacherId());
+            }
+
+            //2.根据辅导老师Ids获取辅导老师信息
+            List<UserTeacher> userTeacherList = userTeacherService.getUserTeacherListByIds(userTeacherIds);
+
+            //转换数据
+            List<OpenGroupDto> openGroupDtoList = OpenGroupDtoMapper.INSTANCE.entityListToDtoList(openGroupList);
+
+            //遍历集合
+            for (OpenGroupDto openGroupDto : openGroupDtoList){
+
+                List<String> userNameList = Lists.newArrayList();
+                for (UserTeacherGroup userTeacherGroup : userTeacherGroupList){
+                    if (openGroupDto.getId() == userTeacherGroup.getGroupId().intValue()){
+                        for (UserTeacher userTeacher : userTeacherList){
+                            if (userTeacherGroup.getUserTeacherId().intValue() == userTeacher.getId().intValue()){
+                                userNameList.add(userTeacher.getUserName());
+                                openGroupDto.setUserNameList(userNameList);
+                            }
+                        }
+                    }
+                }
+            }
+
+            return convertPage((Page)openGroupList ,openGroupDtoList);
+        }else {
+            Page page = null;
+            return page;
+        }
+
+    }
+
+    /**
      * 添加班次-学生组
      * @param openGroup
      * @return
@@ -167,4 +233,5 @@ public class OpenGroupService extends BaseService {
         userTeacherGroup.setGroupId(openGroupNameDto.getId());
         return userTeacherGroupMapper.insertSelective(userTeacherGroup);
     }
+
 }
