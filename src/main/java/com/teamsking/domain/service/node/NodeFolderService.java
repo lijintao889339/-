@@ -213,4 +213,34 @@ public class NodeFolderService {
 
     }
 
+
+    /**
+     * 创建一级视频目录
+     * @param nodeFolder
+     * @return
+     */
+    public int saveFirstVideo(NodeFolder nodeFolder) {
+
+        nodeFolder.setDeleteStatus(2);
+        nodeFolder.setFolderType(10);
+        nodeFolder.setParentId(0);
+
+        return nodeFolderMapper.insertSelective(nodeFolder);
+    }
+
+    /**
+     * 创建子视频库目录
+     * @param nodeFolder
+     * @param id
+     * @return
+     */
+    public int saveTwoVideo(NodeFolder nodeFolder,Integer id){
+
+        nodeFolder.setFolderType(10);
+        nodeFolder.setParentId(id);
+
+        return nodeFolderMapper.insertSelective(nodeFolder);
+
+    }
+
 }

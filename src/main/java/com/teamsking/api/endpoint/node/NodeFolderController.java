@@ -3,6 +3,7 @@ package com.teamsking.api.endpoint.node;
 import com.github.pagehelper.PageHelper;
 import com.teamsking.api.dto.node.NodeFolderDto;
 import com.teamsking.api.dto.node.NodeFolderDtoMapper;
+import com.teamsking.api.dto.node.NodeFolderSelDto;
 import com.teamsking.api.endpoint.BaseController;
 import com.teamsking.domain.entity.node.NodeFolder;
 import com.teamsking.domain.service.node.NodeFolderService;
@@ -54,7 +55,7 @@ public class NodeFolderController extends BaseController {
 
     }
 
-    @ApiOperation(value = "修改资源目录管理", consumes= "application/json")
+    @ApiOperation(value = "删除资源目录管理", consumes= "application/json")
     @ApiImplicitParams( {
             @ApiImplicitParam(name = "id", value = "资源目录管理", required = true, dataType = "Integer")
     })
@@ -177,5 +178,36 @@ public class NodeFolderController extends BaseController {
         return Result.success().addData("nodeFolderSelDtoList",nodeFolderService.getTwoQuizListById(id));
 
     }
+
+
+
+    @ApiOperation(value = "创建一级视频库目录", consumes= "application/json")
+    @ApiImplicitParams( {
+            @ApiImplicitParam(name = "nodeFolder", value = "创建视频库目录", required = true, dataType = "NodeFolder")
+    })
+    @PostMapping("/fist_video_node_folder")
+    public Result saveFistVideo(@RequestBody NodeFolder nodeFolder){
+
+        nodeFolderService.saveFirstVideo(nodeFolder);
+        return Result.success();
+
+    }
+
+    @ApiOperation(value = "创建一级视频库目录", consumes= "application/json")
+    @ApiImplicitParams( {
+            @ApiImplicitParam(name = "nodeFolder", value = "创建视频库目录", required = true, dataType = "NodeFolder")
+    })
+    @PostMapping("/two_video_node_folder/{id}")
+    public Result saveTwoVideo(@RequestBody NodeFolder nodeFolder,
+                               @PathVariable int id){
+
+        nodeFolderService.saveTwoVideo(nodeFolder,id);
+        return Result.success();
+
+    }
+
+
+
+
 
 }
