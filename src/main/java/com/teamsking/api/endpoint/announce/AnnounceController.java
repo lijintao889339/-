@@ -35,22 +35,18 @@ public class AnnounceController extends BaseController {
 
     /**
      * 获取公告列表
-     * @param pageNo
-     * @param pageSize
+     * @param openId
      * @return
      */
-    @ApiOperation(value = "公告列表", notes = "可分页", produces = "application/json")
+    @ApiOperation(value = "获取班课下的公告列表", produces = "application/json")
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "pageNo", value = "页码", required = true, example = "1"),
-            @ApiImplicitParam(name = "pageSize", value = "页大小", required = true, example = "10")
+            @ApiImplicitParam(name = "openId", value = "班课的主键", required = true, dataType = "int"),
     })
-    @GetMapping("/Announces")
-    public Result announceList(int pageNo, int pageSize){
+    @GetMapping("/announces/{openId}")
+    public Result announceList(@PathVariable int openId){
 
-        PageHelper.startPage(fixPage(pageNo),fixPage(pageSize));
-        List<Announce> announceList = announceService.list();
-        List<AnnounceDto> announceDtoList = AnnounceDtoMapper.INSTANCE.entityListToDtoList(announceList);
-        return Result.success().addData("pager",warpPage(announceDtoList));
+        List<AnnounceDto> AnnounceDtoList = announceService.list(openId);
+        return Result.success().addData("AnnounceDtoList",AnnounceDtoList);
     }
 
     /**

@@ -14,26 +14,15 @@ public class AnnounceDto extends Dto {
 
     private String title;
 
-    private Integer announceType;
-
-    private Integer schoolId;
-
-    private Integer openId;
-
-    private Integer displayOrder;
-
     private Integer createId;
 
     private Date createTime;
 
-    private Integer updateId;
-
-    private Date updateTime;
-
-    private Integer deleteStatus;
-
-    private String link;
-
     private String content;
 
+    private String userName;
+
+    private Integer readUserNums;
+
+    private Integer allUserNums;
 }
