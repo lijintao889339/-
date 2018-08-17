@@ -8,6 +8,9 @@ import com.teamsking.domain.entity.announce.AnnounceUser;
 import com.teamsking.domain.entity.open.OpenUser;
 import com.teamsking.domain.entity.sys.UserTeacher;
 import com.teamsking.domain.repository.AnnounceMapper;
+
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 import com.teamsking.domain.repository.AnnounceUserMapper;
@@ -107,21 +110,62 @@ public class AnnounceService {
     /**
      * 添加公告
      * @param announce
+     * @param openId
      * @return
      */
-    public int save(Announce announce){
+    public int save(Announce announce, int openId){
 
-        return announceMapper.insert(announce);
+        //设置班课Id
+        announce.setOpenId(openId);
+
+        //先默认登录教学老师的id为1
+        announce.setCreateId(1);
+        UserTeacher userTeacher = userTeacherMapper.selectByPrimaryKey(1);
+        announce.setSchoolId(userTeacher.getSchoolId());
+
+        //获取当前时间
+        announce.setCreateTime(new Date());
+
+        //设置排序
+        Announce newAnnounce = new Announce();
+        newAnnounce.setDeleteStatus(2);
+        newAnnounce.setOpenId(openId);
+        int count = announceMapper.selectCount(newAnnounce);
+        announce.setDisplayOrder(count + 1);
+
+        announce.setDeleteStatus(2);
+        announce.setAnnounceType(3);
+        return announceMapper.insertSelective(announce);
+
     }
 
     /**
-     * 删除公告
+     * 删除班课公告
      * @param id
      * @return
      */
     public int remove(int id){
 
-        return announceMapper.deleteByPrimaryKey(id);
+        Announce announce = new Announce();
+        announce.setId(id);
+        announce.setDeleteStatus(1);
+        int count = announceMapper.updateByPrimaryKeySelective(announce);
+
+        //删除公告的阅读记录
+        AnnounceUser announceUser = new AnnounceUser();
+        announceUser.setDeleteStatus(2);
+        announceUser.setAnnounceId(id);
+        int nums = announceUserMapper.selectCount(announceUser);
+        if (0 != nums){
+            AnnounceUser newAnnounceUser = new AnnounceUser();
+            newAnnounceUser.setDeleteStatus(1);
+
+            Example announceUserExample = new Example(AnnounceUser.class);
+            announceUserExample.and().andEqualTo("announceId",id);
+            announceUserMapper.updateByExampleSelective(newAnnounceUser,announceUserExample);
+        }
+
+        return count;
     }
 
     /**

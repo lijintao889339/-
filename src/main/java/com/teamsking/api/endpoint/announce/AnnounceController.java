@@ -50,32 +50,32 @@ public class AnnounceController extends BaseController {
     }
 
     /**
-     * 添加公告
+     * 添加班课公告
      * @param announce
      * @return
      */
-    @ApiOperation(value = "添加公告", consumes = "application/json")
+    @ApiOperation(value = "添加班课公告", consumes = "application/json")
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "announce", value = "公告", required = true, dataType = "AnnounceDto")
+            @ApiImplicitParam(name = "announceDto", value = "公告", required = true, dataType = "AnnounceDto")
     })
-    @PostMapping("/Announce")
-    public Result addAnnounce(@RequestBody AnnounceDto announce){
+    @PostMapping("/announce/{openId}")
+    public Result addAnnounce(@RequestBody AnnounceDto announce, @PathVariable int openId){
 
         Announce announceEntity = AnnounceDtoMapper.INSTANCE.dtoToEntity(announce);
-        announceService.save(announceEntity);
+        announceService.save(announceEntity,openId);
         return Result.success();
     }
 
     /**
-     * 删除公告
+     * 删除班课公告
      * @param id
      * @return
      */
-    @ApiOperation(value = "删除公告", consumes = "application/json")
+    @ApiOperation(value = "删除班课公告", consumes = "application/json")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "id", value = "公告的主键", required = true, dataType = "int")
     })
-    @DeleteMapping("/Announce/{id}")
+    @DeleteMapping("/announce/{id}")
     public Result removeAnnounce(@PathVariable("id") int id){
 
         announceService.remove(id);
