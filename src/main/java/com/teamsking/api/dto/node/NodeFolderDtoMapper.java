@@ -20,4 +20,6 @@ public interface NodeFolderDtoMapper {
 
     NodeFolder dtoToEntity(NodeFolderDto nodeFolderDto);
 
+    NodeFolder dtoToSelEntity(NodeFolderSelDto nodeFolderSelDto);
+
 }

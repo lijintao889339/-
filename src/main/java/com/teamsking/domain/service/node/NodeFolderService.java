@@ -322,4 +322,19 @@ public class NodeFolderService {
 
     }
 
+    /**
+     * 保存课件资源重名
+     * @param nodeFolderSelDto
+     * @param id
+     * @return
+     */
+    public int updateNodeFolder(NodeFolderSelDto nodeFolderSelDto,Integer id){
+
+        NodeFolder nodeFolder = NodeFolderDtoMapper.INSTANCE.dtoToSelEntity(nodeFolderSelDto);
+
+        nodeFolder.setId(id);
+        return nodeFolderMapper.updateByPrimaryKeySelective(nodeFolder);
+
+    }
+
 }

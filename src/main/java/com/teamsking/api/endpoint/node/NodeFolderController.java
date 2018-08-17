@@ -275,7 +275,18 @@ public class NodeFolderController extends BaseController {
 
     }
 
+    @ApiOperation(value = "重新命名保存目录", consumes= "application/json")
+    @ApiImplicitParams( {
+            @ApiImplicitParam(name = "nodeFolderSelDto", value = "重新命名", required = true, dataType = "NodeFolderSelDto")
+    })
+    @PutMapping("/node_folder_name/{id}")
+    public Result updateNodeFolder(@RequestBody NodeFolderSelDto nodeFolderSelDto,
+                                   @PathVariable int id){
 
+        nodeFolderService.updateNodeFolder(nodeFolderSelDto,id);
+        return Result.success();
+
+    }
 
 
 }
