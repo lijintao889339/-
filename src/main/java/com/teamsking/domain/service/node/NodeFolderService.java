@@ -306,4 +306,20 @@ public class NodeFolderService {
 
     }
 
+
+    /**
+     * 课件资源重命名(命名前根据id查询信息)
+     * @param id
+     * @return
+     */
+    public NodeFolderSelDto getNodeFolderById(Integer id){
+        //根据id查询信息
+        NodeFolder nodeFolder = nodeFolderMapper.selectByPrimaryKey(id);
+        //数据转换
+        NodeFolderSelDto nodeFolderSelDto = NodeFolderDtoMapper.INSTANCE.entityToSelDto(nodeFolder);
+
+        return nodeFolderSelDto;
+
+    }
+
 }

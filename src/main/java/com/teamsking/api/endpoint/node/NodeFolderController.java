@@ -264,5 +264,18 @@ public class NodeFolderController extends BaseController {
 
 
 
+    @ApiOperation(value = "重新命名前根据id查询信息", consumes= "application/json")
+    @ApiImplicitParams( {
+            @ApiImplicitParam(name = "id", value = "注解id", required = true, dataType = "Integer")
+    })
+    @GetMapping("/node_folder/{id}")
+    public Result getNodeFolderById(@PathVariable int id){
+
+        return Result.success().addData("nodeFolder",nodeFolderService.getNodeFolderById(id));
+
+    }
+
+
+
 
 }
