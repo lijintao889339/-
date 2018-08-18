@@ -1,6 +1,7 @@
 package com.teamsking.api.endpoint.open;
 
 import com.teamsking.api.dto.open.OpenTopicDto;
+import com.teamsking.api.dto.open.OpenTopicNameDto;
 import com.teamsking.api.endpoint.BaseController;
 import com.teamsking.domain.service.open.OpenTopicService;
 import com.teamsking.util.Result;
@@ -10,9 +11,9 @@ import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @Slf4j
 @RestController
@@ -33,6 +34,18 @@ public class OpenTopicController extends BaseController {
         openTopicService.saveOpenTopic(openTopicDto);
         return Result.success();
 
+    }
+
+
+    @ApiOperation(value = "获取班课讨论列表", produces = "application/json")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "openId", value = "班课的主键", required = true, dataType = "int"),
+    })
+    @GetMapping("/open_topic/{openId}")
+    public Result announceList(@PathVariable int openId){
+
+        List<OpenTopicNameDto> openTopicNameDtoList = openTopicService.getOpenOpenTopicListByOpenId(openId);
+        return Result.success().addData("openTopicNameDtoList",openTopicNameDtoList);
     }
 
 }

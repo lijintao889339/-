@@ -2,13 +2,20 @@ package com.teamsking.domain.service.open;
 
 import com.teamsking.api.dto.open.OpenTopicDto;
 import com.teamsking.api.dto.open.OpenTopicDtoMapper;
+import com.teamsking.api.dto.open.OpenTopicNameDto;
 import com.teamsking.domain.entity.open.OpenItem;
 import com.teamsking.domain.entity.open.OpenTopic;
+import com.teamsking.domain.entity.open.OpenUser;
+import com.teamsking.domain.entity.sys.UserStudentTopic;
 import com.teamsking.domain.repository.OpenItemMapper;
 import com.teamsking.domain.repository.OpenTopicMapper;
+import com.teamsking.domain.repository.OpenUserMapper;
+import com.teamsking.domain.repository.UserStudentTopicMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 @Slf4j
@@ -18,6 +25,10 @@ public class OpenTopicService {
     OpenTopicMapper openTopicMapper;
     @Autowired
     OpenItemMapper openItemMapper;
+    @Autowired
+    OpenUserMapper openUserMapper;
+    @Autowired
+    UserStudentTopicMapper userStudentTopicMapper;
 
     /**
      * 根据班课id添加班课讨论
@@ -39,6 +50,51 @@ public class OpenTopicService {
         openItem.setOpenId(openTopicEntity.getOpenId());
 
         return openItemMapper.insertSelective(openItem);
+
+    }
+
+
+    /**
+     * 根据openId获取讨论内容信息(教学管理讨论功能)
+     * @param openId
+     * @return
+     */
+    public List<OpenTopicNameDto> getOpenOpenTopicListByOpenId(Integer openId){
+
+        OpenTopic newOpenTopic = new OpenTopic();
+        newOpenTopic.setDeleteStatus(2);
+        newOpenTopic.setOpenId(openId);
+
+        List<OpenTopic> openTopicList = openTopicMapper.select(newOpenTopic);
+
+        //获取该班课下学生数量
+        OpenUser openUser = new OpenUser();
+        openUser.setDeleteStatus(2);
+        openUser.setOpenId(openId);
+        int allUserNum = openUserMapper.selectCount(openUser);
+
+        //数据转换
+        List<OpenTopicNameDto> openTopicNameDtoList = OpenTopicDtoMapper.INSTANCE.entityListNameToDto(openTopicList);
+
+        //遍历
+        for (OpenTopicNameDto openTopicNameDto:openTopicNameDtoList) {
+
+            //班课讨论的已提交人数
+            UserStudentTopic userStudentTopic = new UserStudentTopic();
+            userStudentTopic.setTopicId(openTopicNameDto.getId());
+            userStudentTopic.setDeleteStatus(2);
+            int stopUserCount = userStudentTopicMapper.selectCount(userStudentTopic);
+            openTopicNameDto.setStopUserCount(stopUserCount);
+
+            //总人数
+            openTopicNameDto.setUserCount(allUserNum);
+            //未提交人数
+            int notUserCount = allUserNum - stopUserCount;
+            openTopicNameDto.setNotUserCount(notUserCount);
+
+        }
+
+        return openTopicNameDtoList;
 
     }
 

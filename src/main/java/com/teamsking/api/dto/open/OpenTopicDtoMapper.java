@@ -18,5 +18,7 @@ public interface OpenTopicDtoMapper {
 
     OpenTopic dtoToEntity(OpenTopicDto openTopicDto);
 
+    List<OpenTopicNameDto> entityListNameToDto(List<OpenTopic> openTopicList);
+
 
 }
