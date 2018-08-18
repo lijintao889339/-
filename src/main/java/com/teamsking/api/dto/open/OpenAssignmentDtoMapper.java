@@ -21,4 +21,6 @@ public interface OpenAssignmentDtoMapper {
 
     OpenAssignment InterDtoEntity(AddOpenAssignmentDto addOpenAssignmentDto);
 
+    List<OpenAssignmentNameDto> entityListToNameDtoList(List<OpenAssignment> openAssignmentList);
+
 }

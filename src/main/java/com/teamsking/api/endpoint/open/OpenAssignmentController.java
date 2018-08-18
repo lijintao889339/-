@@ -4,6 +4,7 @@ import com.github.pagehelper.PageHelper;
 import com.teamsking.api.dto.open.AddOpenAssignmentDto;
 import com.teamsking.api.dto.open.OpenAssignmentDto;
 import com.teamsking.api.dto.open.OpenAssignmentDtoMapper;
+import com.teamsking.api.dto.open.OpenAssignmentNameDto;
 import com.teamsking.api.endpoint.BaseController;
 import com.teamsking.domain.entity.open.OpenAssignment;
 import com.teamsking.domain.service.open.OpenAssignmentService;
@@ -134,6 +135,20 @@ public class OpenAssignmentController extends BaseController {
 
         return Result.success();
 
+    }
+
+
+
+
+    @ApiOperation(value = "获取班课作业列表", produces = "application/json")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "openId", value = "班课的主键", required = true, dataType = "int"),
+    })
+    @GetMapping("/open_assignment/{openId}")
+    public Result announceList(@PathVariable int openId){
+
+        List<OpenAssignmentNameDto> openAssignmentNameDtoList = openAssignmentService.getOpenAssignmentListByOpenId(openId);
+        return Result.success().addData("openAssignmentNameDtoList",openAssignmentNameDtoList);
     }
 
 }

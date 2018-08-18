@@ -1,17 +1,23 @@
 package com.teamsking.domain.service.open;
 
+import com.google.common.collect.Lists;
 import com.teamsking.api.dto.open.AddOpenAssignmentDto;
 import com.teamsking.api.dto.open.OpenAssignmentDtoMapper;
+import com.teamsking.api.dto.open.OpenAssignmentNameDto;
+import com.teamsking.domain.entity.node.NodeFolder;
 import com.teamsking.domain.entity.open.OpenAssignment;
-import com.teamsking.domain.entity.open.OpenAssistant;
 import com.teamsking.domain.entity.open.OpenItem;
-import com.teamsking.domain.repository.OpenAssignmentMapper;
+import com.teamsking.domain.entity.open.OpenUser;
+import com.teamsking.domain.entity.sys.UserStudent;
+import com.teamsking.domain.entity.sys.UserStudentAssignment;
+import com.teamsking.domain.repository.*;
+
 import java.util.List;
 
-import com.teamsking.domain.repository.OpenItemMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import tk.mybatis.mapper.entity.Example;
 
 /**
 *@author linhao
@@ -24,6 +30,12 @@ public class OpenAssignmentService {
     OpenAssignmentMapper openAssignmentMapper;
     @Autowired
     OpenItemMapper openItemMapper;
+    @Autowired
+    NodeFolderMapper nodeFolderMapper;
+    @Autowired
+    OpenUserMapper openUserMapper;
+    @Autowired
+    UserStudentAssignmentMapper userStudentAssignmentMapper;
 
     /**
      * 获取班次作业管理列表
@@ -103,5 +115,60 @@ public class OpenAssignmentService {
         return openItemMapper.insertSelective(openItem);
 
     }
+
+
+    /**
+     * 根据openId获取作业内容信息(教学管理作业功能)
+     * @param openId
+     * @return
+     */
+    public List<OpenAssignmentNameDto> getOpenAssignmentListByOpenId(Integer openId){
+
+        OpenAssignment openAssignment = new OpenAssignment();
+        openAssignment.setOpenId(openId);
+        openAssignment.setDeleteStatus(2);
+        List<OpenAssignment> openAssignmentList = openAssignmentMapper.select(openAssignment);
+
+        //遍历集合
+//        List<Integer> userStudentIds = Lists.newArrayList();
+//        for (OpenAssignment openAssignment1 : openAssignmentList){
+//            userStudentIds.add(openAssignment1.getCreateId());
+//
+//        }
+
+
+        //获取该班课下学生数量
+        OpenUser openUser = new OpenUser();
+        openUser.setDeleteStatus(2);
+        openUser.setOpenId(openId);
+        int allUserNum = openUserMapper.selectCount(openUser);
+
+
+        //转换数据
+        List<OpenAssignmentNameDto> openAssignmentDtoList = OpenAssignmentDtoMapper.INSTANCE.entityListToNameDtoList(openAssignmentList);
+
+        for (OpenAssignmentNameDto openAssignmentDto : openAssignmentDtoList){
+
+
+            //班课作业的已提交人数
+            UserStudentAssignment userStudentAssignment = new UserStudentAssignment();
+            userStudentAssignment.setAssignmentId(openAssignmentDto.getId());
+            userStudentAssignment.setDeleteStatus(2);
+            int stopUserCount = userStudentAssignmentMapper.selectCount(userStudentAssignment);
+            openAssignmentDto.setStopUserCount(stopUserCount);
+            //总人数
+            openAssignmentDto.setUserCount(allUserNum);
+            //未提交人数
+            int notUserCount = allUserNum - stopUserCount;
+
+            openAssignmentDto.setNotUserCount(notUserCount);
+
+        }
+
+
+        return openAssignmentDtoList;
+
+    }
+
 
 }

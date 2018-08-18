@@ -535,6 +535,8 @@ public class OpenService extends BaseService {
 
         Open openEntity = OpenDtoMapper.INSTANCE.editAddDtoToEntity(openEditInsertDto);
 
+        openMapper.updateByPrimaryKeySelective(openEntity);
+
         /*Course course = courseMapper.selectByPrimaryKey(openEntity.getCourseId());
         Integer categoryId = course.getCategoryId();
         openEntity.setCategoryId(categoryId);*/
