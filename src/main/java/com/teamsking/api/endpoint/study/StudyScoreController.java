@@ -1,5 +1,6 @@
 package com.teamsking.api.endpoint.study;
 
+import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.teamsking.api.dto.study.StudyScoreDto;
 import com.teamsking.api.dto.study.StudyScoreDtoMapper;
@@ -36,11 +37,12 @@ public class StudyScoreController extends BaseController {
     @GetMapping("/study_scores/{openId}")
     public Result studyScoreList(@RequestParam int pageNo, @RequestParam int pageSize, @PathVariable int openId){
 
-        //PageHelper.startPage(fixPage(pageNo), fixPage(pageSize));
-        List<StudyScoreDto> studyScoreDtoList = studyScoreService.list();
-        //List<StudyScoreDto> studyScoreDtoList = StudyScoreDtoMapper.INSTANCE.entityListToDtoList(studyScoreList);
-        return Result.success().addData("pager", warpPage(studyScoreDtoList));
-
+        Page page = studyScoreService.list(fixPage(pageNo),fixPage(pageSize),openId);
+        if (null == page){
+            return Result.success().addData("pager", null);
+        }else {
+            return Result.success().addData("pager", warpPage(page));
+        }
     }
 
 
