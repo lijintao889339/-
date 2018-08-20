@@ -14,13 +14,7 @@ import io.swagger.annotations.ApiOperation;
 import java.util.List;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 
 @RestController
@@ -33,21 +27,21 @@ public class OpenVoteController extends BaseController {
     OpenVoteService openVoteService;
 
 
-    @ApiOperation(value = "班次-投票管理列表", notes = "可分页", produces = "application/json")
+    @ApiOperation(value = "班次下的投票管理列表", notes = "可分页", produces = "application/json")
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "pageNo", value = "页码", required = true, example = "1"),
-            @ApiImplicitParam(name = "pageSize", value = "页大小", required = true, example = "10")
+            @ApiImplicitParam(name = "openId", value = "页大小", required = true, dataType = "int")
     })
-    @GetMapping("/open_votes")
-    public Result openVoteList(int pageNo,int pageSize){
+    @GetMapping("/open_votes/{openId}")
+    public Result openVoteList(@PathVariable int openId){
 
-        PageHelper.startPage(fixPage(pageNo), fixPage(pageSize));
+        List<OpenVoteDto> openVoteDtoList = openVoteService.list(openId);
 
-        List<OpenVote> openVoteList = openVoteService.list();
+        if (null == openVoteDtoList){
+            return Result.success().addData("openVoteList", null);
+        }else {
+            return Result.success().addData("openVoteList", openVoteDtoList);
+        }
 
-        List<OpenVoteDto> openVoteDtoList = OpenVoteDtoMapper.INSTANCE.entityListToDtoList(openVoteList);
-
-        return Result.success().addData("pager", warpPage(openVoteDtoList));
 
     }
 

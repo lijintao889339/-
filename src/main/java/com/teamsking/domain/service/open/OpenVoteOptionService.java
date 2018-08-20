@@ -3,9 +3,12 @@ package com.teamsking.domain.service.open;
 import com.teamsking.domain.entity.open.OpenVoteOption;
 import com.teamsking.domain.repository.OpenVoteOptionMapper;
 import java.util.List;
+
+import com.teamsking.domain.repository.StudyVoteMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import tk.mybatis.mapper.entity.Example;
 
 /**
 *@author linhao
@@ -16,6 +19,8 @@ public class OpenVoteOptionService {
 
     @Autowired
     OpenVoteOptionMapper openVoteOptionMapper;
+    @Autowired
+    StudyVoteMapper studyVoteMapper;
 
     /**
      * 获取班次-投票选项管理列表
@@ -54,5 +59,18 @@ public class OpenVoteOptionService {
     public int modify(OpenVoteOption openVoteOption){
 
         return openVoteOptionMapper.updateByPrimaryKeySelective(openVoteOption);
+    }
+
+    /**
+     * 根据投票Ids获取投票选项信息列表
+     * @param voteIds
+     * @return
+     */
+    public List<OpenVoteOption> getVoteOPtionInfoByVoteIds(List<Integer> voteIds) {
+
+        Example voteOptionExample = new Example(OpenVoteOption.class);
+        voteOptionExample.and().andEqualTo("deleteStatus",2);
+        voteOptionExample.and().andIn("voteId",voteIds);
+        return openVoteOptionMapper.selectByExample(voteOptionExample);
     }
 }

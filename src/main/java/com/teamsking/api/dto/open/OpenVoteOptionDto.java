@@ -1,6 +1,8 @@
 package com.teamsking.api.dto.open;
 
 import com.teamsking.api.dto.Dto;
+
+import java.math.BigDecimal;
 import java.util.Date;
 import lombok.Data;
 
@@ -14,26 +16,12 @@ public class OpenVoteOptionDto extends Dto {
 
     private Integer voteId;
 
-    private Integer openId;
-
     private String voteOption;
 
-    private String description;
+    //投票人数
+    private Integer voteNums;
 
-    private Integer displayOrder;
-
-    private Date startTime;
-
-    private Date endTime;
-
-    private Integer createId;
-
-    private Date createTime;
-
-    private Integer updateId;
-
-    private Date updateTime;
-
-    private Integer deleteStatus;
+    //投票人数百分比
+    private String voteRatio;
 
 }

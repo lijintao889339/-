@@ -2,6 +2,9 @@ package com.teamsking.api.dto.open;
 
 import com.teamsking.api.dto.Dto;
 import java.util.Date;
+import java.util.List;
+
+import com.teamsking.domain.entity.open.OpenVoteOption;
 import lombok.Data;
 
 
@@ -9,18 +12,8 @@ import lombok.Data;
 public class OpenVoteDto extends Dto {
 
     private Integer id;
-    private Integer openId;
-    private Integer courseId;
-    private String title;
-    private String description;
-    private Integer type;
-    private Date startTime;
-    private Date endTime;
-    private Integer createId;
-    private Date createTime;
-    private Integer updateId;
-    private Date updateTime;
-    private Integer deleteStatus;
-    private String content;
 
+    private String title;
+
+    private List<OpenVoteOptionDto> openVoteOptionDtos;
 }
