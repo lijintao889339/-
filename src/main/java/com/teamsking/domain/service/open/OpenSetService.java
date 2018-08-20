@@ -30,13 +30,16 @@ public class OpenSetService {
 
 
     /**
-     * 获取班次-成绩管理列表
+     * 获取班次-成绩权重
+     * @param openId
      * @return
      */
-    public List<OpenSet> list(){
+    public OpenSet getOpenSet(int openId){
 
-        return openSetMapper.selectAll();
-
+        OpenSet openSet = new OpenSet();
+        openSet.setOpenId(openId);
+        openSet.setDeleteStatus(2);
+        return openSetMapper.selectOne(openSet);
     }
 
 

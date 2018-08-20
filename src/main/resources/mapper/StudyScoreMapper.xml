@@ -8,11 +8,11 @@
       This element was generated on Fri Jul 20 11:13:21 CST 2018.
     -->
     <id column="id" jdbcType="INTEGER" property="id" />
-    <result column="user_id" jdbcType="INTEGER" property="userId" />
+    <result column="user_student_id" jdbcType="INTEGER" property="userStudentId" />
     <result column="open_id" jdbcType="INTEGER" property="openId" />
     <result column="total_score" jdbcType="DECIMAL" property="totalScore" />
     <result column="video_score" jdbcType="DECIMAL" property="videoScore" />
-    <result column="test_total" jdbcType="DECIMAL" property="testTotal" />
+    <result column="test_score" jdbcType="DECIMAL" property="testScore" />
     <result column="assgnment_score" jdbcType="DECIMAL" property="assgnmentScore" />
     <result column="topic_score" jdbcType="DECIMAL" property="topicScore" />
     <result column="examing_score" jdbcType="DECIMAL" property="examingScore" />

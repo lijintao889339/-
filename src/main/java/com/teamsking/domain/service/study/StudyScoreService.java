@@ -1,6 +1,7 @@
 package com.teamsking.domain.service.study;
 
 
+import com.teamsking.api.dto.study.StudyScoreDto;
 import com.teamsking.domain.entity.study.StudyScore;
 import com.teamsking.domain.repository.StudyScoreMapper;
 import java.util.List;
@@ -19,9 +20,9 @@ public class StudyScoreService {
      * 获取学习-成绩列表
      * @return
      */
-    public List<StudyScore> list(){
+    public List<StudyScoreDto> list(){
 
-        return studyScoreMapper.selectAll();
+        return null;
 
     }
 

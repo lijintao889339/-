@@ -14,13 +14,7 @@ import io.swagger.annotations.ApiOperation;
 import java.util.List;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 
 @RestController
@@ -33,17 +27,18 @@ public class StudyScoreController extends BaseController {
 
 
 
-    @ApiOperation(value = "学习-成绩管理列表", notes = "可分页", produces = "application/json")
+    @ApiOperation(value = "班课下学生成绩列表", notes = "可分页", produces = "application/json")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "pageNo", value = "页码", required = true, example = "1"),
-            @ApiImplicitParam(name = "pageSize", value = "页大小", required = true, example = "10")
+            @ApiImplicitParam(name = "pageSize", value = "页大小", required = true, example = "10"),
+            @ApiImplicitParam(name = "openId", value = "班课的主键", required = true, dataType = "int")
     })
-    @GetMapping("/study_scores")
-    public Result studyScoreList(int pageNo,int pageSize){
+    @GetMapping("/study_scores/{openId}")
+    public Result studyScoreList(@RequestParam int pageNo, @RequestParam int pageSize, @PathVariable int openId){
 
-        PageHelper.startPage(fixPage(pageNo), fixPage(pageSize));
-        List<StudyScore> studyScoreList = studyScoreService.list();
-        List<StudyScoreDto> studyScoreDtoList = StudyScoreDtoMapper.INSTANCE.entityListToDtoList(studyScoreList);
+        //PageHelper.startPage(fixPage(pageNo), fixPage(pageSize));
+        List<StudyScoreDto> studyScoreDtoList = studyScoreService.list();
+        //List<StudyScoreDto> studyScoreDtoList = StudyScoreDtoMapper.INSTANCE.entityListToDtoList(studyScoreList);
         return Result.success().addData("pager", warpPage(studyScoreDtoList));
 
     }
