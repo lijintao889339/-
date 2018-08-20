@@ -1,14 +1,14 @@
 package com.teamsking.domain.service.open;
 
 import com.google.common.collect.Lists;
-import com.teamsking.api.dto.open.ChapterSectionDto;
-import com.teamsking.api.dto.open.OpenChapterDto;
-import com.teamsking.api.dto.open.OpenChapterDtoMapper;
-import com.teamsking.api.dto.open.SectionTitleAndOrderDto;
+import com.teamsking.api.dto.open.*;
+import com.teamsking.domain.entity.open.Open;
 import com.teamsking.domain.entity.open.OpenChapter;
 import com.teamsking.domain.entity.open.OpenSection;
 import com.teamsking.domain.repository.OpenChapterMapper;
 import java.util.List;
+
+import com.teamsking.domain.repository.OpenMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -22,6 +22,8 @@ public class OpenChapterService {
 
     @Autowired
     OpenSectionService openSectionService;
+    @Autowired
+    OpenMapper openMapper;
 
     /**
      * 获取班次-章列表
@@ -157,5 +159,31 @@ public class OpenChapterService {
         return openChapterList;
 
     }
+
+
+
+    /**
+     * 根据班课id创建章节内容教学模式
+     * @param addOpenDto
+     * @return
+     */
+    public int addTeachingModel(AddOpenDto addOpenDto,Integer OpenId){
+
+        Open openEntity = OpenDtoMapper.INSTANCE.insertDtoAddToEntity(addOpenDto);
+        openEntity.setId(OpenId);
+        return openMapper.updateByPrimaryKeySelective(openEntity);
+    }
+
+    /**
+     * 根据openId查询教学模式
+     * @param openId
+     * @return
+     */
+    public Open getTeachingModelByOpenId(Integer openId){
+
+        return openMapper.selectByPrimaryKey(openId);
+
+    }
+
 
 }

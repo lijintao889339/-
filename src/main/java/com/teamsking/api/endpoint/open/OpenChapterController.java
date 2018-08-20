@@ -1,12 +1,15 @@
 package com.teamsking.api.endpoint.open;
 
 import com.github.pagehelper.PageHelper;
+import com.teamsking.api.dto.open.AddOpenDto;
 import com.teamsking.api.dto.open.ChapterSectionDto;
 import com.teamsking.api.dto.open.OpenChapterDto;
 import com.teamsking.api.dto.open.OpenChapterDtoMapper;
 import com.teamsking.api.endpoint.BaseController;
+import com.teamsking.domain.entity.open.Open;
 import com.teamsking.domain.entity.open.OpenChapter;
 import com.teamsking.domain.service.open.OpenChapterService;
+import com.teamsking.domain.service.open.OpenService;
 import com.teamsking.util.Result;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
@@ -151,6 +154,35 @@ public class OpenChapterController extends BaseController {
         List<OpenChapter> openChapterList = openChapterService.getOpenChapterByOpenId(openId);
 
         return Result.success().addData("openChapterList",openChapterList);
+
+    }
+
+
+
+    @ApiOperation(value = "创建章节内容教学模式", consumes= "application/json")
+    @ApiImplicitParams( {
+            @ApiImplicitParam(name = "addOpenDto", value = "章节教学模式", required = true, dataType = "AddOpenDto")
+    })
+    @PutMapping("/open_chapter_teaching_model/{openId}")
+    public Result addOpenTeachingModel(@RequestBody AddOpenDto addOpenDto,
+                                       @PathVariable int openId){
+
+        openChapterService.addTeachingModel(addOpenDto,openId);
+
+        return Result.success();
+
+    }
+
+
+
+    @ApiOperation(value = "根据openId章的列表", notes = "可分页", produces = "application/json")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "openId", value = "班课的主键", required = true, dataType = "int")
+    })
+    @GetMapping("/open_chapter_teacher/{openId}")
+    public Result getChapterByOpenId(@PathVariable int openId){
+
+        return Result.success().addData("open",openChapterService.getTeachingModelByOpenId(openId));
 
     }
 
