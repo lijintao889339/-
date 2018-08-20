@@ -10,5 +10,7 @@
     <id column="id" jdbcType="INTEGER" property="id" />
     <result column="open_id" jdbcType="INTEGER" property="openId" />
     <result column="user_teacher_id" jdbcType="INTEGER" property="userTeacherId" />
+    <result column="group_id" jdbcType="INTEGER" property="groupId" />
+    <result column="delete_status" jdbcType="INTEGER" property="deleteStatus" />
   </resultMap>
 </mapper>

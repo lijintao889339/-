@@ -136,8 +136,13 @@ public class SysUserController extends BaseController {
     @GetMapping("/open_user_teachers/{id}")
     public Result getOpenUser(@PathVariable int id, @RequestParam int pageNo, @RequestParam int pageSize){
 
-        List<UserTeacherDto> userTeacherDtos = userTeacherService.getOpenUserTeacherById(id,fixPage(pageNo),fixPage(pageSize));
-        return Result.success().addData("pager",warpPage(userTeacherDtos));
+        Page page = userTeacherService.getOpenUserTeacherById(id,fixPage(pageNo),fixPage(pageSize));
+        if (null == page){
+            return Result.success().addData("pager",null);
+        }else {
+            return Result.success().addData("pager",warpPage(page));
+        }
+
     }
 
 
@@ -179,18 +184,18 @@ public class SysUserController extends BaseController {
 
 
 
-    @ApiOperation(value = "所有的辅导老师姓名列表", produces = "application/json")
+    /*@ApiOperation(value = "所有的辅导老师姓名列表", produces = "application/json")
     @GetMapping("/user_teacher_names")
     public Result getOpenGroupName(){
 
         List<UserTeacher> userTeacherList = userTeacherService.getUserTeacherNameByOpenId();
         List<UserTeacherNameDto> userTeacherNameDtoList = UserTeacherDtoMapper.INSTANCE.entityListToTeacherNameDtoList(userTeacherList);
         return Result.success().addData("userTeacherNameDtoList",userTeacherNameDtoList);
-    }
+    }*/
 
 
 
-    @ApiOperation(value = "给班组添加辅导老师", produces = "application/json")
+    /*@ApiOperation(value = "给班组添加辅导老师", produces = "application/json")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "groupId", value = "班组的主键", required = true, dataType = "int"),
             @ApiImplicitParam(name = "userTeacherNameDto", value = "辅导老师信息", required = true, dataType = "UserTeacherNameDto")
@@ -200,7 +205,7 @@ public class SysUserController extends BaseController {
 
         userTeacherService.saveUserTeacherByGroupId(groupId, userTeacherNameDto);
         return Result.success();
-    }
+    }*/
 
 
 }

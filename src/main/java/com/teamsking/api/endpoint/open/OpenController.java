@@ -225,7 +225,7 @@ public class OpenController extends BaseController {
         Page page = openService.listByReaching(fixPage(pageNo), fixPage(pageSize),openName);
 
         if (null == page){
-            return Result.success().addData("page",null);
+            return Result.success().addData("pager",null);
         }else {
             return Result.success().addData("pager", warpPage(page));
         }
@@ -270,8 +270,12 @@ public class OpenController extends BaseController {
     @GetMapping("/open_users/{id}")
     public Result getOpenUser(@PathVariable int id, @RequestParam int pageNo, @RequestParam int pageSize){
 
-        List<UserStudentDto> userStudentDtos = openService.getOpenUserById(id,fixPage(pageNo),fixPage(pageSize));
-        return Result.success().addData("pager",warpPage(userStudentDtos));
+        Page page = openService.getOpenUserById(id,fixPage(pageNo),fixPage(pageSize));
+        if (null == page){
+            return Result.success().addData("pager",null);
+        }else {
+            return Result.success().addData("pager", warpPage(page));
+        }
     }
 
 

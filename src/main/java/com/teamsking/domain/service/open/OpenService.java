@@ -683,13 +683,6 @@ public class OpenService extends BaseService {
             //查询到用户信息
             UserTeacher userTeacher = userTeacherMapper.selectByPrimaryKey(teacherId);
 
-            /*OpenUser openUser = new OpenUser();
-            openUser.setUserId(userTeacher.getUserId());
-            openUser.setUserTeacherId(teacherId);
-            openUser.setOpenId(open.getId());
-            openUser.setCourseId(courseId);
-            openUserMapper.insertSelective(openUser);*/
-
             OpenUserTeacher openUserTeacher = new OpenUserTeacher();
             openUserTeacher.setUserTeacherId(teacherId);
             openUserTeacher.setOpenId(open.getId());
@@ -736,40 +729,46 @@ public class OpenService extends BaseService {
         openUser.setOpenId(id);
         List<OpenUser> openUserList = openUserMapper.select(openUser);
 
-        //获取学生ids
-        List<Integer> studentIds = Lists.newArrayList();
-        for (OpenUser openUserInfo : openUserList){
+        if (0 != openUserList.size()){
+
+            //获取学生ids
+            List<Integer> studentIds = Lists.newArrayList();
+            for (OpenUser openUserInfo : openUserList){
 
                 studentIds.add(openUserInfo.getUserStudentId());
-        }
+            }
 
-        PageHelper.startPage(pageNo,pageSize);
+            PageHelper.startPage(pageNo,pageSize);
 
-        //获取学生信息
-        List<UserStudent> userStudentList = userStudentService.getUserStudentListByIds(studentIds);
+            //获取学生信息
+            List<UserStudent> userStudentList = userStudentService.getUserStudentListByIds(studentIds);
 
-        //获取该学生的用户信息
-        List<Integer> userIds = Lists.newArrayList();
-        for (UserStudent userStudent : userStudentList){
-            userIds.add(userStudent.getUserId());
-        }
-        List<SysUser> sysUserList = sysUserService.getSysUserByUserIdList(userIds);
+            //获取该学生的用户信息
+            List<Integer> userIds = Lists.newArrayList();
+            for (UserStudent userStudent : userStudentList){
+                userIds.add(userStudent.getUserId());
+            }
+            List<SysUser> sysUserList = sysUserService.getSysUserByUserIdList(userIds);
 
-        //数据转换
-        List<UserStudentDto> userStudentDtos = UserStudentDtoMapper.INSTANCE.entityListToDtoList(userStudentList);
+            //数据转换
+            List<UserStudentDto> userStudentDtos = UserStudentDtoMapper.INSTANCE.entityListToDtoList(userStudentList);
 
-        //遍历集合，获取数据
-        for (UserStudentDto userStudentDto : userStudentDtos){
+            //遍历集合，获取数据
+            for (UserStudentDto userStudentDto : userStudentDtos){
 
-            for (SysUser sysUser : sysUserList){
-                if (userStudentDto.getUserId().intValue() == sysUser.getId().intValue()){
-                    userStudentDto.setActivationStatus(sysUser.getActivationStatus());
-                    userStudentDto.setMobile(sysUser.getMobile());
+                for (SysUser sysUser : sysUserList){
+                    if (userStudentDto.getUserId().intValue() == sysUser.getId().intValue()){
+                        userStudentDto.setActivationStatus(sysUser.getActivationStatus());
+                        userStudentDto.setMobile(sysUser.getMobile());
+                    }
                 }
             }
-        }
-        return convertPage((Page)userStudentList,userStudentDtos);
+            return convertPage((Page)userStudentList,userStudentDtos);
 
+        }else {
+            Page page =null;
+            return page;
+        }
     }
 
     /**
@@ -789,68 +788,53 @@ public class OpenService extends BaseService {
         openUser.setOpenId(id);
         List<OpenUser> openUserList = openUserMapper.select(openUser);
 
-        /*Example openUserExample = new Example(OpenUser.class);
-        Example.Criteria cri = openUserExample.createCriteria();
-        cri.andEqualTo("deleteStatus",2);
-        cri.andEqualTo("openId",id);
-        if (null != userName){
-            cri.andLike("userName","%" + userName + "%");
+        if (0 != openUserList.size()){
+
+            //获取学生ids
+            List<Integer> studentIds = Lists.newArrayList();
+            for (OpenUser openUserInfo : openUserList){
+                studentIds.add(openUserInfo.getUserStudentId());
+            }
+
+            //分页
+            PageHelper.startPage(pageNo,pageSize);
+
+            //获取学生信息
+            Example userStudentExample = new Example(UserStudent.class);
+            Example.Criteria cri = userStudentExample.createCriteria();
+            cri.andIn("id",studentIds);
+            if ("" != realName){
+                cri.andLike("realName","%" + realName + "%");
+            }else if ("" != studentNo){
+                cri.andEqualTo("studentNo",studentNo);
+            }
+            List<UserStudent> userStudentList = userStudentMapper.selectByExample(userStudentExample);
+
+            //获取该学生的用户信息
+            List<Integer> userIds = Lists.newArrayList();
+            for (UserStudent userStudent : userStudentList){
+                userIds.add(userStudent.getUserId());
+            }
+            List<SysUser> sysUserList = sysUserService.getSysUserByUserIdList(userIds);
+
+            //数据转换
+            List<UserStudentDto> userStudentDtos = UserStudentDtoMapper.INSTANCE.entityListToDtoList(userStudentList);
+
+            //遍历集合，获取数据
+            for (UserStudentDto userStudentDto : userStudentDtos){
+
+                for (SysUser sysUser : sysUserList){
+                    if (userStudentDto.getUserId().intValue() == sysUser.getId().intValue()){
+                        userStudentDto.setActivationStatus(sysUser.getActivationStatus());
+                        userStudentDto.setMobile(sysUser.getMobile());
+                    }
+                }
+            }
+            return convertPage((Page)userStudentList,userStudentDtos);
+        }else {
+            Page page =null;
+            return page;
         }
-        if (null != studentNo){
-            cri.andEqualTo("studentNo",studentNo);
-        }
-        List<OpenUser> openUserList = openUserMapper.selectByExample(openUserExample);*/
-
-
-
-        //获取学生ids
-        List<Integer> studentIds = Lists.newArrayList();
-        for (OpenUser openUserInfo : openUserList){
-
-            studentIds.add(openUserInfo.getUserStudentId());
-        }
-
-        //分页
-        PageHelper.startPage(pageNo,pageSize);
-
-        //获取学生信息
-        Example userStudentExample = new Example(UserStudent.class);
-        Example.Criteria cri = userStudentExample.createCriteria();
-        cri.andIn("id",studentIds);
-        if ("" != realName){
-            cri.andLike("realName","%" + realName + "%");
-        }else if ("" != studentNo){
-            cri.andEqualTo("studentNo",studentNo);
-        }
-        List<UserStudent> userStudentList = userStudentMapper.selectByExample(userStudentExample);
-
-        if (0 != userStudentList.size()){
-
-           //获取该学生的用户信息
-           List<Integer> userIds = Lists.newArrayList();
-           for (UserStudent userStudent : userStudentList){
-               userIds.add(userStudent.getUserId());
-           }
-           List<SysUser> sysUserList = sysUserService.getSysUserByUserIdList(userIds);
-
-           //数据转换
-           List<UserStudentDto> userStudentDtos = UserStudentDtoMapper.INSTANCE.entityListToDtoList(userStudentList);
-
-           //遍历集合，获取数据
-           for (UserStudentDto userStudentDto : userStudentDtos){
-
-               for (SysUser sysUser : sysUserList){
-                   if (userStudentDto.getUserId().intValue() == sysUser.getId().intValue()){
-                       userStudentDto.setActivationStatus(sysUser.getActivationStatus());
-                       userStudentDto.setMobile(sysUser.getMobile());
-                   }
-               }
-           }
-           return convertPage((Page)userStudentList,userStudentDtos);
-       }else {
-           Page page =null;
-           return page;
-       }
     }
 
     /**

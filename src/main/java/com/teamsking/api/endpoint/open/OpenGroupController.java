@@ -81,7 +81,13 @@ public class OpenGroupController extends BaseController {
     public Result openGroupList(@RequestParam int pageNo, @RequestParam int pageSize,
                                 @PathVariable int openId){
 
-        return Result.success().addData("pager",warpPage(openGroupService.list(fixPage(pageNo),fixPage(pageSize),openId)));
+        Page page = openGroupService.list(fixPage(pageNo),fixPage(pageSize),openId);
+        if (null == page){
+            return Result.success().addData("pager",null);
+        }else {
+            return Result.success().addData("pager",warpPage(page));
+        }
+
     }
 
 
@@ -122,7 +128,7 @@ public class OpenGroupController extends BaseController {
 
 
 
-    @ApiOperation(value = "给辅导老师添加班组", produces = "application/json")
+    /*@ApiOperation(value = "给辅导老师添加班组", produces = "application/json")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "userTeacherId", value = "辅导老师的主键", required = true, dataType = "int"),
             @ApiImplicitParam(name = "openGroupNameDto", value = "班组信息", required = true, dataType = "OpenGroupNameDto")
@@ -132,17 +138,18 @@ public class OpenGroupController extends BaseController {
 
         openGroupService.saveOpenGroupByUserTeacherId(userTeacherId, openGroupNameDto);
         return Result.success();
-    }
+    }*/
 
 
     @ApiOperation(value = "批量删除班课下班组", produces = "application/json")
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "ids", value = "班组的主键", required = true, dataType = "Integer[]")
+            @ApiImplicitParam(name = "ids", value = "班组的主键", required = true, dataType = "Integer[]"),
+            @ApiImplicitParam(name = "openId", value = "班课的主键", required = true, dataType = "int")
     })
-    @DeleteMapping("/open_groups/multi_delete")
-    public Result removeMultiOpenGroup(@RequestParam Integer[] ids){
+    @DeleteMapping("/open_groups/multi_delete/{openId}")
+    public Result removeMultiOpenGroup(@RequestParam Integer[] ids, @PathVariable int openId){
 
-        openGroupService.removeMultiOpenGroupByIds(ids);
+        openGroupService.removeMultiOpenGroupByIds(ids,openId);
         return Result.success();
     }
 

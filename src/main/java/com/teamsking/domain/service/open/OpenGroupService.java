@@ -6,16 +6,13 @@ import com.github.pagehelper.PageHelper;
 import com.google.common.collect.Lists;
 import com.teamsking.api.dto.open.OpenGroupDto;
 import com.teamsking.api.dto.open.OpenGroupDtoMapper;
-import com.teamsking.api.dto.open.OpenGroupNameDto;
 import com.teamsking.domain.entity.open.OpenGroup;
+import com.teamsking.domain.entity.open.OpenUserTeacher;
 import com.teamsking.domain.entity.sys.UserTeacher;
-import com.teamsking.domain.entity.sys.UserTeacherGroup;
 import com.teamsking.domain.repository.OpenGroupMapper;
 import java.util.List;
 
-import com.teamsking.domain.repository.UserTeacherGroupMapper;
 import com.teamsking.domain.service.BaseService;
-import com.teamsking.domain.service.sys.UserTeacherGroupService;
 import com.teamsking.domain.service.sys.UserTeacherService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,14 +25,12 @@ public class OpenGroupService extends BaseService {
 
     @Autowired
     OpenGroupMapper openGroupMapper;
-    @Autowired
-    UserTeacherGroupMapper userTeacherGroupMapper;
 
 
     @Autowired
     UserTeacherService userTeacherService;
     @Autowired
-    UserTeacherGroupService userTeacherGroupService;
+    OpenUserTeacherService openUserTeacherService;
 
     /**
      * 获取班次下的学生组列表
@@ -54,42 +49,49 @@ public class OpenGroupService extends BaseService {
         openGroup.setDeleteStatus(2);
         List<OpenGroup> openGroupList = openGroupMapper.select(openGroup);
 
-        List<Integer> groupIds = Lists.newArrayList();
-        for (OpenGroup group : openGroupList){
-            groupIds.add(group.getId());
-        }
+        if (0 != openGroupList.size()){
 
-        //获学生组的辅导老师信息
-        //1.先获取学生组与有关的辅导老师ids
-        List<UserTeacherGroup>  userTeacherGroupList = userTeacherGroupService.getTeacherGroupInfoByGroupIds(groupIds);
-        List<Integer> userTeacherIds = Lists.newArrayList();
-        for (UserTeacherGroup userTeacherGroup : userTeacherGroupList){
-            userTeacherIds.add(userTeacherGroup.getUserTeacherId());
-        }
+            List<Integer> groupIds = Lists.newArrayList();
+            for (OpenGroup group : openGroupList){
+                groupIds.add(group.getId());
+            }
 
-        //2.根据辅导老师Ids获取辅导老师信息
-        List<UserTeacher> userTeacherList = userTeacherService.getUserTeacherListByIds(userTeacherIds);
+            //获学生组的辅导老师信息
+            //1.先获取学生组与有关的辅导老师ids
+            List<OpenUserTeacher> openUserTeacherList = openUserTeacherService.getTeacherGroupInfoByGroupIds(groupIds);
+            List<Integer> userTeacherIds = Lists.newArrayList();
+            for (OpenUserTeacher openUserTeacher : openUserTeacherList){
+                userTeacherIds.add(openUserTeacher.getUserTeacherId());
+            }
 
-        //转换数据
-        List<OpenGroupDto> openGroupDtoList = OpenGroupDtoMapper.INSTANCE.entityListToDtoList(openGroupList);
+            //2.根据辅导老师Ids获取辅导老师信息
+            List<UserTeacher> userTeacherList = userTeacherService.getUserTeacherListByIds(userTeacherIds);
 
-        //遍历集合
-        for (OpenGroupDto openGroupDto : openGroupDtoList){
+            //转换数据
+            List<OpenGroupDto> openGroupDtoList = OpenGroupDtoMapper.INSTANCE.entityListToDtoList(openGroupList);
 
-            List<String> userNameList = Lists.newArrayList();
-            for (UserTeacherGroup userTeacherGroup : userTeacherGroupList){
-                if (openGroupDto.getId() == userTeacherGroup.getGroupId().intValue()){
-                    for (UserTeacher userTeacher : userTeacherList){
-                        if (userTeacherGroup.getUserTeacherId().intValue() == userTeacher.getId().intValue()){
-                            userNameList.add(userTeacher.getUserName());
-                            openGroupDto.setUserNameList(userNameList);
+            //遍历集合
+            for (OpenGroupDto openGroupDto : openGroupDtoList){
+
+                List<String> userNameList = Lists.newArrayList();
+                for (OpenUserTeacher openUserTeacher : openUserTeacherList){
+                    if (openGroupDto.getId() == openUserTeacher.getGroupId().intValue()){
+                        for (UserTeacher userTeacher : userTeacherList){
+                            if (openUserTeacher.getUserTeacherId().intValue() == userTeacher.getId().intValue()){
+                                userNameList.add(userTeacher.getUserName());
+                                openGroupDto.setUserNameList(userNameList);
+                            }
                         }
                     }
                 }
             }
-        }
 
-        return convertPage((Page)openGroupList ,openGroupDtoList);
+            return convertPage((Page)openGroupList ,openGroupDtoList);
+
+        }else {
+            Page page = null;
+            return page;
+        }
 
     }
 
@@ -123,10 +125,10 @@ public class OpenGroupService extends BaseService {
 
             //获学生组的辅导老师信息
             //1.先获取学生组与有关的辅导老师ids
-            List<UserTeacherGroup>  userTeacherGroupList = userTeacherGroupService.getTeacherGroupInfoByGroupIds(groupIds);
+            List<OpenUserTeacher> openUserTeacherList = openUserTeacherService.getTeacherGroupInfoByGroupIds(groupIds);
             List<Integer> userTeacherIds = Lists.newArrayList();
-            for (UserTeacherGroup userTeacherGroup : userTeacherGroupList){
-                userTeacherIds.add(userTeacherGroup.getUserTeacherId());
+            for (OpenUserTeacher openUserTeacher : openUserTeacherList){
+                userTeacherIds.add(openUserTeacher.getUserTeacherId());
             }
 
             //2.根据辅导老师Ids获取辅导老师信息
@@ -139,10 +141,10 @@ public class OpenGroupService extends BaseService {
             for (OpenGroupDto openGroupDto : openGroupDtoList){
 
                 List<String> userNameList = Lists.newArrayList();
-                for (UserTeacherGroup userTeacherGroup : userTeacherGroupList){
-                    if (openGroupDto.getId() == userTeacherGroup.getGroupId().intValue()){
+                for (OpenUserTeacher openUserTeacher : openUserTeacherList){
+                    if (openGroupDto.getId() == openUserTeacher.getGroupId().intValue()){
                         for (UserTeacher userTeacher : userTeacherList){
-                            if (userTeacherGroup.getUserTeacherId().intValue() == userTeacher.getId().intValue()){
+                            if (openUserTeacher.getUserTeacherId().intValue() == userTeacher.getId().intValue()){
                                 userNameList.add(userTeacher.getUserName());
                                 openGroupDto.setUserNameList(userNameList);
                             }
@@ -226,31 +228,39 @@ public class OpenGroupService extends BaseService {
      * @param openGroupNameDto
      * @return
      */
-    public int saveOpenGroupByUserTeacherId(int userTeacherId, OpenGroupNameDto openGroupNameDto) {
+    /*public int saveOpenGroupByUserTeacherId(int userTeacherId, OpenGroupNameDto openGroupNameDto) {
 
         UserTeacherGroup userTeacherGroup = new UserTeacherGroup();
         userTeacherGroup.setUserTeacherId(userTeacherId);
         userTeacherGroup.setGroupId(openGroupNameDto.getId());
         return userTeacherGroupMapper.insertSelective(userTeacherGroup);
-    }
+    }*/
 
     /**
      * 批量删除班课下的班组信息
      * @param ids
+     * @param openId
      * @return
      */
-    public int removeMultiOpenGroupByIds(Integer[] ids) {
+    public int removeMultiOpenGroupByIds(Integer[] ids, int openId) {
 
         List<Integer> openGroupIdList = Lists.newArrayList();
         for (Integer id : ids){
             openGroupIdList.add(id);
         }
 
+        //删除班组
         OpenGroup openGroup = new OpenGroup();
         openGroup.setDeleteStatus(1);
-
         Example openGroupExample = new Example(OpenGroup.class);
         openGroupExample.and().andIn("id",openGroupIdList);
-        return openGroupMapper.updateByExampleSelective(openGroup,openGroupExample);
+        int count = openGroupMapper.updateByExampleSelective(openGroup,openGroupExample);
+
+        //删除与此班组有关的班组和老师信息
+        openUserTeacherService.removeUserTeacherGroupByGroupIds(openGroupIdList,openId);
+
+
+
+        return count;
     }
 }
