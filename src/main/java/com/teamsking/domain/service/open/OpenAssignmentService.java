@@ -118,6 +118,33 @@ public class OpenAssignmentService {
 
 
     /**
+     * 根据节id添加作业信息
+     * @param addOpenAssignmentDto
+     * @param sectionId
+     * @return
+     */
+    public int addOpenAssignmentBySectionId(AddOpenAssignmentDto addOpenAssignmentDto,Integer sectionId){
+
+        //给作业表添加信息
+        OpenAssignment openAssignmentEntity = OpenAssignmentDtoMapper.INSTANCE.InterDtoEntity(addOpenAssignmentDto);
+        openAssignmentEntity.setDeleteStatus(2);
+        openAssignmentMapper.insertSelective(openAssignmentEntity);
+
+        //给项表中添加信息
+        OpenItem openItem = new OpenItem();
+        openItem.setChapterId(openAssignmentEntity.getChapterId());
+        openItem.setSectionId(sectionId);
+        openItem.setOpenId(openAssignmentEntity.getOpenId());
+        openItem.setContentId(openAssignmentEntity.getId());
+
+        return openItemMapper.insertSelective(openItem);
+
+    }
+
+
+
+
+    /**
      * 根据openId获取作业内容信息(教学管理作业功能)
      * @param openId
      * @return
