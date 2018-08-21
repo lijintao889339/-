@@ -35,22 +35,23 @@ public class OpenQuestionController extends BaseController {
 
     /**
      * 获取班次-问卷调查管理列表
-     * @param pageNo
-     * @param pageSize
+     * @param openId
      * @return
      */
-    @ApiOperation(value = "班次-问卷调查管理列表", notes = "可分页", produces = "application/json")
+    @ApiOperation(value = "班次下问卷调查管理列表", produces = "application/json")
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "pageNo", value = "页码", required = true, example = "1"),
-            @ApiImplicitParam(name = "pageSize", value = "页大小", required = true, example = "10")
+            @ApiImplicitParam(name = "openId", value = "班课的主键", required = true, dataType = "int"),
     })
-    @GetMapping("/open_questions")
-    public Result openQuestionList(int pageNo, int pageSize){
+    @GetMapping("/open_questions/{openId}")
+    public Result openQuestionList(@PathVariable int openId){
 
-        PageHelper.startPage(fixPage(pageNo),fixPage(pageSize));
-        List<OpenQuestion> openQuestionList = openQuestionService.list();
-        List<OpenQuestionDto> openSectionDtoList = OpenQuestionDtoMapper.INSTANCE.entityListToDtoList(openQuestionList);
-        return Result.success().addData("pager",warpPage(openSectionDtoList));
+        List<OpenQuestionDto> openSectionDtoList = openQuestionService.list(openId);
+        if (null == openSectionDtoList){
+            return Result.success().addData("pager",null);
+        }else {
+            return Result.success().addData("pager",openSectionDtoList);
+        }
+
 
     }
 

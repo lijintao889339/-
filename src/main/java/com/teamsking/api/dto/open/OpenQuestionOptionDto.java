@@ -8,14 +8,15 @@ import lombok.Data;
 public class OpenQuestionOptionDto extends Dto {
 
     private Integer id;
-    private Integer courseId;
-    private Integer openId;
+
     private Integer questionId;
+
     private String option;
-    private Integer createId;
-    private Date createTime;
-    private Integer updateId;
-    private Date updateTime;
-    private Integer deleteStatus;
+
+    //问卷人数
+    private Integer questionNums;
+
+    //问卷人数百分比
+    private String questionRatio;
 
 }

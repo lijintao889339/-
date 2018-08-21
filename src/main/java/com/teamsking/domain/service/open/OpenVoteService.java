@@ -63,7 +63,7 @@ public class OpenVoteService extends BaseService {
             for (OpenVote vote : openVoteList){
                 voteIds.add(vote.getId());
             }
-            List<OpenVoteOption> openVoteOptionList = openVoteOptionService.getVoteOPtionInfoByVoteIds(voteIds);
+            List<OpenVoteOption> openVoteOptionList = openVoteOptionService.getVoteOptionInfoByVoteIds(voteIds);
 
             //数据转换
             List<OpenVoteOptionDto> voteOptionDtoList = OpenVoteOptionDtoMapper.INSTANCE.entityListToDtoList(openVoteOptionList);

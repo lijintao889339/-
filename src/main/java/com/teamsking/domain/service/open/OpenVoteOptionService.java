@@ -66,7 +66,7 @@ public class OpenVoteOptionService {
      * @param voteIds
      * @return
      */
-    public List<OpenVoteOption> getVoteOPtionInfoByVoteIds(List<Integer> voteIds) {
+    public List<OpenVoteOption> getVoteOptionInfoByVoteIds(List<Integer> voteIds) {
 
         Example voteOptionExample = new Example(OpenVoteOption.class);
         voteOptionExample.and().andEqualTo("deleteStatus",2);

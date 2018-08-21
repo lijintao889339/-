@@ -11,12 +11,13 @@
     <result column="open_id" jdbcType="INTEGER" property="openId" />
     <result column="questionnaire_id" jdbcType="INTEGER" property="questionnaireId" />
     <result column="subject_id" jdbcType="INTEGER" property="subjectId" />
-    <result column="user_id" jdbcType="INTEGER" property="userId" />
+    <result column="user_student_id" jdbcType="INTEGER" property="userStudentId" />
     <result column="answer" jdbcType="VARCHAR" property="answer" />
     <result column="create_id" jdbcType="INTEGER" property="createId" />
     <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
     <result column="update_id" jdbcType="INTEGER" property="updateId" />
     <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
     <result column="delete_status" jdbcType="INTEGER" property="deleteStatus" />
+    <result column="option_id" jdbcType="INTEGER" property="optionId" />
   </resultMap>
 </mapper>
