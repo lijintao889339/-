@@ -40,5 +40,13 @@ public class QuizDto extends Dto {
 
     private String quizAnswer;
 
+    private Integer examId;
+
+    //总分数
+    private Integer fullMark;
+
+    //试题总是
+    private Integer topicCount;
+
 
 }

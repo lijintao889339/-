@@ -1,5 +1,7 @@
 package com.teamsking.domain.service.quiz;
 
+import com.teamsking.api.dto.quiz.QuizDto;
+import com.teamsking.api.dto.quiz.QuizDtoMapper;
 import com.teamsking.domain.entity.quiz.Quiz;
 import com.teamsking.domain.repository.QuizMapper;
 import java.util.List;
@@ -54,6 +56,25 @@ public class QuizService {
     public int modify(Quiz quiz){
 
         return quizMapper.updateByPrimaryKeySelective(quiz);
+    }
+
+
+    /**
+     * 创建考试根据考试id添加智能选题(单选题)
+     * @param quizDto
+     * @param examId
+     * @return
+     */
+    public int saveOneQuiz(QuizDto quizDto,Integer examId){
+
+        Quiz quizEntity = QuizDtoMapper.INSTANCE.dtoToEntity(quizDto);
+        quizEntity.setExamId(examId);
+        quizEntity.setDeleteStatus(2);
+        quizEntity.setUseType(20);
+        quizEntity.setQuizType(10);
+
+        return quizMapper.insert(quizEntity);
+
     }
 
 }
