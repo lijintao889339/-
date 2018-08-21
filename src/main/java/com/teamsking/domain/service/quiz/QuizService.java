@@ -77,4 +77,23 @@ public class QuizService {
 
     }
 
+
+    /**
+     * 创建考试根据考试id添加智能选题(多选题)
+     * @param quizDto
+     * @param examId
+     * @return
+     */
+    public int saveMuchQuiz(QuizDto quizDto,Integer examId){
+
+        Quiz quizEntity = QuizDtoMapper.INSTANCE.dtoToEntity(quizDto);
+        quizEntity.setExamId(examId);
+        quizDto.setDeleteStatus(2);
+        quizEntity.setUseType(20);
+        quizEntity.setQuizType(20);
+
+        return quizMapper.insert(quizEntity);
+
+    }
+
 }

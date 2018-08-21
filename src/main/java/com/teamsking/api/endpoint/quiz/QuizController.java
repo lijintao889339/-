@@ -122,4 +122,18 @@ public class QuizController extends BaseController {
         return Result.success();
     }
 
+
+    @ApiOperation(value = "添加多选题(智能选题)", consumes = "application/json")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "examId", value = "考试id", required = true, dataType = "Integer"),
+            @ApiImplicitParam(name = "quizDto", value = "试题", required = true, dataType = "QuizDto")
+    })
+    @PostMapping("/much_quiz/{examId}")
+    public Result saveMuchQuiz(@PathVariable int examId,
+                              @RequestBody QuizDto quizDto){
+
+        quizService.saveMuchQuiz(quizDto,examId);
+        return Result.success();
+    }
+
 }
