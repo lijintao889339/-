@@ -37,6 +37,24 @@ public class OpenTopicController extends BaseController {
     }
 
 
+
+    @ApiOperation(value = "根据节id添加讨论", consumes = "application/json")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "openTopicDto", value = "班次讨论", required = true, dataType = "OpenTopicDto"),
+            @ApiImplicitParam(name = "sectionId", value = "节id", required = true, dataType = "Integer")
+    })
+    @PostMapping("/open_topic/{sectionId}")
+    public Result saveOpenTopicBySectionId(@RequestBody OpenTopicDto openTopicDto,
+                                           @PathVariable Integer sectionId){
+
+        openTopicService.saveOpenTopicBySectionId(openTopicDto,sectionId);
+        return Result.success();
+
+    }
+
+
+
+
     @ApiOperation(value = "获取班课讨论列表", produces = "application/json")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "openId", value = "班课的主键", required = true, dataType = "int"),

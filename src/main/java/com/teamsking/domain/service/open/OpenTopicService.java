@@ -48,6 +48,33 @@ public class OpenTopicService {
         openItem.setChapterId(openTopicEntity.getChapterId());
         openItem.setSectionId(openTopicEntity.getSectionId());
         openItem.setOpenId(openTopicEntity.getOpenId());
+        openItem.setDeleteStatus(2);
+
+        return openItemMapper.insertSelective(openItem);
+
+    }
+
+
+    /**
+     * 根据节id添加班课讨论
+     * @param openTopicDto
+     * @param sectionId
+     * @return
+     */
+    public int saveOpenTopicBySectionId(OpenTopicDto openTopicDto,Integer sectionId){
+
+        //数据转换
+        OpenTopic openTopicEntity = OpenTopicDtoMapper.INSTANCE.dtoToEntity(openTopicDto);
+        //向班课讨论表添加信息
+        openTopicEntity.setDeleteStatus(2);
+        openTopicMapper.insertSelective(openTopicEntity);
+
+        OpenItem openItem = new OpenItem();
+        openItem.setContentId(openTopicEntity.getId());
+        openItem.setSectionId(sectionId);
+        openItem.setChapterId(openTopicEntity.getChapterId());
+        openItem.setDeleteStatus(2);
+        openItem.setOpenId(openTopicEntity.getOpenId());
 
         return openItemMapper.insertSelective(openItem);
 

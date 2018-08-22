@@ -77,6 +77,7 @@ public class OpenPageService {
         openItem.setChapterId(openPageEntity.getChapterId());
         openItem.setSectionId(sectionId);
         openItem.setOpenId(openPageEntity.getOpenId());
+        openItem.setDeleteStatus(2);
 
         return openItemMapper.insertSelective(openItem);
 

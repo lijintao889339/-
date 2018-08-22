@@ -111,6 +111,7 @@ public class OpenAssignmentService {
         openItem.setOpenId(openAssignmentEntity.getOpenId());
         openItem.setContentId(openAssignmentEntity.getId());
         //openItemMapper.insertSelective(openItem);
+        openItem.setDeleteStatus(2);
 
         return openItemMapper.insertSelective(openItem);
 
@@ -136,6 +137,7 @@ public class OpenAssignmentService {
         openItem.setSectionId(sectionId);
         openItem.setOpenId(openAssignmentEntity.getOpenId());
         openItem.setContentId(openAssignmentEntity.getId());
+        openItem.setDeleteStatus(2);
 
         return openItemMapper.insertSelective(openItem);
 
