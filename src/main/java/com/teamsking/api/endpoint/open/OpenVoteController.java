@@ -1,6 +1,7 @@
 package com.teamsking.api.endpoint.open;
 
 import com.github.pagehelper.PageHelper;
+import com.teamsking.api.dto.open.AddOpenVoteDto;
 import com.teamsking.api.dto.open.OpenVoteDto;
 import com.teamsking.api.dto.open.OpenVoteDtoMapper;
 import com.teamsking.api.endpoint.BaseController;
@@ -48,13 +49,13 @@ public class OpenVoteController extends BaseController {
 
     @ApiOperation(value = "添加班次-投票管理", consumes= "application/json")
     @ApiImplicitParams( {
-            @ApiImplicitParam(name = "openVote", value = "班次投票管理", required = true, dataType = "OpenVoteDto")
+            @ApiImplicitParam(name = "addopenVotedto", value = "班次投票管理", required = true, dataType = "AddOpenVoteDto")
     })
-    @PostMapping("/open_vote")
-    public Result addOpenVote(@RequestBody OpenVoteDto openVote){
+    @PostMapping("/open_vote/{openId}")
+    public Result addOpenVote(@RequestBody AddOpenVoteDto addopenVotedto, @PathVariable int openId){
 
-        OpenVote openVoteEntity = OpenVoteDtoMapper.INSTANCE.dtoToEntity(openVote);
-        openVoteService.save(openVoteEntity);
+        //OpenVote openVoteEntity = OpenVoteDtoMapper.INSTANCE.dtoToEntity(openVote);
+        openVoteService.save(addopenVotedto,openId);
         return Result.success();
 
     }

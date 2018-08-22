@@ -21,5 +21,10 @@
     <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
     <result column="delete_status" jdbcType="INTEGER" property="deleteStatus" />
     <result column="content" jdbcType="LONGVARCHAR" property="content" />
+    <result column="integral_reward" jdbcType="INTEGER" property="integralReward" />
+    <result column="end_type" jdbcType="INTEGER" property="endType" />
+    <result column="is_view_statistics" jdbcType="BOOLEAN" property="isViewStatistics" />
+    <result column="is_publish" jdbcType="BOOLEAN" property="isPublish" />
+    <result column="activity_id" jdbcType="INTEGER" property="activityId" />
   </resultMap>
 </mapper>

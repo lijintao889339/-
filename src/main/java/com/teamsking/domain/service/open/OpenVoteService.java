@@ -2,19 +2,20 @@ package com.teamsking.domain.service.open;
 
 
 import com.google.common.collect.Lists;
-import com.teamsking.api.dto.open.OpenVoteDto;
-import com.teamsking.api.dto.open.OpenVoteDtoMapper;
-import com.teamsking.api.dto.open.OpenVoteOptionDto;
-import com.teamsking.api.dto.open.OpenVoteOptionDtoMapper;
+import com.teamsking.api.dto.open.*;
+import com.teamsking.domain.entity.open.OpenActivity;
 import com.teamsking.domain.entity.open.OpenUser;
 import com.teamsking.domain.entity.open.OpenVote;
 import com.teamsking.domain.entity.open.OpenVoteOption;
 import com.teamsking.domain.entity.study.StudyVote;
+import com.teamsking.domain.repository.OpenActivityMapper;
 import com.teamsking.domain.repository.OpenUserMapper;
 import com.teamsking.domain.repository.OpenVoteMapper;
 
 import java.math.BigDecimal;
 import java.text.NumberFormat;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 import com.teamsking.domain.repository.StudyVoteMapper;
@@ -33,6 +34,8 @@ public class OpenVoteService extends BaseService {
     StudyVoteMapper studyVoteMapper;
     @Autowired
     OpenUserMapper openUserMapper;
+    @Autowired
+    OpenActivityMapper openActivityMapper;
 
     @Autowired
     OpenVoteOptionService openVoteOptionService;
@@ -119,12 +122,57 @@ public class OpenVoteService extends BaseService {
 
     /**
      * 添加班次-投票管理
-     * @param openVote
+     * @param addOpenVoteDto
+     * @param openId
      * @return
      */
-    public int save(OpenVote openVote){
+    public int save(AddOpenVoteDto addOpenVoteDto, int openId){
 
-        return openVoteMapper.insert(openVote);
+        //先添加活动
+        OpenActivity openActivity = new OpenActivity();
+        openActivity.setTitle(addOpenVoteDto.getActivityTitle());
+        openActivity.setContent(addOpenVoteDto.getActivityContent());
+        openActivity.setDeleteStatus(2);
+        openActivity.setType(2);
+        openActivity.setOpenId(openId);
+        openActivityMapper.insertSelective(openActivity);
+
+        //添加投票信息
+        OpenVote openVote = new OpenVote();
+        openVote.setDeleteStatus(2);
+        openVote.setOpenId(openActivity.getOpenId());
+        openVote.setActivityId(openActivity.getId());
+        openVote.setTitle(addOpenVoteDto.getTitle());
+        openVote.setContent(addOpenVoteDto.getContent());
+
+        //获取开始时间
+        Date startTime = new Date();
+        openVote.setStartTime(startTime);
+        //获取结束时间(设置时长)
+        if (2 == addOpenVoteDto.getEndType().intValue()){
+
+            Long durationDay = addOpenVoteDto.getDurationDay().longValue();
+            Long durationHour = addOpenVoteDto.getDurationHour().longValue();
+            Long durationMin = addOpenVoteDto.getDurationMin().longValue();
+            //获取设置的总分钟数
+            int totalMin = (int) (durationDay * (24*60) + durationHour * 60 + durationMin);
+
+            Calendar calendar = Calendar.getInstance();
+            calendar.add(Calendar.MINUTE,totalMin);
+
+            //结束时间
+            Date endTime = calendar.getTime();
+            openVote.setEndTime(endTime);
+        }
+
+        openVote.setType(addOpenVoteDto.getType());
+        openVote.setIntegralReward(addOpenVoteDto.getIntegralReward());
+        openVote.setViewStatistics(addOpenVoteDto.getIsViewStatistics());
+        openVote.setPublish(addOpenVoteDto.getIsPublish());
+        openVote.setEndType(addOpenVoteDto.getEndType());
+        int count = openVoteMapper.insertSelective(openVote);
+
+        return count;
 
     }
 
