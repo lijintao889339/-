@@ -6,10 +6,14 @@ import com.teamsking.api.dto.open.OpenExamDto;
 import com.teamsking.api.dto.open.OpenExamDtoMapper;
 import com.teamsking.api.dto.open.OpenExamNameDto;
 import com.teamsking.domain.entity.open.OpenExam;
+import com.teamsking.domain.entity.open.OpenUser;
 import com.teamsking.domain.entity.open.OpenUserTeacher;
+import com.teamsking.domain.entity.sys.UserStudentExam;
 import com.teamsking.domain.entity.sys.UserTeacher;
 import com.teamsking.domain.repository.OpenExamMapper;
+import com.teamsking.domain.repository.OpenUserMapper;
 import com.teamsking.domain.repository.OpenUserTeacherMapper;
+import com.teamsking.domain.repository.UserStudentExamMapper;
 import com.teamsking.domain.service.BaseService;
 import com.teamsking.domain.service.sys.UserTeacherService;
 import lombok.extern.slf4j.Slf4j;
@@ -27,6 +31,11 @@ public class OpenExamService extends BaseService {
     OpenExamMapper openExamMapper;
     @Autowired
     OpenUserTeacherMapper openUserTeacherMapper;
+    @Autowired
+    OpenUserMapper openUserMapper;
+    @Autowired
+    UserStudentExamMapper userStudentExamMapper;
+
     @Autowired
     UserTeacherService userTeacherService;
 
@@ -61,7 +70,14 @@ public class OpenExamService extends BaseService {
         openExam.setOpenId(openId);
         List<OpenExam> openExamList = openExamMapper.select(openExam);
 
+
         if(0 != openExamList.size()){
+
+            //获取该班课下学生总数量
+            OpenUser openUser = new OpenUser();
+            openUser.setDeleteStatus(2);
+            openUser.setOpenId(openId);
+            int allUserNum = openUserMapper.selectCount(openUser);
 
             //获取该班课下的教学老师
             //1.获取与该班课有关的教学老师Id
@@ -89,6 +105,16 @@ public class OpenExamService extends BaseService {
             for (OpenExamNameDto openExamNameDto: openExamNameDtoList) {
 
                 openExamNameDto.setTeacherNames(userTeacherNames);
+
+                //班课考试已提交人数
+                UserStudentExam userStudentExam = new UserStudentExam();
+                userStudentExam.setDeleteStatus(2);
+                userStudentExam.setExamId(openExamNameDto.getId());
+                int stopUserCount =userStudentExamMapper.selectCount(userStudentExam);
+                openExamNameDto.setStopUserCount(stopUserCount);
+
+                //总人数
+                openExamNameDto.setUserCount(allUserNum);
 
             }
 

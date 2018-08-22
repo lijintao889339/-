@@ -9,7 +9,7 @@ import java.util.List;
 @Data
 public class OpenExamNameDto extends Dto {
 
-    //private Integer id;
+    private Integer id;
 
     private String title;
 
@@ -26,5 +26,11 @@ public class OpenExamNameDto extends Dto {
     private List<String> teacherNames;
 
     private String status;
+
+    private Integer userCount;
+
+    //private Integer notUserCount;
+
+    private Integer stopUserCount;
 
 }

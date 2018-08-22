@@ -32,4 +32,8 @@ public class OpenWareDto extends Dto {
 
     private String description;
 
+    private Integer chapterId;
+
+    private Integer sectionId;
+
 }
