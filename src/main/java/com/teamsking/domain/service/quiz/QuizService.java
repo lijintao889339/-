@@ -96,4 +96,23 @@ public class QuizService {
 
     }
 
+
+    /**
+     * 创建考试根据考试id添加智能选题(判断题)
+     * @param quizDto
+     * @param examId
+     * @return
+     */
+    public int saveJudgeQuiz(QuizDto quizDto,Integer examId){
+
+        Quiz quizEntity = QuizDtoMapper.INSTANCE.dtoToEntity(quizDto);
+        quizEntity.setExamId(examId);
+        quizDto.setDeleteStatus(2);
+        quizEntity.setUseType(20);
+        quizEntity.setQuizType(30);
+
+        return quizMapper.insert(quizEntity);
+
+    }
+
 }

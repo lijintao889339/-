@@ -136,4 +136,18 @@ public class QuizController extends BaseController {
         return Result.success();
     }
 
+
+    @ApiOperation(value = "添加判断题(智能选题)", consumes = "application/json")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "examId", value = "考试id", required = true, dataType = "Integer"),
+            @ApiImplicitParam(name = "quizDto", value = "试题", required = true, dataType = "QuizDto")
+    })
+    @PostMapping("/judge_quiz/{examId}")
+    public Result saveJudgeQuiz(@PathVariable int examId,
+                               @RequestBody QuizDto quizDto){
+
+        quizService.saveJudgeQuiz(quizDto,examId);
+        return Result.success();
+    }
+
 }
