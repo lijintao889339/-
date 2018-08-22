@@ -59,6 +59,31 @@ public class OpenPageService {
 
 
     /**
+     * 根据节id添加页面信息
+     * @param addOpenPageDto
+     * @param sectionId
+     * @return
+     */
+    public int saveOpenPageBySectionId(AddOpenPageDto addOpenPageDto,Integer sectionId){
+
+        //数据转换
+        OpenPage openPageEntity = OpenPageDtoMapper.INSTANCE.dtoToPageEntity(addOpenPageDto);
+        openPageEntity.setDeleteStatus(2);
+        //添加数据
+        openPageMapper.insertSelective(openPageEntity);
+
+        OpenItem openItem = new OpenItem();
+        openItem.setContentId(openPageEntity.getId());
+        openItem.setChapterId(openPageEntity.getChapterId());
+        openItem.setSectionId(sectionId);
+        openItem.setOpenId(openPageEntity.getOpenId());
+
+        return openItemMapper.insertSelective(openItem);
+
+    }
+
+
+    /**
      * 删除班次-页面管理
      * @param id
      * @return

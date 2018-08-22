@@ -20,10 +20,10 @@ public class AddOpenPageDto extends Dto {
     //页面标题
     private String title;
 
-    //页面形式
+    //页面类型 1 链接 2 文本
     private Integer pageType;
 
-    //跳转链接(1链接，2文本)
+    //跳转链接
     private String pageUrl;
 
 

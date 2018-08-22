@@ -64,6 +64,25 @@ public class OpenPageController extends BaseController {
     }
 
 
+
+    @ApiOperation(value = "根据节id添加页面", consumes= "application/json")
+    @ApiImplicitParams( {
+            @ApiImplicitParam(name = "addOpenPageDto", value = "班课页面", required = true, dataType = "AddOpenPageDto"),
+            @ApiImplicitParam(name = "sectionId", value = "节id", required = true, dataType = "Integer")
+    })
+    @PostMapping("/open_page/{sectionId}")
+    public Result addOpenPageBySectionId(@RequestBody AddOpenPageDto addOpenPageDto,
+                                         @PathVariable int sectionId){
+
+        openPageService.saveOpenPageBySectionId(addOpenPageDto,sectionId);
+        return Result.success();
+
+    }
+
+
+
+
+
     @ApiOperation(value = "删除班次-页面管理", consumes= "application/json")
     @ApiImplicitParams( {
             @ApiImplicitParam(name = "id", value = "班次页面管理", required = true, dataType = "Integer")
