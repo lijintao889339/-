@@ -46,6 +46,28 @@ public class StudyScoreController extends BaseController {
     }
 
 
+
+    @ApiOperation(value = "模糊搜索班课下学生成绩列表", notes = "可分页", produces = "application/json")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "pageNo", value = "页码", required = true, example = "1"),
+            @ApiImplicitParam(name = "pageSize", value = "页大小", required = true, example = "10"),
+            @ApiImplicitParam(name = "openId", value = "班课的主键", required = true, dataType = "int"),
+            @ApiImplicitParam(name = "userName", value = "用户名", required = true, dataType = "String"),
+    })
+    @GetMapping("/searching_study_scores/{openId}")
+    public Result studyScoreListBySearching(@RequestParam int pageNo, @RequestParam int pageSize,
+                                 @PathVariable int openId, @RequestParam String userName){
+
+        Page page = studyScoreService.listBySearching(fixPage(pageNo),fixPage(pageSize),openId,userName);
+        if (null == page){
+            return Result.success().addData("pager", null);
+        }else {
+            return Result.success().addData("pager", warpPage(page));
+        }
+    }
+
+
+
     @ApiOperation(value = "添加学习-成绩管理", consumes= "application/json")
     @ApiImplicitParams( {
             @ApiImplicitParam(name = "studyScore", value = "学习成绩管理", required = true, dataType = "StudyScoreDto")

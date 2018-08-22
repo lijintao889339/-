@@ -30,6 +30,15 @@ public class UserStudentService extends BaseService {
 
         Example studentExample = new Example(UserStudent.class);
         studentExample.and().andIn("id",studentIds);
+        studentExample.and().andEqualTo("deleteStatus",2);
+        return userStudentMapper.selectByExample(studentExample);
+    }
+
+    public List<UserStudent> getUserStudentListByUserIds(List<Integer> userIds) {
+
+        Example studentExample = new Example(UserStudent.class);
+        studentExample.and().andIn("userId",userIds);
+        studentExample.and().andEqualTo("deleteStatus",2);
         return userStudentMapper.selectByExample(studentExample);
     }
 }
