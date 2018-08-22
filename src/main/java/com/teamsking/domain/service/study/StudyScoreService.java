@@ -12,6 +12,7 @@ import com.teamsking.domain.entity.sys.UserStudent;
 import com.teamsking.domain.repository.StudyScoreMapper;
 import java.util.List;
 
+import com.teamsking.domain.repository.SysUserMapper;
 import com.teamsking.domain.service.BaseService;
 import com.teamsking.domain.service.sys.SysUserService;
 import com.teamsking.domain.service.sys.UserStudentService;
@@ -26,6 +27,8 @@ public class StudyScoreService extends BaseService {
 
     @Autowired
     StudyScoreMapper studyScoreMapper;
+    @Autowired
+    SysUserMapper sysUserMapper;
 
     @Autowired
     UserStudentService userStudentService;
@@ -184,6 +187,107 @@ public class StudyScoreService extends BaseService {
         }
         Page page = null;
         return page;
+    }
+
+    /**
+     * 根据组名和学员状态搜索成绩列表
+     * @param pageNo
+     * @param pageSize
+     * @param openId
+     * @param groupName
+     * @param activation
+     * @return
+     */
+    public Page listByGroupNameAndStatus(int pageNo, int pageSize, int openId, String groupName, String activation){
+
+        List<Integer> studentIds = Lists.newArrayList();
+        //获取学员状态并转换类型
+        if ("" != activation){
+            int activationStatus;
+           if ("未认证".equals(activation)){
+               activationStatus = 2;
+           }else {
+               activationStatus = 1;
+
+           }
+
+           //获取用户信息列表
+           SysUser sysUser = new SysUser();
+           sysUser.setDeleteStatus(2);
+           sysUser.setActivationStatus(activationStatus);
+           List<SysUser> sysUserList = sysUserMapper.select(sysUser);
+
+            List<Integer> sysUserIds = Lists.newArrayList();
+           if (0 != sysUserList.size()){
+               //获取用户Ids
+               for (SysUser user : sysUserList){
+                   sysUserIds.add(user.getId());
+               }
+
+               //获取学生Ids
+               List<UserStudent> userStudentList = userStudentService.getUserStudentListByUserIds(sysUserIds);
+               for (UserStudent userStudent : userStudentList){
+                   studentIds.add(userStudent.getId());
+               }
+           }
+        }
+
+        //分页
+        PageHelper.startPage(pageNo,pageSize);
+
+        //获取班课下的成绩表
+        Example studyScoreExample = new Example(StudyScore.class);
+        Example.Criteria cri = studyScoreExample.createCriteria();
+        cri.andEqualTo("openId",openId);
+        cri.andEqualTo("deleteStatus",2);
+        if ("" != groupName) {
+            cri.andEqualTo("groupName", groupName);
+        }
+        if (0 != studentIds.size()){
+            cri.andIn("userStudentId", studentIds);
+        }
+        List<StudyScore> studyScoreList = studyScoreMapper.selectByExample(studyScoreExample);
+
+        if (0 != studyScoreList.size()){
+
+            //获取学生信息
+            List<Integer> userStudentIds = Lists.newArrayList();
+            for (StudyScore score : studyScoreList){
+                userStudentIds.add(score.getUserStudentId());
+            }
+            List<UserStudent> userStudentList = userStudentService.getUserStudentListByIds(userStudentIds);
+
+            //通过学生信息列表获取用户信息
+            List<Integer> userIds = Lists.newArrayList();
+            for (UserStudent userStudent : userStudentList){
+                userIds.add(userStudent.getUserId());
+            }
+            List<SysUser> sysUserList = sysUserService.getSysUserByUserIdList(userIds);
+
+            //数据转换
+            List<StudyScoreDto> studyScoreDtoList = StudyScoreDtoMapper.INSTANCE.entityListToDtoList(studyScoreList);
+
+            for (StudyScoreDto studyScoreDto : studyScoreDtoList){
+
+                //获取学生姓名和认证状态
+                for (UserStudent student : userStudentList){
+                    if (studyScoreDto.getUserStudentId().intValue() == student.getId().intValue()){
+                        for (SysUser sysUser : sysUserList){
+                            if (student.getUserId().intValue() == sysUser.getId().intValue()){
+                                studyScoreDto.setActivationStatus(sysUser.getActivationStatus());
+                                studyScoreDto.setUserName(sysUser.getUserName());
+                            }
+                        }
+                    }
+                }
+            }
+
+            return convertPage((Page)studyScoreList,studyScoreDtoList);
+
+        }else {
+            Page page = null;
+            return page;
+        }
     }
 
 

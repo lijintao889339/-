@@ -54,11 +54,33 @@ public class StudyScoreController extends BaseController {
             @ApiImplicitParam(name = "openId", value = "班课的主键", required = true, dataType = "int"),
             @ApiImplicitParam(name = "userName", value = "用户名", required = true, dataType = "String"),
     })
-    @GetMapping("/searching_study_scores/{openId}")
+    @GetMapping("/study_scores_name/{openId}")
     public Result studyScoreListBySearching(@RequestParam int pageNo, @RequestParam int pageSize,
                                  @PathVariable int openId, @RequestParam String userName){
 
         Page page = studyScoreService.listBySearching(fixPage(pageNo),fixPage(pageSize),openId,userName);
+        if (null == page){
+            return Result.success().addData("pager", null);
+        }else {
+            return Result.success().addData("pager", warpPage(page));
+        }
+    }
+
+
+
+    @ApiOperation(value = "根据班组和学员状态搜索成绩列表", notes = "可分页", produces = "application/json")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "pageNo", value = "页码", required = true, example = "1"),
+            @ApiImplicitParam(name = "pageSize", value = "页大小", required = true, example = "10"),
+            @ApiImplicitParam(name = "openId", value = "班课的主键", required = true, dataType = "int"),
+            @ApiImplicitParam(name = "groupName", value = "组名", required = true, dataType = "String"),
+            @ApiImplicitParam(name = "activationStatus", value = "学员状态", required = true, dataType = "String"),
+    })
+    @GetMapping("/searching_study_scores/{openId}")
+    public Result studyScoreListByGroupNameAndStatus(@RequestParam int pageNo, @RequestParam int pageSize,@PathVariable int openId,
+                                                     @RequestParam String groupName, @RequestParam String activationStatus){
+
+        Page page = studyScoreService.listByGroupNameAndStatus(fixPage(pageNo),fixPage(pageSize),openId,groupName,activationStatus);
         if (null == page){
             return Result.success().addData("pager", null);
         }else {
