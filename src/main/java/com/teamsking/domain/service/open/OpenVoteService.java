@@ -146,23 +146,27 @@ public class OpenVoteService extends BaseService {
         openVote.setContent(addOpenVoteDto.getContent());
 
         //获取开始时间
-        Date startTime = new Date();
-        openVote.setStartTime(startTime);
+        //Date startTime = new Date();
+        //openVote.setStartTime(startTime);
         //获取结束时间(设置时长)
         if (2 == addOpenVoteDto.getEndType().intValue()){
 
-            Long durationDay = addOpenVoteDto.getDurationDay().longValue();
+            /*Long durationDay = addOpenVoteDto.getDurationDay().longValue();
             Long durationHour = addOpenVoteDto.getDurationHour().longValue();
-            Long durationMin = addOpenVoteDto.getDurationMin().longValue();
+            Long durationMin = addOpenVoteDto.getDurationMin().longValue();*/
             //获取设置的总分钟数
-            int totalMin = (int) (durationDay * (24*60) + durationHour * 60 + durationMin);
+           // int totalMin = (int) (durationDay * (24*60) + durationHour * 60 + durationMin);
 
-            Calendar calendar = Calendar.getInstance();
-            calendar.add(Calendar.MINUTE,totalMin);
+            //Calendar calendar = Calendar.getInstance();
+            //calendar.add(Calendar.MINUTE,totalMin);
 
             //结束时间
-            Date endTime = calendar.getTime();
-            openVote.setEndTime(endTime);
+            //Date endTime = calendar.getTime();
+            //openVote.setEndTime(endTime);
+
+            openVote.setDurationDay(addOpenVoteDto.getDurationDay());
+            openVote.setDurationHour(addOpenVoteDto.getDurationHour());
+            openVote.setDurationMin(addOpenVoteDto.getDurationMin());
         }
 
         openVote.setType(addOpenVoteDto.getType());

@@ -25,5 +25,8 @@
     <result column="is_publish" jdbcType="BOOLEAN" property="isPublish" />
     <result column="activity_id" jdbcType="INTEGER" property="activityId" />
     <result column="type" jdbcType="INTEGER" property="type" />
+    <result column="duration_day" jdbcType="BIGINT" property="durationDay" />
+    <result column="duration_hour" jdbcType="BIGINT" property="durationHour" />
+    <result column="duration_min" jdbcType="INTEGER" property="durationMin" />
   </resultMap>
 </mapper>

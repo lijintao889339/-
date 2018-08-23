@@ -145,23 +145,26 @@ public class OpenQuestionService extends BaseService {
         openQuestion.setRemark(addOpenQuestionDto.getRemark());
 
         //获取开始时间
-        Date startTime = new Date();
-        openQuestion.setStartTime(startTime);
+        //Date startTime = new Date();
+        //openQuestion.setStartTime(startTime);
         //获取结束时间(设置时长)
         if (2 == addOpenQuestionDto.getEndType().intValue()){
 
-            Long durationDay = addOpenQuestionDto.getDurationDay().longValue();
+            /*Long durationDay = addOpenQuestionDto.getDurationDay().longValue();
             Long durationHour = addOpenQuestionDto.getDurationHour().longValue();
-            Long durationMin = addOpenQuestionDto.getDurationMin().longValue();
+            Long durationMin = addOpenQuestionDto.getDurationMin().longValue();*/
             //获取设置的总分钟数
-            int totalMin = (int) (durationDay * (24*60) + durationHour * 60 + durationMin);
+            /*int totalMin = (int) (durationDay * (24*60) + durationHour * 60 + durationMin);
 
             Calendar calendar = Calendar.getInstance();
-            calendar.add(Calendar.MINUTE,totalMin);
+            calendar.add(Calendar.MINUTE,totalMin);*/
 
             //结束时间
-            Date endTime = calendar.getTime();
-            openQuestion.setEndTime(endTime);
+            /*Date endTime = calendar.getTime();
+            openQuestion.setEndTime(endTime);*/
+            openQuestion.setDurationDay(addOpenQuestionDto.getDurationDay());
+            openQuestion.setDurationHour(addOpenQuestionDto.getDurationHour());
+            openQuestion.setDurationMin(addOpenQuestionDto.getDurationMin());
         }
 
         openQuestion.setType(addOpenQuestionDto.getType());

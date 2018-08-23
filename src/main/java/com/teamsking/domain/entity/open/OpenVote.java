@@ -143,6 +143,36 @@ public class OpenVote {
 
     private Integer activityId;
 
+    private Long durationDay;
+
+    private Long durationHour;
+
+    private Long durationMin;
+
+    public Long getDurationDay() {
+        return durationDay;
+    }
+
+    public void setDurationDay(Long durationDay) {
+        this.durationDay = durationDay;
+    }
+
+    public Long getDurationHour() {
+        return durationHour;
+    }
+
+    public void setDurationHour(Long durationHour) {
+        this.durationHour = durationHour;
+    }
+
+    public Long getDurationMin() {
+        return durationMin;
+    }
+
+    public void setDurationMin(Long durationMin) {
+        this.durationMin = durationMin;
+    }
+
     public Integer getActivityId() {
         return activityId;
     }
