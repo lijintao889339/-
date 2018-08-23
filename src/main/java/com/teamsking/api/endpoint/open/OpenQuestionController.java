@@ -74,6 +74,28 @@ public class OpenQuestionController extends BaseController {
         return Result.success();
     }
 
+
+
+    /**
+     * 创建问卷的同时发放
+     * @param addOpenQuestionDto
+     * @param openId
+     * @return
+     */
+    @ApiOperation(value = "创建问卷的同时发放", consumes = "application/json")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "addOpenQuestionDto", value = "课程-问卷调查", required = true, dataType = "AddOpenQuestionDto"),
+            @ApiImplicitParam(name = "openId", value = "班次主键", required = true, dataType = "int")
+    })
+    @PostMapping("/publish_open_question/{openId}")
+    public Result publishOpenQuestion(@RequestBody AddOpenQuestionDto addOpenQuestionDto, @PathVariable int openId){
+
+        openQuestionService.savePublishOpenQuestion(addOpenQuestionDto,openId);
+        return Result.success();
+    }
+
+
+
     /**
      * 删除班次-问卷调查管理
      * @param id
