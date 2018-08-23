@@ -47,6 +47,8 @@ public class QuizDto extends Dto {
 
     //试题总是
     private Integer topicCount;
+    //选项
+    private Integer optionTitle;
 
 
 }

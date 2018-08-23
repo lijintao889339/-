@@ -281,8 +281,8 @@ public class UserTeacherService extends BaseService {
 
     /**
      * 给班组添加辅导老师
-     * @param groupId
-     * @param userTeacherNameDto
+     * @param
+     * @param
      * @return
      */
     /*public int saveUserTeacherByGroupId(int groupId, UserTeacherNameDto userTeacherNameDto) {
@@ -292,4 +292,14 @@ public class UserTeacherService extends BaseService {
         userTeacherGroup.setUserTeacherId(userTeacherNameDto.getId());
         return userTeacherGroupMapper.insertSelective(userTeacherGroup);
     }*/
+
+
+
+    public List<UserTeacher> getUserTeacherListByUserIds(List<Integer> userIds) {
+
+        Example teacherExample = new Example(UserTeacher.class);
+        teacherExample.and().andIn("userId",userIds);
+        teacherExample.and().andEqualTo("deleteStatus",2);
+        return userTeacherMapper.selectByExample(teacherExample);
+    }
 }

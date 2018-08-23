@@ -3,6 +3,7 @@ package com.teamsking.domain.service.quiz;
 import com.teamsking.api.dto.quiz.QuizDto;
 import com.teamsking.api.dto.quiz.QuizDtoMapper;
 import com.teamsking.domain.entity.quiz.Quiz;
+import com.teamsking.domain.entity.quiz.QuizOption;
 import com.teamsking.domain.repository.QuizMapper;
 import java.util.List;
 import lombok.extern.slf4j.Slf4j;
@@ -114,5 +115,24 @@ public class QuizService {
         return quizMapper.insert(quizEntity);
 
     }
+
+
+
+//    public int saveHandQuiz(QuizDto quizDto,Integer examId,Integer openId){
+//
+//        Quiz quizEntity = QuizDtoMapper.INSTANCE.dtoToEntity(quizDto);
+//        quizEntity.setExamId(examId);
+//        quizEntity.setOpenId(openId);
+//        quizDto.setDeleteStatus(2);
+//        quizEntity.setUseType(20);
+//        quizEntity.setQuizType(10);
+//        quizMapper.insertSelective(quizEntity);
+//
+//        QuizOption quizOption = new QuizOption();
+//        quizOption.setQuizId(quizEntity.getId());
+//        quizOption.setOpenId(openId);
+//        quizOption.setOptionTitle(quizDto.getOptionTitle());
+//
+//    }
 
 }

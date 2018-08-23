@@ -65,6 +65,18 @@ public class SysUserService extends BaseService {
 
     }
 
+
+    public List<SysUser> getByLikeName(String teacherName){
+
+        Example userExample = new Example(SysUser.class);
+        userExample.and().andEqualTo("deleteStatus",2);
+        userExample.and().andLike("userName","%" + teacherName + "%");
+        return sysUserMapper.selectByExample(userExample);
+
+    }
+
+
+
     /**
      * 插入用户
      * @param sysUser
