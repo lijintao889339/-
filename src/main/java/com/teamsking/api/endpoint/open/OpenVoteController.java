@@ -49,13 +49,28 @@ public class OpenVoteController extends BaseController {
 
     @ApiOperation(value = "添加班次-投票管理", consumes= "application/json")
     @ApiImplicitParams( {
-            @ApiImplicitParam(name = "addopenVotedto", value = "班次投票管理", required = true, dataType = "AddOpenVoteDto"),
+            @ApiImplicitParam(name = "addOpenVoteDto", value = "班次投票管理", required = true, dataType = "AddOpenVoteDto"),
             @ApiImplicitParam(name = "openId", value = "班次主键", required = true, dataType = "int")
     })
     @PostMapping("/open_vote/{openId}")
-    public Result addOpenVote(@RequestBody AddOpenVoteDto addopenVotedto, @PathVariable int openId){
+    public Result addOpenVote(@RequestBody AddOpenVoteDto addOpenVoteDto, @PathVariable int openId){
 
-        openVoteService.save(addopenVotedto,openId);
+        openVoteService.save(addOpenVoteDto,openId);
+        return Result.success();
+
+    }
+
+
+
+    @ApiOperation(value = "创建投票的同时发放", consumes= "application/json")
+    @ApiImplicitParams( {
+            @ApiImplicitParam(name = "addOpenVoteDto", value = "班次投票管理", required = true, dataType = "AddOpenVoteDto"),
+            @ApiImplicitParam(name = "openId", value = "班次主键", required = true, dataType = "int")
+    })
+    @PostMapping("/publish_open_vote/{openId}")
+    public Result addAndPublishOpenVote(@RequestBody AddOpenVoteDto addOpenVoteDto, @PathVariable int openId){
+
+        openVoteService.saveAndPublishOpenVote(addOpenVoteDto,openId);
         return Result.success();
 
     }

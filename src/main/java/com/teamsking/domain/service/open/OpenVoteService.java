@@ -172,12 +172,69 @@ public class OpenVoteService extends BaseService {
         openVote.setType(addOpenVoteDto.getType());
         openVote.setIntegralReward(addOpenVoteDto.getIntegralReward());
         openVote.setViewStatistics(addOpenVoteDto.getIsViewStatistics());
-        openVote.setPublish(addOpenVoteDto.getIsPublish());
+        openVote.setPublish(false);
         openVote.setEndType(addOpenVoteDto.getEndType());
         int count = openVoteMapper.insertSelective(openVote);
 
         return count;
+    }
 
+    /**
+     * 创建投票的时候同时发放
+     * @param addOpenVoteDto
+     * @param openId
+     */
+    public int saveAndPublishOpenVote(AddOpenVoteDto addOpenVoteDto, int openId) {
+
+        //先添加活动
+        OpenActivity openActivity = new OpenActivity();
+        openActivity.setTitle(addOpenVoteDto.getActivityTitle());
+        openActivity.setContent(addOpenVoteDto.getActivityContent());
+        openActivity.setDeleteStatus(2);
+        openActivity.setType(2);
+        openActivity.setOpenId(openId);
+        openActivityMapper.insertSelective(openActivity);
+
+        //添加投票信息
+        OpenVote openVote = new OpenVote();
+        openVote.setDeleteStatus(2);
+        openVote.setOpenId(openActivity.getOpenId());
+        openVote.setActivityId(openActivity.getId());
+        openVote.setTitle(addOpenVoteDto.getTitle());
+        openVote.setContent(addOpenVoteDto.getContent());
+
+        //获取开始时间
+        Date startTime = new Date();
+        openVote.setStartTime(startTime);
+        //获取结束时间(设置时长)
+        if (2 == addOpenVoteDto.getEndType().intValue()){
+
+            Long durationDay = addOpenVoteDto.getDurationDay().longValue();
+            Long durationHour = addOpenVoteDto.getDurationHour().longValue();
+            Long durationMin = addOpenVoteDto.getDurationMin().longValue();
+            //获取设置的总分钟数
+            int totalMin = (int) (durationDay * (24*60) + durationHour * 60 + durationMin);
+
+            Calendar calendar = Calendar.getInstance();
+            calendar.add(Calendar.MINUTE,totalMin);
+
+            //结束时间
+            Date endTime = calendar.getTime();
+            openVote.setEndTime(endTime);
+
+            openVote.setDurationDay(addOpenVoteDto.getDurationDay());
+            openVote.setDurationHour(addOpenVoteDto.getDurationHour());
+            openVote.setDurationMin(addOpenVoteDto.getDurationMin());
+        }
+
+        openVote.setType(addOpenVoteDto.getType());
+        openVote.setIntegralReward(addOpenVoteDto.getIntegralReward());
+        openVote.setViewStatistics(addOpenVoteDto.getIsViewStatistics());
+        openVote.setPublish(true);
+        openVote.setEndType(addOpenVoteDto.getEndType());
+        int count = openVoteMapper.insertSelective(openVote);
+
+        return count;
     }
 
     /**
@@ -201,5 +258,6 @@ public class OpenVoteService extends BaseService {
         return openVoteMapper.updateByPrimaryKeySelective(openVote);
 
     }
+
 
 }
