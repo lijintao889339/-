@@ -5,9 +5,12 @@ import com.teamsking.api.dto.open.*;
 import com.teamsking.domain.entity.open.*;
 import com.teamsking.domain.entity.study.StudyQuestionnaire;
 import com.teamsking.domain.entity.study.StudyVote;
+import com.teamsking.domain.repository.OpenActivityMapper;
 import com.teamsking.domain.repository.OpenQuestionMapper;
 
 import java.text.NumberFormat;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 import com.teamsking.domain.repository.OpenUserMapper;
@@ -30,6 +33,8 @@ public class OpenQuestionService extends BaseService {
     OpenUserMapper openUserMapper;
     @Autowired
     StudyQuestionnaireMapper studyQuestionnaireMapper;
+    @Autowired
+    OpenActivityMapper openActivityMapper;
 
     @Autowired
     OpenQuestionOptionService openQuestionOptionService;
@@ -116,12 +121,58 @@ public class OpenQuestionService extends BaseService {
 
     /**
      *添加班次-问卷调查管理
-     * @param openQuestion
+     * @param addOpenQuestionDto
+     * @param openId
      * @return
      */
-    public int save(OpenQuestion openQuestion){
+    public int save(AddOpenQuestionDto addOpenQuestionDto, int openId){
 
-        return openQuestionMapper.insert(openQuestion);
+        //先添加活动
+        OpenActivity openActivity = new OpenActivity();
+        openActivity.setTitle(addOpenQuestionDto.getActivityTitle());
+        openActivity.setContent(addOpenQuestionDto.getActivityContent());
+        openActivity.setDeleteStatus(2);
+        openActivity.setType(1);
+        openActivity.setOpenId(openId);
+        openActivityMapper.insertSelective(openActivity);
+
+        //添加问卷信息
+        OpenQuestion openQuestion = new OpenQuestion();
+        openQuestion.setDeleteStatus(2);
+        openQuestion.setOpenId(openActivity.getOpenId());
+        openQuestion.setActivityId(openActivity.getId());
+        openQuestion.setTitle(addOpenQuestionDto.getTitle());
+        openQuestion.setRemark(addOpenQuestionDto.getRemark());
+
+        //获取开始时间
+        Date startTime = new Date();
+        openQuestion.setStartTime(startTime);
+        //获取结束时间(设置时长)
+        if (2 == addOpenQuestionDto.getEndType().intValue()){
+
+            Long durationDay = addOpenQuestionDto.getDurationDay().longValue();
+            Long durationHour = addOpenQuestionDto.getDurationHour().longValue();
+            Long durationMin = addOpenQuestionDto.getDurationMin().longValue();
+            //获取设置的总分钟数
+            int totalMin = (int) (durationDay * (24*60) + durationHour * 60 + durationMin);
+
+            Calendar calendar = Calendar.getInstance();
+            calendar.add(Calendar.MINUTE,totalMin);
+
+            //结束时间
+            Date endTime = calendar.getTime();
+            openQuestion.setEndTime(endTime);
+        }
+
+        openQuestion.setType(addOpenQuestionDto.getType());
+        openQuestion.setIntegralReward(addOpenQuestionDto.getIntegralReward());
+        openQuestion.setViewStatistics(addOpenQuestionDto.getIsViewStatistics());
+        openQuestion.setPublish(addOpenQuestionDto.getIsPublish());
+        openQuestion.setEndType(addOpenQuestionDto.getEndType());
+        int count = openQuestionMapper.insertSelective(openQuestion);
+
+        return count;
+
     }
 
     /**

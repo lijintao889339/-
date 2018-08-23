@@ -1,6 +1,7 @@
 package com.teamsking.api.endpoint.open;
 
 import com.github.pagehelper.PageHelper;
+import com.teamsking.api.dto.open.AddOpenQuestionDto;
 import com.teamsking.api.dto.open.OpenQuestionDto;
 import com.teamsking.api.dto.open.OpenQuestionDtoMapper;
 import com.teamsking.api.endpoint.BaseController;
@@ -57,18 +58,19 @@ public class OpenQuestionController extends BaseController {
 
     /**
      * 添加班次-问卷调查管理
-     * @param openQuestion
+     * @param addOpenQuestionDto
+     * @param openId
      * @return
      */
     @ApiOperation(value = "添加班次-问卷调查", consumes = "application/json")
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "openQuestion", value = "课程-问卷调查", required = true, dataType = "OpenQuestionDto")
+            @ApiImplicitParam(name = "addOpenQuestionDto", value = "课程-问卷调查", required = true, dataType = "AddOpenQuestionDto"),
+            @ApiImplicitParam(name = "openId", value = "班次主键", required = true, dataType = "int")
     })
-    @PostMapping("/open_question")
-    public Result addOpenQuestion(@RequestBody OpenQuestionDto openQuestion){
+    @PostMapping("/open_question/{openId}")
+    public Result addOpenQuestion(@RequestBody AddOpenQuestionDto addOpenQuestionDto, @PathVariable int openId){
 
-        OpenQuestion openQuestionEntity = OpenQuestionDtoMapper.INSTANCE.dtoToEntity(openQuestion);
-        openQuestionService.save(openQuestionEntity);
+        openQuestionService.save(addOpenQuestionDto,openId);
         return Result.success();
     }
 

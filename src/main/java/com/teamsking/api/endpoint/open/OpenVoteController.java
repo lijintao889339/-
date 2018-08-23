@@ -49,12 +49,12 @@ public class OpenVoteController extends BaseController {
 
     @ApiOperation(value = "添加班次-投票管理", consumes= "application/json")
     @ApiImplicitParams( {
-            @ApiImplicitParam(name = "addopenVotedto", value = "班次投票管理", required = true, dataType = "AddOpenVoteDto")
+            @ApiImplicitParam(name = "addopenVotedto", value = "班次投票管理", required = true, dataType = "AddOpenVoteDto"),
+            @ApiImplicitParam(name = "openId", value = "班次主键", required = true, dataType = "int")
     })
     @PostMapping("/open_vote/{openId}")
     public Result addOpenVote(@RequestBody AddOpenVoteDto addopenVotedto, @PathVariable int openId){
 
-        //OpenVote openVoteEntity = OpenVoteDtoMapper.INSTANCE.dtoToEntity(openVote);
         openVoteService.save(addopenVotedto,openId);
         return Result.success();
 
