@@ -3,6 +3,7 @@ package com.teamsking.api.endpoint.open;
 import com.teamsking.api.dto.open.OpenTopicDto;
 import com.teamsking.api.dto.open.OpenTopicNameDto;
 import com.teamsking.api.endpoint.BaseController;
+import com.teamsking.domain.entity.open.OpenTopic;
 import com.teamsking.domain.service.open.OpenTopicService;
 import com.teamsking.util.Result;
 import io.swagger.annotations.Api;
@@ -64,6 +65,21 @@ public class OpenTopicController extends BaseController {
 
         List<OpenTopicNameDto> openTopicNameDtoList = openTopicService.getOpenOpenTopicListByOpenId(openId);
         return Result.success().addData("openTopicNameDtoList",openTopicNameDtoList);
+    }
+
+
+
+    @ApiOperation(value = "班课讨论详情",produces = "application/json")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "id", value = "讨论主键", required = true, dataType = "int")
+    })
+    @GetMapping("/open_topic_detail/{id}")
+    public Result openTopic(@PathVariable int id){
+
+        OpenTopic openTopic = openTopicService.getOpenTopicById(id);
+
+        return Result.success().addData("openTopic", openTopic);
+
     }
 
 }

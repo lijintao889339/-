@@ -125,4 +125,20 @@ public class OpenTopicService {
 
     }
 
+
+    /**
+     * 根据id查询班课讨论详情
+     * @param id
+     * @return
+     */
+    public OpenTopic getOpenTopicById(Integer id){
+
+        OpenTopic openTopic = new OpenTopic();
+
+        openTopic.setId(id);
+        openTopic.setDeleteStatus(2);
+
+        return openTopicMapper.selectOne(openTopic);
+    }
+
 }
