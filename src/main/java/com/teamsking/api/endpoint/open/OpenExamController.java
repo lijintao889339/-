@@ -80,4 +80,18 @@ public class OpenExamController extends BaseController {
     }
 
 
+
+    @ApiOperation(value = "批量删除考试",produces = "application/json")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "ids",value = "考试主键", required = true)
+    })
+    @DeleteMapping("/open_exam/multi_delete")
+    public Result removeMultiCourse(@RequestParam Integer[] ids){
+
+        openExamService.removeOpenExamByIds(ids);
+        return Result.success();
+
+    }
+
+
 }

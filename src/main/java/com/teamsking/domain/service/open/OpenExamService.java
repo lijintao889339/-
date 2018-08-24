@@ -252,8 +252,28 @@ public class OpenExamService extends BaseService {
     }
 
 
+    /**批量删除班课考试
+     * ping
+     * @param ids
+     * @return
+     */
+    public int removeOpenExamByIds(Integer[] ids){
 
+        List<Integer> idList = Lists.newArrayList();
+        for (Integer id : ids) {
+            idList.add(id);
+        }
 
+        OpenExam openExam = new OpenExam();
+        openExam.setDeleteStatus(1);
+
+        Example openExamExample = new Example(OpenExam.class);
+        Example.Criteria cri = openExamExample.createCriteria();
+        cri.andIn("id", idList);
+
+        return openExamMapper.updateByExampleSelective(openExam,openExamExample);
+
+    }
 
 
 }
