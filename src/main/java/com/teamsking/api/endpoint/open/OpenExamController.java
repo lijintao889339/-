@@ -94,4 +94,27 @@ public class OpenExamController extends BaseController {
     }
 
 
+
+
+    @ApiOperation(value = "考试下学生考试详情列表", notes = "可分页", produces = "application/json")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "pageNo", value = "页码", required = true, example = "1"),
+            @ApiImplicitParam(name = "pageSize", value = "页大小", required = true, example = "10"),
+            @ApiImplicitParam(name = "openId", value = "班课id", required = true, dataType = "int"),
+            @ApiImplicitParam(name = "id", value = "主键id", required = true, dataType = "int")
+    })
+    @GetMapping("/open/{openId}/exam_user/{id}")
+    public Result openExamUserList(@RequestParam int pageNo, @RequestParam int pageSize,
+                                   @PathVariable int openId,
+                                   @PathVariable int id){
+
+        Page page = openExamService.list(fixPage(pageNo),fixPage(pageSize),openId,id);
+        if (null == page){
+            return Result.success().addData("pager", null);
+        }else {
+            return Result.success().addData("pager", warpPage(page));
+        }
+    }
+
+
 }

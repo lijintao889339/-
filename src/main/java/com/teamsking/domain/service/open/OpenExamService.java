@@ -5,10 +5,12 @@ import com.google.common.collect.Lists;
 import com.teamsking.api.dto.open.OpenExamDto;
 import com.teamsking.api.dto.open.OpenExamDtoMapper;
 import com.teamsking.api.dto.open.OpenExamNameDto;
+import com.teamsking.api.dto.open.OpenExamUserDto;
 import com.teamsking.domain.entity.open.OpenExam;
 import com.teamsking.domain.entity.open.OpenUser;
 import com.teamsking.domain.entity.open.OpenUserTeacher;
 import com.teamsking.domain.entity.sys.SysUser;
+import com.teamsking.domain.entity.sys.UserStudent;
 import com.teamsking.domain.entity.sys.UserStudentExam;
 import com.teamsking.domain.entity.sys.UserTeacher;
 import com.teamsking.domain.repository.OpenExamMapper;
@@ -17,6 +19,7 @@ import com.teamsking.domain.repository.OpenUserTeacherMapper;
 import com.teamsking.domain.repository.UserStudentExamMapper;
 import com.teamsking.domain.service.BaseService;
 import com.teamsking.domain.service.sys.SysUserService;
+import com.teamsking.domain.service.sys.UserStudentService;
 import com.teamsking.domain.service.sys.UserTeacherService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -45,6 +48,8 @@ public class OpenExamService extends BaseService {
     OpenExamService openExamService;
     @Autowired
     SysUserService sysUserService;
+    @Autowired
+    UserStudentService userStudentService;
 
 
     /**
@@ -272,6 +277,84 @@ public class OpenExamService extends BaseService {
         cri.andIn("id", idList);
 
         return openExamMapper.updateByExampleSelective(openExam,openExamExample);
+
+    }
+
+
+    /**
+     * 根据考试id查询学生考试记录
+     * @param pageNo
+     * @param pageSize
+     * @param id
+     * @param openId
+     * @return
+     */
+    public Page list(int pageNo, int pageSize, int id,Integer openId){
+
+        //分页
+        PageHelper.startPage(pageNo,pageSize);
+
+        //获取考试列表
+        OpenExam openExamEntity = new OpenExam();
+        openExamEntity.setDeleteStatus(2);
+        openExamEntity.setOpenId(openId);
+        openExamEntity.setId(id);
+
+        List<OpenExam> openExamList = openExamMapper.select(openExamEntity);
+
+        if (0 != openExamList.size()){
+
+            /*//获取学生信息
+            List<Integer> userStudentIds = Lists.newArrayList();
+            for (OpenExam openExam : openExamList){
+                userStudentIds.add(openExam.getUserStudentId());
+            }*/
+
+            UserStudentExam userStudentExam = new UserStudentExam();
+            userStudentExam.setExamId(id);
+            userStudentExam.setDeleteStatus(2);
+            List<UserStudentExam> userStudentExamList = userStudentExamMapper.select(userStudentExam);
+
+            List<Integer> userStudentIds = Lists.newArrayList();
+            for (UserStudentExam userStudentExam1:userStudentExamList){
+                userStudentIds.add(userStudentExam1.getUserStudentId());
+            }
+
+            List<UserStudent> userStudentList = userStudentService.getUserStudentListByIds(userStudentIds);
+
+            //通过学生信息列表获取用户信息
+            List<Integer> userIds = Lists.newArrayList();
+            for (UserStudent userStudent : userStudentList){
+                userIds.add(userStudent.getUserId());
+            }
+            List<SysUser> sysUserList = sysUserService.getSysUserByUserIdList(userIds);
+
+            //数据转换
+            List<OpenExamUserDto> openExamUserDtoList = OpenExamDtoMapper.INSTANCE.entityListUserDto(openExamList);
+
+            for (OpenExamUserDto openExamUserDto:openExamUserDtoList) {
+
+                //获取学生姓名
+                for (UserStudent student : userStudentList){
+                    if (openExamUserDto.getUserStudentId().intValue() == student.getId().intValue()){
+                        for (SysUser sysUser : sysUserList){
+                            if (student.getUserId().intValue() == sysUser.getId().intValue()){
+                                openExamUserDto.setUserName(sysUser.getUserName());
+                            }
+                        }
+                    }
+                }
+
+            }
+
+            return convertPage((Page)openExamList,openExamUserDtoList);
+
+        }else {
+
+            Page page = null;
+            return page;
+        }
+
 
     }
 

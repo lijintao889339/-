@@ -19,4 +19,6 @@ public interface OpenExamDtoMapper {
 
     List<OpenExamNameDto> entityListNameDto(List<OpenExam> openExamList);
 
+    List<OpenExamUserDto> entityListUserDto(List<OpenExam> openExamList);
+
 }

@@ -27,6 +27,5 @@
     <result column="delete_status" jdbcType="INTEGER" property="deleteStatus" />
     <result column="state" jdbcType="VARCHAR" property="state" />
     <result column="status" jdbcType="VARCHAR" property="status" />
-
   </resultMap>
 </mapper>
