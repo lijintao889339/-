@@ -2,6 +2,7 @@ package com.teamsking.api.endpoint.node;
 
 
 import com.github.pagehelper.PageHelper;
+import com.teamsking.api.dto.node.NodeDocDto;
 import com.teamsking.api.dto.node.NodeDto;
 import com.teamsking.api.dto.node.NodeDtoMapper;
 import com.teamsking.api.dto.node.NodeVideoDto;
@@ -103,7 +104,8 @@ public class NodeController extends BaseController {
 
     @ApiOperation(value = "根据班课id添加视频", consumes = "application/json")
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "nodeVideoDto", value = "班次视频", required = true, dataType = "NodeVideoDto")
+            @ApiImplicitParam(name = "nodeVideoDto", value = "班次视频", required = true, dataType = "NodeVideoDto"),
+            @ApiImplicitParam(name = "openId", value = "班次主键", required = true, dataType = "Integer")
     })
     @PostMapping("/add_video_node/{openId}")
     public Result addVideoNodeByOpenId(@RequestBody NodeVideoDto nodeVideoDto,
@@ -118,7 +120,8 @@ public class NodeController extends BaseController {
 
     @ApiOperation(value = "根据节id添加视频", consumes = "application/json")
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "nodeVideoDto", value = "班次视频", required = true, dataType = "NodeVideoDto")
+            @ApiImplicitParam(name = "nodeVideoDto", value = "班次视频", required = true, dataType = "NodeVideoDto"),
+            @ApiImplicitParam(name = "sectionId", value = "节id", required = true, dataType = "Integer")
     })
     @PostMapping("/save_video_node/{sectionId}")
     public Result addVideoBySectionId(@RequestBody NodeVideoDto nodeVideoDto,
@@ -141,6 +144,39 @@ public class NodeController extends BaseController {
 
         List<NodeVideoDto> nodeVideoDtoList = nodeService.getNodeVideoListByOpenId(openId);
         return Result.success().addData("nodeVideoDtoList",nodeVideoDtoList);
+    }
+
+
+
+    @ApiOperation(value = "根据班课id添加课件", consumes = "application/json")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "nodeVideoDto", value = "班次课件", required = true, dataType = "NodeVideoDto"),
+            @ApiImplicitParam(name = "openId", value = "班次主键", required = true, dataType = "Integer")
+    })
+    @PostMapping("/add_node_doc/{openId}")
+    public Result addNodeDocByOpenId(@RequestBody NodeDocDto nodeDocDto,
+                                       @PathVariable int openId){
+
+        nodeService.saveNodeDocByOpenId(nodeDocDto,openId);
+
+        return Result.success();
+
+    }
+
+
+    @ApiOperation(value = "根据节id添加课件", consumes = "application/json")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "nodeVideoDto", value = "班次课件", required = true, dataType = "NodeVideoDto"),
+            @ApiImplicitParam(name = "sectionId", value = "节主键", required = true, dataType = "Integer")
+    })
+    @PostMapping("/save_node_doc/{sectionId}")
+    public Result addNodeDocBySectionId(@RequestBody NodeDocDto nodeDocDto,
+                                     @PathVariable int sectionId){
+
+        nodeService.saveNodeDocBySectionId(nodeDocDto,sectionId);
+
+        return Result.success();
+
     }
 
 }

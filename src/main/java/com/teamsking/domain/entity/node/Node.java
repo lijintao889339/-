@@ -233,6 +233,8 @@ public class Node {
 
     private Integer sectionId;
 
+    private String content;
+
     public String getSuffixName() {
         return suffixName;
     }
@@ -839,5 +841,13 @@ public class Node {
 
     public void setSectionId(Integer sectionId) {
         this.sectionId = sectionId;
+    }
+
+    public String getContent() {
+        return content;
+    }
+
+    public void setContent(String content) {
+        this.content = content;
     }
 }

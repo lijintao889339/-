@@ -35,5 +35,6 @@
     <result column="suffix_name" jdbcType="VARCHAR" property="suffixName" />
     <result column="chapter_id" jdbcType="INTEGER" property="chapterId" />
     <result column="section_id" jdbcType="INTEGER" property="sectionId" />
+    <result column="content" jdbcType="VARCHAR" property="content" />
   </resultMap>
 </mapper>

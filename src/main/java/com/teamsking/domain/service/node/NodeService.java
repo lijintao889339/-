@@ -1,5 +1,6 @@
 package com.teamsking.domain.service.node;
 
+import com.teamsking.api.dto.node.NodeDocDto;
 import com.teamsking.api.dto.node.NodeDtoMapper;
 import com.teamsking.api.dto.node.NodeVideoDto;
 import com.teamsking.domain.entity.node.Node;
@@ -106,6 +107,7 @@ public class NodeService {
         openItem.setContentId(nodeEntity.getId());
         openItem.setChapterId(nodeEntity.getChapterId());
         openItem.setSectionId(nodeEntity.getSectionId());
+        openItem.setDeleteStatus(2);
         openItem.setItemType(10);
 
         return openItemMapper.insertSelective(openItem);
@@ -132,6 +134,7 @@ public class NodeService {
         openItem.setContentId(nodeEntity.getId());
         openItem.setChapterId(nodeEntity.getChapterId());
         openItem.setSectionId(nodeEntity.getSectionId());
+        openItem.setDeleteStatus(2);
         openItem.setItemType(10);
 
         return openItemMapper.insertSelective(openItem);
@@ -156,6 +159,60 @@ public class NodeService {
         List<NodeVideoDto> nodeVideoDtoList = NodeDtoMapper.INSTANCE.entityVideoListToDto(nodeList);
 
         return nodeVideoDtoList;
+
+    }
+
+
+    /**
+     * 根据班课id添加课件(章节内容)
+     * @param nodeDocDto
+     * @param openId
+     * @return
+     */
+    public int saveNodeDocByOpenId(NodeDocDto nodeDocDto,Integer openId){
+
+        //数据转换
+        Node nodeEntity = NodeDtoMapper.INSTANCE.dotToEntityDoc(nodeDocDto);
+        nodeEntity.setDeleteStatus(2);
+        nodeEntity.setOpenId(openId);
+        nodeEntity.setNodeType(10);
+        nodeMapper.insertSelective(nodeEntity);
+
+        OpenItem openItem = new OpenItem();
+        openItem.setOpenId(nodeEntity.getOpenId());
+        openItem.setContentId(nodeEntity.getId());
+        openItem.setChapterId(nodeEntity.getChapterId());
+        openItem.setSectionId(nodeEntity.getSectionId());
+        openItem.setDeleteStatus(2);
+        openItem.setItemType(20);
+
+        return openItemMapper.insertSelective(openItem);
+    }
+
+    /**
+     * 根据节id添加课件(章节内容)
+     * @param nodeDocDto
+     * @param sectionId
+     * @return
+     */
+    public int saveNodeDocBySectionId(NodeDocDto nodeDocDto,Integer sectionId){
+
+        //数据转换
+        Node nodeEntity = NodeDtoMapper.INSTANCE.dotToEntityDoc(nodeDocDto);
+        nodeEntity.setDeleteStatus(2);
+        nodeEntity.setNodeType(10);
+        nodeEntity.setSectionId(sectionId);
+        nodeMapper.insertSelective(nodeEntity);
+
+        OpenItem openItem = new OpenItem();
+        openItem.setOpenId(nodeEntity.getOpenId());
+        openItem.setContentId(nodeEntity.getId());
+        openItem.setChapterId(nodeEntity.getChapterId());
+        openItem.setSectionId(nodeEntity.getSectionId());
+        openItem.setDeleteStatus(2);
+        openItem.setItemType(20);
+
+        return openItemMapper.insertSelective(openItem);
 
     }
 
