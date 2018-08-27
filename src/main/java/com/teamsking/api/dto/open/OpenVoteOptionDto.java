@@ -18,6 +18,8 @@ public class OpenVoteOptionDto extends Dto {
 
     private String voteOption;
 
+    private String optionCover;
+
     //投票人数
     private Integer voteNums;
 

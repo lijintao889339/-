@@ -8,9 +8,7 @@ import com.teamsking.domain.entity.open.OpenUser;
 import com.teamsking.domain.entity.open.OpenVote;
 import com.teamsking.domain.entity.open.OpenVoteOption;
 import com.teamsking.domain.entity.study.StudyVote;
-import com.teamsking.domain.repository.OpenActivityMapper;
-import com.teamsking.domain.repository.OpenUserMapper;
-import com.teamsking.domain.repository.OpenVoteMapper;
+import com.teamsking.domain.repository.*;
 
 import java.math.BigDecimal;
 import java.text.NumberFormat;
@@ -18,7 +16,6 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
-import com.teamsking.domain.repository.StudyVoteMapper;
 import com.teamsking.domain.service.BaseService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,6 +33,8 @@ public class OpenVoteService extends BaseService {
     OpenUserMapper openUserMapper;
     @Autowired
     OpenActivityMapper openActivityMapper;
+    @Autowired
+    OpenVoteOptionMapper openVoteOptionMapper;
 
     @Autowired
     OpenVoteOptionService openVoteOptionService;
@@ -133,6 +132,7 @@ public class OpenVoteService extends BaseService {
         openVote.setDeleteStatus(2);
         openVote.setOpenId(openId);
         openVote.setTitle(addOpenVoteDto.getTitle());
+        openVote.setVoteCover(addOpenVoteDto.getVoteCover());
         openVote.setDescription(addOpenVoteDto.getDescription());
 
         //设置时长
@@ -151,6 +151,19 @@ public class OpenVoteService extends BaseService {
         openVote.setEndType(addOpenVoteDto.getEndType());
         int count = openVoteMapper.insertSelective(openVote);
 
+        //添加投票选项
+        List<OpenVoteOptionDto> openVoteOptionDtos = addOpenVoteDto.getOpenVoteOptionDtos();
+        //for (int i = 0; i <= openVoteOptionDtos.size(); i++ ){
+        for (OpenVoteOptionDto optionDto : openVoteOptionDtos){
+            OpenVoteOption option = new OpenVoteOption();
+            option.setDeleteStatus(2);
+            option.setOpenId(openId);
+            option.setVoteId(openVote.getId());
+            option.setVoteOption(optionDto.getVoteOption());
+            option.setOptionCover(optionDto.getOptionCover());
+            openVoteOptionMapper.insertSelective(option);
+        }
+
         return count;
     }
 
@@ -166,6 +179,7 @@ public class OpenVoteService extends BaseService {
         openVote.setDeleteStatus(2);
         openVote.setOpenId(openId);
         openVote.setTitle(addOpenVoteDto.getTitle());
+        openVote.setVoteCover(addOpenVoteDto.getVoteCover());
         openVote.setDescription(addOpenVoteDto.getDescription());
 
         //获取开始时间
@@ -199,6 +213,19 @@ public class OpenVoteService extends BaseService {
         openVote.setPublish(true);
         openVote.setEndType(addOpenVoteDto.getEndType());
         int count = openVoteMapper.insertSelective(openVote);
+
+        //添加投票选项
+        List<OpenVoteOptionDto> openVoteOptionDtos = addOpenVoteDto.getOpenVoteOptionDtos();
+        //for (int i = 0; i <= openVoteOptionDtos.size(); i++ ){
+        for (OpenVoteOptionDto optionDto : openVoteOptionDtos){
+            OpenVoteOption option = new OpenVoteOption();
+            option.setDeleteStatus(2);
+            option.setOpenId(openId);
+            option.setVoteId(openVote.getId());
+            option.setVoteOption(optionDto.getVoteOption());
+            option.setOptionCover(optionDto.getOptionCover());
+            openVoteOptionMapper.insertSelective(option);
+        }
 
         return count;
     }

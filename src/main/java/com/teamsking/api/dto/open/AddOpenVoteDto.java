@@ -3,6 +3,8 @@ package com.teamsking.api.dto.open;
 import com.teamsking.api.dto.Dto;
 import lombok.Data;
 
+import java.util.List;
+
 /**
 *@author linhao
 */
@@ -12,6 +14,8 @@ public class AddOpenVoteDto extends Dto {
     private Integer id;
 
     private String title;
+
+    private String voteCover;
 
     private String description;
 
@@ -29,6 +33,6 @@ public class AddOpenVoteDto extends Dto {
 
     private Long durationMin;
 
-    private Boolean isPublish;
+    private List<OpenVoteOptionDto> openVoteOptionDtos;
 
 }
