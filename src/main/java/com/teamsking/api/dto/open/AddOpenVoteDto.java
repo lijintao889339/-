@@ -13,7 +13,7 @@ public class AddOpenVoteDto extends Dto {
 
     private String title;
 
-    private String content;
+    private String description;
 
     private Integer type;
 
@@ -30,11 +30,5 @@ public class AddOpenVoteDto extends Dto {
     private Long durationMin;
 
     private Boolean isPublish;
-
-    private Integer activityId;
-
-    private String activityTitle;
-
-    private String activityContent;
 
 }

@@ -149,6 +149,16 @@ public class OpenVote {
 
     private Long durationMin;
 
+    private String voteCover;
+
+    public String getVoteCover() {
+        return voteCover;
+    }
+
+    public void setVoteCover(String voteCover) {
+        this.voteCover = voteCover;
+    }
+
     public Long getDurationDay() {
         return durationDay;
     }

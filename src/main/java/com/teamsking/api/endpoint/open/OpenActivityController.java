@@ -33,22 +33,19 @@ public class OpenActivityController extends BaseController {
     OpenActivityService openActivityService;
 
 
-    @ApiOperation(value = "班次-活动管理列表", notes = "可分页", produces = "application/json")
+    /*@ApiOperation(value = "获取班课下进行中的活动", produces = "application/json")
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "pageNo", value = "页码", required = true, example = "1"),
-            @ApiImplicitParam(name = "pageSize", value = "页大小", required = true, example = "10")
+            @ApiImplicitParam(name = "openId", value = "班课的主键", required = true, dataType = "int")
+            //@ApiImplicitParam(name = "isPublish", value = "是否发放", required = true, dataType = "Boolean")
     })
-    @GetMapping("/open_activities")
-    public Result openActivityList(int pageNo,int pageSize){
-        PageHelper.startPage(fixPage(pageNo),fixPage(pageSize));
+    @GetMapping("/open_activities_starting/{openId}")
+    public Result openActivityList(@PathVariable int openId *//*,@PathVariable Boolean isPublish*//*){
 
 
-        List<OpenActivity> openActivityList = openActivityService.list();
-        List<OpenActivityDto> openActivityDtoList = OpenActivityDtoMapper.INSTANCE.entityListToDtoList(openActivityList);
+        List<OpenActivityDto> openActivityDtos = openActivityService.listByStarting(openId);
+        return Result.success().addData("OpenActivityList",openActivityDtos);
 
-        return Result.success().addData("pager",warpPage(openActivityDtoList));
-
-    }
+    }*/
 
 
     @ApiOperation(value = "添加班次-活动管理", consumes= "application/json")

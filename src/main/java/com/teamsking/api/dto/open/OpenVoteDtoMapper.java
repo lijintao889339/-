@@ -17,5 +17,5 @@ public interface OpenVoteDtoMapper {
 
     OpenVote dtoToEntity(OpenVoteDto openVoteDto);
 
-
+    List<OpenVoteQueryDto> entityListToQueryDotList(List<OpenVote> openVotes);
 }

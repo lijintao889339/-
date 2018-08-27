@@ -19,4 +19,6 @@ public class OpenQuestionOptionDto extends Dto {
     //问卷人数百分比
     private String questionRatio;
 
+    private String optionCover;
+
 }

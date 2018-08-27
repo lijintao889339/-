@@ -5,18 +5,16 @@ import com.teamsking.api.dto.open.*;
 import com.teamsking.domain.entity.open.*;
 import com.teamsking.domain.entity.study.StudyQuestionnaire;
 import com.teamsking.domain.entity.study.StudyVote;
-import com.teamsking.domain.repository.OpenActivityMapper;
-import com.teamsking.domain.repository.OpenQuestionMapper;
+import com.teamsking.domain.repository.*;
 
 import java.text.NumberFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
-import com.teamsking.domain.repository.OpenUserMapper;
-import com.teamsking.domain.repository.StudyQuestionnaireMapper;
 import com.teamsking.domain.service.BaseService;
 import lombok.extern.slf4j.Slf4j;
+import org.checkerframework.checker.units.qual.A;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -35,6 +33,8 @@ public class OpenQuestionService extends BaseService {
     StudyQuestionnaireMapper studyQuestionnaireMapper;
     @Autowired
     OpenActivityMapper openActivityMapper;
+    @Autowired
+    OpenQuestionOptionMapper openQuestionOptionMapper;
 
     @Autowired
     OpenQuestionOptionService openQuestionOptionService;
@@ -127,54 +127,46 @@ public class OpenQuestionService extends BaseService {
      */
     public int save(AddOpenQuestionDto addOpenQuestionDto, int openId){
 
-        //先添加活动
-        OpenActivity openActivity = new OpenActivity();
-        openActivity.setTitle(addOpenQuestionDto.getActivityTitle());
-        openActivity.setContent(addOpenQuestionDto.getActivityContent());
-        openActivity.setDeleteStatus(2);
-        openActivity.setType(1);
-        openActivity.setOpenId(openId);
-        openActivityMapper.insertSelective(openActivity);
-
         //添加问卷信息
         OpenQuestion openQuestion = new OpenQuestion();
         openQuestion.setDeleteStatus(2);
-        openQuestion.setOpenId(openActivity.getOpenId());
-        openQuestion.setActivityId(openActivity.getId());
+        openQuestion.setOpenId(openId);
         openQuestion.setTitle(addOpenQuestionDto.getTitle());
+        openQuestion.setQuestionCover(addOpenQuestionDto.getQuestionCover());
         openQuestion.setRemark(addOpenQuestionDto.getRemark());
 
-        //获取开始时间
-        //Date startTime = new Date();
-        //openQuestion.setStartTime(startTime);
-        //获取结束时间(设置时长)
+        //设置时长
         if (2 == addOpenQuestionDto.getEndType().intValue()){
 
-            /*Long durationDay = addOpenQuestionDto.getDurationDay().longValue();
-            Long durationHour = addOpenQuestionDto.getDurationHour().longValue();
-            Long durationMin = addOpenQuestionDto.getDurationMin().longValue();*/
-            //获取设置的总分钟数
-            /*int totalMin = (int) (durationDay * (24*60) + durationHour * 60 + durationMin);
-
-            Calendar calendar = Calendar.getInstance();
-            calendar.add(Calendar.MINUTE,totalMin);*/
-
-            //结束时间
-            /*Date endTime = calendar.getTime();
-            openQuestion.setEndTime(endTime);*/
             openQuestion.setDurationDay(addOpenQuestionDto.getDurationDay());
             openQuestion.setDurationHour(addOpenQuestionDto.getDurationHour());
             openQuestion.setDurationMin(addOpenQuestionDto.getDurationMin());
         }
 
+        openQuestion.setCreateTime(new Date());
         openQuestion.setType(addOpenQuestionDto.getType());
+        openQuestion.setPublish(false);
         openQuestion.setIntegralReward(addOpenQuestionDto.getIntegralReward());
         openQuestion.setViewStatistics(addOpenQuestionDto.getIsViewStatistics());
-        openQuestion.setPublish(addOpenQuestionDto.getIsPublish());
         openQuestion.setEndType(addOpenQuestionDto.getEndType());
         int count = openQuestionMapper.insertSelective(openQuestion);
 
+        //添加问卷选项
+        List<OpenQuestionOptionDto> openQuestionOptionDtos = addOpenQuestionDto.getOpenQuestionOptionDtos();
+
+        for (OpenQuestionOptionDto openQuestionOptionDto : openQuestionOptionDtos){
+            OpenQuestionOption option = new OpenQuestionOption();
+            option.setQuestionId(openQuestion.getId());
+            option.setDeleteStatus(2);
+            option.setOpenId(openId);
+            option.setOption(openQuestionOptionDto.getOption());
+            option.setOptionCover(openQuestionOptionDto.getOptionCover());
+            openQuestionOptionMapper.insertSelective(option);
+        }
+
         return count;
+
+
 
     }
 
@@ -185,21 +177,12 @@ public class OpenQuestionService extends BaseService {
      */
     public int savePublishOpenQuestion(AddOpenQuestionDto addOpenQuestionDto, int openId) {
 
-        //先添加活动
-        OpenActivity openActivity = new OpenActivity();
-        openActivity.setTitle(addOpenQuestionDto.getActivityTitle());
-        openActivity.setContent(addOpenQuestionDto.getActivityContent());
-        openActivity.setDeleteStatus(2);
-        openActivity.setType(1);
-        openActivity.setOpenId(openId);
-        openActivityMapper.insertSelective(openActivity);
-
         //添加问卷信息
         OpenQuestion openQuestion = new OpenQuestion();
         openQuestion.setDeleteStatus(2);
-        openQuestion.setOpenId(openActivity.getOpenId());
-        openQuestion.setActivityId(openActivity.getId());
+        openQuestion.setOpenId(openId);
         openQuestion.setTitle(addOpenQuestionDto.getTitle());
+        openQuestion.setQuestionCover(addOpenQuestionDto.getQuestionCover());
         openQuestion.setRemark(addOpenQuestionDto.getRemark());
 
         //获取开始时间
@@ -227,12 +210,26 @@ public class OpenQuestionService extends BaseService {
 
         }
 
+        openQuestion.setCreateTime(new Date());
         openQuestion.setType(addOpenQuestionDto.getType());
         openQuestion.setIntegralReward(addOpenQuestionDto.getIntegralReward());
         openQuestion.setViewStatistics(addOpenQuestionDto.getIsViewStatistics());
         openQuestion.setPublish(true);
         openQuestion.setEndType(addOpenQuestionDto.getEndType());
         int count = openQuestionMapper.insertSelective(openQuestion);
+
+        //添加问卷选项
+        List<OpenQuestionOptionDto> openQuestionOptionDtos = addOpenQuestionDto.getOpenQuestionOptionDtos();
+
+        for (OpenQuestionOptionDto openQuestionOptionDto : openQuestionOptionDtos){
+            OpenQuestionOption option = new OpenQuestionOption();
+            option.setQuestionId(openQuestion.getId());
+            option.setDeleteStatus(2);
+            option.setOpenId(openId);
+            option.setOption(openQuestionOptionDto.getOption());
+            option.setOptionCover(openQuestionOptionDto.getOptionCover());
+            openQuestionOptionMapper.insertSelective(option);
+        }
 
         return count;
 

@@ -1,6 +1,7 @@
 package com.teamsking.domain.entity.open;
 
 import java.util.Date;
+import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
@@ -14,6 +15,7 @@ public class OpenQuestion {
      * @mbg.generated Tue Jun 26 17:08:40 CST 2018
      */
     @Id
+    @GeneratedValue(generator = "JDBC")
     private Integer id;
 
     /**
@@ -132,6 +134,16 @@ public class OpenQuestion {
     private Long durationHour;
 
     private Long durationMin;
+
+    private String questionCover;
+
+    public String getQuestionCover() {
+        return questionCover;
+    }
+
+    public void setQuestionCover(String questionCover) {
+        this.questionCover = questionCover;
+    }
 
     public Long getDurationDay() {
         return durationDay;
