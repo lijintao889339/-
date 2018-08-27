@@ -1,8 +1,13 @@
 package com.teamsking.domain.service.node;
 
+import com.teamsking.api.dto.node.NodeDtoMapper;
+import com.teamsking.api.dto.node.NodeVideoDto;
 import com.teamsking.domain.entity.node.Node;
+import com.teamsking.domain.entity.open.OpenItem;
 import com.teamsking.domain.repository.NodeMapper;
 import java.util.List;
+
+import com.teamsking.domain.repository.OpenItemMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -14,6 +19,8 @@ public class NodeService {
 
     @Autowired
     NodeMapper nodeMapper;
+    @Autowired
+    OpenItemMapper openItemMapper;
 
     /**
      * 获取资源管理列表
@@ -76,6 +83,33 @@ public class NodeService {
 
         Example nodeExample = new Example(Node.class);
         return nodeMapper.selectByExample(nodeExample);
+
+    }
+
+
+    /**
+     * 根据班课id添加视频
+     * @param nodeVideoDto
+     * @return
+     */
+    public int saveVideo(NodeVideoDto nodeVideoDto,Integer openId){
+
+        Node nodeEntity = NodeDtoMapper.INSTANCE.dotToEntityVideo(nodeVideoDto);
+        nodeEntity.setDeleteStatus(2);
+        nodeEntity.setOpenId(openId);
+        nodeEntity.setNodeType(20);
+
+        nodeMapper.insertSelective(nodeEntity);
+
+        OpenItem openItem = new OpenItem();
+        openItem.setOpenId(nodeEntity.getOpenId());
+        openItem.setContentId(nodeEntity.getId());
+        openItem.setChapterId(nodeEntity.getChapterId());
+        openItem.setSectionId(nodeEntity.getSectionId());
+        openItem.setItemType(10);
+
+        return openItemMapper.insertSelective(openItem);
+
 
     }
 }

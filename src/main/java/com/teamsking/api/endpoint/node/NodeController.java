@@ -4,6 +4,7 @@ package com.teamsking.api.endpoint.node;
 import com.github.pagehelper.PageHelper;
 import com.teamsking.api.dto.node.NodeDto;
 import com.teamsking.api.dto.node.NodeDtoMapper;
+import com.teamsking.api.dto.node.NodeVideoDto;
 import com.teamsking.api.endpoint.BaseController;
 import com.teamsking.domain.entity.node.Node;
 import com.teamsking.domain.service.node.NodeService;
@@ -94,6 +95,22 @@ public class NodeController extends BaseController {
         Node nodeEntity = NodeDtoMapper.INSTANCE.dtoToEntity(node);
         nodeEntity.setId(id);
         nodeService.modify(nodeEntity);
+        return Result.success();
+
+    }
+
+
+
+    @ApiOperation(value = "根据班课id添加视频", consumes = "application/json")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "nodeVideoDto", value = "班次视频", required = true, dataType = "NodeVideoDto")
+    })
+    @PostMapping("/add_video_node/{openId}")
+    public Result addVideoNode(@RequestBody NodeVideoDto nodeVideoDto,
+                                    @PathVariable int openId){
+
+        nodeService.saveVideo(nodeVideoDto,openId);
+
         return Result.success();
 
     }

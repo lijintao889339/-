@@ -229,6 +229,10 @@ public class Node {
 
     private String suffixName;
 
+    private Integer chapterId;
+
+    private Integer sectionId;
+
     public String getSuffixName() {
         return suffixName;
     }
@@ -819,5 +823,21 @@ public class Node {
 
     public void setWatchProgress(Double watchProgress) {
         this.watchProgress = watchProgress;
+    }
+
+    public Integer getChapterId() {
+        return chapterId;
+    }
+
+    public void setChapterId(Integer chapterId) {
+        this.chapterId = chapterId;
+    }
+
+    public Integer getSectionId() {
+        return sectionId;
+    }
+
+    public void setSectionId(Integer sectionId) {
+        this.sectionId = sectionId;
     }
 }

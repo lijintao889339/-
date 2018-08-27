@@ -33,5 +33,7 @@
     <result column="delete_status" jdbcType="INTEGER" property="deleteStatus" />
     <result column="watch_progress" jdbcType="DOUBLE" property="watchProgress" />
     <result column="suffix_name" jdbcType="VARCHAR" property="suffixName" />
+    <result column="chapter_id" jdbcType="INTEGER" property="chapterId" />
+    <result column="section_id" jdbcType="INTEGER" property="sectionId" />
   </resultMap>
 </mapper>
