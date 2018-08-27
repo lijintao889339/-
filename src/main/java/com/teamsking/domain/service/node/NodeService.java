@@ -92,7 +92,7 @@ public class NodeService {
      * @param nodeVideoDto
      * @return
      */
-    public int saveVideo(NodeVideoDto nodeVideoDto,Integer openId){
+    public int saveVideoByOpenId(NodeVideoDto nodeVideoDto,Integer openId){
 
         Node nodeEntity = NodeDtoMapper.INSTANCE.dotToEntityVideo(nodeVideoDto);
         nodeEntity.setDeleteStatus(2);
@@ -110,6 +110,31 @@ public class NodeService {
 
         return openItemMapper.insertSelective(openItem);
 
+
+    }
+
+    /**
+     * 根据节id添加视频
+     * @param nodeVideoDto
+     * @param sectionId
+     * @return
+     */
+    public int saveVideoBySectionId(NodeVideoDto nodeVideoDto,Integer sectionId){
+
+        Node nodeEntity = NodeDtoMapper.INSTANCE.dotToEntityVideo(nodeVideoDto);
+        nodeEntity.setSectionId(sectionId);
+        nodeEntity.setNodeType(20);
+
+        nodeMapper.insertSelective(nodeEntity);
+
+        OpenItem openItem = new OpenItem();
+        openItem.setOpenId(nodeEntity.getOpenId());
+        openItem.setContentId(nodeEntity.getId());
+        openItem.setChapterId(nodeEntity.getChapterId());
+        openItem.setSectionId(nodeEntity.getSectionId());
+        openItem.setItemType(10);
+
+        return openItemMapper.insertSelective(openItem);
 
     }
 }

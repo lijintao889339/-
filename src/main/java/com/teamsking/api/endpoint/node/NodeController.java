@@ -106,10 +106,25 @@ public class NodeController extends BaseController {
             @ApiImplicitParam(name = "nodeVideoDto", value = "班次视频", required = true, dataType = "NodeVideoDto")
     })
     @PostMapping("/add_video_node/{openId}")
-    public Result addVideoNode(@RequestBody NodeVideoDto nodeVideoDto,
+    public Result addVideoNodeByOpenId(@RequestBody NodeVideoDto nodeVideoDto,
                                     @PathVariable int openId){
 
-        nodeService.saveVideo(nodeVideoDto,openId);
+        nodeService.saveVideoByOpenId(nodeVideoDto,openId);
+
+        return Result.success();
+
+    }
+
+
+    @ApiOperation(value = "根据节id添加视频", consumes = "application/json")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "nodeVideoDto", value = "班次视频", required = true, dataType = "NodeVideoDto")
+    })
+    @PostMapping("/save_video_node/{sectionId}")
+    public Result addVideoBySectionId(@RequestBody NodeVideoDto nodeVideoDto,
+                               @PathVariable int sectionId){
+
+        nodeService.saveVideoBySectionId(nodeVideoDto,sectionId);
 
         return Result.success();
 
