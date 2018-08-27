@@ -137,4 +137,27 @@ public class NodeService {
         return openItemMapper.insertSelective(openItem);
 
     }
+
+
+    /**
+     * 根据班课id查询视频信息(教学管理内容)
+     * @param openId
+     * @return
+     */
+    public List<NodeVideoDto> getNodeVideoListByOpenId(Integer openId){
+
+        Node node = new Node();
+        node.setNodeType(20);
+        node.setOpenId(openId);
+        node.setDeleteStatus(2);
+
+        List<Node> nodeList = nodeMapper.select(node);
+
+        List<NodeVideoDto> nodeVideoDtoList = NodeDtoMapper.INSTANCE.entityVideoListToDto(nodeList);
+
+        return nodeVideoDtoList;
+
+    }
+
+
 }

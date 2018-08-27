@@ -20,4 +20,8 @@ public class NodeVideoDto extends Dto {
 
     private Integer sectionId;
 
+    private Integer seconds;
+
+    private Double watchProgress;
+
 }

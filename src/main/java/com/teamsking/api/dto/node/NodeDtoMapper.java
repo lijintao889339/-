@@ -18,4 +18,6 @@ public interface NodeDtoMapper {
 
     Node dotToEntityVideo(NodeVideoDto nodeVideoDto);
 
+    List<NodeVideoDto> entityVideoListToDto(List<Node> nodeList);
+
 }
