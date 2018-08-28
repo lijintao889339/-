@@ -10,36 +10,16 @@ import lombok.Data;
 @Data
 public class OpenAssignmentDto extends Dto {
 
-    private Integer id;
+    private Integer userStudentId;
 
-    private Integer openId;
-
-    private Integer courseId;
-
-    private String title;
-
-    private Integer diaplayOrder;
-
-    private String status;
-
-    private Integer createId;
-
-    private Date createTime;
-
-    private Integer updateId;
-
-    private Date updateTime;
-
-    private Integer deleteStatus;
-
-    private Date startTime;
+    private String userName;
 
     private Date endTime;
 
-    private Integer publishSocreDays;
+    private Integer quizCount;
 
-    private String body;
+    private Integer commitQuizCount;
 
-    private String score;
+    private Integer notCommitQuizCount;
 
 }

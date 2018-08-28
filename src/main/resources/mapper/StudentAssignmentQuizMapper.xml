@@ -11,6 +11,6 @@
     <result column="user_student_id" jdbcType="INTEGER" property="userStudentId" />
     <result column="quiz_id" jdbcType="INTEGER" property="quizId" />
     <result column="assignment_id" jdbcType="INTEGER" property="assignmentId" />
-    <result column="delete_status" jdbcType="VARCHAR" property="deleteStatus" />
+    <result column="delete_status" jdbcType="INTEGER" property="deleteStatus" />
   </resultMap>
 </mapper>

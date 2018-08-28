@@ -1,19 +1,26 @@
 package com.teamsking.domain.service.open;
 
+import com.github.pagehelper.Page;
+import com.github.pagehelper.PageHelper;
 import com.google.common.collect.Lists;
 import com.teamsking.api.dto.open.AddOpenAssignmentDto;
+import com.teamsking.api.dto.open.OpenAssignmentDto;
 import com.teamsking.api.dto.open.OpenAssignmentDtoMapper;
 import com.teamsking.api.dto.open.OpenAssignmentNameDto;
 import com.teamsking.domain.entity.node.NodeFolder;
 import com.teamsking.domain.entity.open.OpenAssignment;
+import com.teamsking.domain.entity.open.OpenAssignmentQuiz;
 import com.teamsking.domain.entity.open.OpenItem;
 import com.teamsking.domain.entity.open.OpenUser;
+import com.teamsking.domain.entity.sys.StudentAssignmentQuiz;
 import com.teamsking.domain.entity.sys.UserStudent;
 import com.teamsking.domain.entity.sys.UserStudentAssignment;
 import com.teamsking.domain.repository.*;
 
 import java.util.List;
 
+import com.teamsking.domain.service.BaseService;
+import com.teamsking.domain.service.sys.UserStudentService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -24,7 +31,7 @@ import tk.mybatis.mapper.entity.Example;
 */
 @Service
 @Slf4j
-public class OpenAssignmentService {
+public class OpenAssignmentService extends BaseService {
 
     @Autowired
     OpenAssignmentMapper openAssignmentMapper;
@@ -36,14 +43,88 @@ public class OpenAssignmentService {
     OpenUserMapper openUserMapper;
     @Autowired
     UserStudentAssignmentMapper userStudentAssignmentMapper;
+    @Autowired
+    OpenAssignmentQuizMapper openAssignmentQuizMapper;
+    @Autowired
+    StudentAssignmentQuizMapper studentAssignmentQuizMapper;
+
+    @Autowired
+    UserStudentService userStudentService;
 
     /**
-     * 获取班次作业管理列表
+     * 获取作业下的学生提交题信息列表
+     * @param pageNo
+     * @param pageSize
+     * @param id
      * @return
      */
-    public List<OpenAssignment> list( ){
+    public Page list(int pageNo, int pageSize, int id ){
 
-        return openAssignmentMapper.selectAll();
+        //获取作业信息
+        OpenAssignment openAssignment = openAssignmentMapper.selectByPrimaryKey(id);
+
+        //分页
+        PageHelper.startPage(pageNo,pageSize);
+
+        //获取已提交该作业学生信息
+        UserStudentAssignment userStudentAssignment = new UserStudentAssignment();
+        userStudentAssignment.setAssignmentId(id);
+        userStudentAssignment.setDeleteStatus(2);
+        List<UserStudentAssignment> userStudentAssignmentList = userStudentAssignmentMapper.select(userStudentAssignment);
+
+        if (0 != userStudentAssignmentList.size()){
+
+            List<Integer> userStudentIds = Lists.newArrayList();
+            for (UserStudentAssignment studentAssignment : userStudentAssignmentList){
+                userStudentIds.add(studentAssignment.getUserStudentId());
+            }
+            //获取学生信息
+            List<UserStudent> userStudentList = userStudentService.getUserStudentListByIds(userStudentIds);
+
+            //获取该作业的应提交提数
+            OpenAssignmentQuiz openAssignmentQuiz = new OpenAssignmentQuiz();
+            openAssignmentQuiz.setDeleteStatus(2);
+            openAssignmentQuiz.setAssignmentId(id);
+            Integer quizCount = openAssignmentQuizMapper.selectCount(openAssignmentQuiz);
+
+            //数据转换
+            List<OpenAssignmentDto> openAssignmentDtoList = OpenAssignmentDtoMapper.INSTANCE.entityListToDtoList(userStudentAssignmentList);
+
+            //遍历集合
+            for (OpenAssignmentDto openAssignmentDto : openAssignmentDtoList){
+
+                //该作业提数和提交截止时间
+                openAssignmentDto.setQuizCount(quizCount);
+                openAssignmentDto.setEndTime(openAssignment.getEndTime());
+
+                for (UserStudent userStudent : userStudentList){
+                    if (openAssignmentDto.getUserStudentId().intValue() == userStudent.getId().intValue()){
+
+                        //获取学生姓名
+                        openAssignmentDto.setUserName(userStudent.getUserName());
+
+                        //获取学生已提交提数
+                        StudentAssignmentQuiz studentAssignmentQuiz = new StudentAssignmentQuiz();
+                        studentAssignmentQuiz.setDeleteStatus(2);
+                        studentAssignmentQuiz.setAssignmentId(id);
+                        studentAssignmentQuiz.setUserStudentId(userStudent.getId());
+                        int commitQuizCount = studentAssignmentQuizMapper.selectCount(studentAssignmentQuiz);
+                        openAssignmentDto.setCommitQuizCount(commitQuizCount);
+
+
+                        //获取学生未提交提数
+                        int notCommitQuizCount = quizCount - commitQuizCount;
+                        openAssignmentDto.setNotCommitQuizCount(notCommitQuizCount);
+                    }
+                }
+
+            }
+            return convertPage((Page)userStudentAssignmentList, openAssignmentDtoList);
+
+        }else {
+            Page page = null;
+            return page;
+        }
     }
 
     /**
