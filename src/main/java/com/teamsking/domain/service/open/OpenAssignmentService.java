@@ -3,6 +3,7 @@ package com.teamsking.domain.service.open;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.google.common.collect.Lists;
+import com.sun.tools.corba.se.idl.InterfaceGen;
 import com.teamsking.api.dto.open.AddOpenAssignmentDto;
 import com.teamsking.api.dto.open.OpenAssignmentDto;
 import com.teamsking.api.dto.open.OpenAssignmentDtoMapper;
@@ -179,11 +180,12 @@ public class OpenAssignmentService extends BaseService {
      * @param addOpenAssignmentDto
      * @return
      */
-    public int addOpenAssignment(AddOpenAssignmentDto addOpenAssignmentDto){
+    public int addOpenAssignment(AddOpenAssignmentDto addOpenAssignmentDto, Integer openId){
 
         //向作业表添加信息
         OpenAssignment openAssignmentEntity = OpenAssignmentDtoMapper.INSTANCE.InterDtoEntity(addOpenAssignmentDto);
         openAssignmentEntity.setDeleteStatus(2);
+        openAssignmentEntity.setOpenId(openId);
         openAssignmentMapper.insertSelective(openAssignmentEntity);
 
         OpenItem openItem = new OpenItem();

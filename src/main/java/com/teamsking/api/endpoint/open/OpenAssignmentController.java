@@ -125,12 +125,14 @@ public class OpenAssignmentController extends BaseController {
 
     @ApiOperation(value = "根据班课id添加作业", consumes = "application/json")
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "addOpenAssignmentDto", value = "班次作业", required = true, dataType = "AddOpenAssignmentDto")
+            @ApiImplicitParam(name = "addOpenAssignmentDto", value = "班次作业", required = true, dataType = "AddOpenAssignmentDto"),
+            @ApiImplicitParam(name = "openId", value = "班课主键", required = true, dataType = "Integer")
     })
-    @PostMapping("/add_open_assignment")
-    public Result addOpenAssignment(@RequestBody AddOpenAssignmentDto addOpenAssignmentDto){
+    @PostMapping("/add_open/{openId}/assignment")
+    public Result addOpenAssignment(@RequestBody AddOpenAssignmentDto addOpenAssignmentDto,
+                                    @PathVariable int openId){
 
-        openAssignmentService.addOpenAssignment(addOpenAssignmentDto);
+        openAssignmentService.addOpenAssignment(addOpenAssignmentDto,openId);
 
         return Result.success();
 
