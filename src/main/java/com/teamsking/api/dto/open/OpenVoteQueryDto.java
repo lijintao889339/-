@@ -13,7 +13,7 @@ public class OpenVoteQueryDto extends Dto {
 
     private Integer id;
 
-    private Integer activityId;
+    //private Integer activityId;
 
     private String title;
 
@@ -21,7 +21,7 @@ public class OpenVoteQueryDto extends Dto {
 
     private Integer activityType;
 
-    private Integer allUserNums;
+    //private Integer allUserNums;
 
     private Integer commitUserNums;
 

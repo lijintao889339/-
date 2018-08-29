@@ -33,21 +33,6 @@ public class OpenActivityController extends BaseController {
     OpenActivityService openActivityService;
 
 
-    /*@ApiOperation(value = "获取班课下进行中的活动", produces = "application/json")
-    @ApiImplicitParams({
-            @ApiImplicitParam(name = "openId", value = "班课的主键", required = true, dataType = "int")
-            //@ApiImplicitParam(name = "isPublish", value = "是否发放", required = true, dataType = "Boolean")
-    })
-    @GetMapping("/open_activities_starting/{openId}")
-    public Result openActivityList(@PathVariable int openId *//*,@PathVariable Boolean isPublish*//*){
-
-
-        List<OpenActivityDto> openActivityDtos = openActivityService.listByStarting(openId);
-        return Result.success().addData("OpenActivityList",openActivityDtos);
-
-    }*/
-
-
     @ApiOperation(value = "添加班次-活动管理", consumes= "application/json")
     @ApiImplicitParams( {
             @ApiImplicitParam(name = "openActivity", value = "班次活动管理", required = true, dataType = "OpenActivityDto")
