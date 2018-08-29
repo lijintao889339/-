@@ -18,7 +18,7 @@ public class QuizOptionDto extends Dto {
 
     private Integer courseId;
 
-    private Integer optionTitle;
+    private String optionTitle;
 
     private Integer correctFlag;
 

@@ -1,6 +1,7 @@
 package com.teamsking.domain.entity.quiz;
 
 import java.util.Date;
+import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
@@ -14,6 +15,7 @@ public class QuizOption {
      * @mbg.generated Tue Jun 26 17:08:40 CST 2018
      */
     @Id
+    @GeneratedValue(generator = "JDBC")
     private Integer id;
 
     /**
@@ -50,7 +52,7 @@ public class QuizOption {
      *
      * @mbg.generated Tue Jun 26 17:08:40 CST 2018
      */
-    private Integer optionTitle;
+    private String optionTitle;
 
     /**
      *
@@ -210,7 +212,7 @@ public class QuizOption {
      *
      * @mbg.generated Tue Jun 26 17:08:40 CST 2018
      */
-    public Integer getOptionTitle() {
+    public String getOptionTitle() {
         return optionTitle;
     }
 
@@ -222,7 +224,7 @@ public class QuizOption {
      *
      * @mbg.generated Tue Jun 26 17:08:40 CST 2018
      */
-    public void setOptionTitle(Integer optionTitle) {
+    public void setOptionTitle(String optionTitle) {
         this.optionTitle = optionTitle;
     }
 

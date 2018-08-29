@@ -65,7 +65,7 @@ public class QuizService {
      * @param quizDto
      * @param examId
      * @return
-     */
+     *//*
     public int saveOneQuiz(QuizDto quizDto,Integer examId){
 
         Quiz quizEntity = QuizDtoMapper.INSTANCE.dtoToEntity(quizDto);
@@ -79,12 +79,12 @@ public class QuizService {
     }
 
 
-    /**
+    *//**
      * 创建考试根据考试id添加智能选题(多选题)
      * @param quizDto
      * @param examId
      * @return
-     */
+     *//*
     public int saveMuchQuiz(QuizDto quizDto,Integer examId){
 
         Quiz quizEntity = QuizDtoMapper.INSTANCE.dtoToEntity(quizDto);
@@ -98,12 +98,12 @@ public class QuizService {
     }
 
 
-    /**
+    *//**
      * 创建考试根据考试id添加智能选题(判断题)
      * @param quizDto
      * @param examId
      * @return
-     */
+     *//*
     public int saveJudgeQuiz(QuizDto quizDto,Integer examId){
 
         Quiz quizEntity = QuizDtoMapper.INSTANCE.dtoToEntity(quizDto);
@@ -114,7 +114,7 @@ public class QuizService {
 
         return quizMapper.insert(quizEntity);
 
-    }
+    }*/
 
 
 

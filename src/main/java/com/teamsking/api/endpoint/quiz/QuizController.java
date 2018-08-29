@@ -109,45 +109,45 @@ public class QuizController extends BaseController {
 
 
 
-    @ApiOperation(value = "添加单选题(智能选题)", consumes = "application/json")
-    @ApiImplicitParams({
-            @ApiImplicitParam(name = "examId", value = "考试id", required = true, dataType = "Integer"),
-            @ApiImplicitParam(name = "quizDto", value = "试题", required = true, dataType = "QuizDto")
-    })
-    @PostMapping("/one_quiz/{examId}")
-    public Result saveOneQuiz(@PathVariable int examId,
-                             @RequestBody QuizDto quizDto){
-
-        quizService.saveOneQuiz(quizDto,examId);
-        return Result.success();
-    }
-
-
-    @ApiOperation(value = "添加多选题(智能选题)", consumes = "application/json")
-    @ApiImplicitParams({
-            @ApiImplicitParam(name = "examId", value = "考试id", required = true, dataType = "Integer"),
-            @ApiImplicitParam(name = "quizDto", value = "试题", required = true, dataType = "QuizDto")
-    })
-    @PostMapping("/much_quiz/{examId}")
-    public Result saveMuchQuiz(@PathVariable int examId,
-                              @RequestBody QuizDto quizDto){
-
-        quizService.saveMuchQuiz(quizDto,examId);
-        return Result.success();
-    }
-
-
-    @ApiOperation(value = "添加判断题(智能选题)", consumes = "application/json")
-    @ApiImplicitParams({
-            @ApiImplicitParam(name = "examId", value = "考试id", required = true, dataType = "Integer"),
-            @ApiImplicitParam(name = "quizDto", value = "试题", required = true, dataType = "QuizDto")
-    })
-    @PostMapping("/judge_quiz/{examId}")
-    public Result saveJudgeQuiz(@PathVariable int examId,
-                               @RequestBody QuizDto quizDto){
-
-        quizService.saveJudgeQuiz(quizDto,examId);
-        return Result.success();
-    }
+//    @ApiOperation(value = "添加单选题(智能选题)", consumes = "application/json")
+//    @ApiImplicitParams({
+//            @ApiImplicitParam(name = "examId", value = "考试id", required = true, dataType = "Integer"),
+//            @ApiImplicitParam(name = "quizDto", value = "试题", required = true, dataType = "QuizDto")
+//    })
+//    @PostMapping("/one_quiz/{examId}")
+//    public Result saveOneQuiz(@PathVariable int examId,
+//                             @RequestBody QuizDto quizDto){
+//
+//        quizService.saveOneQuiz(quizDto,examId);
+//        return Result.success();
+//    }
+//
+//
+//    @ApiOperation(value = "添加多选题(智能选题)", consumes = "application/json")
+//    @ApiImplicitParams({
+//            @ApiImplicitParam(name = "examId", value = "考试id", required = true, dataType = "Integer"),
+//            @ApiImplicitParam(name = "quizDto", value = "试题", required = true, dataType = "QuizDto")
+//    })
+//    @PostMapping("/much_quiz/{examId}")
+//    public Result saveMuchQuiz(@PathVariable int examId,
+//                              @RequestBody QuizDto quizDto){
+//
+//        quizService.saveMuchQuiz(quizDto,examId);
+//        return Result.success();
+//    }
+//
+//
+//    @ApiOperation(value = "添加判断题(智能选题)", consumes = "application/json")
+//    @ApiImplicitParams({
+//            @ApiImplicitParam(name = "examId", value = "考试id", required = true, dataType = "Integer"),
+//            @ApiImplicitParam(name = "quizDto", value = "试题", required = true, dataType = "QuizDto")
+//    })
+//    @PostMapping("/judge_quiz/{examId}")
+//    public Result saveJudgeQuiz(@PathVariable int examId,
+//                               @RequestBody QuizDto quizDto){
+//
+//        quizService.saveJudgeQuiz(quizDto,examId);
+//        return Result.success();
+//    }
 
 }

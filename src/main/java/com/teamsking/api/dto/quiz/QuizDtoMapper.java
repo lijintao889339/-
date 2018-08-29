@@ -1,5 +1,6 @@
 package com.teamsking.api.dto.quiz;
 
+import com.teamsking.api.dto.open.AddOpenTestQuizDto;
 import com.teamsking.domain.entity.quiz.Quiz;
 import java.util.List;
 import org.mapstruct.Mapper;
@@ -18,5 +19,7 @@ public interface QuizDtoMapper {
     QuizDto entityToDto(Quiz quiz);
 
     Quiz dtoToEntity(QuizDto quizDto);
+
+    Quiz InterDtoEntity(AddOpenTestQuizDto addOpenTestQuizDto);
 
 }
