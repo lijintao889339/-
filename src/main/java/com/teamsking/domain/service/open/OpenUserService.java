@@ -80,6 +80,7 @@ public class OpenUserService extends BaseService {
 
         Example openUserExample = new Example(OpenUser.class);
         openUserExample.and().andEqualTo("openId",openId);
+        openUserExample.and().andEqualTo("deleteStatus",2);
         return openUserMapper.deleteByExample(openUserExample);
     }
 
@@ -92,6 +93,22 @@ public class OpenUserService extends BaseService {
 
         Example openUserExample = new Example(OpenUser.class);
         openUserExample.and().andIn("openId",openIds);
+        openUserExample.and().andEqualTo("deleteStatus",2);
+        return openUserMapper.selectByExample(openUserExample);
+    }
+
+    /**
+     * 根据学生ids获取用户选课列表
+     * @param userStudentIds
+     * @param openId
+     * @return
+     */
+    public List<OpenUser> getOpenUserLIstByStudentIds(List<Integer> userStudentIds, Integer openId) {
+
+        Example openUserExample = new Example(OpenUser.class);
+        openUserExample.and().andIn("userStudentId",userStudentIds);
+        openUserExample.and().andEqualTo("deleteStatus",2);
+        openUserExample.and().andEqualTo("openId",openId);
         return openUserMapper.selectByExample(openUserExample);
     }
 }
