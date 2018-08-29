@@ -129,7 +129,7 @@ public class OpenAssignmentController extends BaseController {
             @ApiImplicitParam(name = "openId", value = "班课主键", required = true, dataType = "Integer")
     })
     @PostMapping("/add_open/{openId}/assignment")
-    public Result addOpenAssignment(@RequestBody AddOpenAssignmentDto addOpenAssignmentDto,
+    public Result addOpenAssignmentByOpenId(@RequestBody AddOpenAssignmentDto addOpenAssignmentDto,
                                     @PathVariable int openId){
 
         openAssignmentService.addOpenAssignment(addOpenAssignmentDto,openId);
