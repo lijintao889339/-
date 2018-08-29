@@ -6,7 +6,6 @@ import com.google.common.collect.Lists;
 import com.teamsking.api.dto.sys.UserStudentNodeDto;
 import com.teamsking.api.dto.sys.UserStudentNodeDtoMapper;
 import com.teamsking.domain.entity.node.Node;
-import com.teamsking.domain.entity.open.Open;
 import com.teamsking.domain.entity.open.OpenGroup;
 import com.teamsking.domain.entity.open.OpenUser;
 import com.teamsking.domain.entity.sys.UserStudent;
@@ -233,8 +232,8 @@ public class UserStudentNodeService extends BaseService {
         Integer seconds = node.getSeconds();
 
         //根据模糊查询获取学生信息
-        Example userstudentExample = new Example(UserStudent.class);
-        Example.Criteria cir = userstudentExample.createCriteria();
+        Example userStudentExample = new Example(UserStudent.class);
+        Example.Criteria cir = userStudentExample.createCriteria();
         cir.andEqualTo("deleteStatus",2);
         if ("" != studentNo){
             cir.andLike("studentNo","%" + studentNo + "%");
@@ -242,26 +241,24 @@ public class UserStudentNodeService extends BaseService {
         if ("" != userName){
             cir.andLike("userName","%" + userName + "%");
         }
-        //List<OpenUser> openUserList = openUserMapper.selectByExample(openUserExample);
-        List<UserStudent> userStudentList = userStudentMapper.selectByExample(userstudentExample);
+        List<UserStudent> userStudentList = userStudentMapper.selectByExample(userStudentExample);
 
         if (0 != userStudentList.size()){
 
             //获取查询到的学生Ids
-            List<Integer> sudentIds = Lists.newArrayList();
+            List<Integer> studentIds = Lists.newArrayList();
             for (UserStudent userStudent : userStudentList){
-                sudentIds.add(userStudent.getId());
+                studentIds.add(userStudent.getId());
             }
 
-            //再进一步获取sudentIds中该班课下的学生ids
+            //再进一步获取studentIds中该班课下的学生ids
             List<Integer> userStudentIds = Lists.newArrayList();
-            List<OpenUser> openUserList = openUserService.getOpenUserLIstByStudentIds(sudentIds,openId);
+            List<OpenUser> openUserList = openUserService.getOpenUserLIstByStudentIds(studentIds,openId);
             if (0 != openUserList.size()){
 
                 for (OpenUser openUser : openUserList){
                     userStudentIds.add(openUser.getUserStudentId());
                 }
-
 
                 //分页
                 PageHelper.startPage(pageNo,pageSize);
@@ -277,10 +274,7 @@ public class UserStudentNodeService extends BaseService {
                 if (0 != userStudentNodeList.size()){
 
                     //获取学生信息
-                    //List<UserStudent> userStudentList = userStudentService.getUserStudentListByIds(userStudentIds);
-
-                    //获取学生选课信息(包含班组信息)
-                    //List<OpenUser> newOpenUserList = openUserService.getOpenUserLIstByStudentIds(userStudentIds,openId);
+                    List<UserStudent> newUserStudentList = userStudentService.getUserStudentListByIds(userStudentIds);
 
                     //数据转换
                     List<UserStudentNodeDto> userStudentNodeDtoList = UserStudentNodeDtoMapper.INSTANCE.entityListToDtoList(userStudentNodeList);
@@ -289,7 +283,7 @@ public class UserStudentNodeService extends BaseService {
                     for (UserStudentNodeDto studentNodeDto :  userStudentNodeDtoList){
 
                         //获取用户名
-                        for (UserStudent userStudent : userStudentList){
+                        for (UserStudent userStudent : newUserStudentList){
                             if (studentNodeDto.getUserStudentId().intValue() == userStudent.getId().intValue()){
                                 studentNodeDto.setUserName(userStudent.getUserName());
                             }
