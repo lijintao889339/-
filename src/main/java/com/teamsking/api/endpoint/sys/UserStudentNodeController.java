@@ -72,4 +72,29 @@ public class UserStudentNodeController extends BaseController {
 
     }
 
+
+
+    @ApiOperation(value = "模糊搜索学生观看视频时长", notes = "可分页", produces = "application/json")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "pageNo", paramType = "query",value = "页码", required = true, example = "1"),
+            @ApiImplicitParam(name = "pageSize", paramType = "query", value = "页大小", required = true, example = "10"),
+            @ApiImplicitParam(name = "nodeId", value = "视频的主键", required = true, dataType = "int"),
+            @ApiImplicitParam(name = "openId", value = "班课的主键", required = true, dataType = "int"),
+            @ApiImplicitParam(name = "studentNo", value = "学号", required = true, dataType = "String"),
+            @ApiImplicitParam(name = "userName", value = "姓名", required = true, dataType = "String")
+    })
+    @GetMapping("/like_searching_userStudentNodes/{openId}/{nodeId}")
+    public Result userStudentNodeListBySearching(@RequestParam int pageNo, @RequestParam int pageSize, @RequestParam String studentNo,
+                                               @RequestParam String userName, @PathVariable int nodeId, @PathVariable int openId) {
+
+        Page page = userStudentNodeService.listByStudentNoOrUserName(fixPage(pageNo),fixPage(pageSize),nodeId,openId,studentNo,userName);
+        if (null == page){
+            return Result.success().addData("pager", null);
+        }else {
+            return Result.success().addData("pager", warpPage(page));
+        }
+
+
+    }
+
 }
