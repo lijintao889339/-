@@ -2,10 +2,7 @@ package com.teamsking.api.endpoint.node;
 
 
 import com.github.pagehelper.PageHelper;
-import com.teamsking.api.dto.node.NodeDocDto;
-import com.teamsking.api.dto.node.NodeDto;
-import com.teamsking.api.dto.node.NodeDtoMapper;
-import com.teamsking.api.dto.node.NodeVideoDto;
+import com.teamsking.api.dto.node.*;
 import com.teamsking.api.endpoint.BaseController;
 import com.teamsking.domain.entity.node.Node;
 import com.teamsking.domain.service.node.NodeService;
@@ -17,13 +14,7 @@ import io.swagger.annotations.ApiOperation;
 import java.util.List;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @Api(tags = "资源管理操作接口")
@@ -135,16 +126,16 @@ public class NodeController extends BaseController {
 
 
 
-    @ApiOperation(value = "获取班课视频信息列表", produces = "application/json")
-    @ApiImplicitParams({
-            @ApiImplicitParam(name = "openId", value = "班课的主键", required = true, dataType = "int"),
-    })
-    @GetMapping("/node_video/{openId}")
-    public Result getNodeVideoByOpenId(@PathVariable int openId){
-
-        List<NodeVideoDto> nodeVideoDtoList = nodeService.getNodeVideoListByOpenId(openId);
-        return Result.success().addData("nodeVideoDtoList",nodeVideoDtoList);
-    }
+//    @ApiOperation(value = "获取班课视频信息列表", produces = "application/json")
+//    @ApiImplicitParams({
+//            @ApiImplicitParam(name = "openId", value = "班课的主键", required = true, dataType = "int"),
+//    })
+//    @GetMapping("/node_video/{openId}")
+//    public Result getNodeVideoByOpenId(@PathVariable int openId){
+//
+//        List<NodeVideoDto> nodeVideoDtoList = nodeService.getNodeVideoListByOpenId(openId);
+//        return Result.success().addData("nodeVideoDtoList",nodeVideoDtoList);
+//    }
 
 
 
@@ -176,6 +167,20 @@ public class NodeController extends BaseController {
         nodeService.saveNodeDocBySectionId(nodeDocDto,sectionId);
 
         return Result.success();
+
+    }
+
+
+    @ApiOperation(value = "根据节id添加课件", consumes = "application/json")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "openId", value = "班课id", required = true, dataType = "Integer"),
+            @ApiImplicitParam(name = "id", value = "主键id", required = true, dataType = "Integer")
+    })
+    @GetMapping("/node/{id}/open/{openId}/name")
+    public Result getNodeNameById(@PathVariable int id,
+                                  @PathVariable int openId){
+
+        return Result.success().addData("nodeNameDto",nodeService.getNodeNameById(id,openId));
 
     }
 

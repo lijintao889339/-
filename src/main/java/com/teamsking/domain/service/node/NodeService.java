@@ -2,6 +2,7 @@ package com.teamsking.domain.service.node;
 
 import com.teamsking.api.dto.node.NodeDocDto;
 import com.teamsking.api.dto.node.NodeDtoMapper;
+import com.teamsking.api.dto.node.NodeNameDto;
 import com.teamsking.api.dto.node.NodeVideoDto;
 import com.teamsking.domain.entity.node.Node;
 import com.teamsking.domain.entity.open.OpenItem;
@@ -147,20 +148,20 @@ public class NodeService {
      * @param openId
      * @return
      */
-    public List<NodeVideoDto> getNodeVideoListByOpenId(Integer openId){
-
-        Node node = new Node();
-        node.setNodeType(20);
-        node.setOpenId(openId);
-        node.setDeleteStatus(2);
-
-        List<Node> nodeList = nodeMapper.select(node);
-
-        List<NodeVideoDto> nodeVideoDtoList = NodeDtoMapper.INSTANCE.entityVideoListToDto(nodeList);
-
-        return nodeVideoDtoList;
-
-    }
+//    public List<NodeVideoDto> getNodeVideoListByOpenId(Integer openId){
+//
+//        Node node = new Node();
+//        node.setNodeType(20);
+//        node.setOpenId(openId);
+//        node.setDeleteStatus(2);
+//
+//        List<Node> nodeList = nodeMapper.select(node);
+//
+//        List<NodeVideoDto> nodeVideoDtoList = NodeDtoMapper.INSTANCE.entityListVideoDto(nodeList);
+//
+//        return nodeVideoDtoList;
+//
+//    }
 
 
     /**
@@ -213,6 +214,28 @@ public class NodeService {
         openItem.setItemType(20);
 
         return openItemMapper.insertSelective(openItem);
+
+    }
+
+
+    public NodeNameDto getNodeNameById(Integer id,Integer openId){
+
+        //Node nodeEntity = NodeDtoMapper.INSTANCE.dotToEntityName(nodeNameDto);
+
+        Node node = new Node();
+        node.setId(id);
+        node.setOpenId(openId);
+        node.setDeleteStatus(2);
+        node.setNodeType(20);
+
+        Node nodeEntity = nodeMapper.selectOne(node);
+
+        NodeNameDto nodeNameDtoEntity = NodeDtoMapper.INSTANCE.EntityNameDot(nodeEntity);
+
+
+
+        //return nodeMapper.selectOne(nodeEntity);
+        return nodeNameDtoEntity;
 
     }
 
