@@ -126,16 +126,16 @@ public class NodeController extends BaseController {
 
 
 
-//    @ApiOperation(value = "获取班课视频信息列表", produces = "application/json")
-//    @ApiImplicitParams({
-//            @ApiImplicitParam(name = "openId", value = "班课的主键", required = true, dataType = "int"),
-//    })
-//    @GetMapping("/node_video/{openId}")
-//    public Result getNodeVideoByOpenId(@PathVariable int openId){
-//
-//        List<NodeVideoDto> nodeVideoDtoList = nodeService.getNodeVideoListByOpenId(openId);
-//        return Result.success().addData("nodeVideoDtoList",nodeVideoDtoList);
-//    }
+    @ApiOperation(value = "获取班课视频信息列表", produces = "application/json")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "openId", value = "班课的主键", required = true, dataType = "int"),
+    })
+    @GetMapping("/node_video/{openId}")
+    public Result getNodeVideoByOpenId(@PathVariable int openId){
+
+        List<Node> nodeVideoDtoList = nodeService.getNodeVideoListByOpenId(openId);
+        return Result.success().addData("nodeVideoDtoList",nodeVideoDtoList);
+    }
 
 
 
@@ -171,7 +171,7 @@ public class NodeController extends BaseController {
     }
 
 
-    @ApiOperation(value = "根据节id添加课件", consumes = "application/json")
+    @ApiOperation(value = "根据id查询视频信息", consumes = "application/json")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "openId", value = "班课id", required = true, dataType = "Integer"),
             @ApiImplicitParam(name = "id", value = "主键id", required = true, dataType = "Integer")

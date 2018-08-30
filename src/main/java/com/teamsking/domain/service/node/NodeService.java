@@ -148,20 +148,20 @@ public class NodeService {
      * @param openId
      * @return
      */
-//    public List<NodeVideoDto> getNodeVideoListByOpenId(Integer openId){
-//
-//        Node node = new Node();
-//        node.setNodeType(20);
-//        node.setOpenId(openId);
-//        node.setDeleteStatus(2);
-//
-//        List<Node> nodeList = nodeMapper.select(node);
-//
-//        List<NodeVideoDto> nodeVideoDtoList = NodeDtoMapper.INSTANCE.entityListVideoDto(nodeList);
-//
-//        return nodeVideoDtoList;
-//
-//    }
+    public List<Node> getNodeVideoListByOpenId(Integer openId){
+
+        Node node = new Node();
+        node.setNodeType(20);
+        node.setOpenId(openId);
+        node.setDeleteStatus(2);
+
+        List<Node> nodeList = nodeMapper.select(node);
+
+        //List<NodeVideoDto> nodeVideoDtoList = NodeDtoMapper.INSTANCE.entityListVideoDto(nodeList);
+
+        return nodeList;
+
+    }
 
 
     /**
@@ -218,6 +218,12 @@ public class NodeService {
     }
 
 
+    /**
+     * 根据id查询视频信息(名称和视频长度)
+     * @param id
+     * @param openId
+     * @return
+     */
     public NodeNameDto getNodeNameById(Integer id,Integer openId){
 
         //Node nodeEntity = NodeDtoMapper.INSTANCE.dotToEntityName(nodeNameDto);
