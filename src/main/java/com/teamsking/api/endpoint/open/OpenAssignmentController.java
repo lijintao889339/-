@@ -159,15 +159,21 @@ public class OpenAssignmentController extends BaseController {
 
 
 
-    @ApiOperation(value = "获取班课作业列表", produces = "application/json")
-    @ApiImplicitParams({
-            @ApiImplicitParam(name = "openId", value = "班课的主键", required = true, dataType = "int"),
+    @ApiOperation(value = "根据班课id获取作业列表", produces = "application/json")
+    @ApiImplicitParams( {
+            @ApiImplicitParam(name = "openId", value = "班课的id", required = true, dataType = "Integer"),
+            @ApiImplicitParam(name = "pageNo", paramType = "query",value = "页码", required = true, example = "1"),
+            @ApiImplicitParam(name = "pageSize", paramType = "query", value = "页大小", required = true, example = "10")
     })
     @GetMapping("/open_assignment/{openId}")
-    public Result announceList(@PathVariable int openId){
+    public Result getOpenAssignmentByOpenIdList(@PathVariable int openId, @RequestParam int pageNo, @RequestParam int pageSize){
 
-        List<OpenAssignmentNameDto> openAssignmentNameDtoList = openAssignmentService.getOpenAssignmentListByOpenId(openId);
-        return Result.success().addData("openAssignmentNameDtoList",openAssignmentNameDtoList);
+        Page page = openAssignmentService.getOpenAssignmentListByOpenId(openId,fixPage(pageNo),fixPage(pageSize));
+        if (null == page){
+            return Result.success().addData("pager",null);
+        }else {
+            return Result.success().addData("pager", warpPage(page));
+        }
     }
 
 }

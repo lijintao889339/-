@@ -232,7 +232,9 @@ public class OpenAssignmentService extends BaseService {
      * @param openId
      * @return
      */
-    public List<OpenAssignmentNameDto> getOpenAssignmentListByOpenId(Integer openId){
+    public Page getOpenAssignmentListByOpenId(Integer openId,int pageNo,int pageSize){
+
+        PageHelper.startPage(pageNo, pageSize);
 
         OpenAssignment openAssignment = new OpenAssignment();
         openAssignment.setOpenId(openId);
@@ -246,37 +248,43 @@ public class OpenAssignmentService extends BaseService {
 //
 //        }
 
+        if (0 != openAssignmentList.size()){
 
-        //获取该班课下学生数量
-        OpenUser openUser = new OpenUser();
-        openUser.setDeleteStatus(2);
-        openUser.setOpenId(openId);
-        int allUserNum = openUserMapper.selectCount(openUser);
-
-
-        //转换数据
-        List<OpenAssignmentNameDto> openAssignmentDtoList = OpenAssignmentDtoMapper.INSTANCE.entityListToNameDtoList(openAssignmentList);
-
-        for (OpenAssignmentNameDto openAssignmentDto : openAssignmentDtoList){
+            //获取该班课下学生数量
+            OpenUser openUser = new OpenUser();
+            openUser.setDeleteStatus(2);
+            openUser.setOpenId(openId);
+            int allUserNum = openUserMapper.selectCount(openUser);
 
 
-            //班课作业的已提交人数
-            UserStudentAssignment userStudentAssignment = new UserStudentAssignment();
-            userStudentAssignment.setAssignmentId(openAssignmentDto.getId());
-            userStudentAssignment.setDeleteStatus(2);
-            int stopUserCount = userStudentAssignmentMapper.selectCount(userStudentAssignment);
-            openAssignmentDto.setStopUserCount(stopUserCount);
-            //总人数
-            openAssignmentDto.setUserCount(allUserNum);
-            //未提交人数
-            int notUserCount = allUserNum - stopUserCount;
+            //转换数据
+            List<OpenAssignmentNameDto> openAssignmentDtoList = OpenAssignmentDtoMapper.INSTANCE.entityListToNameDtoList(openAssignmentList);
 
-            openAssignmentDto.setNotUserCount(notUserCount);
+            for (OpenAssignmentNameDto openAssignmentDto : openAssignmentDtoList){
 
+
+                //班课作业的已提交人数
+                UserStudentAssignment userStudentAssignment = new UserStudentAssignment();
+                userStudentAssignment.setAssignmentId(openAssignmentDto.getId());
+                userStudentAssignment.setDeleteStatus(2);
+                int stopUserCount = userStudentAssignmentMapper.selectCount(userStudentAssignment);
+                openAssignmentDto.setStopUserCount(stopUserCount);
+                //总人数
+                openAssignmentDto.setUserCount(allUserNum);
+                //未提交人数
+                int notUserCount = allUserNum - stopUserCount;
+
+                openAssignmentDto.setNotUserCount(notUserCount);
+
+            }
+
+            return convertPage((Page)openAssignmentList,openAssignmentDtoList);
+
+        }else {
+            Page page =null;
+            return page;
         }
 
-
-        return openAssignmentDtoList;
 
     }
 

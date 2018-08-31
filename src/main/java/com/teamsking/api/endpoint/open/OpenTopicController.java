@@ -63,7 +63,7 @@ public class OpenTopicController extends BaseController {
             @ApiImplicitParam(name = "pageSize", paramType = "query", value = "页大小", required = true, example = "10")
     })
     @GetMapping("/open_topic/{openId}")
-    public Result getOpenUser(@PathVariable int openId, @RequestParam int pageNo, @RequestParam int pageSize){
+    public Result getOpenTopicByOpenIdList(@PathVariable int openId, @RequestParam int pageNo, @RequestParam int pageSize){
 
         Page page = openTopicService.getOpenOpenTopicListByOpenId(openId,fixPage(pageNo),fixPage(pageSize));
         if (null == page){
