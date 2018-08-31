@@ -1,5 +1,7 @@
 package com.teamsking.domain.service.open;
 
+import com.github.pagehelper.Page;
+import com.github.pagehelper.PageHelper;
 import com.teamsking.api.dto.open.OpenTopicDto;
 import com.teamsking.api.dto.open.OpenTopicDtoMapper;
 import com.teamsking.api.dto.open.OpenTopicNameDto;
@@ -11,6 +13,7 @@ import com.teamsking.domain.repository.OpenItemMapper;
 import com.teamsking.domain.repository.OpenTopicMapper;
 import com.teamsking.domain.repository.OpenUserMapper;
 import com.teamsking.domain.repository.UserStudentTopicMapper;
+import com.teamsking.domain.service.BaseService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -19,7 +22,7 @@ import java.util.List;
 
 @Service
 @Slf4j
-public class OpenTopicService {
+public class OpenTopicService extends BaseService {
 
     @Autowired
     OpenTopicMapper openTopicMapper;
@@ -86,44 +89,57 @@ public class OpenTopicService {
      * @param openId
      * @return
      */
-    public List<OpenTopicNameDto> getOpenOpenTopicListByOpenId(Integer openId){
+    public Page getOpenOpenTopicListByOpenId(Integer openId,int pageNo,int pageSize){
 
         OpenTopic newOpenTopic = new OpenTopic();
         newOpenTopic.setDeleteStatus(2);
         newOpenTopic.setOpenId(openId);
 
+        //分页操作
+        PageHelper.startPage(pageNo, pageSize);
+
         List<OpenTopic> openTopicList = openTopicMapper.select(newOpenTopic);
 
-        //获取该班课下学生数量
-        OpenUser openUser = new OpenUser();
-        openUser.setDeleteStatus(2);
-        openUser.setOpenId(openId);
-        int allUserNum = openUserMapper.selectCount(openUser);
+        if(0 != openTopicList.size()){
 
-        //数据转换
-        List<OpenTopicNameDto> openTopicNameDtoList = OpenTopicDtoMapper.INSTANCE.entityListNameToDto(openTopicList);
+            //获取该班课下学生数量
+            OpenUser openUser = new OpenUser();
+            openUser.setDeleteStatus(2);
+            openUser.setOpenId(openId);
+            int allUserNum = openUserMapper.selectCount(openUser);
 
-        //遍历
-        for (OpenTopicNameDto openTopicNameDto:openTopicNameDtoList) {
+            //数据转换
+            List<OpenTopicNameDto> openTopicNameDtoList = OpenTopicDtoMapper.INSTANCE.entityListNameToDto(openTopicList);
 
-            //班课讨论的已提交人数
-            UserStudentTopic userStudentTopic = new UserStudentTopic();
-            userStudentTopic.setTopicId(openTopicNameDto.getId());
-            userStudentTopic.setDeleteStatus(2);
-            int stopUserCount = userStudentTopicMapper.selectCount(userStudentTopic);
-            openTopicNameDto.setStopUserCount(stopUserCount);
+            //遍历
+            for (OpenTopicNameDto openTopicNameDto:openTopicNameDtoList) {
 
-            //总人数
-            openTopicNameDto.setUserCount(allUserNum);
-            //未提交人数
-            int notUserCount = allUserNum - stopUserCount;
-            openTopicNameDto.setNotUserCount(notUserCount);
+                //班课讨论的已提交人数
+                UserStudentTopic userStudentTopic = new UserStudentTopic();
+                userStudentTopic.setTopicId(openTopicNameDto.getId());
+                userStudentTopic.setDeleteStatus(2);
+                int stopUserCount = userStudentTopicMapper.selectCount(userStudentTopic);
+                openTopicNameDto.setStopUserCount(stopUserCount);
 
+                //总人数
+                openTopicNameDto.setUserCount(allUserNum);
+                //未提交人数
+                int notUserCount = allUserNum - stopUserCount;
+                openTopicNameDto.setNotUserCount(notUserCount);
+
+            }
+
+            return convertPage((Page)openTopicList,openTopicNameDtoList);
+
+        }else {
+            Page page =null;
+            return page;
         }
 
-        return openTopicNameDtoList;
+
 
     }
+
 
 
     /**

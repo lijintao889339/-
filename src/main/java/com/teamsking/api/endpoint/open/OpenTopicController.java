@@ -1,5 +1,6 @@
 package com.teamsking.api.endpoint.open;
 
+import com.github.pagehelper.Page;
 import com.teamsking.api.dto.open.OpenTopicDto;
 import com.teamsking.api.dto.open.OpenTopicNameDto;
 import com.teamsking.api.endpoint.BaseController;
@@ -55,18 +56,22 @@ public class OpenTopicController extends BaseController {
 
 
 
-
-    @ApiOperation(value = "获取班课讨论列表", produces = "application/json")
-    @ApiImplicitParams({
-            @ApiImplicitParam(name = "openId", value = "班课的主键", required = true, dataType = "int"),
+    @ApiOperation(value = "根据班课id获取讨论列表", produces = "application/json")
+    @ApiImplicitParams( {
+            @ApiImplicitParam(name = "openId", value = "班课的id", required = true, dataType = "Integer"),
+            @ApiImplicitParam(name = "pageNo", paramType = "query",value = "页码", required = true, example = "1"),
+            @ApiImplicitParam(name = "pageSize", paramType = "query", value = "页大小", required = true, example = "10")
     })
     @GetMapping("/open_topic/{openId}")
-    public Result announceList(@PathVariable int openId){
+    public Result getOpenUser(@PathVariable int openId, @RequestParam int pageNo, @RequestParam int pageSize){
 
-        List<OpenTopicNameDto> openTopicNameDtoList = openTopicService.getOpenOpenTopicListByOpenId(openId);
-        return Result.success().addData("openTopicNameDtoList",openTopicNameDtoList);
+        Page page = openTopicService.getOpenOpenTopicListByOpenId(openId,fixPage(pageNo),fixPage(pageSize));
+        if (null == page){
+            return Result.success().addData("pager",null);
+        }else {
+            return Result.success().addData("pager", warpPage(page));
+        }
     }
-
 
 
     @ApiOperation(value = "班课讨论详情",produces = "application/json")
