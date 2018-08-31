@@ -15,8 +15,10 @@ public interface OpenQuestionDtoMapper {
 
     List<OpenQuestionDto> entityListToDtoList(List<OpenQuestion> entityList);
 
-    OpenQuestionDto EntityToDto(OpenQuestion openQuestion);
+    OpenQuestionDto entityToDto(OpenQuestion openQuestion);
 
     OpenQuestion dtoToEntity(OpenQuestionDto openQuestionDto);
+
+    List<OpenQuestionQueryDto> entityListToQueryDotList(List<OpenQuestion> openQuestionList);
 
 }

@@ -64,22 +64,15 @@ public class OpenVoteService extends BaseService {
         studyVote.setVoteId(voteId);
         int commitUserNums = studyVoteMapper.selectCount(studyVote);
 
+        //数据转换
+        OpenVoteDto openVoteDto = OpenVoteDtoMapper.INSTANCE.entityToDto(vote);
+
         //获取投票选项信息
         List<OpenVoteOption> openVoteOptionList = openVoteOptionService.getVoteOptionInfoByVoteId(voteId);
 
         //数据转换
         List<OpenVoteOptionDto> voteOptionDtoList = OpenVoteOptionDtoMapper.INSTANCE.entityListToDtoList(openVoteOptionList);
 
-        //获取学生选票Ids
-        List<Integer> voteOptionIds = Lists.newArrayList();
-        for (OpenVoteOptionDto voteOptionDto : voteOptionDtoList){
-            voteOptionIds.add(voteOptionDto.getId());
-        }
-
-        //数据转换
-        OpenVoteDto openVoteDto = OpenVoteDtoMapper.INSTANCE.entityToDto(vote);
-
-        //获取投票选项信息
         List<OpenVoteOptionDto> voteOptionDtos = Lists.newArrayList();
         for (OpenVoteOptionDto voteOption: voteOptionDtoList){
 

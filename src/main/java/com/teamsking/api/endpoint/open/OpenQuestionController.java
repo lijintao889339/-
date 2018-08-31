@@ -4,6 +4,7 @@ import com.github.pagehelper.PageHelper;
 import com.teamsking.api.dto.open.AddOpenQuestionDto;
 import com.teamsking.api.dto.open.OpenQuestionDto;
 import com.teamsking.api.dto.open.OpenQuestionDtoMapper;
+import com.teamsking.api.dto.open.OpenQuestionQueryDto;
 import com.teamsking.api.endpoint.BaseController;
 import com.teamsking.domain.entity.open.OpenQuestion;
 import com.teamsking.domain.service.open.OpenQuestionService;
@@ -35,25 +36,37 @@ public class OpenQuestionController extends BaseController {
     OpenQuestionService openQuestionService;
 
     /**
-     * 获取班次-问卷调查管理列表
+     * 获取班次-问卷调查详情
      * @param openId
      * @return
      */
-    @ApiOperation(value = "班次下问卷调查管理列表", produces = "application/json")
+    @ApiOperation(value = "班次下问卷详情", produces = "application/json")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "openId", value = "班课的主键", required = true, dataType = "int"),
+            @ApiImplicitParam(name = "questionId", value = "问卷的主键", required = true, dataType = "int")
+    })
+    @GetMapping("/open_question_info/{openId}/{questionId}")
+    public Result openQuestion(@PathVariable int openId, @PathVariable int questionId){
+
+        OpenQuestionDto openQuestionDto = openQuestionService.getQuestion(openId,questionId);
+        return Result.success().addData("openQuestion",openQuestionDto);
+    }
+
+
+    @ApiOperation(value = "班次下的问卷管理列表", produces = "application/json")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "openId", value = "课程的主键", required = true, dataType = "int")
     })
     @GetMapping("/open_questions/{openId}")
     public Result openQuestionList(@PathVariable int openId){
 
-        List<OpenQuestionDto> openSectionDtoList = openQuestionService.list(openId);
-        if (null == openSectionDtoList){
-            return Result.success().addData("pager",null);
+        List<OpenQuestionQueryDto> openQuestionQueryDtoList = openQuestionService.getQuestionList(openId);
+
+        if (null == openQuestionQueryDtoList){
+            return Result.success().addData("openQuestionList", null);
         }else {
-            return Result.success().addData("pager",openSectionDtoList);
+            return Result.success().addData("openQuestionList", openQuestionQueryDtoList);
         }
-
-
     }
 
     /**

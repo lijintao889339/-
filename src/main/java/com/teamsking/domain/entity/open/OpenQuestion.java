@@ -137,6 +137,16 @@ public class OpenQuestion {
 
     private String questionCover;
 
+    private Integer publishUserId;
+
+    public Integer getPublishUserId() {
+        return publishUserId;
+    }
+
+    public void setPublishUserId(Integer publishUserId) {
+        this.publishUserId = publishUserId;
+    }
+
     public String getQuestionCover() {
         return questionCover;
     }

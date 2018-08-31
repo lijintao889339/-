@@ -45,7 +45,7 @@ public class OpenVoteController extends BaseController {
 
     @ApiOperation(value = "班次下的投票管理列表", produces = "application/json")
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "openId", value = "页大小", required = true, dataType = "int")
+            @ApiImplicitParam(name = "openId", value = "课程的主键", required = true, dataType = "int")
     })
     @GetMapping("/open_votes/{openId}")
     public Result openVoteList(@PathVariable int openId){

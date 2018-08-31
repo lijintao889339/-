@@ -76,4 +76,18 @@ public class OpenQuestionOptionService extends BaseService {
         return openQuestionOptionMapper.selectByExample(questionOptionExample);
 
     }
+
+    /**
+     * 根据问卷id获取问卷选项信息
+     * @param questionId
+     * @return
+     */
+    public List<OpenQuestionOption> getQuestionOptionInfoByQuestionId(Integer questionId) {
+
+        Example questionOptionExample = new Example(OpenQuestionOption.class);
+        questionOptionExample.and().andEqualTo("deleteStatus",2);
+        questionOptionExample.and().andEqualTo("questionId",questionId);
+        return openQuestionOptionMapper.selectByExample(questionOptionExample);
+
+    }
 }
