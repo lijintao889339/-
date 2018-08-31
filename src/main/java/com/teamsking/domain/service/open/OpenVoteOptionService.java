@@ -73,4 +73,18 @@ public class OpenVoteOptionService {
         voteOptionExample.and().andIn("voteId",voteIds);
         return openVoteOptionMapper.selectByExample(voteOptionExample);
     }
+
+    /**
+     * 根据投票Id获取投票选项信息列表
+     * @param voteId
+     * @return
+     */
+    public List<OpenVoteOption> getVoteOptionInfoByVoteId(Integer voteId) {
+
+        Example voteOptionExample = new Example(OpenVoteOption.class);
+        voteOptionExample.and().andEqualTo("deleteStatus",2);
+        voteOptionExample.and().andEqualTo("voteId",voteId);
+        return openVoteOptionMapper.selectByExample(voteOptionExample);
+    }
+
 }

@@ -8,6 +8,7 @@ import com.teamsking.domain.entity.open.OpenUser;
 import com.teamsking.domain.entity.open.OpenVote;
 import com.teamsking.domain.entity.open.OpenVoteOption;
 import com.teamsking.domain.entity.study.StudyVote;
+import com.teamsking.domain.entity.sys.UserTeacher;
 import com.teamsking.domain.repository.*;
 
 import java.math.BigDecimal;
@@ -35,87 +36,76 @@ public class OpenVoteService extends BaseService {
     OpenActivityMapper openActivityMapper;
     @Autowired
     OpenVoteOptionMapper openVoteOptionMapper;
+    @Autowired
+    UserTeacherMapper userTeacherMapper;
 
     @Autowired
     OpenVoteOptionService openVoteOptionService;
 
     /**
-     * 获取班次-投票管理列表
+     * 获取班次-投票详情
      * @param openId
+     * @param voteId
      * @return
      */
-    public List<OpenVoteDto> list(int openId){
+    public OpenVoteDto getVote(int openId, int voteId){
 
         //获取班课下的投票信息
         OpenVote openVote = new OpenVote();
         openVote.setOpenId(openId);
         openVote.setDeleteStatus(2);
-        List<OpenVote> openVoteList = openVoteMapper.select(openVote);
+        openVote.setId(voteId);
+        OpenVote vote = openVoteMapper.selectOne(openVote);
 
-        if (0 != openVoteList.size()){
+        //获取已投票人数
+        StudyVote studyVote = new StudyVote();
+        studyVote.setDeleteStatus(2);
+        studyVote.setOpenId(openId);
+        studyVote.setVoteId(voteId);
+        int commitUserNums = studyVoteMapper.selectCount(studyVote);
 
-            //查询此班课的学生人数
-            OpenUser openUser = new OpenUser();
-            openUser.setOpenId(openId);
-            openUser.setDeleteStatus(2);
-            int count = openUserMapper.selectCount(openUser);
+        //获取投票选项信息
+        List<OpenVoteOption> openVoteOptionList = openVoteOptionService.getVoteOptionInfoByVoteId(voteId);
 
-            //获取投票选项信息
-            List<Integer> voteIds = Lists.newArrayList();
-            for (OpenVote vote : openVoteList){
-                voteIds.add(vote.getId());
-            }
-            List<OpenVoteOption> openVoteOptionList = openVoteOptionService.getVoteOptionInfoByVoteIds(voteIds);
+        //数据转换
+        List<OpenVoteOptionDto> voteOptionDtoList = OpenVoteOptionDtoMapper.INSTANCE.entityListToDtoList(openVoteOptionList);
 
-            //数据转换
-            List<OpenVoteOptionDto> voteOptionDtoList = OpenVoteOptionDtoMapper.INSTANCE.entityListToDtoList(openVoteOptionList);
-
-            //获取学生选票Ids
-            List<Integer> voteOptionIds = Lists.newArrayList();
-            for (OpenVoteOptionDto voteOptionDto : voteOptionDtoList){
-                voteOptionIds.add(voteOptionDto.getId());
-            }
-
-            //数据转换
-            List<OpenVoteDto> openVoteDtoList = OpenVoteDtoMapper.INSTANCE.entityListToDtoList(openVoteList);
-
-            //遍历集合
-            for (OpenVoteDto openVoteDto : openVoteDtoList){
-
-                List<OpenVoteOptionDto> voteOptionDtos = Lists.newArrayList();
-                for (OpenVoteOptionDto voteOption: voteOptionDtoList){
-                    if (openVoteDto.getId().intValue() == voteOption.getVoteId().intValue()){
-
-                        //根据投票选项Id获取学生投票信息
-                        StudyVote studyVote = new StudyVote();
-                        studyVote.setDeleteStatus(2);
-                        studyVote.setOptionId(voteOption.getId());
-                        int voteNums = studyVoteMapper.selectCount(studyVote);
-
-                        //创建一个数值格式化对象
-                        NumberFormat numberFormat = NumberFormat.getInstance();
-                        //设置精确到小数点后2位
-                        numberFormat.setMaximumFractionDigits(2);
-                        //转化为百分比
-                        String voteRatio = numberFormat.format((float) voteNums / (float) count * 100) + "%";
-
-                        //组装数据
-                        voteOption.setVoteNums(voteNums);
-                        voteOption.setVoteRatio(voteRatio);
-                        voteOptionDtos.add(voteOption);
-                    }
-                }
-                openVoteDto.setOpenVoteOptionDtos(voteOptionDtos);
-
-            }
-
-
-            return openVoteDtoList;
-
-        }else {
-            List<OpenVoteDto> openVoteDtos = null;
-            return openVoteDtos;
+        //获取学生选票Ids
+        List<Integer> voteOptionIds = Lists.newArrayList();
+        for (OpenVoteOptionDto voteOptionDto : voteOptionDtoList){
+            voteOptionIds.add(voteOptionDto.getId());
         }
+
+        //数据转换
+        OpenVoteDto openVoteDto = OpenVoteDtoMapper.INSTANCE.entityToDto(vote);
+
+        //获取投票选项信息
+        List<OpenVoteOptionDto> voteOptionDtos = Lists.newArrayList();
+        for (OpenVoteOptionDto voteOption: voteOptionDtoList){
+
+            if (openVoteDto.getId().intValue() == voteId){
+                //根据投票选项Id获取学生投票具体信息
+                StudyVote newStudyVote = new StudyVote();
+                newStudyVote.setDeleteStatus(2);
+                newStudyVote.setOptionId(voteOption.getId());
+                int voteNums = studyVoteMapper.selectCount(newStudyVote);
+
+                //创建一个数值格式化对象
+                NumberFormat numberFormat = NumberFormat.getInstance();
+                //设置精确到小数点后2位
+                numberFormat.setMaximumFractionDigits(0);
+                //转化为百分比
+                String voteRatio = numberFormat.format((float) voteNums / (float) commitUserNums * 100) + "%";
+
+                //组装数据
+                voteOption.setVoteNums(voteNums);
+                voteOption.setVoteRatio(voteRatio);
+                voteOptionDtos.add(voteOption);
+            }
+            openVoteDto.setOpenVoteOptionDtos(voteOptionDtos);
+
+        }
+        return openVoteDto;
     }
 
 
@@ -253,4 +243,56 @@ public class OpenVoteService extends BaseService {
     }
 
 
+    /**
+     * 获取班课下的投票列表
+     * @param openId
+     * @return
+     */
+    public List<OpenVoteQueryDto> getVoteList(int openId) {
+
+        //获取班课已发布下投票信息
+        OpenVote openVote = new OpenVote();
+        openVote.setDeleteStatus(2);
+        openVote.setOpenId(openId);
+        openVote.setPublish(true);
+        List<OpenVote> openVoteList = openVoteMapper.select(openVote);
+
+        if (0 != openVoteList.size()){
+
+            //查询此班课的学生人数
+            OpenUser openUser = new OpenUser();
+            openUser.setOpenId(openId);
+            openUser.setDeleteStatus(2);
+            int allUserNums = openUserMapper.selectCount(openUser);
+
+            //数据转换
+            List<OpenVoteQueryDto> openVoteQueryDtoList = OpenVoteDtoMapper.INSTANCE.entityListToQueryDotList(openVoteList);
+
+            //遍历集合，组装数据
+            for (OpenVoteQueryDto openVoteQueryDto : openVoteQueryDtoList){
+
+                //获取发布人信息
+                UserTeacher userTeacher = new UserTeacher();
+                userTeacher.setDeleteStatus(2);
+                userTeacher.setId(openVoteQueryDto.getPublishUserId());
+                UserTeacher newUserTeacher = userTeacherMapper.selectOne(userTeacher);
+                openVoteQueryDto.setUserName(newUserTeacher.getUserName());
+
+                //获取已投票人数
+                StudyVote studyVote = new StudyVote();
+                studyVote.setDeleteStatus(2);
+                studyVote.setOpenId(openId);
+                studyVote.setVoteId(openVoteQueryDto.getId());
+                int commitUserNums = studyVoteMapper.selectCount(studyVote);
+
+                openVoteQueryDto.setCommitUserNums(commitUserNums);
+                openVoteQueryDto.setAllUserNums(allUserNums);
+            }
+
+            return openVoteQueryDtoList;
+        }else {
+            List<OpenVoteQueryDto> openVoteQueryDtoList = null;
+            return openVoteQueryDtoList;
+        }
+    }
 }

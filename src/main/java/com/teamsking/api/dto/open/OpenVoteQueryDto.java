@@ -13,16 +13,17 @@ public class OpenVoteQueryDto extends Dto {
 
     private Integer id;
 
-    //private Integer activityId;
-
     private String title;
 
     private Date startTime;
 
-    private Integer activityType;
-
-    //private Integer allUserNums;
+    private Integer allUserNums;
 
     private Integer commitUserNums;
+
+    private Integer publishUserId;
+
+    //发布人
+    private String userName;
 
 }

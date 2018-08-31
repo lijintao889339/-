@@ -30,5 +30,6 @@
     <result column="duration_hour" jdbcType="BIGINT" property="durationHour" />
     <result column="duration_min" jdbcType="INTEGER" property="durationMin" />
     <result column="vote_cover" jdbcType="VARCHAR" property="voteCover" />
+    <result column="publish_user_id" jdbcType="INTEGER" property="publishUserId" />
   </resultMap>
 </mapper>

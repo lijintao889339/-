@@ -153,6 +153,16 @@ public class OpenVote {
 
     private String voteCover;
 
+    private Integer publishUserId;
+
+    public Integer getPublishUserId() {
+        return publishUserId;
+    }
+
+    public void setPublishUserId(Integer publishUserId) {
+        this.publishUserId = publishUserId;
+    }
+
     public String getVoteCover() {
         return voteCover;
     }

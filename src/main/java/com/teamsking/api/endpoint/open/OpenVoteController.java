@@ -4,6 +4,7 @@ import com.github.pagehelper.PageHelper;
 import com.teamsking.api.dto.open.AddOpenVoteDto;
 import com.teamsking.api.dto.open.OpenVoteDto;
 import com.teamsking.api.dto.open.OpenVoteDtoMapper;
+import com.teamsking.api.dto.open.OpenVoteQueryDto;
 import com.teamsking.api.endpoint.BaseController;
 import com.teamsking.domain.entity.open.OpenVote;
 import com.teamsking.domain.service.open.OpenVoteService;
@@ -28,22 +29,34 @@ public class OpenVoteController extends BaseController {
     OpenVoteService openVoteService;
 
 
-    @ApiOperation(value = "班次下的投票管理列表", notes = "可分页", produces = "application/json")
+    @ApiOperation(value = "班次下的投票详情", produces = "application/json")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "openId", value = "课程的主键", required = true, dataType = "int"),
+            @ApiImplicitParam(name = "voteId", value = "投票的主键", required = true, dataType = "int")
+    })
+    @GetMapping("/open_vote_info/{openId}/{voteId}")
+    public Result openVote(@PathVariable int openId, @PathVariable int voteId){
+
+        OpenVoteDto openVoteDto = openVoteService.getVote(openId,voteId);
+        return Result.success().addData("openVote", openVoteDto);
+    }
+
+
+
+    @ApiOperation(value = "班次下的投票管理列表", produces = "application/json")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "openId", value = "页大小", required = true, dataType = "int")
     })
     @GetMapping("/open_votes/{openId}")
     public Result openVoteList(@PathVariable int openId){
 
-        List<OpenVoteDto> openVoteDtoList = openVoteService.list(openId);
+        List<OpenVoteQueryDto> openVoteQueryDtoList = openVoteService.getVoteList(openId);
 
-        if (null == openVoteDtoList){
+        if (null == openVoteQueryDtoList){
             return Result.success().addData("openVoteList", null);
         }else {
-            return Result.success().addData("openVoteList", openVoteDtoList);
+            return Result.success().addData("openVoteList", openVoteQueryDtoList);
         }
-
-
     }
 
 
