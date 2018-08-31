@@ -9,19 +9,14 @@ import com.teamsking.api.dto.open.OpenExamUserDto;
 import com.teamsking.domain.entity.open.OpenExam;
 import com.teamsking.domain.entity.open.OpenUser;
 import com.teamsking.domain.entity.open.OpenUserTeacher;
-import com.teamsking.domain.entity.sys.SysUser;
-import com.teamsking.domain.entity.sys.UserStudent;
-import com.teamsking.domain.entity.sys.UserStudentExam;
-import com.teamsking.domain.entity.sys.UserTeacher;
-import com.teamsking.domain.repository.OpenExamMapper;
-import com.teamsking.domain.repository.OpenUserMapper;
-import com.teamsking.domain.repository.OpenUserTeacherMapper;
-import com.teamsking.domain.repository.UserStudentExamMapper;
+import com.teamsking.domain.entity.sys.*;
+import com.teamsking.domain.repository.*;
 import com.teamsking.domain.service.BaseService;
 import com.teamsking.domain.service.sys.SysUserService;
 import com.teamsking.domain.service.sys.UserStudentService;
 import com.teamsking.domain.service.sys.UserTeacherService;
 import lombok.extern.slf4j.Slf4j;
+import net.bytebuddy.asm.Advice;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.github.pagehelper.Page;
@@ -41,6 +36,10 @@ public class OpenExamService extends BaseService {
     OpenUserMapper openUserMapper;
     @Autowired
     UserStudentExamMapper userStudentExamMapper;
+    @Autowired
+    UserTeacherMapper userTeacherMapper;
+    @Autowired
+    UserTeacherExamMapper userTeacherExamMapper;
 
     @Autowired
     UserTeacherService userTeacherService;
@@ -137,6 +136,98 @@ public class OpenExamService extends BaseService {
             return page;
         }
 
+
+
+    }
+
+
+    /**
+     * 根据教学老师，考试类型，考试状态查询考试信息列表
+     * @param openId
+     * @param pageNo
+     * @param pageSize
+     * @param state
+     * @param teacherName
+     * @return
+     */
+    public Page openExamByStateList(int openId,int pageNo,int pageSize,String state,String teacherName){
+
+
+        List<Integer> examIds = Lists.newArrayList();
+        if ("" != teacherName){
+
+            //获取教学老师id
+            UserTeacher newUserTeacher = new UserTeacher();
+            newUserTeacher.setDeleteStatus(2);
+            newUserTeacher.setUserName(teacherName);
+            UserTeacher userTeacher = userTeacherMapper.selectOne(newUserTeacher);
+
+            //获取考试IDS
+            UserTeacherExam userTeacherExam = new UserTeacherExam();
+            userTeacherExam.setDeleteStatus(2);
+            userTeacherExam.setUserTeacherId(userTeacher.getId());
+            List<UserTeacherExam> teacherExamList = userTeacherExamMapper.select(userTeacherExam);
+
+            //遍历集合
+            for (UserTeacherExam teacherExam : teacherExamList){
+                examIds.add(teacherExam.getExamId());
+            }
+        }
+
+        //根据考试状态和教学老师查询考试信息
+        Example openExamExample = new Example(OpenExam.class);
+        //openExamExample.and().andEqualTo("deleteStatus",2);
+        Example.Criteria cri = openExamExample.createCriteria();
+        cri.andEqualTo("openId",openId);
+        cri.andEqualTo("deleteStatus",2);
+        if ("" != state){
+            cri.andEqualTo("state", state);
+        }
+        if ("" != teacherName){
+            cri.andIn("id", examIds);
+        }
+
+        /*if ("" != teacherName){
+            openExamExample.and().andLike("teacherName","%" + teacherName + "%");
+
+        }*/
+
+        //分页操作
+        PageHelper.startPage(pageNo, pageSize);
+
+        List<OpenExam> openExamList = openExamMapper.selectByExample(openExamExample);
+
+        if(0 != openExamList.size()){
+
+            //获取该班课下学生总数量
+            OpenUser openUser = new OpenUser();
+            openUser.setDeleteStatus(2);
+            openUser.setOpenId(openId);
+            int allUserNum = openUserMapper.selectCount(openUser);
+
+            List<OpenExamNameDto> openExamNameDtoList = OpenExamDtoMapper.INSTANCE.entityListNameDto(openExamList);
+
+            for (OpenExamNameDto openExamNameDto:openExamNameDtoList) {
+
+
+                //班课考试已提交人数
+                UserStudentExam userStudentExam = new UserStudentExam();
+                userStudentExam.setDeleteStatus(2);
+                userStudentExam.setExamId(openExamNameDto.getId());
+                int stopUserCount =userStudentExamMapper.selectCount(userStudentExam);
+                //int submitCount = allUserNum / stopUserCount;
+                openExamNameDto.setStopUserCount(stopUserCount);
+
+                //总人数
+                openExamNameDto.setUserCount(allUserNum);
+
+            }
+
+            return convertPage((Page)openExamList,openExamNameDtoList);
+        }else {
+            Page page = null;
+            return page;
+        }
 
 
     }

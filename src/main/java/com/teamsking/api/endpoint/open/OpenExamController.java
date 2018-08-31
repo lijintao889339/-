@@ -81,6 +81,30 @@ public class OpenExamController extends BaseController {
 
 
 
+
+    @ApiOperation(value = "模糊查询考试列表", produces = "application/json")
+    @ApiImplicitParams( {
+            @ApiImplicitParam(name = "openId", value = "班课的id", required = true, dataType = "Integer"),
+            @ApiImplicitParam(name = "pageNo", paramType = "query",value = "页码", required = true, example = "1"),
+            @ApiImplicitParam(name = "pageSize", paramType = "query", value = "页大小", required = true, example = "10"),
+            @ApiImplicitParam(name = "state", value = "考试状态", required = true, dataType = "String"),
+            @ApiImplicitParam(name = "teacherName", value = "教学老师", required = true, dataType = "String")
+    })
+    @GetMapping("/open/{openId}/exam_name")
+    public Result getOpenUserListByTeacherName(@PathVariable int openId, @RequestParam int pageNo, @RequestParam int pageSize,
+                                  @RequestParam String state,
+                                  @RequestParam String teacherName){
+
+        Page page = openExamService.openExamByStateList(openId,fixPage(pageNo),fixPage(pageSize),state,teacherName);
+        if (null == page){
+            return Result.success().addData("pager",null);
+        }else {
+            return Result.success().addData("pager", warpPage(page));
+        }
+    }
+
+
+
     @ApiOperation(value = "批量删除考试",produces = "application/json")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "ids",value = "考试主键", required = true)

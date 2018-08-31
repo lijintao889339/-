@@ -33,4 +33,6 @@ public class OpenExamNameDto extends Dto {
 
     private Integer stopUserCount;
 
+    private Integer submitCount;
+
 }
