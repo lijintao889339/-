@@ -1,5 +1,7 @@
 package com.teamsking.domain.service.node;
 
+import com.github.pagehelper.Page;
+import com.github.pagehelper.PageHelper;
 import com.teamsking.api.dto.node.NodeDocDto;
 import com.teamsking.api.dto.node.NodeDtoMapper;
 import com.teamsking.api.dto.node.NodeNameDto;
@@ -7,9 +9,12 @@ import com.teamsking.api.dto.node.NodeVideoDto;
 import com.teamsking.domain.entity.node.Node;
 import com.teamsking.domain.entity.open.OpenItem;
 import com.teamsking.domain.repository.NodeMapper;
+
+import java.text.NumberFormat;
 import java.util.List;
 
 import com.teamsking.domain.repository.OpenItemMapper;
+import com.teamsking.domain.service.BaseService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -17,7 +22,7 @@ import tk.mybatis.mapper.entity.Example;
 
 @Service
 @Slf4j
-public class NodeService {
+public class NodeService extends BaseService {
 
     @Autowired
     NodeMapper nodeMapper;
@@ -160,6 +165,61 @@ public class NodeService {
         //List<NodeVideoDto> nodeVideoDtoList = NodeDtoMapper.INSTANCE.entityListVideoDto(nodeList);
 
         return nodeList;
+
+    }
+
+
+    /**
+     * 根据班课id查询视频(分页)信息(教学管理内容)
+     * @param openId
+     * @param pageNo
+     * @param pageSize
+     * @return
+     */
+    public Page getNodeVideoByOpenIdList(Integer openId,int pageNo,int pageSize){
+
+        //进行分页
+        PageHelper.startPage(pageNo, pageSize);
+
+        Node node = new Node();
+        node.setNodeType(20);
+        node.setOpenId(openId);
+        node.setDeleteStatus(2);
+
+        //查询视频列表
+        List<Node> nodeList = nodeMapper.select(node);
+
+        //判断
+        if (0 != nodeList.size()){
+
+            //数据转换
+            List<NodeNameDto> nodeVideoDtoList = NodeDtoMapper.INSTANCE.entityListToDtoList1(nodeList);
+
+            //遍历
+            for (NodeNameDto nodeNameDto:nodeVideoDtoList) {
+
+                //视频时长
+                Integer seconds = nodeNameDto.getSeconds();
+                //获取观看进度
+                //获取观看时长
+                Integer watchProgress = nodeNameDto.getWatchProgress();
+                //创建一个数值格式化对象
+                NumberFormat numberFormat = NumberFormat.getInstance();
+                //设置精确到小数点后2位
+                numberFormat.setMaximumFractionDigits(0);
+                //转化为百分比
+                String watchRate = numberFormat.format( (float)watchProgress / (float)seconds * 100) + "%";
+
+                nodeNameDto.setWatchRate(watchRate);
+
+            }
+
+            return convertPage((Page)nodeList,nodeVideoDtoList);
+
+        }else {
+            Page page =null;
+            return page;
+        }
 
     }
 

@@ -22,6 +22,8 @@ public class NodeVideoDto extends Dto {
 
     private Integer seconds;
 
-    private Double watchProgress;
+    private Integer watchProgress;
+
+    private String watchRate;
 
 }

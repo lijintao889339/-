@@ -14,4 +14,28 @@ public class NodeNameDto extends Dto {
 
     //private Integer openId;
 
+
+
+
+
+    private Integer Id;
+
+    private Integer openId;
+
+    //private String title;
+
+    private Integer nodeType;
+
+    private Integer deleteStatus;
+
+    private Integer chapterId;
+
+    private Integer sectionId;
+
+    //private Integer seconds;
+
+    private Integer watchProgress;
+
+    private String watchRate;
+
 }

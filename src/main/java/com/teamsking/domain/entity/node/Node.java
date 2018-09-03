@@ -225,7 +225,7 @@ public class Node {
      */
     private Integer deleteStatus;
 
-    private Double watchProgress;
+    private Integer watchProgress;
 
     private String suffixName;
 
@@ -819,11 +819,11 @@ public class Node {
         this.deleteStatus = deleteStatus;
     }
 
-    public Double getWatchProgress() {
+    public Integer getWatchProgress() {
         return watchProgress;
     }
 
-    public void setWatchProgress(Double watchProgress) {
+    public void setWatchProgress(Integer watchProgress) {
         this.watchProgress = watchProgress;
     }
 

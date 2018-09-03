@@ -14,12 +14,13 @@ public interface NodeDtoMapper {
 
     NodeDto entityToDto(Node node);
 
-
     NodeNameDto EntityNameDot(Node node);
 
     Node dtoToEntity(NodeDto nodeDto);
 
     Node dotToEntityVideo(NodeVideoDto nodeVideoDto);
+
+    List<NodeNameDto> entityListToDtoList1(List<Node> nodeList);
 
 
     Node dotToEntityDoc(NodeDocDto nodeDocDto);

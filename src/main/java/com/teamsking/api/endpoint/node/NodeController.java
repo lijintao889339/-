@@ -1,6 +1,7 @@
 package com.teamsking.api.endpoint.node;
 
 
+import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.teamsking.api.dto.node.*;
 import com.teamsking.api.endpoint.BaseController;
@@ -136,6 +137,29 @@ public class NodeController extends BaseController {
         List<Node> nodeVideoDtoList = nodeService.getNodeVideoListByOpenId(openId);
         return Result.success().addData("nodeVideoDtoList",nodeVideoDtoList);
     }
+
+
+
+
+    @ApiOperation(value = "根据班课id获取视频列表(分页)", produces = "application/json")
+    @ApiImplicitParams( {
+            @ApiImplicitParam(name = "openId", value = "班课的id", required = true, dataType = "Integer"),
+            @ApiImplicitParam(name = "pageNo", paramType = "query",value = "页码", required = true, example = "1"),
+            @ApiImplicitParam(name = "pageSize", paramType = "query", value = "页大小", required = true, example = "10")
+    })
+    @GetMapping("/open/{openId}/video")
+    public Result getOpenTestByOpenIdList(@PathVariable int openId, @RequestParam int pageNo, @RequestParam int pageSize){
+
+        Page page = nodeService.getNodeVideoByOpenIdList(openId,fixPage(pageNo),fixPage(pageSize));
+        if (null == page){
+            return Result.success().addData("pager",null);
+        }else {
+            return Result.success().addData("pager", warpPage(page));
+        }
+    }
+
+
+
 
 
 
